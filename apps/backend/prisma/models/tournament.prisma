@@ -1,0 +1,5 @@
+model Tournament {
+  id        Int      @id @default(autoincrement())
+  testing   String
+  createdAt DateTime @default(now())
+}
