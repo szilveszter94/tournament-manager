@@ -2,5 +2,13 @@
   "singleQuote": true,
   "semi": true,
   "trailingComma": "all",
-  "endOfLine": "auto"
+  "endOfLine": "auto",
+  "overrides": [
+    {
+      "files": "generated/interfaces/**/*.ts",
+      "options": {
+        "singleQuote": false
+      }
+    }
+  ]
 }

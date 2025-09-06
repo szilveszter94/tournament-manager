@@ -9,7 +9,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "dev": "nest start --watch",
-    "prisma:generate": "node scripts/clean-generated.js && prisma generate && node scripts/enum-import-fix.js && node scripts/convert-class-to-interface.js",
+    "prisma:generate": "node scripts/clean-generated.js && prisma generate && node scripts/enum-import-fix.js && node scripts/convert-class-to-interface.js && node scripts/copy-interfaces.js",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",

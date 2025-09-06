@@ -5,14 +5,14 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
+  provider = "prisma-client-js"
+  output   = "../../node_modules/@prisma/client"
+}
+
+generator frontend {
   provider = "prisma-generator-nestjs-dto"
   output   = "../../frontend/src/interfaces"
   outputType = "interface"
-}
-
-generator backend {
-  provider = "prisma-client-js"
-  output   = "../generated/entities"
 }
 
 generator prismaEnum {
