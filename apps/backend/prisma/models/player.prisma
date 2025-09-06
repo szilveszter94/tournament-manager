@@ -1,0 +1,19 @@
+model Player {
+  id            Int      @id @default(autoincrement())
+  name          String   @unique
+  overallWins   Int      @default(0)
+  overallLosses Int      @default(0)
+  group         Int?
+  elo           Int      @default(1500)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  //Relations
+  TournamentWinner       TournamentWinner[]
+  WinnersByeEliminations TournamentElimination[] @relation("WinnersByePlayerRelation")
+  LosersByeEliminations  TournamentElimination[] @relation("LosersByePlayerRelation")
+  PlayerTournament       PlayerTournament[]
+  MatchPlayer1           Match[]                 @relation("Player1Relation")
+  MatchPlayer2           Match[]                 @relation("Player2Relation")
+  MatchWinner            Match[]                 @relation("WinnerRelation")
+}

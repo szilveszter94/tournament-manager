@@ -1,0 +1,32 @@
+enum KnockoutMatchType {
+  None
+  Final
+  SemiFinal
+  ThirdPlace
+}
+
+model Match {
+  id                       Int               @id @default(autoincrement())
+  tournamentId             Int
+  player1Id                Int?
+  player2Id                Int?
+  winnerId                 Int?
+  serialNumber             Int?
+  isOver                   Boolean           @default(false)
+  group                    Int?
+  isKnockoutMatch          Boolean           @default(false)
+  knockoutRound            Int?
+  knockoutMatchType        KnockoutMatchType @default(None)
+  isDoubleEliminationMatch Boolean           @default(false)
+  isWinnersBracketMatch    Boolean           @default(false)
+  nextMatchId              Int?
+  createdAt                DateTime          @default(now())
+  updatedAt                DateTime          @updatedAt
+
+  //Relations
+  Tournament            Tournament              @relation(fields: [tournamentId], references: [id])
+  Player1               Player?                 @relation("Player1Relation", fields: [player1Id], references: [id])
+  Player2               Player?                 @relation("Player2Relation", fields: [player2Id], references: [id])
+  Winner                Player?                 @relation("WinnerRelation", fields: [winnerId], references: [id])
+  TournamentElimination TournamentElimination[]
+}

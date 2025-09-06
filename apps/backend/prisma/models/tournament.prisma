@@ -1,5 +1,23 @@
+enum TournamentStat {
+  Setup
+  FirstRounds
+  NormalEliminations
+  DoubleEliminations
+  Over
+}
+
 model Tournament {
-  id        Int      @id @default(autoincrement())
-  testing   String
-  createdAt DateTime @default(now())
+  id                 Int            @id @default(autoincrement())
+  name               String
+  tournamentStat     TournamentStat @default(Setup)
+  isFirstRoundsValid Boolean        @default(false)
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+
+  //Relations
+  TournamentWinner      TournamentWinner[]
+  TournamentElimination TournamentElimination[]
+  TournamentGroup       TournamentGroup[]
+  PlayerTournament      PlayerTournament[]
+  Match                 Match[]
 }

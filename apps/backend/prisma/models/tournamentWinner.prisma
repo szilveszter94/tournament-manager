@@ -1,0 +1,12 @@
+model TournamentWinner {
+  id           Int      @id @default(autoincrement())
+  tournamentId Int
+  playerId     Int
+  place        Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  //Relations
+  Tournament Tournament @relation(fields: [tournamentId], references: [id])
+  Player     Player     @relation(fields: [playerId], references: [id])
+}

@@ -1,0 +1,24 @@
+enum EliminationType {
+  Knockout
+  Double
+}
+
+model TournamentElimination {
+  id                        Int             @id @default(autoincrement())
+  tournamentId              Int
+  currentRound              Int             @default(1)
+  eliminationType           EliminationType @default(Knockout)
+  bronzeMatchId             Int?
+  isLosersBracketPlayerWins Boolean         @default(false)
+  isEliminationsOver        Boolean         @default(false)
+  winnersBracketByePlayerId Int?
+  losersBracketByePlayerId  Int?
+  createdAt                 DateTime        @default(now())
+  updatedAt                 DateTime        @updatedAt
+
+  //Relations
+  Tournament              Tournament @relation(fields: [tournamentId], references: [id])
+  BronzeMatch             Match?     @relation(fields: [bronzeMatchId], references: [id])
+  WinnersBracketByePlayer Player?    @relation("WinnersByePlayerRelation", fields: [winnersBracketByePlayerId], references: [id])
+  LosersBracketByePlayer  Player?    @relation("LosersByePlayerRelation", fields: [losersBracketByePlayerId], references: [id])
+}
