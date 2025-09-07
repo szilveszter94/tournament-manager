@@ -3,7 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { Tournament } from './Tournament';
-export type TournamentListResponse = {
+export type TournamentsResponse = {
     ok: boolean;
     error?: string;
     data?: Array<Tournament>;

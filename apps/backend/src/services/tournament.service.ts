@@ -1,8 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 import { Tournament } from 'generated/models/tournament.entity';
-import { TournamentResponse } from 'custom-interfaces/tournament-response';
-import { TournamentListResponse } from 'custom-interfaces/tournament-list-response';
+import {
+  TournamentResponse,
+  TournamentsResponse,
+} from 'custom-models/tournament-response';
 
 @Injectable()
 export class TournamentService {
@@ -31,7 +33,7 @@ export class TournamentService {
     }
   }
 
-  async findAll(): Promise<TournamentListResponse> {
+  async findAll(): Promise<TournamentsResponse> {
     try {
       const tournaments =
         (await this.prisma.tournament.findMany()) as Tournament[];

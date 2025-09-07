@@ -15,8 +15,8 @@ export type { PlayerTournament } from './models/PlayerTournament';
 export type { Tournament } from './models/Tournament';
 export type { TournamentElimination } from './models/TournamentElimination';
 export type { TournamentGroup } from './models/TournamentGroup';
-export type { TournamentListResponse } from './models/TournamentListResponse';
 export type { TournamentResponse } from './models/TournamentResponse';
+export type { TournamentsResponse } from './models/TournamentsResponse';
 export { TournamentStat } from './models/TournamentStat';
 export type { TournamentWinner } from './models/TournamentWinner';
 

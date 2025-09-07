@@ -1,7 +1,9 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { TournamentService } from '../services/tournament.service';
-import { TournamentResponse } from '../../custom-interfaces/tournament-response';
-import { TournamentListResponse } from '../../custom-interfaces/tournament-list-response';
+import {
+  TournamentResponse,
+  TournamentsResponse,
+} from '../../custom-models/tournament-response';
 import { ApiTags, ApiOkResponse, ApiExtraModels } from '@nestjs/swagger';
 
 @ApiTags('tournament')
@@ -17,8 +19,8 @@ export class TournamentController {
   }
 
   @Get()
-  @ApiOkResponse({ type: TournamentListResponse, isArray: false })
-  findAll(): Promise<TournamentListResponse> {
+  @ApiOkResponse({ type: TournamentsResponse, isArray: false })
+  findAll(): Promise<TournamentsResponse> {
     return this.tournamentService.findAll();
   }
 }

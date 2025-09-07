@@ -41,7 +41,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TournamentListResponse"
+                  "$ref": "#/components/schemas/TournamentsResponse"
                 }
               }
             }
@@ -618,7 +618,7 @@
           "ok"
         ]
       },
-      "TournamentListResponse": {
+      "TournamentsResponse": {
         "type": "object",
         "properties": {
           "ok": {

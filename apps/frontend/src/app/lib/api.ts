@@ -1,5 +1,5 @@
 import {
-  TournamentListResponse,
+  TournamentsResponse,
   TournamentService,
   TournamentResponse,
 } from "../../../generated/services/api";
@@ -16,7 +16,7 @@ export async function fetchTournamentById(
   }
 }
 
-export async function fetchTournaments(): Promise<TournamentListResponse> {
+export async function fetchTournaments(): Promise<TournamentsResponse> {
   try {
     const response = await TournamentService.tournamentControllerFindAll();
     return response;

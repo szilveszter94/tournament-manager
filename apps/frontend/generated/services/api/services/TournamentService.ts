@@ -2,8 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { TournamentListResponse } from '../models/TournamentListResponse';
 import type { TournamentResponse } from '../models/TournamentResponse';
+import type { TournamentsResponse } from '../models/TournamentsResponse';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
@@ -25,10 +25,10 @@ export class TournamentService {
         });
     }
     /**
-     * @returns TournamentListResponse
+     * @returns TournamentsResponse
      * @throws ApiError
      */
-    public static tournamentControllerFindAll(): CancelablePromise<TournamentListResponse> {
+    public static tournamentControllerFindAll(): CancelablePromise<TournamentsResponse> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/tournament',

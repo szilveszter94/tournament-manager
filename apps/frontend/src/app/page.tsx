@@ -1,8 +1,8 @@
 import { fetchTournaments } from "./lib/api";
-import { TournamentListResponse } from "../../generated/services/api";
+import { TournamentsResponse } from "../../generated/services/api";
 
 export default async function Home() {
-  const tournaments: TournamentListResponse = await fetchTournaments();
+  const tournaments: TournamentsResponse = await fetchTournaments();
 
   if (!tournaments.data) {
     return;
