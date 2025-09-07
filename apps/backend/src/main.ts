@@ -2,6 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { writeFileSync } from 'fs';
+import { join } from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -10,10 +12,15 @@ async function bootstrap() {
   const port = configService.get<number>('PORT') ?? 5100;
   const config = new DocumentBuilder()
     .setTitle('Tournament API')
+    .setDescription('API for Tournament management')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+  writeFileSync(
+    join(__dirname, '../swagger.json'),
+    JSON.stringify(document, null, 2),
+  );
 
   app.enableCors({
     origin: devUrl,

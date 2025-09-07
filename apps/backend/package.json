@@ -9,7 +9,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "dev": "nest start --watch",
-    "prisma:generate": "node scripts/clean-generated.js && prisma generate && node scripts/enum-import-fix.js && node scripts/convert-class-to-interface.js && node scripts/copy-interfaces.js",
+    "prisma:generate": "prisma generate",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
@@ -33,6 +33,7 @@
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
+    "@brakebein/prisma-generator-nestjs-dto": "^1.28.1",
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.18.0",
     "@nestjs/cli": "^11.0.0",
@@ -42,7 +43,6 @@
     "@types/jest": "^30.0.0",
     "@types/node": "^22.10.7",
     "@types/supertest": "^6.0.2",
-    "@weverson_na/prisma-generator-nestjs-dto": "^2.1.2",
     "eslint": "^9.18.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.2",

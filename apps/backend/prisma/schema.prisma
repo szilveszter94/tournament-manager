@@ -9,14 +9,30 @@ generator client {
   output   = "../../../node_modules/.prisma/client"
 }
 
-generator frontend {
-  provider                        = "prisma-generator-nestjs-dto"
-  output                          = "../../frontend/src/interfaces"
+generator backend {
+  provider                      = "prisma-generator-nestjs-dto"
+  output                        = "../generated/models"
+  prismaClientImportPath        = "@prisma/client"
+  requiredResponseApiProperty   = "true"
+  outputType                    = "class"
+  prettier                      = "true"
+  exportRelationModifierClasses = "true"
+  wrapRelationsAsType           = "false"
+  generateFileTypes             = "all"
+  showDefaultValues             = "true"
 }
 
-generator prismaEnum {
-  provider = "prisma-generator-enum"
-  output   = "../../frontend/src/interfaces/enums.ts"
+generator frontend {
+  provider                      = "prisma-generator-nestjs-dto"
+  output                        = "../../frontend/generated/interfaces"
+  requiredResponseApiProperty   = "true"
+  prettier                      = "true"
+  exportRelationModifierClasses = "true"
+  wrapRelationsAsType           = "false"
+  generateFileTypes             = "all"
+  showDefaultValues             = "true"
+  outputType                    = "interface"
+  noDependencies                = "true"
 }
 
 datasource db {

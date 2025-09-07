@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
-import { Tournament } from 'generated/interfaces/tournament.entity';
+import { Tournament } from 'generated/models/tournament.entity';
 import { ServiceResponse } from 'custom-interfaces/service-response';
 
 @Injectable()

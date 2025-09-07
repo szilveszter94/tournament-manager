@@ -1,4 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, getSchemaPath } from '@nestjs/swagger';
+import { Type } from '@nestjs/common';
 
 export class ServiceResponse<T> {
   @ApiProperty()
@@ -9,3 +10,23 @@ export class ServiceResponse<T> {
 
   data?: T;
 }
+
+export const ApiServiceResponse = <TModel extends Type<any>>(
+  model: TModel,
+  isArray = false,
+) => {
+  return {
+    schema: {
+      allOf: [
+        { $ref: getSchemaPath(ServiceResponse) },
+        {
+          properties: {
+            data: isArray
+              ? { type: 'array', items: { $ref: getSchemaPath(model) } }
+              : { $ref: getSchemaPath(model) },
+          },
+        },
+      ],
+    },
+  };
+};
