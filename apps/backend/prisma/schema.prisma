@@ -6,13 +6,12 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../../node_modules/@prisma/client"
+  output   = "../../../node_modules/.prisma/client"
 }
 
 generator frontend {
-  provider = "prisma-generator-nestjs-dto"
-  output   = "../../frontend/src/interfaces"
-  outputType = "interface"
+  provider                        = "prisma-generator-nestjs-dto"
+  output                          = "../../frontend/src/interfaces"
 }
 
 generator prismaEnum {

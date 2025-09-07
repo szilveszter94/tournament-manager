@@ -15,6 +15,8 @@ export interface Player {
   // @generated from prisma schema
   group: number | null;
   // @generated from prisma schema
+  test: number | null;
+  // @generated from prisma schema
   elo: number;
   // @generated from prisma schema
   createdAt: Date;

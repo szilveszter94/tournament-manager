@@ -8,6 +8,8 @@ export interface UpdatePlayerDto {
   // @generated from prisma schema
   group?: number;
   // @generated from prisma schema
+  test?: number;
+  // @generated from prisma schema
   elo: number;
   // @generated from prisma schema
   createdAt: Date;
