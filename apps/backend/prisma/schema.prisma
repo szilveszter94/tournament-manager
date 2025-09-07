@@ -22,19 +22,6 @@ generator backend {
   showDefaultValues             = "true"
 }
 
-generator frontend {
-  provider                      = "prisma-generator-nestjs-dto"
-  output                        = "../../frontend/generated/interfaces"
-  requiredResponseApiProperty   = "true"
-  prettier                      = "true"
-  exportRelationModifierClasses = "true"
-  wrapRelationsAsType           = "false"
-  generateFileTypes             = "all"
-  showDefaultValues             = "true"
-  outputType                    = "interface"
-  noDependencies                = "true"
-}
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")

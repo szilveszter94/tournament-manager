@@ -1,11 +1,10 @@
 import { fetchTournaments } from "./lib/api";
-import { Tournament } from "@/interfaces/tournament.entity";
-import { ServiceResponse } from "./lib/interfaces/service-response";
+import { TournamentListResponse } from "../../generated/services/api";
 
 export default async function Home() {
-  const tournaments: ServiceResponse<Tournament[]> = await fetchTournaments();
+  const tournaments: TournamentListResponse = await fetchTournaments();
 
-  if (!tournaments.data){
+  if (!tournaments.data) {
     return;
   }
 
@@ -15,7 +14,8 @@ export default async function Home() {
       <ul className="list-disc pl-5">
         {tournaments.data.map((t) => (
           <li key={t.id}>
-            {t.name} - {t.tournamentStat} - {new Date(t.createdAt).toLocaleDateString()}
+            {t.name} - {t.tournamentStat} -{" "}
+            {new Date(t.createdAt).toLocaleDateString()}
           </li>
         ))}
       </ul>

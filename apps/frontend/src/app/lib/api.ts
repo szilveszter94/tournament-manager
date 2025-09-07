@@ -1,24 +1,27 @@
-import { Tournament } from "@/interfaces/tournament.entity";
-import { ServiceResponse } from "./interfaces/service-response";
+import {
+  TournamentListResponse,
+  TournamentService,
+  TournamentResponse,
+} from "../../../generated/services/api";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL;
-
-export async function fetchTournaments(): Promise<ServiceResponse<Tournament[]>> {
-  const res = await fetch(`${API_BASE}/tournament`);
-  if (!res.ok) {
-    throw new Error("Failed to fetch tournaments");
-  }
-
-  const data = await res.json();
-  return data as ServiceResponse<Tournament[]>;
-}
-
-export async function fetchTournamentById(id: number): Promise<ServiceResponse<Tournament>> {
-  const res = await fetch(`${API_BASE}/tournament/${id}`);
-  if (!res.ok) {
+export async function fetchTournamentById(
+  id: number
+): Promise<TournamentResponse> {
+  try {
+    const response = await TournamentService.tournamentControllerFindOne(id);
+    return response;
+  } catch (err) {
+    console.error(err);
     throw new Error(`Failed to fetch tournament with id ${id}`);
   }
+}
 
-  const data = await res.json();
-  return data as ServiceResponse<Tournament>;
+export async function fetchTournaments(): Promise<TournamentListResponse> {
+  try {
+    const response = await TournamentService.tournamentControllerFindAll();
+    return response;
+  } catch (err) {
+    console.error(err);
+    throw new Error("Failed to fetch tournaments");
+  }
 }

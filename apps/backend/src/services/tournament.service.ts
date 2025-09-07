@@ -1,7 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 import { Tournament } from 'generated/models/tournament.entity';
-import { ServiceResponse } from 'custom-interfaces/service-response';
+import { TournamentResponse } from 'custom-interfaces/tournament-response';
+import { TournamentListResponse } from 'custom-interfaces/tournament-list-response';
 
 @Injectable()
 export class TournamentService {
@@ -9,7 +10,7 @@ export class TournamentService {
 
   constructor(private readonly prisma: PrismaService) {}
 
-  async find(id: number): Promise<ServiceResponse<Tournament>> {
+  async find(id: number): Promise<TournamentResponse> {
     try {
       const tournament = (await this.prisma.tournament.findUnique({
         where: { id },
@@ -30,7 +31,7 @@ export class TournamentService {
     }
   }
 
-  async findAll(): Promise<ServiceResponse<Tournament[]>> {
+  async findAll(): Promise<TournamentListResponse> {
     try {
       const tournaments =
         (await this.prisma.tournament.findMany()) as Tournament[];
