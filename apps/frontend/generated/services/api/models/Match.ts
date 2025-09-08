@@ -2,31 +2,33 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { KnockoutMatchType } from './KnockoutMatchType';
+import type { Elimination } from './Elimination';
+import type { MatchType } from './MatchType';
 import type { Player } from './Player';
 import type { Tournament } from './Tournament';
-import type { TournamentElimination } from './TournamentElimination';
+import type { TournamentGroup } from './TournamentGroup';
 export type Match = {
     id: number;
     tournamentId: number;
+    eliminationId: number | null;
+    tournamentGroupId: number | null;
     player1Id: number | null;
     player2Id: number | null;
     winnerId: number | null;
+    nextMatchId: number | null;
+    round: number | null;
     serialNumber: number | null;
     isOver: boolean;
-    group: number | null;
-    isKnockoutMatch: boolean;
-    knockoutRound: number | null;
-    knockoutMatchType: KnockoutMatchType;
-    isDoubleEliminationMatch: boolean;
-    isWinnersBracketMatch: boolean;
-    nextMatchId: number | null;
+    matchType: MatchType;
     createdAt: string;
     updatedAt: string;
-    Tournament?: Tournament;
-    Player1?: Player | null;
-    Player2?: Player | null;
-    Winner?: Player | null;
-    TournamentElimination?: Array<TournamentElimination>;
+    tournament?: Tournament;
+    elimination?: Elimination | null;
+    group?: TournamentGroup | null;
+    player1?: Player | null;
+    player2?: Player | null;
+    winner?: Player | null;
+    nextMatch?: Match | null;
+    prevMatches?: Array<Match>;
 };
 

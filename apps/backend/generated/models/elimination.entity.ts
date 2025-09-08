@@ -1,7 +1,9 @@
 import { EliminationType } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
+import { Tournament } from './tournament.entity';
+import { Match } from './match.entity';
 
-export class TournamentEliminationDto {
+export class Elimination {
   @ApiProperty({
     type: 'integer',
     format: 'int32',
@@ -11,20 +13,21 @@ export class TournamentEliminationDto {
     type: 'integer',
     format: 'int32',
   })
-  currentRound: number;
+  tournamentId: number;
   @ApiProperty({
     enum: EliminationType,
     enumName: 'EliminationType',
   })
-  eliminationType: EliminationType;
+  type: EliminationType;
+  @ApiProperty({
+    type: 'integer',
+    format: 'int32',
+  })
+  currentRound: number;
   @ApiProperty({
     type: 'boolean',
   })
-  isLosersBracketPlayerWins: boolean;
-  @ApiProperty({
-    type: 'boolean',
-  })
-  isEliminationsOver: boolean;
+  isOver: boolean;
   @ApiProperty({
     type: 'string',
     format: 'date-time',
@@ -35,4 +38,15 @@ export class TournamentEliminationDto {
     format: 'date-time',
   })
   updatedAt: Date;
+  @ApiProperty({
+    type: () => Tournament,
+    required: false,
+  })
+  tournament?: Tournament;
+  @ApiProperty({
+    type: () => Match,
+    isArray: true,
+    required: false,
+  })
+  matches?: Match[];
 }

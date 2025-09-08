@@ -2,6 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { Match } from './Match';
+import type { PlayerGroup } from './PlayerGroup';
 import type { Tournament } from './Tournament';
 export type TournamentGroup = {
     id: number;
@@ -10,6 +12,8 @@ export type TournamentGroup = {
     isGroupMatchesEnded: boolean;
     createdAt: string;
     updatedAt: string;
-    Tournament?: Tournament;
+    tournament?: Tournament;
+    players?: Array<PlayerGroup>;
+    matches?: Array<Match>;
 };
 

@@ -1,9 +1,29 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiExtraModels, ApiProperty } from '@nestjs/swagger';
 
-export class ConnectTournamentGroupDto {
+export class TournamentGroupTournamentIdGroupNumberUniqueInputDto {
   @ApiProperty({
     type: 'integer',
     format: 'int32',
   })
-  id: number;
+  tournamentId: number;
+  @ApiProperty({
+    type: 'integer',
+    format: 'int32',
+  })
+  groupNumber: number;
+}
+
+@ApiExtraModels(TournamentGroupTournamentIdGroupNumberUniqueInputDto)
+export class ConnectTournamentGroupDto {
+  @ApiProperty({
+    type: 'integer',
+    format: 'int32',
+    required: false,
+  })
+  id?: number;
+  @ApiProperty({
+    type: TournamentGroupTournamentIdGroupNumberUniqueInputDto,
+    required: false,
+  })
+  tournamentId_groupNumber?: TournamentGroupTournamentIdGroupNumberUniqueInputDto;
 }

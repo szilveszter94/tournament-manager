@@ -1,28 +1,30 @@
-import { KnockoutMatchType } from './enums';
+import { MatchType } from './enums';
 import { Tournament } from './tournament.entity';
+import { Elimination } from './elimination.entity';
+import { TournamentGroup } from './tournamentGroup.entity';
 import { Player } from './player.entity';
-import { TournamentElimination } from './tournamentElimination.entity';
 
 export interface Match {
   id: number;
   tournamentId: number;
+  eliminationId: number | null;
+  tournamentGroupId: number | null;
   player1Id: number | null;
   player2Id: number | null;
   winnerId: number | null;
+  nextMatchId: number | null;
+  round: number | null;
   serialNumber: number | null;
   isOver: boolean;
-  group: number | null;
-  isKnockoutMatch: boolean;
-  knockoutRound: number | null;
-  knockoutMatchType: KnockoutMatchType;
-  isDoubleEliminationMatch: boolean;
-  isWinnersBracketMatch: boolean;
-  nextMatchId: number | null;
+  matchType: MatchType;
   createdAt: Date;
   updatedAt: Date;
-  Tournament?: Tournament;
-  Player1?: Player | null;
-  Player2?: Player | null;
-  Winner?: Player | null;
-  TournamentElimination?: TournamentElimination[];
+  tournament?: Tournament;
+  elimination?: Elimination | null;
+  group?: TournamentGroup | null;
+  player1?: Player | null;
+  player2?: Player | null;
+  winner?: Player | null;
+  nextMatch?: Match | null;
+  prevMatches?: Match[];
 }

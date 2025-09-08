@@ -1,10 +1,15 @@
-export const knockoutMatchType = [
-  'None',
+export const eliminationType = ['Knockout', 'Double'] as const;
+export type EliminationType = (typeof eliminationType)[number];
+
+export const matchType = [
+  'Group',
+  'Knockout',
+  'DoubleEliminationWinners',
+  'DoubleEliminationLosers',
+  'Bronze',
   'Final',
-  'SemiFinal',
-  'ThirdPlace',
 ] as const;
-export type KnockoutMatchType = (typeof knockoutMatchType)[number];
+export type MatchType = (typeof matchType)[number];
 
 export const tournamentStat = [
   'Setup',
@@ -14,6 +19,3 @@ export const tournamentStat = [
   'Over',
 ] as const;
 export type TournamentStat = (typeof tournamentStat)[number];
-
-export const eliminationType = ['Knockout', 'Double'] as const;
-export type EliminationType = (typeof eliminationType)[number];

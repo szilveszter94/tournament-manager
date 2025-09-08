@@ -1,0 +1,21 @@
+enum EliminationType {
+  Knockout
+  Double
+}
+
+enum MatchType {
+  Group
+  Knockout
+  DoubleEliminationWinners
+  DoubleEliminationLosers
+  Bronze
+  Final
+}
+
+enum TournamentStat {
+  Setup
+  FirstRounds
+  NormalEliminations
+  DoubleEliminations
+  Over
+}

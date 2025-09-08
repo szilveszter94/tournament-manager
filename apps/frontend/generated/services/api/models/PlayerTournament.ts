@@ -12,7 +12,7 @@ export type PlayerTournament = {
     losses: number;
     createdAt: string;
     updatedAt: string;
-    Tournament?: Tournament;
-    Player?: Player;
+    tournament?: Tournament;
+    player?: Player;
 };
 

@@ -1,14 +1,9 @@
-import { KnockoutMatchType } from './enums';
+import { MatchType } from './enums';
 
 export interface UpdateMatchDto {
+  round?: number | null;
   serialNumber?: number | null;
   isOver?: boolean;
-  group?: number | null;
-  isKnockoutMatch?: boolean;
-  knockoutRound?: number | null;
-  knockoutMatchType?: KnockoutMatchType;
-  isDoubleEliminationMatch?: boolean;
-  isWinnersBracketMatch?: boolean;
-  nextMatchId?: number | null;
+  matchType?: MatchType;
   createdAt?: Date;
 }

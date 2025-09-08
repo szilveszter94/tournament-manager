@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { Tournament } from '../models/Tournament';
 import type { TournamentResponse } from '../models/TournamentResponse';
 import type { TournamentsResponse } from '../models/TournamentsResponse';
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -32,6 +33,21 @@ export class TournamentService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/tournament',
+        });
+    }
+    /**
+     * @param requestBody
+     * @returns any
+     * @throws ApiError
+     */
+    public static tournamentControllerCreate(
+        requestBody: Tournament,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/tournament',
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
 }

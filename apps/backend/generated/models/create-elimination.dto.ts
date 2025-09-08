@@ -1,7 +1,14 @@
 import { EliminationType } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class UpdateTournamentEliminationDto {
+export class CreateEliminationDto {
+  @ApiProperty({
+    enum: EliminationType,
+    enumName: 'EliminationType',
+    default: 'Knockout',
+    required: false,
+  })
+  type?: EliminationType;
   @ApiProperty({
     type: 'integer',
     format: 'int32',
@@ -10,24 +17,11 @@ export class UpdateTournamentEliminationDto {
   })
   currentRound?: number;
   @ApiProperty({
-    enum: EliminationType,
-    enumName: 'EliminationType',
-    default: 'Knockout',
-    required: false,
-  })
-  eliminationType?: EliminationType;
-  @ApiProperty({
     type: 'boolean',
     default: false,
     required: false,
   })
-  isLosersBracketPlayerWins?: boolean;
-  @ApiProperty({
-    type: 'boolean',
-    default: false,
-    required: false,
-  })
-  isEliminationsOver?: boolean;
+  isOver?: boolean;
   @ApiProperty({
     type: 'string',
     format: 'date-time',

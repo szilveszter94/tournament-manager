@@ -1,4 +1,6 @@
 import { Tournament } from './tournament.entity';
+import { PlayerGroup } from './playerGroup.entity';
+import { Match } from './match.entity';
 
 export interface TournamentGroup {
   id: number;
@@ -7,5 +9,7 @@ export interface TournamentGroup {
   isGroupMatchesEnded: boolean;
   createdAt: Date;
   updatedAt: Date;
-  Tournament?: Tournament;
+  tournament?: Tournament;
+  players?: PlayerGroup[];
+  matches?: Match[];
 }

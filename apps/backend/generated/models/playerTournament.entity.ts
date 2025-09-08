@@ -42,10 +42,10 @@ export class PlayerTournament {
     type: () => Tournament,
     required: false,
   })
-  Tournament?: Tournament;
+  tournament?: Tournament;
   @ApiProperty({
     type: () => Player,
     required: false,
   })
-  Player?: Player;
+  player?: Player;
 }

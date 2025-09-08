@@ -1,20 +1,17 @@
 model Player {
-  id            Int      @id @default(autoincrement())
-  name          String   @unique
-  overallWins   Int      @default(0)
-  overallLosses Int      @default(0)
-  group         Int?
-  test          Int?
-  elo           Int      @default(1500)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id         Int       @id @default(autoincrement())
+  name       String    @unique
+  elo        Int       @default(1500)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 
-  //Relations
-  TournamentWinner       TournamentWinner[]
-  WinnersByeEliminations TournamentElimination[] @relation("WinnersByePlayerRelation")
-  LosersByeEliminations  TournamentElimination[] @relation("LosersByePlayerRelation")
-  PlayerTournament       PlayerTournament[]
-  MatchPlayer1           Match[]                 @relation("Player1Relation")
-  MatchPlayer2           Match[]                 @relation("Player2Relation")
-  MatchWinner            Match[]                 @relation("WinnerRelation")
+  // Relations
+  tournaments   PlayerTournament[]
+  groups        PlayerGroup[]
+  matchesAsP1   Match[] @relation("MatchPlayer1")
+  matchesAsP2   Match[] @relation("MatchPlayer2")
+  matchesWon    Match[] @relation("MatchWinner")
+  podiums       TournamentWinner[]
+
+  @@index([name])
 }

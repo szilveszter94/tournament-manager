@@ -8,6 +8,6 @@ export interface TournamentWinner {
   place: number;
   createdAt: Date;
   updatedAt: Date;
-  Tournament?: Tournament;
-  Player?: Player;
+  tournament?: Tournament;
+  player?: Player;
 }

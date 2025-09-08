@@ -1,11 +1,3 @@
-enum TournamentStat {
-  Setup
-  FirstRounds
-  NormalEliminations
-  DoubleEliminations
-  Over
-}
-
 model Tournament {
   id                 Int            @id @default(autoincrement())
   name               String
@@ -14,10 +6,12 @@ model Tournament {
   createdAt          DateTime       @default(now())
   updatedAt          DateTime       @updatedAt
 
-  //Relations
-  TournamentWinner      TournamentWinner[]
-  TournamentElimination TournamentElimination[]
-  TournamentGroup       TournamentGroup[]
-  PlayerTournament      PlayerTournament[]
-  Match                 Match[]
+  // Relations
+  elimination   Elimination?
+  groups        TournamentGroup[]
+  players       PlayerTournament[]
+  matches       Match[]
+  winners       TournamentWinner[]
+
+  @@index([name])
 }

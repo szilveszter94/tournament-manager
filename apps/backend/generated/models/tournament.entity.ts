@@ -1,10 +1,10 @@
 import { TournamentStat } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
-import { TournamentWinner } from './tournamentWinner.entity';
-import { TournamentElimination } from './tournamentElimination.entity';
+import { Elimination } from './elimination.entity';
 import { TournamentGroup } from './tournamentGroup.entity';
 import { PlayerTournament } from './playerTournament.entity';
 import { Match } from './match.entity';
+import { TournamentWinner } from './tournamentWinner.entity';
 
 export class Tournament {
   @ApiProperty({
@@ -36,33 +36,33 @@ export class Tournament {
   })
   updatedAt: Date;
   @ApiProperty({
-    type: () => TournamentWinner,
-    isArray: true,
+    type: () => Elimination,
     required: false,
+    nullable: true,
   })
-  TournamentWinner?: TournamentWinner[];
-  @ApiProperty({
-    type: () => TournamentElimination,
-    isArray: true,
-    required: false,
-  })
-  TournamentElimination?: TournamentElimination[];
+  elimination?: Elimination | null;
   @ApiProperty({
     type: () => TournamentGroup,
     isArray: true,
     required: false,
   })
-  TournamentGroup?: TournamentGroup[];
+  groups?: TournamentGroup[];
   @ApiProperty({
     type: () => PlayerTournament,
     isArray: true,
     required: false,
   })
-  PlayerTournament?: PlayerTournament[];
+  players?: PlayerTournament[];
   @ApiProperty({
     type: () => Match,
     isArray: true,
     required: false,
   })
-  Match?: Match[];
+  matches?: Match[];
+  @ApiProperty({
+    type: () => TournamentWinner,
+    isArray: true,
+    required: false,
+  })
+  winners?: TournamentWinner[];
 }

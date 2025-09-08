@@ -1,3 +1,9 @@
+export interface MatchTournamentIdSerialNumberUniqueInputDto {
+  tournamentId: number;
+  serialNumber: number;
+}
+
 export interface ConnectMatchDto {
-  id: number;
+  id?: number;
+  tournamentId_serialNumber?: MatchTournamentIdSerialNumberUniqueInputDto;
 }

@@ -1,8 +1,9 @@
-import { KnockoutMatchType } from '@prisma/client';
+import { MatchType } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 import { Tournament } from './tournament.entity';
+import { Elimination } from './elimination.entity';
+import { TournamentGroup } from './tournamentGroup.entity';
 import { Player } from './player.entity';
-import { TournamentElimination } from './tournamentElimination.entity';
 
 export class Match {
   @ApiProperty({
@@ -15,6 +16,18 @@ export class Match {
     format: 'int32',
   })
   tournamentId: number;
+  @ApiProperty({
+    type: 'integer',
+    format: 'int32',
+    nullable: true,
+  })
+  eliminationId: number | null;
+  @ApiProperty({
+    type: 'integer',
+    format: 'int32',
+    nullable: true,
+  })
+  tournamentGroupId: number | null;
   @ApiProperty({
     type: 'integer',
     format: 'int32',
@@ -38,46 +51,28 @@ export class Match {
     format: 'int32',
     nullable: true,
   })
+  nextMatchId: number | null;
+  @ApiProperty({
+    type: 'integer',
+    format: 'int32',
+    nullable: true,
+  })
+  round: number | null;
+  @ApiProperty({
+    type: 'integer',
+    format: 'int32',
+    nullable: true,
+  })
   serialNumber: number | null;
   @ApiProperty({
     type: 'boolean',
   })
   isOver: boolean;
   @ApiProperty({
-    type: 'integer',
-    format: 'int32',
-    nullable: true,
+    enum: MatchType,
+    enumName: 'MatchType',
   })
-  group: number | null;
-  @ApiProperty({
-    type: 'boolean',
-  })
-  isKnockoutMatch: boolean;
-  @ApiProperty({
-    type: 'integer',
-    format: 'int32',
-    nullable: true,
-  })
-  knockoutRound: number | null;
-  @ApiProperty({
-    enum: KnockoutMatchType,
-    enumName: 'KnockoutMatchType',
-  })
-  knockoutMatchType: KnockoutMatchType;
-  @ApiProperty({
-    type: 'boolean',
-  })
-  isDoubleEliminationMatch: boolean;
-  @ApiProperty({
-    type: 'boolean',
-  })
-  isWinnersBracketMatch: boolean;
-  @ApiProperty({
-    type: 'integer',
-    format: 'int32',
-    nullable: true,
-  })
-  nextMatchId: number | null;
+  matchType: MatchType;
   @ApiProperty({
     type: 'string',
     format: 'date-time',
@@ -92,29 +87,47 @@ export class Match {
     type: () => Tournament,
     required: false,
   })
-  Tournament?: Tournament;
+  tournament?: Tournament;
+  @ApiProperty({
+    type: () => Elimination,
+    required: false,
+    nullable: true,
+  })
+  elimination?: Elimination | null;
+  @ApiProperty({
+    type: () => TournamentGroup,
+    required: false,
+    nullable: true,
+  })
+  group?: TournamentGroup | null;
   @ApiProperty({
     type: () => Player,
     required: false,
     nullable: true,
   })
-  Player1?: Player | null;
+  player1?: Player | null;
   @ApiProperty({
     type: () => Player,
     required: false,
     nullable: true,
   })
-  Player2?: Player | null;
+  player2?: Player | null;
   @ApiProperty({
     type: () => Player,
     required: false,
     nullable: true,
   })
-  Winner?: Player | null;
+  winner?: Player | null;
   @ApiProperty({
-    type: () => TournamentElimination,
+    type: () => Match,
+    required: false,
+    nullable: true,
+  })
+  nextMatch?: Match | null;
+  @ApiProperty({
+    type: () => Match,
     isArray: true,
     required: false,
   })
-  TournamentElimination?: TournamentElimination[];
+  prevMatches?: Match[];
 }

@@ -11,7 +11,7 @@ export type TournamentWinner = {
     place: number;
     createdAt: string;
     updatedAt: string;
-    Tournament?: Tournament;
-    Player?: Player;
+    tournament?: Tournament;
+    player?: Player;
 };
 

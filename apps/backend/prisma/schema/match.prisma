@@ -1,32 +1,37 @@
-enum KnockoutMatchType {
-  None
-  Final
-  SemiFinal
-  ThirdPlace
-}
-
 model Match {
-  id                       Int               @id @default(autoincrement())
-  tournamentId             Int
-  player1Id                Int?
-  player2Id                Int?
-  winnerId                 Int?
-  serialNumber             Int?
-  isOver                   Boolean           @default(false)
-  group                    Int?
-  isKnockoutMatch          Boolean           @default(false)
-  knockoutRound            Int?
-  knockoutMatchType        KnockoutMatchType @default(None)
-  isDoubleEliminationMatch Boolean           @default(false)
-  isWinnersBracketMatch    Boolean           @default(false)
-  nextMatchId              Int?
-  createdAt                DateTime          @default(now())
-  updatedAt                DateTime          @updatedAt
+  id                Int       @id @default(autoincrement())
+  tournamentId      Int
+  eliminationId     Int?
+  tournamentGroupId Int?
+  player1Id         Int?
+  player2Id         Int?
+  winnerId          Int?
+  nextMatchId       Int?
+  round             Int?
+  serialNumber      Int?
+  isOver            Boolean   @default(false)
+  matchType         MatchType
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
 
-  //Relations
-  Tournament            Tournament              @relation(fields: [tournamentId], references: [id])
-  Player1               Player?                 @relation("Player1Relation", fields: [player1Id], references: [id])
-  Player2               Player?                 @relation("Player2Relation", fields: [player2Id], references: [id])
-  Winner                Player?                 @relation("WinnerRelation", fields: [winnerId], references: [id])
-  TournamentElimination TournamentElimination[]
+  // Relations
+  tournament Tournament      @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  elimination Elimination?   @relation(fields: [eliminationId], references: [id], onDelete: SetNull)
+  group       TournamentGroup? @relation(fields: [tournamentGroupId], references: [id], onDelete: SetNull)
+
+  player1     Player?        @relation("MatchPlayer1", fields: [player1Id], references: [id], onDelete: SetNull)
+  player2     Player?        @relation("MatchPlayer2", fields: [player2Id], references: [id], onDelete: SetNull)
+  winner      Player?        @relation("MatchWinner",  fields: [winnerId],  references: [id], onDelete: SetNull)
+
+  // Self relation for brackets flow
+  nextMatch   Match?         @relation("NextMatch", fields: [nextMatchId], references: [id], onDelete: SetNull)
+  prevMatches Match[]        @relation("NextMatch")
+
+  @@index([tournamentId, matchType, round])
+  @@index([eliminationId])
+  @@index([tournamentGroupId])
+  @@index([player1Id])
+  @@index([player2Id])
+  @@index([winnerId])
+  @@unique([tournamentId, serialNumber])
 }

@@ -50,6 +50,28 @@
         "tags": [
           "tournament"
         ]
+      },
+      "post": {
+        "operationId": "TournamentController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Tournament"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "tournament"
+        ]
       }
     }
   },
@@ -80,232 +102,15 @@
           "Double"
         ]
       },
-      "KnockoutMatchType": {
+      "MatchType": {
         "type": "string",
         "enum": [
-          "None",
-          "Final",
-          "SemiFinal",
-          "ThirdPlace"
-        ]
-      },
-      "Match": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "tournamentId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "player1Id": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "player2Id": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "winnerId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "serialNumber": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "isOver": {
-            "type": "boolean"
-          },
-          "group": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "isKnockoutMatch": {
-            "type": "boolean"
-          },
-          "knockoutRound": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "knockoutMatchType": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/KnockoutMatchType"
-              }
-            ]
-          },
-          "isDoubleEliminationMatch": {
-            "type": "boolean"
-          },
-          "isWinnersBracketMatch": {
-            "type": "boolean"
-          },
-          "nextMatchId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "Tournament": {
-            "$ref": "#/components/schemas/Tournament"
-          },
-          "Player1": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Player"
-              }
-            ]
-          },
-          "Player2": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Player"
-              }
-            ]
-          },
-          "Winner": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Player"
-              }
-            ]
-          },
-          "TournamentElimination": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TournamentElimination"
-            }
-          }
-        },
-        "required": [
-          "id",
-          "tournamentId",
-          "player1Id",
-          "player2Id",
-          "winnerId",
-          "serialNumber",
-          "isOver",
-          "group",
-          "isKnockoutMatch",
-          "knockoutRound",
-          "knockoutMatchType",
-          "isDoubleEliminationMatch",
-          "isWinnersBracketMatch",
-          "nextMatchId",
-          "createdAt",
-          "updatedAt"
-        ]
-      },
-      "TournamentElimination": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "tournamentId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "currentRound": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "eliminationType": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EliminationType"
-              }
-            ]
-          },
-          "bronzeMatchId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "isLosersBracketPlayerWins": {
-            "type": "boolean"
-          },
-          "isEliminationsOver": {
-            "type": "boolean"
-          },
-          "winnersBracketByePlayerId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "losersBracketByePlayerId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "Tournament": {
-            "$ref": "#/components/schemas/Tournament"
-          },
-          "BronzeMatch": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Match"
-              }
-            ]
-          },
-          "WinnersBracketByePlayer": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Player"
-              }
-            ]
-          },
-          "LosersBracketByePlayer": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Player"
-              }
-            ]
-          }
-        },
-        "required": [
-          "id",
-          "tournamentId",
-          "currentRound",
-          "eliminationType",
-          "bronzeMatchId",
-          "isLosersBracketPlayerWins",
-          "isEliminationsOver",
-          "winnersBracketByePlayerId",
-          "losersBracketByePlayerId",
-          "createdAt",
-          "updatedAt"
+          "Group",
+          "Knockout",
+          "DoubleEliminationWinners",
+          "DoubleEliminationLosers",
+          "Bronze",
+          "Final"
         ]
       },
       "PlayerTournament": {
@@ -339,10 +144,10 @@
             "type": "string",
             "format": "date-time"
           },
-          "Tournament": {
+          "tournament": {
             "$ref": "#/components/schemas/Tournament"
           },
-          "Player": {
+          "player": {
             "$ref": "#/components/schemas/Player"
           }
         },
@@ -352,101 +157,6 @@
           "tournamentId",
           "wins",
           "losses",
-          "createdAt",
-          "updatedAt"
-        ]
-      },
-      "Player": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "name": {
-            "type": "string"
-          },
-          "overallWins": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "overallLosses": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "group": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "test": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "elo": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "TournamentWinner": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TournamentWinner"
-            }
-          },
-          "WinnersByeEliminations": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TournamentElimination"
-            }
-          },
-          "LosersByeEliminations": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TournamentElimination"
-            }
-          },
-          "PlayerTournament": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PlayerTournament"
-            }
-          },
-          "MatchPlayer1": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Match"
-            }
-          },
-          "MatchPlayer2": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Match"
-            }
-          },
-          "MatchWinner": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Match"
-            }
-          }
-        },
-        "required": [
-          "id",
-          "name",
-          "overallWins",
-          "overallLosses",
-          "group",
-          "test",
-          "elo",
           "createdAt",
           "updatedAt"
         ]
@@ -478,10 +188,10 @@
             "type": "string",
             "format": "date-time"
           },
-          "Tournament": {
+          "tournament": {
             "$ref": "#/components/schemas/Tournament"
           },
-          "Player": {
+          "player": {
             "$ref": "#/components/schemas/Player"
           }
         },
@@ -490,6 +200,126 @@
           "tournamentId",
           "playerId",
           "place",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "Player": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          },
+          "elo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "tournaments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PlayerTournament"
+            }
+          },
+          "groups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PlayerGroup"
+            }
+          },
+          "matchesAsP1": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Match"
+            }
+          },
+          "matchesAsP2": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Match"
+            }
+          },
+          "matchesWon": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Match"
+            }
+          },
+          "podiums": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TournamentWinner"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "elo",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "PlayerGroup": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tournamentGroupId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "playerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "wins": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "losses": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "points": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "group": {
+            "$ref": "#/components/schemas/TournamentGroup"
+          },
+          "player": {
+            "$ref": "#/components/schemas/Player"
+          }
+        },
+        "required": [
+          "id",
+          "tournamentGroupId",
+          "playerId",
+          "wins",
+          "losses",
+          "points",
           "createdAt",
           "updatedAt"
         ]
@@ -520,8 +350,20 @@
             "type": "string",
             "format": "date-time"
           },
-          "Tournament": {
+          "tournament": {
             "$ref": "#/components/schemas/Tournament"
+          },
+          "players": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PlayerGroup"
+            }
+          },
+          "matches": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Match"
+            }
           }
         },
         "required": [
@@ -529,6 +371,203 @@
           "tournamentId",
           "groupNumber",
           "isGroupMatchesEnded",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "Match": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tournamentId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "eliminationId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "tournamentGroupId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "player1Id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "player2Id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "winnerId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "nextMatchId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "round": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "serialNumber": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isOver": {
+            "type": "boolean"
+          },
+          "matchType": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MatchType"
+              }
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "tournament": {
+            "$ref": "#/components/schemas/Tournament"
+          },
+          "elimination": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Elimination"
+              }
+            ]
+          },
+          "group": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TournamentGroup"
+              }
+            ]
+          },
+          "player1": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Player"
+              }
+            ]
+          },
+          "player2": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Player"
+              }
+            ]
+          },
+          "winner": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Player"
+              }
+            ]
+          },
+          "nextMatch": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Match"
+              }
+            ]
+          },
+          "prevMatches": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Match"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "tournamentId",
+          "eliminationId",
+          "tournamentGroupId",
+          "player1Id",
+          "player2Id",
+          "winnerId",
+          "nextMatchId",
+          "round",
+          "serialNumber",
+          "isOver",
+          "matchType",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "Elimination": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tournamentId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EliminationType"
+              }
+            ]
+          },
+          "currentRound": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isOver": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "tournament": {
+            "$ref": "#/components/schemas/Tournament"
+          },
+          "matches": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Match"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "tournamentId",
+          "type",
+          "currentRound",
+          "isOver",
           "createdAt",
           "updatedAt"
         ]
@@ -561,34 +600,36 @@
             "type": "string",
             "format": "date-time"
           },
-          "TournamentWinner": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TournamentWinner"
-            }
+          "elimination": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Elimination"
+              }
+            ]
           },
-          "TournamentElimination": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TournamentElimination"
-            }
-          },
-          "TournamentGroup": {
+          "groups": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/TournamentGroup"
             }
           },
-          "PlayerTournament": {
+          "players": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/PlayerTournament"
             }
           },
-          "Match": {
+          "matches": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Match"
+            }
+          },
+          "winners": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TournamentWinner"
             }
           }
         },

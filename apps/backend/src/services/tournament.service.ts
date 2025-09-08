@@ -43,4 +43,24 @@ export class TournamentService {
       return { ok: false, error: 'Database error' };
     }
   }
+
+  async update(entity: Tournament): Promise<TournamentResponse> {
+    try {
+      const id = entity.id;
+      const elimination = await this.prisma.tournament.update({
+        where: { id },
+        data: {
+          name: entity.name,
+          tournamentStat: entity.tournamentStat,
+          isFirstRoundsValid: entity.isFirstRoundsValid,
+          updatedAt: entity.updatedAt,
+        },
+      });
+
+      return { ok: true, data: elimination };
+    } catch (e) {
+      this.logger.error('Error creating tournament elimination', e.stack);
+      return { ok: false, error: 'Database error' };
+    }
+  }
 }

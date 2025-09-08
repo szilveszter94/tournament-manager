@@ -6,7 +6,10 @@ model TournamentWinner {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  //Relations
-  Tournament Tournament @relation(fields: [tournamentId], references: [id])
-  Player     Player     @relation(fields: [playerId], references: [id])
+  // Relations
+  tournament Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  player     Player     @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@unique([tournamentId, place])
+  @@index([tournamentId])
 }

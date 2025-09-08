@@ -1,4 +1,4 @@
-import { KnockoutMatchType } from '@prisma/client';
+import { MatchType } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class MatchDto {
@@ -12,46 +12,22 @@ export class MatchDto {
     format: 'int32',
     nullable: true,
   })
+  round: number | null;
+  @ApiProperty({
+    type: 'integer',
+    format: 'int32',
+    nullable: true,
+  })
   serialNumber: number | null;
   @ApiProperty({
     type: 'boolean',
   })
   isOver: boolean;
   @ApiProperty({
-    type: 'integer',
-    format: 'int32',
-    nullable: true,
+    enum: MatchType,
+    enumName: 'MatchType',
   })
-  group: number | null;
-  @ApiProperty({
-    type: 'boolean',
-  })
-  isKnockoutMatch: boolean;
-  @ApiProperty({
-    type: 'integer',
-    format: 'int32',
-    nullable: true,
-  })
-  knockoutRound: number | null;
-  @ApiProperty({
-    enum: KnockoutMatchType,
-    enumName: 'KnockoutMatchType',
-  })
-  knockoutMatchType: KnockoutMatchType;
-  @ApiProperty({
-    type: 'boolean',
-  })
-  isDoubleEliminationMatch: boolean;
-  @ApiProperty({
-    type: 'boolean',
-  })
-  isWinnersBracketMatch: boolean;
-  @ApiProperty({
-    type: 'integer',
-    format: 'int32',
-    nullable: true,
-  })
-  nextMatchId: number | null;
+  matchType: MatchType;
   @ApiProperty({
     type: 'string',
     format: 'date-time',

@@ -9,6 +9,6 @@ export interface PlayerTournament {
   losses: number;
   createdAt: Date;
   updatedAt: Date;
-  Tournament?: Tournament;
-  Player?: Player;
+  tournament?: Tournament;
+  player?: Player;
 }

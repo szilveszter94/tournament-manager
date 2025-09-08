@@ -6,6 +6,11 @@ model TournamentGroup {
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
 
-  //Relations
-  Tournament Tournament @relation(fields: [tournamentId], references: [id])
+  // Relations
+  tournament  Tournament   @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  players     PlayerGroup[]
+  matches     Match[]
+
+  @@unique([tournamentId, groupNumber])
+  @@index([tournamentId])
 }
