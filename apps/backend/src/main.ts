@@ -6,7 +6,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
-  const devUrl = configService.get<number>('DEV_URL');
+  const clientUrl = configService.get<number>('CLIENT_URL');
   const port = configService.get<number>('PORT') ?? 5100;
   const config = new DocumentBuilder()
     .setTitle('Tournament API')
@@ -17,7 +17,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   app.enableCors({
-    origin: devUrl,
+    origin: clientUrl,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
