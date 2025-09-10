@@ -10,6 +10,8 @@ export type Player = {
     id: number;
     name: string;
     elo: number;
+    wins: number;
+    losses: number;
     createdAt: string;
     updatedAt: string;
     tournaments?: Array<PlayerTournament>;

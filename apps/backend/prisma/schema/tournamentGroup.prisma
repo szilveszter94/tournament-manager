@@ -7,9 +7,9 @@ model TournamentGroup {
   updatedAt           DateTime @updatedAt
 
   // Relations
-  tournament  Tournament   @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
-  players     PlayerGroup[]
-  matches     Match[]
+  tournament Tournament    @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  players    PlayerGroup[]
+  matches    Match[]
 
   @@unique([tournamentId, groupNumber])
   @@index([tournamentId])

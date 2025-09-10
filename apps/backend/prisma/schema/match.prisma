@@ -15,23 +15,23 @@ model Match {
   updatedAt         DateTime  @updatedAt
 
   // Relations
-  tournament Tournament      @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
-  elimination Elimination?   @relation(fields: [eliminationId], references: [id], onDelete: SetNull)
+  tournament  Tournament       @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  elimination Elimination?     @relation(fields: [eliminationId], references: [id], onDelete: SetNull)
   group       TournamentGroup? @relation(fields: [tournamentGroupId], references: [id], onDelete: SetNull)
 
-  player1     Player?        @relation("MatchPlayer1", fields: [player1Id], references: [id], onDelete: SetNull)
-  player2     Player?        @relation("MatchPlayer2", fields: [player2Id], references: [id], onDelete: SetNull)
-  winner      Player?        @relation("MatchWinner",  fields: [winnerId],  references: [id], onDelete: SetNull)
+  player1 Player? @relation("MatchPlayer1", fields: [player1Id], references: [id], onDelete: SetNull)
+  player2 Player? @relation("MatchPlayer2", fields: [player2Id], references: [id], onDelete: SetNull)
+  winner  Player? @relation("MatchWinner", fields: [winnerId], references: [id], onDelete: SetNull)
 
   // Self relation for brackets flow
-  nextMatch   Match?         @relation("NextMatch", fields: [nextMatchId], references: [id], onDelete: SetNull)
-  prevMatches Match[]        @relation("NextMatch")
+  nextMatch   Match?  @relation("NextMatch", fields: [nextMatchId], references: [id], onDelete: SetNull)
+  prevMatches Match[] @relation("NextMatch")
 
+  @@unique([tournamentId, serialNumber])
   @@index([tournamentId, matchType, round])
   @@index([eliminationId])
   @@index([tournamentGroupId])
   @@index([player1Id])
   @@index([player2Id])
   @@index([winnerId])
-  @@unique([tournamentId, serialNumber])
 }

@@ -1,11 +1,11 @@
 model Elimination {
-  id            Int             @id @default(autoincrement())
-  tournamentId  Int             @unique
-  type          EliminationType @default(Knockout)
-  currentRound  Int             @default(1)
-  isOver        Boolean         @default(false)
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
+  id           Int             @id @default(autoincrement())
+  tournamentId Int             @unique
+  type         EliminationType @default(Knockout)
+  currentRound Int             @default(1)
+  isOver       Boolean         @default(false)
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
 
   // Relations
   tournament Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)

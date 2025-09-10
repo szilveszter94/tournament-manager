@@ -1,12 +1,12 @@
 model PlayerGroup {
-  id                Int             @id @default(autoincrement())
+  id                Int      @id @default(autoincrement())
   tournamentGroupId Int
   playerId          Int
-  wins              Int             @default(0)
-  losses            Int             @default(0)
-  points            Int             @default(0)
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
+  wins              Int      @default(0)
+  losses            Int      @default(0)
+  points            Int      @default(0)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
   // Relations
   group  TournamentGroup @relation(fields: [tournamentGroupId], references: [id], onDelete: Cascade)

@@ -29,6 +29,44 @@
         "tags": [
           "tournament"
         ]
+      },
+      "put": {
+        "operationId": "TournamentController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTournamentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TournamentResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "tournament"
+        ]
       }
     },
     "/tournament": {
@@ -59,14 +97,21 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Tournament"
+                "$ref": "#/components/schemas/CreateTournamentDto"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TournamentResponse"
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -218,6 +263,14 @@
             "type": "integer",
             "format": "int32"
           },
+          "wins": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "losses": {
+            "type": "integer",
+            "format": "int32"
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -267,6 +320,8 @@
           "id",
           "name",
           "elo",
+          "wins",
+          "losses",
           "createdAt",
           "updatedAt"
         ]
@@ -678,6 +733,59 @@
         "required": [
           "ok"
         ]
+      },
+      "CreateTournamentDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "tournamentStat": {
+            "default": "Setup",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TournamentStat"
+              }
+            ]
+          },
+          "isFirstRoundsValid": {
+            "type": "boolean",
+            "default": false
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "default": "2025-09-09T21:54:01.134Z"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "UpdateTournamentDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "tournamentStat": {
+            "default": "Setup",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TournamentStat"
+              }
+            ]
+          },
+          "isFirstRoundsValid": {
+            "type": "boolean",
+            "default": false
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "default": "2025-09-09T21:54:01.127Z"
+          }
+        }
       }
     }
   }

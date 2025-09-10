@@ -7,6 +7,7 @@ export { CancelablePromise, CancelError } from './core/CancelablePromise';
 export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
+export type { CreateTournamentDto } from './models/CreateTournamentDto';
 export type { Elimination } from './models/Elimination';
 export { EliminationType } from './models/EliminationType';
 export type { Match } from './models/Match';
@@ -20,5 +21,6 @@ export type { TournamentResponse } from './models/TournamentResponse';
 export type { TournamentsResponse } from './models/TournamentsResponse';
 export { TournamentStat } from './models/TournamentStat';
 export type { TournamentWinner } from './models/TournamentWinner';
+export type { UpdateTournamentDto } from './models/UpdateTournamentDto';
 
 export { TournamentService } from './services/TournamentService';

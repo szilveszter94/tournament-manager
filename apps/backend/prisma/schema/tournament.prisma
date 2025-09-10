@@ -7,11 +7,11 @@ model Tournament {
   updatedAt          DateTime       @updatedAt
 
   // Relations
-  elimination   Elimination?
-  groups        TournamentGroup[]
-  players       PlayerTournament[]
-  matches       Match[]
-  winners       TournamentWinner[]
+  elimination Elimination?
+  groups      TournamentGroup[]
+  players     PlayerTournament[]
+  matches     Match[]
+  winners     TournamentWinner[]
 
   @@index([name])
 }

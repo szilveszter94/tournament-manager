@@ -1,20 +1,23 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Tournament } from './tournament.entity';
+import { Player } from './player.entity';
 
-export class PlayerDto {
+export class TournamentParticipation {
   @ApiProperty({
     type: 'integer',
     format: 'int32',
   })
   id: number;
   @ApiProperty({
-    type: 'string',
+    type: 'integer',
+    format: 'int32',
   })
-  name: string;
+  playerId: number;
   @ApiProperty({
     type: 'integer',
     format: 'int32',
   })
-  elo: number;
+  tournamentId: number;
   @ApiProperty({
     type: 'integer',
     format: 'int32',
@@ -35,4 +38,14 @@ export class PlayerDto {
     format: 'date-time',
   })
   updatedAt: Date;
+  @ApiProperty({
+    type: () => Tournament,
+    required: false,
+  })
+  tournament?: Tournament;
+  @ApiProperty({
+    type: () => Player,
+    required: false,
+  })
+  player?: Player;
 }

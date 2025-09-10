@@ -1,18 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class UpdatePlayerDto {
-  @ApiProperty({
-    type: 'string',
-    required: false,
-  })
-  name?: string;
-  @ApiProperty({
-    type: 'integer',
-    format: 'int32',
-    default: 1500,
-    required: false,
-  })
-  elo?: number;
+export class UpdateTournamentParticipationDto {
   @ApiProperty({
     type: 'integer',
     format: 'int32',

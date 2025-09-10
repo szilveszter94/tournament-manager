@@ -20,6 +20,16 @@ export class Player {
   })
   elo: number;
   @ApiProperty({
+    type: 'integer',
+    format: 'int32',
+  })
+  wins: number;
+  @ApiProperty({
+    type: 'integer',
+    format: 'int32',
+  })
+  losses: number;
+  @ApiProperty({
     type: 'string',
     format: 'date-time',
   })

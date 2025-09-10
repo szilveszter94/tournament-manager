@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { TournamentService } from '../services/tournament.service';
 import {
   TournamentResponse,
@@ -9,8 +17,11 @@ import {
   ApiOkResponse,
   ApiExtraModels,
   ApiBody,
+  ApiOperation,
 } from '@nestjs/swagger';
-import { Tournament } from '../../generated/models/tournament.entity';
+import { UpdateTournamentDto } from '../../generated/models/update-tournament.dto';
+import { CreateTournamentDto } from '../../generated/models/create-tournament.dto';
+import { BaseResponse } from 'custom-models/base-response';
 
 @ApiTags('tournament')
 @ApiExtraModels(TournamentResponse)
@@ -19,21 +30,42 @@ export class TournamentController {
   constructor(private readonly tournamentService: TournamentService) {}
 
   @Get(':id')
+  @ApiOperation({ summary: 'Get a tournament by Id' })
   @ApiOkResponse({ type: TournamentResponse, isArray: false })
   findOne(@Param('id') id: number): Promise<TournamentResponse> {
     return this.tournamentService.find(+id);
   }
 
   @Get()
+  @ApiOperation({ summary: 'Get all tournaments' })
   @ApiOkResponse({ type: TournamentsResponse, isArray: false })
   findAll(): Promise<TournamentsResponse> {
     return this.tournamentService.findAll();
   }
 
   @Post()
-  @ApiOkResponse()
-  @ApiBody({ type: Tournament })
-  create(@Body() tournament: Tournament): Promise<TournamentResponse> {
-    return this.tournamentService.update(tournament);
+  @ApiOperation({ summary: 'Create a new tournament' })
+  @ApiOkResponse({ type: TournamentResponse, isArray: false })
+  @ApiBody({ type: CreateTournamentDto })
+  create(@Body() tournament: CreateTournamentDto): Promise<TournamentResponse> {
+    return this.tournamentService.create(tournament);
+  }
+
+  @Put(':id')
+  @ApiOperation({ summary: 'Update the tournament by Id' })
+  @ApiOkResponse({ type: TournamentResponse, isArray: false })
+  @ApiBody({ type: UpdateTournamentDto })
+  update(
+    @Param('id') id: number,
+    @Body() tournament: UpdateTournamentDto,
+  ): Promise<TournamentResponse> {
+    return this.tournamentService.update(+id, tournament);
+  }
+
+  @Delete(':id')
+  @ApiOperation({ summary: 'Remove a tournament from the database' })
+  @ApiOkResponse({ type: BaseResponse })
+  deletePlayer(@Param('id') id: number): Promise<BaseResponse> {
+    return this.tournamentService.delete(id);
   }
 }

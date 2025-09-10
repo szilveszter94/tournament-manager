@@ -1,7 +1,5 @@
-export interface PlayerDto {
+export interface TournamentParticipationDto {
   id: number;
-  name: string;
-  elo: number;
   wins: number;
   losses: number;
   createdAt: Date;

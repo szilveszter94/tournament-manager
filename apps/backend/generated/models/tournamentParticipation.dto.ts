@@ -1,20 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class PlayerDto {
+export class TournamentParticipationDto {
   @ApiProperty({
     type: 'integer',
     format: 'int32',
   })
   id: number;
-  @ApiProperty({
-    type: 'string',
-  })
-  name: string;
-  @ApiProperty({
-    type: 'integer',
-    format: 'int32',
-  })
-  elo: number;
   @ApiProperty({
     type: 'integer',
     format: 'int32',

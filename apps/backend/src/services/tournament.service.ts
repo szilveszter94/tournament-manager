@@ -1,10 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
-import { Tournament } from 'generated/models/tournament.entity';
 import {
   TournamentResponse,
   TournamentsResponse,
 } from 'custom-models/tournament-response';
+import { CreateTournamentDto } from 'generated/models/create-tournament.dto';
+import { UpdateTournamentDto } from 'generated/models/update-tournament.dto';
+import { BaseResponse } from 'custom-models/base-response';
 
 @Injectable()
 export class TournamentService {
@@ -14,9 +16,9 @@ export class TournamentService {
 
   async find(id: number): Promise<TournamentResponse> {
     try {
-      const tournament = (await this.prisma.tournament.findUnique({
+      const tournament = await this.prisma.tournament.findUnique({
         where: { id },
-      })) as Tournament;
+      });
 
       if (!tournament) {
         this.logger.warn(`Tournament with ID ${id} not found`);
@@ -35,8 +37,7 @@ export class TournamentService {
 
   async findAll(): Promise<TournamentsResponse> {
     try {
-      const tournaments =
-        (await this.prisma.tournament.findMany()) as Tournament[];
+      const tournaments = await this.prisma.tournament.findMany();
       return { ok: true, data: tournaments };
     } catch (e) {
       this.logger.error('Database error while fetching tournaments', e.stack);
@@ -44,22 +45,53 @@ export class TournamentService {
     }
   }
 
-  async update(entity: Tournament): Promise<TournamentResponse> {
+  async create(entity: CreateTournamentDto): Promise<TournamentResponse> {
     try {
-      const id = entity.id;
-      const elimination = await this.prisma.tournament.update({
+      const tournament = await this.prisma.tournament.create({
+        data: {
+          name: entity.name,
+          tournamentStat: entity.tournamentStat,
+          isFirstRoundsValid: entity.isFirstRoundsValid,
+        },
+      });
+
+      return { ok: true, data: tournament };
+    } catch (e) {
+      this.logger.error('Error creating tournament', e.stack);
+      return { ok: false, error: 'Database error' };
+    }
+  }
+
+  async update(
+    id: number,
+    entity: UpdateTournamentDto,
+  ): Promise<TournamentResponse> {
+    try {
+      const tournament = await this.prisma.tournament.update({
         where: { id },
         data: {
           name: entity.name,
           tournamentStat: entity.tournamentStat,
           isFirstRoundsValid: entity.isFirstRoundsValid,
-          updatedAt: entity.updatedAt,
         },
       });
 
-      return { ok: true, data: elimination };
+      return { ok: true, data: tournament };
     } catch (e) {
-      this.logger.error('Error creating tournament elimination', e.stack);
+      this.logger.error('Error updating tournament', e.stack);
+      return { ok: false, error: 'Database error' };
+    }
+  }
+
+  async delete(id: number): Promise<BaseResponse> {
+    try {
+      await this.prisma.tournament.delete({
+        where: { id: id },
+      });
+
+      return { ok: true };
+    } catch (e) {
+      this.logger.error('Error deleting tournament', e.stack);
       return { ok: false, error: 'Database error' };
     }
   }
