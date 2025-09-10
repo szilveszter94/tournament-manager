@@ -1,9 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
-import { PlayersResponse, PlayerResponse } from 'custom-models/player-response';
-import { CreatePlayerDto } from 'generated/models/create-player.dto';
-import { UpdatePlayerDto } from 'generated/models/update-player.dto';
-import { BaseResponse } from 'custom-models/base-response';
+import {
+  PlayersResponse,
+  PlayerResponse,
+} from '../../custom-models/player-response';
+import { CreatePlayerDto } from '../../generated/models/create-player.dto';
+import { UpdatePlayerDto } from '../../generated/models/update-player.dto';
+import { BaseResponse } from '../../custom-models/base-response';
 
 @Injectable()
 export class PlayerService {

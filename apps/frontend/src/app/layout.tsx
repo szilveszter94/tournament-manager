@@ -1,6 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { initApi } from "./lib/apiConfig";
+import { initApi } from "../lib/apiConfig";
 
 initApi();
 

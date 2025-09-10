@@ -14,14 +14,14 @@ import {
   ApiBody,
   ApiOperation,
 } from '@nestjs/swagger';
-import { PlayerService } from 'src/services/player.service';
+import { PlayerService } from '../services/player.service';
 import { CreatePlayerDto } from '../../generated/models/create-player.dto';
 import { UpdatePlayerDto } from '../../generated/models/update-player.dto';
 import {
   PlayerResponse,
   PlayersResponse,
 } from '../../custom-models/player-response';
-import { BaseResponse } from 'custom-models/base-response';
+import { BaseResponse } from '../../custom-models/base-response';
 
 @ApiTags('player')
 @ApiExtraModels(PlayerResponse)

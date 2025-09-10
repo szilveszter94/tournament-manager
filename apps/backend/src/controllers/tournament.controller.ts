@@ -21,7 +21,7 @@ import {
 } from '@nestjs/swagger';
 import { UpdateTournamentDto } from '../../generated/models/update-tournament.dto';
 import { CreateTournamentDto } from '../../generated/models/create-tournament.dto';
-import { BaseResponse } from 'custom-models/base-response';
+import { BaseResponse } from '../../custom-models/base-response';
 
 @ApiTags('tournament')
 @ApiExtraModels(TournamentResponse)

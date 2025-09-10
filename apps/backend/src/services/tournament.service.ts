@@ -3,10 +3,10 @@ import { PrismaService } from './prisma.service';
 import {
   TournamentResponse,
   TournamentsResponse,
-} from 'custom-models/tournament-response';
-import { CreateTournamentDto } from 'generated/models/create-tournament.dto';
-import { UpdateTournamentDto } from 'generated/models/update-tournament.dto';
-import { BaseResponse } from 'custom-models/base-response';
+} from '../../custom-models/tournament-response';
+import { CreateTournamentDto } from '../../generated/models/create-tournament.dto';
+import { UpdateTournamentDto } from '../../generated/models/update-tournament.dto';
+import { BaseResponse } from '../../custom-models/base-response';
 
 @Injectable()
 export class TournamentService {

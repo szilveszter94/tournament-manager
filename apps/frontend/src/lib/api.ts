@@ -2,7 +2,7 @@ import {
   TournamentsResponse,
   TournamentService,
   TournamentResponse,
-} from "../../../generated/services/api";
+} from "../../generated/services/api";
 
 export async function fetchTournamentById(
   id: number

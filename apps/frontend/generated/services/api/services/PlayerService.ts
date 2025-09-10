@@ -3,45 +3,45 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { BaseResponse } from '../models/BaseResponse';
-import type { CreateTournamentDto } from '../models/CreateTournamentDto';
-import type { TournamentResponse } from '../models/TournamentResponse';
-import type { TournamentsResponse } from '../models/TournamentsResponse';
-import type { UpdateTournamentDto } from '../models/UpdateTournamentDto';
+import type { CreatePlayerDto } from '../models/CreatePlayerDto';
+import type { PlayerResponse } from '../models/PlayerResponse';
+import type { PlayersResponse } from '../models/PlayersResponse';
+import type { UpdatePlayerDto } from '../models/UpdatePlayerDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-export class TournamentService {
+export class PlayerService {
     /**
-     * Get a tournament by Id
+     * Get a player by Id
      * @param id
-     * @returns TournamentResponse
+     * @returns PlayerResponse
      * @throws ApiError
      */
-    public static tournamentControllerFindOne(
+    public static playerControllerFindOne(
         id: number,
-    ): CancelablePromise<TournamentResponse> {
+    ): CancelablePromise<PlayerResponse> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/tournament/{id}',
+            url: '/player/{id}',
             path: {
                 'id': id,
             },
         });
     }
     /**
-     * Update the tournament by Id
+     * Update the player by Id
      * @param id
      * @param requestBody
-     * @returns TournamentResponse
+     * @returns PlayerResponse
      * @throws ApiError
      */
-    public static tournamentControllerUpdate(
+    public static playerControllerUpdate(
         id: number,
-        requestBody: UpdateTournamentDto,
-    ): CancelablePromise<TournamentResponse> {
+        requestBody: UpdatePlayerDto,
+    ): CancelablePromise<PlayerResponse> {
         return __request(OpenAPI, {
             method: 'PUT',
-            url: '/tournament/{id}',
+            url: '/player/{id}',
             path: {
                 'id': id,
             },
@@ -50,45 +50,45 @@ export class TournamentService {
         });
     }
     /**
-     * Remove a tournament from the database
+     * Remove a player from the database
      * @param id
      * @returns BaseResponse
      * @throws ApiError
      */
-    public static tournamentControllerDeletePlayer(
+    public static playerControllerDeletePlayer(
         id: number,
     ): CancelablePromise<BaseResponse> {
         return __request(OpenAPI, {
             method: 'DELETE',
-            url: '/tournament/{id}',
+            url: '/player/{id}',
             path: {
                 'id': id,
             },
         });
     }
     /**
-     * Get all tournaments
-     * @returns TournamentsResponse
+     * Get all players
+     * @returns PlayersResponse
      * @throws ApiError
      */
-    public static tournamentControllerFindAll(): CancelablePromise<TournamentsResponse> {
+    public static playerControllerFindAll(): CancelablePromise<PlayersResponse> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/tournament',
+            url: '/player',
         });
     }
     /**
-     * Create a new tournament
+     * Create a new player
      * @param requestBody
-     * @returns TournamentResponse
+     * @returns PlayerResponse
      * @throws ApiError
      */
-    public static tournamentControllerCreate(
-        requestBody: CreateTournamentDto,
-    ): CancelablePromise<TournamentResponse> {
+    public static playerControllerCreate(
+        requestBody: CreatePlayerDto,
+    ): CancelablePromise<PlayerResponse> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/tournament',
+            url: '/player',
             body: requestBody,
             mediaType: 'application/json',
         });

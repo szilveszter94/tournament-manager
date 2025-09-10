@@ -26,6 +26,7 @@
             }
           }
         },
+        "summary": "Get a tournament by Id",
         "tags": [
           "tournament"
         ]
@@ -64,6 +65,36 @@
             }
           }
         },
+        "summary": "Update the tournament by Id",
+        "tags": [
+          "tournament"
+        ]
+      },
+      "delete": {
+        "operationId": "TournamentController_deletePlayer",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Remove a tournament from the database",
         "tags": [
           "tournament"
         ]
@@ -85,6 +116,7 @@
             }
           }
         },
+        "summary": "Get all tournaments",
         "tags": [
           "tournament"
         ]
@@ -114,8 +146,160 @@
             }
           }
         },
+        "summary": "Create a new tournament",
         "tags": [
           "tournament"
+        ]
+      }
+    },
+    "/player/{id}": {
+      "get": {
+        "operationId": "PlayerController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerResponse"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get a player by Id",
+        "tags": [
+          "player"
+        ]
+      },
+      "put": {
+        "operationId": "PlayerController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePlayerDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerResponse"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Update the player by Id",
+        "tags": [
+          "player"
+        ]
+      },
+      "delete": {
+        "operationId": "PlayerController_deletePlayer",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Remove a player from the database",
+        "tags": [
+          "player"
+        ]
+      }
+    },
+    "/player": {
+      "get": {
+        "operationId": "PlayerController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayersResponse"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get all players",
+        "tags": [
+          "player"
+        ]
+      },
+      "post": {
+        "operationId": "PlayerController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePlayerDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerResponse"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Create a new player",
+        "tags": [
+          "player"
         ]
       }
     }
@@ -755,7 +939,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-09-09T21:54:01.134Z"
+            "default": "2025-09-10T18:25:50.970Z"
           }
         },
         "required": [
@@ -783,7 +967,117 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-09-09T21:54:01.127Z"
+            "default": "2025-09-10T18:25:50.957Z"
+          }
+        }
+      },
+      "BaseResponse": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          },
+          "error": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "ok"
+        ]
+      },
+      "PlayerResponse": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          },
+          "error": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Player"
+          }
+        },
+        "required": [
+          "ok"
+        ]
+      },
+      "PlayersResponse": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          },
+          "error": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Player"
+            }
+          }
+        },
+        "required": [
+          "ok"
+        ]
+      },
+      "CreatePlayerDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "elo": {
+            "type": "integer",
+            "format": "int32",
+            "default": 1500
+          },
+          "wins": {
+            "type": "integer",
+            "format": "int32",
+            "default": 0
+          },
+          "losses": {
+            "type": "integer",
+            "format": "int32",
+            "default": 0
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "default": "2025-09-10T18:25:51.174Z"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "UpdatePlayerDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "elo": {
+            "type": "integer",
+            "format": "int32",
+            "default": 1500
+          },
+          "wins": {
+            "type": "integer",
+            "format": "int32",
+            "default": 0
+          },
+          "losses": {
+            "type": "integer",
+            "format": "int32",
+            "default": 0
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "default": "2025-09-10T18:25:51.186Z"
           }
         }
       }
