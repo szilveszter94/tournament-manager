@@ -1,0 +1,16 @@
+html.dark {
+  --background: #080c0e;
+  --foreground: #f1f5f9;
+  --primary: #113f50;
+  --secondary: #0b191d;
+  --icon: #2d96b3;
+
+  --on-background: #000000;
+  --on-foreground: #95caff;
+  --on-primary: #02171f;
+  --on-secondary: rgb(15, 43, 49);
+
+  --primary-text-color: #ffffff;
+  --secondary-text-color: #000000;
+  --subtitle-text-color: #a5a5a5;
+}

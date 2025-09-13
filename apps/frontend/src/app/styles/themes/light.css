@@ -1,0 +1,16 @@
+html.light {
+  --background: #e8fff0;
+  --foreground: #141414;
+  --primary: #5ffff2;
+  --secondary: #d8faff;
+  --icon: #000000;
+
+  --on-background: #acffc9;
+  --on-foreground: rgb(10, 92, 107);
+  --on-primary: #03ffea;
+  --on-secondary: #abf4ff;
+
+  --secondary-text-color: #ffffff;
+  --primary-text-color: #141414;
+  --subtitle-text-color: #272727;
+}

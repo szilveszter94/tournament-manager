@@ -1,26 +1,35 @@
 @import "tailwindcss";
+@import "./styles/themes/dark.css";
+@import "./styles/themes/light.css";
+@import "./styles/themes/dark-purple.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+
+  --color-icon: var(--icon);
+  --color-secondary: var(--secondary);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --color-on-background: var(--on-background);
+  --color-on-foreground: var(--on-foreground);
+  --color-on-primary: var(--on-primary);
+  --color-on-secondary: var(--on-secondary);
+
+  --color-primary-text-color: var(--primary-text-color);
+  --color-secondary-text-color: var(--secondary-text-color);
+  --color-subtitle-text-color: var(--subtitle-text-color);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Base styles */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans), sans-serif;
+}
+
+button {
+  cursor: pointer;
 }

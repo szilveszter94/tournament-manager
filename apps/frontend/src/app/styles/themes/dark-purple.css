@@ -1,0 +1,16 @@
+html.dark-purple {
+  --background: #111122;
+  --foreground: #ffffff;
+  --primary: #4f46e5;
+  --secondary: #1a1a33;
+  --icon: #5147ea;
+
+  --on-background: #0c0c0c;
+  --on-foreground: #d4a7ff;
+  --on-primary: #242068;
+  --on-secondary: #343466;
+
+  --primary-text-color: #ffffff;
+  --secondary-text-color: #111111;
+  --subtitle-text-color: #acacac;
+}
