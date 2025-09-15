@@ -1,0 +1,17 @@
+model ParticipantGroup {
+  id                Int      @id @default(autoincrement())
+  tournamentGroupId Int
+  participantId     Int
+  wins              Int      @default(0)
+  losses            Int      @default(0)
+  points            Int      @default(0)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relations
+  group       TournamentGroup @relation(fields: [tournamentGroupId], references: [id], onDelete: Cascade)
+  participant Participant     @relation(fields: [participantId], references: [id], onDelete: Cascade)
+
+  @@unique([tournamentGroupId, participantId])
+  @@index([participantId])
+}

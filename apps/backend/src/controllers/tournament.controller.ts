@@ -65,7 +65,7 @@ export class TournamentController {
   @Delete(':id')
   @ApiOperation({ summary: 'Remove a tournament from the database' })
   @ApiOkResponse({ type: BaseResponse })
-  deletePlayer(@Param('id') id: number): Promise<BaseResponse> {
+  deleteParticipant(@Param('id') id: number): Promise<BaseResponse> {
     return this.tournamentService.delete(id);
   }
 }

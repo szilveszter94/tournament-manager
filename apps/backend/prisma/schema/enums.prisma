@@ -6,16 +6,29 @@ enum EliminationType {
 enum MatchType {
   Group
   Knockout
-  DoubleEliminationWinners
-  DoubleEliminationLosers
   Bronze
   Final
 }
 
-enum TournamentStat {
+enum PhaseType {
+  GroupStage
+  SingleElimination
+  DoubleElimination
+  RoundRobin
+  Swiss
+}
+
+enum ParticipantType {
+  Individual
+  Team
+}
+
+enum TournamentType {
+  ArmWrestling
+}
+
+enum TournamentStatus {
   Setup
-  FirstRounds
-  NormalEliminations
-  DoubleEliminations
+  Started
   Over
 }

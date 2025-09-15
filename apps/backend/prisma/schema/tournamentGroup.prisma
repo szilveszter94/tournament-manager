@@ -1,16 +1,16 @@
 model TournamentGroup {
   id                  Int      @id @default(autoincrement())
-  tournamentId        Int
+  tournamentPhaseId   Int
   groupNumber         Int
   isGroupMatchesEnded Boolean  @default(false)
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
 
   // Relations
-  tournament Tournament    @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
-  players    PlayerGroup[]
-  matches    Match[]
+  tournamentPhase   TournamentPhase    @relation(fields: [tournamentPhaseId], references: [id], onDelete: Cascade)
+  participantGroups ParticipantGroup[]
+  matches           Match[]
 
-  @@unique([tournamentId, groupNumber])
-  @@index([tournamentId])
+  @@unique([tournamentPhaseId, groupNumber])
+  @@index([tournamentPhaseId])
 }

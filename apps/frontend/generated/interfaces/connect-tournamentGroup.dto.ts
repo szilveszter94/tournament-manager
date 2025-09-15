@@ -1,9 +1,9 @@
-export interface TournamentGroupTournamentIdGroupNumberUniqueInputDto {
-  tournamentId: number;
+export interface TournamentGroupTournamentPhaseIdGroupNumberUniqueInputDto {
+  tournamentPhaseId: number;
   groupNumber: number;
 }
 
 export interface ConnectTournamentGroupDto {
   id?: number;
-  tournamentId_groupNumber?: TournamentGroupTournamentIdGroupNumberUniqueInputDto;
+  tournamentPhaseId_groupNumber?: TournamentGroupTournamentPhaseIdGroupNumberUniqueInputDto;
 }

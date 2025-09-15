@@ -3,17 +3,17 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { Match } from './Match';
-import type { PlayerGroup } from './PlayerGroup';
-import type { Tournament } from './Tournament';
+import type { ParticipantGroup } from './ParticipantGroup';
+import type { TournamentPhase } from './TournamentPhase';
 export type TournamentGroup = {
     id: number;
-    tournamentId: number;
+    tournamentPhaseId: number;
     groupNumber: number;
     isGroupMatchesEnded: boolean;
     createdAt: string;
     updatedAt: string;
-    tournament?: Tournament;
-    players?: Array<PlayerGroup>;
+    tournamentPhase?: TournamentPhase;
+    participantGroups?: Array<ParticipantGroup>;
     matches?: Array<Match>;
 };
 

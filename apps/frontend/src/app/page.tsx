@@ -1,4 +1,6 @@
 "use client";
+
+import CustomButton from "@/components/ui/navbar/custom-button/custom-button";
 import {
   ArrowRightIcon,
   Squares2X2Icon,
@@ -17,24 +19,34 @@ export default function Home() {
       {/* Subtitle */}
       <p className="text-center text-subtitle-text-color text-lg md:text-xl mb-8">
         Manage and simulate your tournaments with ease. Create new tournaments,
-        add players, and simulate matches to see who comes out on top.
+        add participants, and simulate matches to see who comes out on top.
       </p>
 
       {/* Buttons */}
       <div className="flex justify-center gap-4 mb-12 flex-wrap">
-        <button className="flex items-center gap-2 px-6 py-3 bg-primary text-primary-text-color text-2xl font-bold rounded-lg hover:bg-on-primary transition">
-          <TrophyIcon className="w-10 h-10" />
+        <CustomButton
+          href="/tournaments/create"
+          variant="primary"
+          size="xl"
+          icon={<TrophyIcon />}
+          iconSize={10}
+        >
           Create Tournament
-        </button>
-        <button className="flex items-center gap-2 px-6 py-3 bg-secondary text-primary-text-color text-2xl font-bold rounded-lg hover:bg-on-secondary transition">
-          <ArrowRightIcon className="w-10 h-10" />
+        </CustomButton>
+        <CustomButton
+          href="/tournaments/list"
+          variant="secondary"
+          size="xl"
+          icon={<ArrowRightIcon />}
+          iconSize={10}
+        >
           Browse Tournaments
-        </button>
+        </CustomButton>
       </div>
 
       {/* Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="flex items-start gap-4 py-6 px-10 bg-secondary rounded-lg shadow">
+        <div className="flex items-start gap-4 py-6 px-10 bg-tertiary rounded-lg shadow">
           <div className="text-center">
             <div className="flex items-center justify-center gap-3">
               <Squares2X2Icon className="w-8 h-8 text-icon" />
@@ -50,7 +62,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="flex items-start gap-4 p-6 bg-secondary rounded-lg shadow">
+        <div className="flex items-start gap-4 p-6 bg-tertiary rounded-lg shadow">
           <div className="text-center">
             <div className="flex items-center justify-center gap-3">
               <PlayCircleIcon className="w-8 h-8 text-icon" />

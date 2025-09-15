@@ -1,10 +1,10 @@
-import { TournamentStat } from './enums';
+import { TournamentStatus, TournamentType } from './enums';
 
 export interface TournamentDto {
   id: number;
   name: string;
-  tournamentStat: TournamentStat;
-  isFirstRoundsValid: boolean;
+  status: TournamentStatus;
+  type: TournamentType;
   createdAt: Date;
   updatedAt: Date;
 }

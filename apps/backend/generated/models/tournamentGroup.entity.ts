@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Tournament } from './tournament.entity';
-import { PlayerGroup } from './playerGroup.entity';
+import { TournamentPhase } from './tournamentPhase.entity';
+import { ParticipantGroup } from './participantGroup.entity';
 import { Match } from './match.entity';
 
 export class TournamentGroup {
@@ -13,7 +13,7 @@ export class TournamentGroup {
     type: 'integer',
     format: 'int32',
   })
-  tournamentId: number;
+  tournamentPhaseId: number;
   @ApiProperty({
     type: 'integer',
     format: 'int32',
@@ -34,16 +34,16 @@ export class TournamentGroup {
   })
   updatedAt: Date;
   @ApiProperty({
-    type: () => Tournament,
+    type: () => TournamentPhase,
     required: false,
   })
-  tournament?: Tournament;
+  tournamentPhase?: TournamentPhase;
   @ApiProperty({
-    type: () => PlayerGroup,
+    type: () => ParticipantGroup,
     isArray: true,
     required: false,
   })
-  players?: PlayerGroup[];
+  participantGroups?: ParticipantGroup[];
   @ApiProperty({
     type: () => Match,
     isArray: true,

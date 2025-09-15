@@ -1,13 +1,13 @@
 import { Tournament } from './tournament.entity';
-import { Player } from './player.entity';
+import { Participant } from './participant.entity';
 
 export interface TournamentWinner {
   id: number;
   tournamentId: number;
-  playerId: number;
+  participantId: number;
   place: number;
   createdAt: Date;
   updatedAt: Date;
   tournament?: Tournament;
-  player?: Player;
+  participant?: Participant;
 }

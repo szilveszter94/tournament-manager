@@ -12,5 +12,5 @@ export class ConnectEliminationDto {
     format: 'int32',
     required: false,
   })
-  tournamentId?: number;
+  tournamentPhaseId?: number;
 }

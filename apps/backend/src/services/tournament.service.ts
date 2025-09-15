@@ -50,8 +50,7 @@ export class TournamentService {
       const tournament = await this.prisma.tournament.create({
         data: {
           name: entity.name,
-          tournamentStat: entity.tournamentStat,
-          isFirstRoundsValid: entity.isFirstRoundsValid,
+          type: entity.type,
         },
       });
 
@@ -71,8 +70,6 @@ export class TournamentService {
         where: { id },
         data: {
           name: entity.name,
-          tournamentStat: entity.tournamentStat,
-          isFirstRoundsValid: entity.isFirstRoundsValid,
         },
       });
 

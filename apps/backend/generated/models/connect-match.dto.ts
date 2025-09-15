@@ -1,11 +1,11 @@
 import { ApiExtraModels, ApiProperty } from '@nestjs/swagger';
 
-export class MatchTournamentIdSerialNumberUniqueInputDto {
+export class MatchTournamentPhaseIdSerialNumberUniqueInputDto {
   @ApiProperty({
     type: 'integer',
     format: 'int32',
   })
-  tournamentId: number;
+  tournamentPhaseId: number;
   @ApiProperty({
     type: 'integer',
     format: 'int32',
@@ -13,7 +13,7 @@ export class MatchTournamentIdSerialNumberUniqueInputDto {
   serialNumber: number;
 }
 
-@ApiExtraModels(MatchTournamentIdSerialNumberUniqueInputDto)
+@ApiExtraModels(MatchTournamentPhaseIdSerialNumberUniqueInputDto)
 export class ConnectMatchDto {
   @ApiProperty({
     type: 'integer',
@@ -22,8 +22,8 @@ export class ConnectMatchDto {
   })
   id?: number;
   @ApiProperty({
-    type: MatchTournamentIdSerialNumberUniqueInputDto,
+    type: MatchTournamentPhaseIdSerialNumberUniqueInputDto,
     required: false,
   })
-  tournamentId_serialNumber?: MatchTournamentIdSerialNumberUniqueInputDto;
+  tournamentPhaseId_serialNumber?: MatchTournamentPhaseIdSerialNumberUniqueInputDto;
 }

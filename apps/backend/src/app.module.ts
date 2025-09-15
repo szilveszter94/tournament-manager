@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TournamentModule } from './modules/tournament.module';
 import { ConfigModule } from '@nestjs/config';
-import { PlayerModule } from './modules/player.module';
+import { ParticipantModule } from './modules/participant.module';
 
 @Module({
   imports: [
@@ -9,7 +9,7 @@ import { PlayerModule } from './modules/player.module';
       isGlobal: true,
     }),
     TournamentModule,
-    PlayerModule,
+    ParticipantModule,
   ],
   controllers: [],
   providers: [],

@@ -1,9 +1,9 @@
 import { MatchType } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
-import { Tournament } from './tournament.entity';
+import { TournamentPhase } from './tournamentPhase.entity';
 import { Elimination } from './elimination.entity';
 import { TournamentGroup } from './tournamentGroup.entity';
-import { Player } from './player.entity';
+import { Participant } from './participant.entity';
 
 export class Match {
   @ApiProperty({
@@ -15,7 +15,7 @@ export class Match {
     type: 'integer',
     format: 'int32',
   })
-  tournamentId: number;
+  tournamentPhaseId: number;
   @ApiProperty({
     type: 'integer',
     format: 'int32',
@@ -33,13 +33,13 @@ export class Match {
     format: 'int32',
     nullable: true,
   })
-  player1Id: number | null;
+  participant1Id: number | null;
   @ApiProperty({
     type: 'integer',
     format: 'int32',
     nullable: true,
   })
-  player2Id: number | null;
+  participant2Id: number | null;
   @ApiProperty({
     type: 'integer',
     format: 'int32',
@@ -84,10 +84,10 @@ export class Match {
   })
   updatedAt: Date;
   @ApiProperty({
-    type: () => Tournament,
+    type: () => TournamentPhase,
     required: false,
   })
-  tournament?: Tournament;
+  tournamentPhase?: TournamentPhase;
   @ApiProperty({
     type: () => Elimination,
     required: false,
@@ -101,23 +101,23 @@ export class Match {
   })
   group?: TournamentGroup | null;
   @ApiProperty({
-    type: () => Player,
+    type: () => Participant,
     required: false,
     nullable: true,
   })
-  player1?: Player | null;
+  participant1?: Participant | null;
   @ApiProperty({
-    type: () => Player,
+    type: () => Participant,
     required: false,
     nullable: true,
   })
-  player2?: Player | null;
+  participant2?: Participant | null;
   @ApiProperty({
-    type: () => Player,
+    type: () => Participant,
     required: false,
     nullable: true,
   })
-  winner?: Player | null;
+  winner?: Participant | null;
   @ApiProperty({
     type: () => Match,
     required: false,

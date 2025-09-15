@@ -1,17 +1,15 @@
 model Tournament {
-  id                 Int            @id @default(autoincrement())
-  name               String
-  tournamentStat     TournamentStat @default(Setup)
-  isFirstRoundsValid Boolean        @default(false)
-  createdAt          DateTime       @default(now())
-  updatedAt          DateTime       @updatedAt
+  id        Int              @id @default(autoincrement())
+  name      String
+  status    TournamentStatus @default(Setup)
+  type      TournamentType
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
 
   // Relations
-  elimination Elimination?
-  groups      TournamentGroup[]
-  players     PlayerTournament[]
-  matches     Match[]
-  winners     TournamentWinner[]
+  phases       TournamentPhase[]
+  participants ParticipantTournament[]
+  winners      TournamentWinner[]
 
   @@index([name])
 }

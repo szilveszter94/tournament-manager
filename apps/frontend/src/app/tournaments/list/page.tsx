@@ -1,0 +1,9 @@
+"use client";
+
+export default function Page() {
+  return (
+    <main className="p-8 max-w-3xl mx-auto">
+      <h1>Tournament list</h1>
+    </main>
+  );
+}

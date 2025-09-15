@@ -55,7 +55,7 @@ export class TournamentService {
      * @returns BaseResponse
      * @throws ApiError
      */
-    public static tournamentControllerDeletePlayer(
+    public static tournamentControllerDeleteParticipant(
         id: number,
     ): CancelablePromise<BaseResponse> {
         return __request(OpenAPI, {

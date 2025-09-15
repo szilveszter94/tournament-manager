@@ -4,16 +4,16 @@
 /* eslint-disable */
 import type { Elimination } from './Elimination';
 import type { MatchType } from './MatchType';
-import type { Player } from './Player';
-import type { Tournament } from './Tournament';
+import type { Participant } from './Participant';
 import type { TournamentGroup } from './TournamentGroup';
+import type { TournamentPhase } from './TournamentPhase';
 export type Match = {
     id: number;
-    tournamentId: number;
+    tournamentPhaseId: number;
     eliminationId: number | null;
     tournamentGroupId: number | null;
-    player1Id: number | null;
-    player2Id: number | null;
+    participant1Id: number | null;
+    participant2Id: number | null;
     winnerId: number | null;
     nextMatchId: number | null;
     round: number | null;
@@ -22,12 +22,12 @@ export type Match = {
     matchType: MatchType;
     createdAt: string;
     updatedAt: string;
-    tournament?: Tournament;
+    tournamentPhase?: TournamentPhase;
     elimination?: Elimination | null;
     group?: TournamentGroup | null;
-    player1?: Player | null;
-    player2?: Player | null;
-    winner?: Player | null;
+    participant1?: Participant | null;
+    participant2?: Participant | null;
+    winner?: Participant | null;
     nextMatch?: Match | null;
     prevMatches?: Array<Match>;
 };

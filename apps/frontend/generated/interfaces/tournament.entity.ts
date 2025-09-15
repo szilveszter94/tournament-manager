@@ -1,20 +1,16 @@
-import { TournamentStat } from './enums';
-import { Elimination } from './elimination.entity';
-import { TournamentGroup } from './tournamentGroup.entity';
-import { PlayerTournament } from './playerTournament.entity';
-import { Match } from './match.entity';
+import { TournamentStatus, TournamentType } from './enums';
+import { TournamentPhase } from './tournamentPhase.entity';
+import { ParticipantTournament } from './participantTournament.entity';
 import { TournamentWinner } from './tournamentWinner.entity';
 
 export interface Tournament {
   id: number;
   name: string;
-  tournamentStat: TournamentStat;
-  isFirstRoundsValid: boolean;
+  status: TournamentStatus;
+  type: TournamentType;
   createdAt: Date;
   updatedAt: Date;
-  elimination?: Elimination | null;
-  groups?: TournamentGroup[];
-  players?: PlayerTournament[];
-  matches?: Match[];
+  phases?: TournamentPhase[];
+  participants?: ParticipantTournament[];
   winners?: TournamentWinner[];
 }

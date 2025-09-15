@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Tournament } from './tournament.entity';
-import { Player } from './player.entity';
+import { Participant } from './participant.entity';
 
 export class TournamentWinner {
   @ApiProperty({
@@ -17,7 +17,7 @@ export class TournamentWinner {
     type: 'integer',
     format: 'int32',
   })
-  playerId: number;
+  participantId: number;
   @ApiProperty({
     type: 'integer',
     format: 'int32',
@@ -39,8 +39,8 @@ export class TournamentWinner {
   })
   tournament?: Tournament;
   @ApiProperty({
-    type: () => Player,
+    type: () => Participant,
     required: false,
   })
-  player?: Player;
+  participant?: Participant;
 }

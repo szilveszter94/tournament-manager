@@ -3,11 +3,12 @@ html.dark {
   --foreground: #f1f5f9;
   --primary: #113f50;
   --secondary: #0b191d;
+  --tertiary: #182327;
   --icon: #2d96b3;
 
   --on-background: #000000;
   --on-foreground: #95caff;
-  --on-primary: #02171f;
+  --on-primary: #0d6f92;
   --on-secondary: rgb(15, 43, 49);
 
   --primary-text-color: #ffffff;

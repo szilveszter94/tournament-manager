@@ -2,11 +2,12 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { TournamentStat } from './TournamentStat';
+import type { TournamentStatus } from './TournamentStatus';
+import type { TournamentType } from './TournamentType';
 export type UpdateTournamentDto = {
     name?: string;
-    tournamentStat?: TournamentStat;
-    isFirstRoundsValid?: boolean;
+    status?: TournamentStatus;
+    type?: TournamentType;
     createdAt?: string;
 };
 

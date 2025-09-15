@@ -1,16 +1,16 @@
 import { MatchType } from './enums';
-import { Tournament } from './tournament.entity';
+import { TournamentPhase } from './tournamentPhase.entity';
 import { Elimination } from './elimination.entity';
 import { TournamentGroup } from './tournamentGroup.entity';
-import { Player } from './player.entity';
+import { Participant } from './participant.entity';
 
 export interface Match {
   id: number;
-  tournamentId: number;
+  tournamentPhaseId: number;
   eliminationId: number | null;
   tournamentGroupId: number | null;
-  player1Id: number | null;
-  player2Id: number | null;
+  participant1Id: number | null;
+  participant2Id: number | null;
   winnerId: number | null;
   nextMatchId: number | null;
   round: number | null;
@@ -19,12 +19,12 @@ export interface Match {
   matchType: MatchType;
   createdAt: Date;
   updatedAt: Date;
-  tournament?: Tournament;
+  tournamentPhase?: TournamentPhase;
   elimination?: Elimination | null;
   group?: TournamentGroup | null;
-  player1?: Player | null;
-  player2?: Player | null;
-  winner?: Player | null;
+  participant1?: Participant | null;
+  participant2?: Participant | null;
+  winner?: Participant | null;
   nextMatch?: Match | null;
   prevMatches?: Match[];
 }

@@ -2,23 +2,20 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Elimination } from './Elimination';
-import type { Match } from './Match';
-import type { PlayerTournament } from './PlayerTournament';
-import type { TournamentGroup } from './TournamentGroup';
-import type { TournamentStat } from './TournamentStat';
+import type { ParticipantTournament } from './ParticipantTournament';
+import type { TournamentPhase } from './TournamentPhase';
+import type { TournamentStatus } from './TournamentStatus';
+import type { TournamentType } from './TournamentType';
 import type { TournamentWinner } from './TournamentWinner';
 export type Tournament = {
     id: number;
     name: string;
-    tournamentStat: TournamentStat;
-    isFirstRoundsValid: boolean;
+    status: TournamentStatus;
+    type: TournamentType;
     createdAt: string;
     updatedAt: string;
-    elimination?: Elimination | null;
-    groups?: Array<TournamentGroup>;
-    players?: Array<PlayerTournament>;
-    matches?: Array<Match>;
+    phases?: Array<TournamentPhase>;
+    participants?: Array<ParticipantTournament>;
     winners?: Array<TournamentWinner>;
 };
 

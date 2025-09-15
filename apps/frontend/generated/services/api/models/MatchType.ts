@@ -5,8 +5,6 @@
 export enum MatchType {
     GROUP = 'Group',
     KNOCKOUT = 'Knockout',
-    DOUBLE_ELIMINATION_WINNERS = 'DoubleEliminationWinners',
-    DOUBLE_ELIMINATION_LOSERS = 'DoubleEliminationLosers',
     BRONZE = 'Bronze',
     FINAL = 'Final',
 }

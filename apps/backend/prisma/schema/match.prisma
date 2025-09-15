@@ -1,10 +1,10 @@
 model Match {
   id                Int       @id @default(autoincrement())
-  tournamentId      Int
+  tournamentPhaseId Int
   eliminationId     Int?
   tournamentGroupId Int?
-  player1Id         Int?
-  player2Id         Int?
+  participant1Id    Int?
+  participant2Id    Int?
   winnerId          Int?
   nextMatchId       Int?
   round             Int?
@@ -15,23 +15,23 @@ model Match {
   updatedAt         DateTime  @updatedAt
 
   // Relations
-  tournament  Tournament       @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
-  elimination Elimination?     @relation(fields: [eliminationId], references: [id], onDelete: SetNull)
-  group       TournamentGroup? @relation(fields: [tournamentGroupId], references: [id], onDelete: SetNull)
+  tournamentPhase TournamentPhase  @relation(fields: [tournamentPhaseId], references: [id], onDelete: Cascade)
+  elimination     Elimination?     @relation(fields: [eliminationId], references: [id], onDelete: SetNull)
+  group           TournamentGroup? @relation(fields: [tournamentGroupId], references: [id], onDelete: SetNull)
 
-  player1 Player? @relation("MatchPlayer1", fields: [player1Id], references: [id], onDelete: SetNull)
-  player2 Player? @relation("MatchPlayer2", fields: [player2Id], references: [id], onDelete: SetNull)
-  winner  Player? @relation("MatchWinner", fields: [winnerId], references: [id], onDelete: SetNull)
+  participant1 Participant? @relation("MatchParticipant1", fields: [participant1Id], references: [id], onDelete: SetNull)
+  participant2 Participant? @relation("MatchParticipant2", fields: [participant2Id], references: [id], onDelete: SetNull)
+  winner       Participant? @relation("MatchWinner", fields: [winnerId], references: [id], onDelete: SetNull)
 
   // Self relation for brackets flow
   nextMatch   Match?  @relation("NextMatch", fields: [nextMatchId], references: [id], onDelete: SetNull)
   prevMatches Match[] @relation("NextMatch")
 
-  @@unique([tournamentId, serialNumber])
-  @@index([tournamentId, matchType, round])
+  @@unique([tournamentPhaseId, serialNumber])
+  @@index([tournamentPhaseId, matchType, round])
   @@index([eliminationId])
   @@index([tournamentGroupId])
-  @@index([player1Id])
-  @@index([player2Id])
+  @@index([participant1Id])
+  @@index([participant2Id])
   @@index([winnerId])
 }

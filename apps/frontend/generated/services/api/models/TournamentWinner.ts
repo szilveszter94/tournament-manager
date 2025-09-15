@@ -2,16 +2,16 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Player } from './Player';
+import type { Participant } from './Participant';
 import type { Tournament } from './Tournament';
 export type TournamentWinner = {
     id: number;
     tournamentId: number;
-    playerId: number;
+    participantId: number;
     place: number;
     createdAt: string;
     updatedAt: string;
     tournament?: Tournament;
-    player?: Player;
+    participant?: Participant;
 };
 

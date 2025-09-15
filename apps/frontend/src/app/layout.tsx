@@ -1,18 +1,18 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Roboto_Mono, Roboto } from "next/font/google";
 import "./globals.css";
 import { initApi } from "../lib/apiConfig";
 import { ThemeProvider } from "next-themes";
-import Navbar from "@/components/ui/navbar";
+import Navbar from "@/components/ui/navbar/navbar";
 
 initApi();
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const roboto = Roboto({
+  variable: "--font-roboto",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const robotoMono = Roboto_Mono({
+  variable: "--font-roboto-mono",
   subsets: ["latin"],
 });
 
@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${roboto.variable} ${robotoMono.variable} antialiased`}
       >
         <ThemeProvider
           attribute="class"

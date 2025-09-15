@@ -4,16 +4,16 @@
 /* eslint-disable */
 import type { EliminationType } from './EliminationType';
 import type { Match } from './Match';
-import type { Tournament } from './Tournament';
+import type { TournamentPhase } from './TournamentPhase';
 export type Elimination = {
     id: number;
-    tournamentId: number;
+    tournamentPhaseId: number;
     type: EliminationType;
     currentRound: number;
     isOver: boolean;
     createdAt: string;
     updatedAt: string;
-    tournament?: Tournament;
+    tournamentPhase?: TournamentPhase;
     matches?: Array<Match>;
 };
 
