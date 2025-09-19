@@ -1,32 +1,66 @@
 "use client";
 
 import { useState } from "react";
-import {
-  EliminationPhaseType,
-  FirstPhaseType,
-} from "../../../../custom-entity/types/enums";
-import RadioGroup from "@/components/ui/navbar/radio-button/radio-group";
-import CustomButton from "@/components/ui/navbar/custom-button/custom-button";
+import RadioGroup from "@/components/ui/radio-button/radio-group";
+import CustomButton from "@/components/ui/custom-button/custom-button";
 import { CheckCircleIcon } from "@heroicons/react/16/solid";
+import {
+  CreateTournamentWithPhaseDto,
+  ParticipantType,
+  PhaseType,
+} from "../../../../generated/services/api";
+import { radioButtonOptions } from "./constants";
+import { createTournament } from "@/lib/api";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
+  const router = useRouter();
   const [name, setName] = useState("");
-  const [firstPhase, setFirstPhase] = useState<FirstPhaseType | "">("GroupStage");
-  const [eliminationPhase, setEliminationPhase] =
-    useState<EliminationPhaseType>("SingleElimination");
+  const [firstPhase, setFirstPhase] = useState<PhaseType>(PhaseType.NONE);
+  const [eliminationPhase, setEliminationPhase] = useState<PhaseType>(
+    PhaseType.SINGLE_ELIMINATION
+  );
+  const [participantType, setParticipantType] = useState<ParticipantType>(
+    ParticipantType.INDIVIDUAL
+  );
 
-  const changeFirstPhase = (type: FirstPhaseType) => {
+  const navigate = (url: string) => {
+    router.push(url);
+  };
+
+  const changeFirstPhase = (type: PhaseType) => {
     setFirstPhase(type);
   };
 
-  const changeEliminationPhase = (type: EliminationPhaseType) => {
+  const changeEliminationPhase = (type: PhaseType) => {
     setEliminationPhase(type);
+  };
+
+  const changeParticipantType = (type: ParticipantType) => {
+    setParticipantType(type);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const payload = { name, firstPhase, eliminationPhase };
-    console.log(payload);
+    const entity: CreateTournamentWithPhaseDto = {
+      tournament: {
+        name: name,
+        type: participantType,
+      },
+      phases: [
+        {
+          phaseType: firstPhase,
+          order: 1,
+        },
+        {
+          phaseType: eliminationPhase,
+          order: 2,
+        },
+      ],
+    };
+
+    await createTournament(entity);
+    navigate("/tournaments/detail");
   };
 
   return (
@@ -49,7 +83,7 @@ export default function Page() {
           />
         </div>
 
-        {/* Add phases */}
+        {/* Tournament config */}
         <div className="mb-10">
           <label className="block text-sm font-medium mb-2">First Phase</label>
           <div className="flex gap-2 mb-5">
@@ -57,29 +91,37 @@ export default function Page() {
               name="firstPhase"
               value={firstPhase}
               onChange={changeFirstPhase}
-              options={[
-                { label: "No first phase", value: "" },
-                { label: "Group Stage", value: "GroupStage" },
-                { label: "Round Robin", value: "RoundRobin" },
-              ]}
+              options={radioButtonOptions.firstPhase}
             />
           </div>
           <label className="block text-sm font-medium mb-2">Second Phase</label>
-          <div className="flex gap-2">
+          <div className="flex gap-2 mb-5">
             <RadioGroup
               name="secondPhase"
               value={eliminationPhase}
               onChange={changeEliminationPhase}
-              options={[
-                { label: "Knockout", value: "SingleElimination" },
-                { label: "Double Elimination", value: "DoubleElimination" },
-              ]}
+              options={radioButtonOptions.secondPhase}
+            />
+          </div>
+          <label className="block text-sm font-medium mb-2">Participants</label>
+          <div className="flex gap-2 mb-5">
+            <RadioGroup
+              name="participants"
+              value={participantType}
+              onChange={changeParticipantType}
+              options={radioButtonOptions.participants}
             />
           </div>
         </div>
 
         {/* Submit */}
-        <CustomButton type="submit" variant="primary" size="lg" icon={<CheckCircleIcon/>} iconSize={8}>
+        <CustomButton
+          type="submit"
+          variant="primary"
+          size="lg"
+          icon={<CheckCircleIcon />}
+          iconSize={8}
+        >
           Submit
         </CustomButton>
       </form>

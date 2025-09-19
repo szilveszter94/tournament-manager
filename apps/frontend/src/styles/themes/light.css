@@ -3,7 +3,7 @@ html.light {
   --foreground: #141414;
   --primary: #5ffff2;
   --secondary: #d8faff;
-  --tertiary: #e1ece6;;
+  --tertiary: #e1ece6;
   --icon: #000000;
 
   --on-background: #acffc9;
@@ -14,4 +14,7 @@ html.light {
   --secondary-text-color: #ffffff;
   --primary-text-color: #141414;
   --subtitle-text-color: #272727;
+
+  --primary-border-color: #d1d5dc;
+  --secondary-border-color: #8ea9d3;
 }

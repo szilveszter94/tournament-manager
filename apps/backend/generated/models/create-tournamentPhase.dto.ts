@@ -3,10 +3,6 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateTournamentPhaseDto {
   @ApiProperty({
-    type: 'string',
-  })
-  name: string;
-  @ApiProperty({
     enum: PhaseType,
     enumName: 'PhaseType',
   })

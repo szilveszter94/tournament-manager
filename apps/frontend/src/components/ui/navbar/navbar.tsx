@@ -21,7 +21,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className="bg-background text-foreground border-b border-gray-700">
+    <nav className="bg-background text-foreground border-b border-primary-border-color">
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {/* Logo */}

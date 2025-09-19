@@ -30,7 +30,7 @@ export default function RadioGroup<T extends string>({
             onChange={() => onChange(option.value)}
             className="peer hidden"
           />
-          <span className="px-4 py-2 rounded-xl border border-gray-700 peer-checked:border-gray-300 peer-checked:bg-primary peer-checked:text-foreground">
+          <span className="px-4 py-2 bg-tertiary text-foreground font-semibold rounded-xl border border-primary-border-color peer-checked:border-secondary-border-color peer-checked:bg-on-foreground peer-checked:text-secondary-text-color">
             {option.label}
           </span>
         </label>

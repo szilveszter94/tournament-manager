@@ -11,6 +11,7 @@ enum MatchType {
 }
 
 enum PhaseType {
+  None
   GroupStage
   SingleElimination
   DoubleElimination
@@ -21,10 +22,6 @@ enum PhaseType {
 enum ParticipantType {
   Individual
   Team
-}
-
-enum TournamentType {
-  ArmWrestling
 }
 
 enum TournamentStatus {

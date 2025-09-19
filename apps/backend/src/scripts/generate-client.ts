@@ -6,6 +6,7 @@ async function generateClient() {
     await generate({
       input: join(process.cwd(), 'swagger.json'),
       output: join(process.cwd(), '../frontend/generated/services/api'),
+      clientName: 'AppClient',
     });
     console.log('Next.js API client generated at ./services/api');
   } catch (err) {

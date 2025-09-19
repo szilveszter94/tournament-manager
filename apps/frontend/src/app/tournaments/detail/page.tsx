@@ -2,33 +2,34 @@
 
 import { useEffect, useState } from "react";
 import { Tournament } from "../../../../generated/services/api";
-import { fetchTournaments } from "../../../lib/api";
+import { fetchTournamentById } from "../../../lib/api";
 
 export default function Page() {
   const [loading, setLoading] = useState(true);
-  const [tournamentList, setTournamentList] = useState<Tournament[]>([]);
+  const [tournament, setTournament] = useState<Tournament | null>(null);
 
   useEffect(() => {
     async function getTournaments() {
-      const response = await fetchTournaments();
+      const response = await fetchTournamentById(1);
       if (response.data) {
-        setTournamentList(response.data);
+        setTournament(response.data);
       }
       setLoading(false);
     }
     getTournaments();
   }, []);
 
-  if (loading) {
+  if (loading || !tournament) {
     return;
   }
 
   return (
     <main className="p-8 max-w-3xl mx-auto">
       <div>
+        <p>{tournament.name}</p>
         <ul>
-          {tournamentList.map((t) => (
-            <li key={t.id}>Tournament: {t.name}</li>
+          {tournament.phases?.map((p) => (
+            <li key={p.id}>{p.phaseType}</li>
           ))}
         </ul>
       </div>

@@ -5,13 +5,10 @@ CREATE TYPE "public"."EliminationType" AS ENUM ('Knockout', 'Double');
 CREATE TYPE "public"."MatchType" AS ENUM ('Group', 'Knockout', 'Bronze', 'Final');
 
 -- CreateEnum
-CREATE TYPE "public"."PhaseType" AS ENUM ('GroupStage', 'SingleElimination', 'DoubleElimination', 'RoundRobin', 'Swiss');
+CREATE TYPE "public"."PhaseType" AS ENUM ('None', 'GroupStage', 'SingleElimination', 'DoubleElimination', 'RoundRobin', 'Swiss');
 
 -- CreateEnum
 CREATE TYPE "public"."ParticipantType" AS ENUM ('Individual', 'Team');
-
--- CreateEnum
-CREATE TYPE "public"."TournamentType" AS ENUM ('ArmWrestling');
 
 -- CreateEnum
 CREATE TYPE "public"."TournamentStatus" AS ENUM ('Setup', 'Started', 'Over');
@@ -94,7 +91,7 @@ CREATE TABLE "public"."Tournament" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "status" "public"."TournamentStatus" NOT NULL DEFAULT 'Setup',
-    "type" "public"."TournamentType" NOT NULL,
+    "type" "public"."ParticipantType" NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 

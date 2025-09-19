@@ -3,24 +3,24 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { BaseResponse } from '../models/BaseResponse';
-import type { CreateTournamentDto } from '../models/CreateTournamentDto';
+import type { CreateTournamentWithPhaseDto } from '../models/CreateTournamentWithPhaseDto';
 import type { TournamentResponse } from '../models/TournamentResponse';
 import type { TournamentsResponse } from '../models/TournamentsResponse';
 import type { UpdateTournamentDto } from '../models/UpdateTournamentDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
-import { OpenAPI } from '../core/OpenAPI';
-import { request as __request } from '../core/request';
+import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class TournamentService {
+    constructor(public readonly httpRequest: BaseHttpRequest) {}
     /**
      * Get a tournament by Id
      * @param id
      * @returns TournamentResponse
      * @throws ApiError
      */
-    public static tournamentControllerFindOne(
+    public tournamentControllerFindOne(
         id: number,
     ): CancelablePromise<TournamentResponse> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/tournament/{id}',
             path: {
@@ -35,11 +35,11 @@ export class TournamentService {
      * @returns TournamentResponse
      * @throws ApiError
      */
-    public static tournamentControllerUpdate(
+    public tournamentControllerUpdate(
         id: number,
         requestBody: UpdateTournamentDto,
     ): CancelablePromise<TournamentResponse> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'PUT',
             url: '/tournament/{id}',
             path: {
@@ -55,10 +55,10 @@ export class TournamentService {
      * @returns BaseResponse
      * @throws ApiError
      */
-    public static tournamentControllerDeleteParticipant(
+    public tournamentControllerDeleteParticipant(
         id: number,
     ): CancelablePromise<BaseResponse> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'DELETE',
             url: '/tournament/{id}',
             path: {
@@ -71,8 +71,8 @@ export class TournamentService {
      * @returns TournamentsResponse
      * @throws ApiError
      */
-    public static tournamentControllerFindAll(): CancelablePromise<TournamentsResponse> {
-        return __request(OpenAPI, {
+    public tournamentControllerFindAll(): CancelablePromise<TournamentsResponse> {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/tournament',
         });
@@ -83,10 +83,10 @@ export class TournamentService {
      * @returns TournamentResponse
      * @throws ApiError
      */
-    public static tournamentControllerCreate(
-        requestBody: CreateTournamentDto,
+    public tournamentControllerCreateWithPhase(
+        requestBody: CreateTournamentWithPhaseDto,
     ): CancelablePromise<TournamentResponse> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'POST',
             url: '/tournament',
             body: requestBody,

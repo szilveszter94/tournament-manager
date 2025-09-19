@@ -8,19 +8,19 @@ import type { ParticipantResponse } from '../models/ParticipantResponse';
 import type { ParticipantsResponse } from '../models/ParticipantsResponse';
 import type { UpdateParticipantDto } from '../models/UpdateParticipantDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
-import { OpenAPI } from '../core/OpenAPI';
-import { request as __request } from '../core/request';
+import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class ParticipantService {
+    constructor(public readonly httpRequest: BaseHttpRequest) {}
     /**
      * Get a participant by Id
      * @param id
      * @returns ParticipantResponse
      * @throws ApiError
      */
-    public static participantControllerFindOne(
+    public participantControllerFindOne(
         id: number,
     ): CancelablePromise<ParticipantResponse> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/participant/{id}',
             path: {
@@ -35,11 +35,11 @@ export class ParticipantService {
      * @returns ParticipantResponse
      * @throws ApiError
      */
-    public static participantControllerUpdate(
+    public participantControllerUpdate(
         id: number,
         requestBody: UpdateParticipantDto,
     ): CancelablePromise<ParticipantResponse> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'PUT',
             url: '/participant/{id}',
             path: {
@@ -55,10 +55,10 @@ export class ParticipantService {
      * @returns BaseResponse
      * @throws ApiError
      */
-    public static participantControllerDeleteParticipant(
+    public participantControllerDeleteParticipant(
         id: number,
     ): CancelablePromise<BaseResponse> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'DELETE',
             url: '/participant/{id}',
             path: {
@@ -71,8 +71,8 @@ export class ParticipantService {
      * @returns ParticipantsResponse
      * @throws ApiError
      */
-    public static participantControllerFindAll(): CancelablePromise<ParticipantsResponse> {
-        return __request(OpenAPI, {
+    public participantControllerFindAll(): CancelablePromise<ParticipantsResponse> {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/participant',
         });
@@ -83,10 +83,10 @@ export class ParticipantService {
      * @returns ParticipantResponse
      * @throws ApiError
      */
-    public static participantControllerCreate(
+    public participantControllerCreate(
         requestBody: CreateParticipantDto,
     ): CancelablePromise<ParticipantResponse> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'POST',
             url: '/participant',
             body: requestBody,

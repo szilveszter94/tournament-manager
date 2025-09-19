@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { TournamentService } from '../services/tournament.service';
 import {
+  CreateTournamentWithPhaseDto,
   TournamentResponse,
   TournamentsResponse,
 } from '../../custom-models/tournament-response';
@@ -20,7 +21,6 @@ import {
   ApiOperation,
 } from '@nestjs/swagger';
 import { UpdateTournamentDto } from '../../generated/models/update-tournament.dto';
-import { CreateTournamentDto } from '../../generated/models/create-tournament.dto';
 import { BaseResponse } from '../../custom-models/base-response';
 
 @ApiTags('tournament')
@@ -46,9 +46,11 @@ export class TournamentController {
   @Post()
   @ApiOperation({ summary: 'Create a new tournament' })
   @ApiOkResponse({ type: TournamentResponse, isArray: false })
-  @ApiBody({ type: CreateTournamentDto })
-  create(@Body() tournament: CreateTournamentDto): Promise<TournamentResponse> {
-    return this.tournamentService.create(tournament);
+  @ApiBody({ type: CreateTournamentWithPhaseDto })
+  createWithPhase(
+    @Body() entity: CreateTournamentWithPhaseDto,
+  ): Promise<TournamentResponse> {
+    return this.tournamentService.create(entity);
   }
 
   @Put(':id')

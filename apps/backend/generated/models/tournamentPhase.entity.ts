@@ -17,10 +17,6 @@ export class TournamentPhase {
   })
   tournamentId: number;
   @ApiProperty({
-    type: 'string',
-  })
-  name: string;
-  @ApiProperty({
     enum: PhaseType,
     enumName: 'PhaseType',
   })

@@ -10,7 +10,6 @@ import type { TournamentGroup } from './TournamentGroup';
 export type TournamentPhase = {
     id: number;
     tournamentId: number;
-    name: string;
     phaseType: PhaseType;
     order: number;
     isCompleted: boolean;

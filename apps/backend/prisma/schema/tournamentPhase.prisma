@@ -1,7 +1,6 @@
 model TournamentPhase {
   id           Int       @id @default(autoincrement())
   tournamentId Int
-  name         String
   phaseType    PhaseType
   order        Int
   isCompleted  Boolean   @default(false)

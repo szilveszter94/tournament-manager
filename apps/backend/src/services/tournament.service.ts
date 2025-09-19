@@ -1,12 +1,13 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 import {
+  CreateTournamentWithPhaseDto,
   TournamentResponse,
   TournamentsResponse,
 } from '../../custom-models/tournament-response';
-import { CreateTournamentDto } from '../../generated/models/create-tournament.dto';
 import { UpdateTournamentDto } from '../../generated/models/update-tournament.dto';
 import { BaseResponse } from '../../custom-models/base-response';
+import { PhaseType } from '@prisma/client';
 
 @Injectable()
 export class TournamentService {
@@ -18,6 +19,9 @@ export class TournamentService {
     try {
       const tournament = await this.prisma.tournament.findUnique({
         where: { id },
+        include: {
+          phases: true,
+        },
       });
 
       if (!tournament) {
@@ -45,16 +49,35 @@ export class TournamentService {
     }
   }
 
-  async create(entity: CreateTournamentDto): Promise<TournamentResponse> {
+  async create(
+    entity: CreateTournamentWithPhaseDto,
+  ): Promise<TournamentResponse> {
     try {
-      const tournament = await this.prisma.tournament.create({
-        data: {
-          name: entity.name,
-          type: entity.type,
-        },
+      const result = await this.prisma.$transaction(async (tx) => {
+        const tournament = await tx.tournament.create({
+          data: {
+            name: entity.tournament.name,
+            type: entity.tournament.type,
+          },
+        });
+
+        const phases = await Promise.all(
+          entity.phases
+            .filter((p) => p.phaseType !== PhaseType.None)
+            .map((phase) =>
+              tx.tournamentPhase.create({
+                data: {
+                  order: phase.order,
+                  phaseType: phase.phaseType,
+                  tournamentId: tournament.id,
+                },
+              }),
+            ),
+        );
+        return { ...tournament, phases };
       });
 
-      return { ok: true, data: tournament };
+      return { ok: true, data: result };
     } catch (e) {
       this.logger.error('Error creating tournament', e.stack);
       return { ok: false, error: 'Database error' };

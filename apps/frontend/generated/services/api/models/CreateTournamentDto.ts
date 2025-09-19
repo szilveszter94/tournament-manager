@@ -2,12 +2,12 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { ParticipantType } from './ParticipantType';
 import type { TournamentStatus } from './TournamentStatus';
-import type { TournamentType } from './TournamentType';
 export type CreateTournamentDto = {
     name: string;
     status?: TournamentStatus;
-    type: TournamentType;
+    type: ParticipantType;
     createdAt?: string;
 };
 

@@ -1,10 +1,7 @@
 import { Roboto_Mono, Roboto } from "next/font/google";
 import "./globals.css";
-import { initApi } from "../lib/apiConfig";
 import { ThemeProvider } from "next-themes";
 import Navbar from "@/components/ui/navbar/navbar";
-
-initApi();
 
 const roboto = Roboto({
   variable: "--font-roboto",
@@ -23,9 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${roboto.variable} ${robotoMono.variable} antialiased`}
-      >
+      <body className={`${roboto.variable} ${robotoMono.variable} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

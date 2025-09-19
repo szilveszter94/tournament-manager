@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export enum PhaseType {
+    NONE = 'None',
     GROUP_STAGE = 'GroupStage',
     SINGLE_ELIMINATION = 'SingleElimination',
     DOUBLE_ELIMINATION = 'DoubleElimination',

@@ -3,15 +3,15 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { ParticipantTournament } from './ParticipantTournament';
+import type { ParticipantType } from './ParticipantType';
 import type { TournamentPhase } from './TournamentPhase';
 import type { TournamentStatus } from './TournamentStatus';
-import type { TournamentType } from './TournamentType';
 import type { TournamentWinner } from './TournamentWinner';
 export type Tournament = {
     id: number;
     name: string;
     status: TournamentStatus;
-    type: TournamentType;
+    type: ParticipantType;
     createdAt: string;
     updatedAt: string;
     phases?: Array<TournamentPhase>;

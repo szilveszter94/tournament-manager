@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export enum TournamentType {
-    ARM_WRESTLING = 'ArmWrestling',
+export enum ParticipantType {
+    INDIVIDUAL = 'Individual',
+    TEAM = 'Team',
 }

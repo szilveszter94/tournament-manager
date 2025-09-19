@@ -1,4 +1,4 @@
-import { TournamentStatus, TournamentType } from '@prisma/client';
+import { ParticipantType, TournamentStatus } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class TournamentDto {
@@ -17,10 +17,10 @@ export class TournamentDto {
   })
   status: TournamentStatus;
   @ApiProperty({
-    enum: TournamentType,
-    enumName: 'TournamentType',
+    enum: ParticipantType,
+    enumName: 'ParticipantType',
   })
-  type: TournamentType;
+  type: ParticipantType;
   @ApiProperty({
     type: 'string',
     format: 'date-time',

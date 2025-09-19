@@ -14,4 +14,7 @@ html.dark {
   --primary-text-color: #ffffff;
   --secondary-text-color: #000000;
   --subtitle-text-color: #a5a5a5;
+
+  --primary-border-color: #364153;
+  --secondary-border-color: #d1d5dc;
 }

@@ -122,14 +122,14 @@
         ]
       },
       "post": {
-        "operationId": "TournamentController_create",
+        "operationId": "TournamentController_createWithPhase",
         "parameters": [],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateTournamentDto"
+                "$ref": "#/components/schemas/CreateTournamentWithPhaseDto"
               }
             }
           }
@@ -322,15 +322,17 @@
           "Over"
         ]
       },
-      "TournamentType": {
+      "ParticipantType": {
         "type": "string",
         "enum": [
-          "ArmWrestling"
+          "Individual",
+          "Team"
         ]
       },
       "PhaseType": {
         "type": "string",
         "enum": [
+          "None",
           "GroupStage",
           "SingleElimination",
           "DoubleElimination",
@@ -834,9 +836,6 @@
             "type": "integer",
             "format": "int32"
           },
-          "name": {
-            "type": "string"
-          },
           "phaseType": {
             "allOf": [
               {
@@ -878,7 +877,6 @@
         "required": [
           "id",
           "tournamentId",
-          "name",
           "phaseType",
           "order",
           "isCompleted"
@@ -904,7 +902,7 @@
           "type": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/TournamentType"
+                "$ref": "#/components/schemas/ParticipantType"
               }
             ]
           },
@@ -998,19 +996,61 @@
           "type": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/TournamentType"
+                "$ref": "#/components/schemas/ParticipantType"
               }
             ]
           },
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-09-15T13:03:19.053Z"
+            "default": "2025-09-19T20:30:19.950Z"
           }
         },
         "required": [
           "name",
           "type"
+        ]
+      },
+      "CreateTournamentPhaseDto": {
+        "type": "object",
+        "properties": {
+          "phaseType": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PhaseType"
+              }
+            ]
+          },
+          "order": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isCompleted": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "required": [
+          "phaseType",
+          "order"
+        ]
+      },
+      "CreateTournamentWithPhaseDto": {
+        "type": "object",
+        "properties": {
+          "tournament": {
+            "$ref": "#/components/schemas/CreateTournamentDto"
+          },
+          "phases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreateTournamentPhaseDto"
+            }
+          }
+        },
+        "required": [
+          "tournament",
+          "phases"
         ]
       },
       "UpdateTournamentDto": {
@@ -1030,14 +1070,14 @@
           "type": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/TournamentType"
+                "$ref": "#/components/schemas/ParticipantType"
               }
             ]
           },
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-09-15T13:03:19.032Z"
+            "default": "2025-09-19T20:30:19.968Z"
           }
         }
       },
@@ -1116,7 +1156,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-09-15T13:03:19.250Z"
+            "default": "2025-09-19T20:30:20.088Z"
           }
         },
         "required": [
@@ -1147,7 +1187,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-09-15T13:03:19.257Z"
+            "default": "2025-09-19T20:30:20.095Z"
           }
         }
       }
