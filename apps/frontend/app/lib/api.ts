@@ -3,7 +3,7 @@ import {
   TournamentResponse,
   AppClient,
   CreateTournamentWithPhaseDto,
-} from "../../generated/services/api";
+} from "../../generated/api";
 
 const apiClient = new AppClient({
   BASE: process.env.NEXT_PUBLIC_API_URL ?? "",
@@ -36,7 +36,7 @@ export async function createTournament(
 ): Promise<TournamentResponse> {
   try {
     const response =
-      await apiClient.tournament.tournamentControllerCreateWithPhase(entity);
+      await apiClient.tournament.tournamentControllerCreate(entity);
     return response;
   } catch (err) {
     console.error(err);

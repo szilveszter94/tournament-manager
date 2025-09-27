@@ -1,6 +1,6 @@
 "use client";
 
-import CustomButton from "@/components/ui/custom-button/custom-button";
+import CustomButton from "@/app/ui/custom-button/custom-button";
 import {
   ArrowRightIcon,
   Squares2X2Icon,

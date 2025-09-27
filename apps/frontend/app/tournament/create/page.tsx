@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import RadioGroup from "@/components/ui/radio-button/radio-group";
-import CustomButton from "@/components/ui/custom-button/custom-button";
+import RadioGroup from "@/app/ui/radio-button/radio-group";
+import CustomButton from "@/app/ui/custom-button/custom-button";
 import { CheckCircleIcon } from "@heroicons/react/16/solid";
 import {
   CreateTournamentWithPhaseDto,
@@ -10,7 +10,7 @@ import {
   PhaseType,
 } from "../../../../generated/services/api";
 import { radioButtonOptions } from "./constants";
-import { createTournament } from "@/lib/api";
+import { createTournament } from "../../../../app/lib/api";
 import { useRouter } from "next/navigation";
 
 export default function Page() {

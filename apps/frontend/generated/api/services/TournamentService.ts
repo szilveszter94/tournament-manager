@@ -83,7 +83,7 @@ export class TournamentService {
      * @returns TournamentResponse
      * @throws ApiError
      */
-    public tournamentControllerCreateWithPhase(
+    public tournamentControllerCreate(
         requestBody: CreateTournamentWithPhaseDto,
     ): CancelablePromise<TournamentResponse> {
         return this.httpRequest.request({

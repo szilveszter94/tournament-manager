@@ -47,7 +47,7 @@ export class TournamentController {
   @ApiOperation({ summary: 'Create a new tournament' })
   @ApiOkResponse({ type: TournamentResponse, isArray: false })
   @ApiBody({ type: CreateTournamentWithPhaseDto })
-  createWithPhase(
+  create(
     @Body() entity: CreateTournamentWithPhaseDto,
   ): Promise<TournamentResponse> {
     return this.tournamentService.create(entity);
