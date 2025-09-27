@@ -50,6 +50,7 @@ CREATE TABLE "public"."Match" (
 CREATE TABLE "public"."Participant" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
+    "type" "public"."ParticipantType" NOT NULL,
     "elo" INTEGER NOT NULL DEFAULT 1500,
     "wins" INTEGER NOT NULL DEFAULT 0,
     "losses" INTEGER NOT NULL DEFAULT 0,
@@ -114,7 +115,6 @@ CREATE TABLE "public"."TournamentGroup" (
 CREATE TABLE "public"."TournamentPhase" (
     "id" SERIAL NOT NULL,
     "tournamentId" INTEGER NOT NULL,
-    "name" TEXT NOT NULL,
     "phaseType" "public"."PhaseType" NOT NULL,
     "order" INTEGER NOT NULL,
     "isCompleted" BOOLEAN NOT NULL DEFAULT false,

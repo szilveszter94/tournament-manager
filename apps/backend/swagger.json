@@ -129,7 +129,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateTournamentWithPhaseDto"
+                "$ref": "#/components/schemas/CreateTournamentDto"
               }
             }
           }
@@ -457,6 +457,13 @@
           "name": {
             "type": "string"
           },
+          "type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ParticipantType"
+              }
+            ]
+          },
           "elo": {
             "type": "integer",
             "format": "int32"
@@ -517,6 +524,7 @@
         "required": [
           "id",
           "name",
+          "type",
           "elo",
           "wins",
           "losses",
@@ -1003,54 +1011,12 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-09-27T10:23:46.482Z"
+            "default": "2025-09-27T19:32:35.336Z"
           }
         },
         "required": [
           "name",
           "type"
-        ]
-      },
-      "CreateTournamentPhaseDto": {
-        "type": "object",
-        "properties": {
-          "phaseType": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PhaseType"
-              }
-            ]
-          },
-          "order": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "isCompleted": {
-            "type": "boolean",
-            "default": false
-          }
-        },
-        "required": [
-          "phaseType",
-          "order"
-        ]
-      },
-      "CreateTournamentWithPhaseDto": {
-        "type": "object",
-        "properties": {
-          "tournament": {
-            "$ref": "#/components/schemas/CreateTournamentDto"
-          },
-          "phases": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CreateTournamentPhaseDto"
-            }
-          }
-        },
-        "required": [
-          "tournament",
-          "phases"
         ]
       },
       "UpdateTournamentDto": {
@@ -1077,7 +1043,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-09-27T10:23:46.499Z"
+            "default": "2025-09-27T19:32:35.320Z"
           }
         }
       },
@@ -1138,6 +1104,13 @@
           "name": {
             "type": "string"
           },
+          "type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ParticipantType"
+              }
+            ]
+          },
           "elo": {
             "type": "integer",
             "format": "int32",
@@ -1156,11 +1129,12 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-09-27T10:23:48.552Z"
+            "default": "2025-09-27T19:32:35.466Z"
           }
         },
         "required": [
-          "name"
+          "name",
+          "type"
         ]
       },
       "UpdateParticipantDto": {
@@ -1169,6 +1143,13 @@
           "name": {
             "type": "string"
           },
+          "type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ParticipantType"
+              }
+            ]
+          },
           "elo": {
             "type": "integer",
             "format": "int32",
@@ -1187,7 +1168,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-09-27T10:23:48.558Z"
+            "default": "2025-09-27T19:32:35.476Z"
           }
         }
       }

@@ -5,10 +5,12 @@
 import type { Match } from './Match';
 import type { ParticipantGroup } from './ParticipantGroup';
 import type { ParticipantTournament } from './ParticipantTournament';
+import type { ParticipantType } from './ParticipantType';
 import type { TournamentWinner } from './TournamentWinner';
 export type Participant = {
     id: number;
     name: string;
+    type: ParticipantType;
     elo: number;
     wins: number;
     losses: number;

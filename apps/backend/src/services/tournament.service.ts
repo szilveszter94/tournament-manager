@@ -1,13 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 import {
-  CreateTournamentWithPhaseDto,
   TournamentResponse,
   TournamentsResponse,
 } from '../../custom-models/tournament-response';
 import { UpdateTournamentDto } from '../../generated/models/update-tournament.dto';
 import { BaseResponse } from '../../custom-models/base-response';
-import { PhaseType } from '@prisma/client';
+import { CreateTournamentDto } from '../../generated/models/create-tournament.dto';
 
 @Injectable()
 export class TournamentService {
@@ -35,7 +34,7 @@ export class TournamentService {
         `Database error while finding tournament with ID ${id}`,
         e.stack,
       );
-      return { ok: false, error: 'Database error' };
+      return { ok: false, error: 'Database error. Failed to get tournament' };
     }
   }
 
@@ -45,42 +44,26 @@ export class TournamentService {
       return { ok: true, data: tournaments };
     } catch (e) {
       this.logger.error('Database error while fetching tournaments', e.stack);
-      return { ok: false, error: 'Database error' };
+      return { ok: false, error: 'Database error. Failed to get tournaments.' };
     }
   }
 
-  async create(
-    entity: CreateTournamentWithPhaseDto,
-  ): Promise<TournamentResponse> {
+  async create(entity: CreateTournamentDto): Promise<TournamentResponse> {
     try {
-      const result = await this.prisma.$transaction(async (tx) => {
-        const tournament = await tx.tournament.create({
-          data: {
-            name: entity.tournament.name,
-            type: entity.tournament.type,
-          },
-        });
-
-        const phases = await Promise.all(
-          entity.phases
-            .filter((p) => p.phaseType !== PhaseType.None)
-            .map((phase) =>
-              tx.tournamentPhase.create({
-                data: {
-                  order: phase.order,
-                  phaseType: phase.phaseType,
-                  tournamentId: tournament.id,
-                },
-              }),
-            ),
-        );
-        return { ...tournament, phases };
+      const tournament = await this.prisma.tournament.create({
+        data: {
+          name: entity.name,
+          type: entity.type,
+        },
       });
 
-      return { ok: true, data: result };
+      return { ok: true, data: tournament };
     } catch (e) {
       this.logger.error('Error creating tournament', e.stack);
-      return { ok: false, error: 'Database error' };
+      return {
+        ok: false,
+        error: 'Database error. Failed to create tournament.',
+      };
     }
   }
 
@@ -99,7 +82,10 @@ export class TournamentService {
       return { ok: true, data: tournament };
     } catch (e) {
       this.logger.error('Error updating tournament', e.stack);
-      return { ok: false, error: 'Database error' };
+      return {
+        ok: false,
+        error: 'Database error. Failed to update tournament.',
+      };
     }
   }
 
@@ -112,7 +98,10 @@ export class TournamentService {
       return { ok: true };
     } catch (e) {
       this.logger.error('Error deleting tournament', e.stack);
-      return { ok: false, error: 'Database error' };
+      return {
+        ok: false,
+        error: 'Database error. Failed to delete tournament.',
+      };
     }
   }
 }

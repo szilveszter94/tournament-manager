@@ -1,3 +1,4 @@
+import { ParticipantType } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateParticipantDto {
@@ -5,6 +6,11 @@ export class CreateParticipantDto {
     type: 'string',
   })
   name: string;
+  @ApiProperty({
+    enum: ParticipantType,
+    enumName: 'ParticipantType',
+  })
+  type: ParticipantType;
   @ApiProperty({
     type: 'integer',
     format: 'int32',

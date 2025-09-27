@@ -50,6 +50,7 @@ export class ParticipantService {
       const participant = await this.prisma.participant.create({
         data: {
           name: entity.name,
+          type: entity.type,
         },
       });
 
@@ -69,6 +70,7 @@ export class ParticipantService {
         where: { id },
         data: {
           name: entity.name,
+          type: entity.type,
         },
       });
 

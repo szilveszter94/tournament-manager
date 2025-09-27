@@ -1,63 +1,18 @@
 "use client";
 
 import { createTournament } from "@/app/tournament/actions";
-import {
-  CreateTournamentWithPhaseDto,
-  ParticipantType,
-  PhaseType,
-} from "@/generated/api";
-import { useState } from "react";
+import { useActionState } from "react";
 import RadioGroup from "@/app/ui/components/radio-button/radio-group";
 import { radioButtonOptions } from "./constants";
 import CustomButton from "@/app/ui/components/custom-button/custom-button";
-import { CheckCircleIcon } from "@heroicons/react/16/solid";
+import { ArrowRightCircleIcon } from "@heroicons/react/16/solid";
+import { initialState } from "@/lib/custom-models";
 
 export default function CreateTournamentForm() {
-  const [name, setName] = useState("");
-  const [firstPhase, setFirstPhase] = useState<PhaseType>(PhaseType.NONE);
-  const [eliminationPhase, setEliminationPhase] = useState<PhaseType>(
-    PhaseType.SINGLE_ELIMINATION
-  );
-  const [participantType, setParticipantType] = useState<ParticipantType>(
-    ParticipantType.INDIVIDUAL
-  );
-
-  const changeFirstPhase = (type: PhaseType) => {
-    setFirstPhase(type);
-  };
-
-  const changeEliminationPhase = (type: PhaseType) => {
-    setEliminationPhase(type);
-  };
-
-  const changeParticipantType = (type: ParticipantType) => {
-    setParticipantType(type);
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const entity: CreateTournamentWithPhaseDto = {
-      tournament: {
-        name: name,
-        type: participantType,
-      },
-      phases: [
-        {
-          phaseType: firstPhase,
-          order: 1,
-        },
-        {
-          phaseType: eliminationPhase,
-          order: 2,
-        },
-      ],
-    };
-
-    await createTournament(entity);
-  };
+  const [state, formAction] = useActionState(createTournament, initialState);
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form action={formAction} className="space-y-6">
       {/* Tournament name */}
       <div>
         <label className="block text-sm font-medium mb-1">
@@ -65,43 +20,34 @@ export default function CreateTournamentForm() {
         </label>
         <input
           type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          name="name"
           placeholder="e.g. World Cup 2025"
           className="w-full rounded-md border px-3 py-2 text-sm"
           required
+          aria-describedby="name-error"
         />
+        {state.errors?.name && (
+          <p id="name-error" className="text-red-500 text-sm">
+            {state.errors.name.join(", ")}
+          </p>
+        )}
       </div>
 
       {/* Tournament config */}
       <div className="mb-10">
-        <label className="block text-sm font-medium mb-2">First Phase</label>
-        <div className="flex gap-2 mb-5">
-          <RadioGroup
-            name="firstPhase"
-            value={firstPhase}
-            onChange={changeFirstPhase}
-            options={radioButtonOptions.firstPhase}
-          />
-        </div>
-        <label className="block text-sm font-medium mb-2">Second Phase</label>
-        <div className="flex gap-2 mb-5">
-          <RadioGroup
-            name="secondPhase"
-            value={eliminationPhase}
-            onChange={changeEliminationPhase}
-            options={radioButtonOptions.secondPhase}
-          />
-        </div>
         <label className="block text-sm font-medium mb-2">Participants</label>
         <div className="flex gap-2 mb-5">
           <RadioGroup
-            name="participants"
-            value={participantType}
-            onChange={changeParticipantType}
+            name="participantType"
             options={radioButtonOptions.participants}
+            required={true}
           />
         </div>
+        {state.errors?.participantType && (
+          <p id="name-error" className="mt-2 text-sm text-red-500">
+            {state.errors.participantType.join(", ")}
+          </p>
+        )}
       </div>
 
       {/* Submit */}
@@ -109,11 +55,14 @@ export default function CreateTournamentForm() {
         type="submit"
         variant="primary"
         size="lg"
-        icon={<CheckCircleIcon />}
+        icon={<ArrowRightCircleIcon />}
         iconSize={8}
       >
-        Submit
+        Next
       </CustomButton>
+      {state.message && (
+        <p className="text-sm text-red-500">{state.message}</p>
+      )}
     </form>
   );
 }

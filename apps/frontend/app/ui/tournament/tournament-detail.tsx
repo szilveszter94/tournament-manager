@@ -4,12 +4,8 @@ import React from "react";
 export default async function TournamentDetail({ tournament }: { tournament: Tournament }) {
   return (
     <div>
-      <p>{tournament.name}</p>
-      <ul>
-        {tournament.phases?.map((p) => (
-          <li key={p.id}>{p.phaseType}</li>
-        ))}
-      </ul>
+      <p>Name: {tournament.name}</p>
+      <p>Type: {tournament.type}</p>
     </div>
   );
 }

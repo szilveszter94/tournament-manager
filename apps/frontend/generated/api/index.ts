@@ -13,8 +13,6 @@ export type { OpenAPIConfig } from './core/OpenAPI';
 export type { BaseResponse } from './models/BaseResponse';
 export type { CreateParticipantDto } from './models/CreateParticipantDto';
 export type { CreateTournamentDto } from './models/CreateTournamentDto';
-export type { CreateTournamentPhaseDto } from './models/CreateTournamentPhaseDto';
-export type { CreateTournamentWithPhaseDto } from './models/CreateTournamentWithPhaseDto';
 export type { Elimination } from './models/Elimination';
 export { EliminationType } from './models/EliminationType';
 export type { Match } from './models/Match';

@@ -3,7 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { BaseResponse } from '../models/BaseResponse';
-import type { CreateTournamentWithPhaseDto } from '../models/CreateTournamentWithPhaseDto';
+import type { CreateTournamentDto } from '../models/CreateTournamentDto';
 import type { TournamentResponse } from '../models/TournamentResponse';
 import type { TournamentsResponse } from '../models/TournamentsResponse';
 import type { UpdateTournamentDto } from '../models/UpdateTournamentDto';
@@ -84,7 +84,7 @@ export class TournamentService {
      * @throws ApiError
      */
     public tournamentControllerCreate(
-        requestBody: CreateTournamentWithPhaseDto,
+        requestBody: CreateTournamentDto,
     ): CancelablePromise<TournamentResponse> {
         return this.httpRequest.request({
             method: 'POST',
