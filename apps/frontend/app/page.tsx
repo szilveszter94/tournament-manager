@@ -1,6 +1,6 @@
 "use client";
 
-import CustomButton from "@/app/ui/custom-button/custom-button";
+import CustomButton from "@/app/ui/components/custom-button/custom-button";
 import {
   ArrowRightIcon,
   Squares2X2Icon,
@@ -25,7 +25,7 @@ export default function Home() {
       {/* Buttons */}
       <div className="flex justify-center gap-4 mb-12 flex-wrap">
         <CustomButton
-          href="/tournaments/create"
+          href="/tournament/create"
           variant="primary"
           size="xl"
           icon={<TrophyIcon />}
@@ -34,7 +34,7 @@ export default function Home() {
           Create Tournament
         </CustomButton>
         <CustomButton
-          href="/tournaments/list"
+          href="/tournament"
           variant="secondary"
           size="xl"
           icon={<ArrowRightIcon />}

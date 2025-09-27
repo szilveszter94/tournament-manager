@@ -1,4 +1,4 @@
-import { ParticipantType, PhaseType } from "../../../../generated/services/api";
+import { ParticipantType, PhaseType } from "@/generated/api";
 
 type Option<T> = {
   label: string;

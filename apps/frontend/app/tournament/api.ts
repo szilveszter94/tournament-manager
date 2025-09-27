@@ -1,13 +1,5 @@
-import {
-  TournamentsResponse,
-  TournamentResponse,
-  AppClient,
-  CreateTournamentWithPhaseDto,
-} from "../../generated/api";
-
-const apiClient = new AppClient({
-  BASE: process.env.NEXT_PUBLIC_API_URL ?? "",
-});
+import { TournamentsResponse, TournamentResponse } from "@/generated/api";
+import { apiClient } from "../../lib/client";
 
 export async function fetchTournamentById(
   id: number
@@ -28,20 +20,5 @@ export async function fetchTournaments(): Promise<TournamentsResponse> {
   } catch (err) {
     console.error(err);
     throw new Error("Failed to fetch tournaments");
-  }
-}
-
-export async function createTournament(
-  entity: CreateTournamentWithPhaseDto
-): Promise<TournamentResponse> {
-  try {
-    const response =
-      await apiClient.tournament.tournamentControllerCreate(entity);
-    return response;
-  } catch (err) {
-    console.error(err);
-    throw new Error(
-      `Failed to create tournament with name ${entity.tournament.name}`
-    );
   }
 }

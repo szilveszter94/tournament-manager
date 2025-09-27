@@ -1,7 +1,7 @@
 @import "tailwindcss";
-@import "../styles/themes/dark.css";
-@import "../styles/themes/light.css";
-@import "../styles/themes/dark-purple.css";
+@import "./styles/themes/dark.css";
+@import "./styles/themes/light.css";
+@import "./styles/themes/dark-purple.css";
 
 @theme {
   --color-background: var(--background);
