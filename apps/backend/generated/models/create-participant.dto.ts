@@ -1,4 +1,4 @@
-import { ParticipantType } from '@prisma/client';
+import { ParticipantType } from '../client';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateParticipantDto {

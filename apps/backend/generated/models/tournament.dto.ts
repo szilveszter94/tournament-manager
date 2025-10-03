@@ -1,4 +1,4 @@
-import { ParticipantType, TournamentStatus } from '@prisma/client';
+import { ParticipantType, TournamentStatus } from '../client';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class TournamentDto {

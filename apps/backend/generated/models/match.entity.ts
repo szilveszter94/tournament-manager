@@ -1,4 +1,4 @@
-import { MatchType } from '@prisma/client';
+import { MatchType } from '../client';
 import { ApiProperty } from '@nestjs/swagger';
 import { TournamentPhase } from './tournamentPhase.entity';
 import { Elimination } from './elimination.entity';

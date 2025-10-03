@@ -24,7 +24,7 @@ import {
 import { UpdateTournamentDto } from '../../generated/models/update-tournament.dto';
 import { BaseResponse } from '../../custom-models/base-response';
 import { CreateTournamentDto } from '../../generated/models/create-tournament.dto';
-import { ParticipantType, TournamentStatus } from '@prisma/client';
+import { ParticipantType, TournamentStatus } from '../../generated/client';
 import type { TournamentSortBy, SortOrder } from '../../custom-models/shared';
 import {
   tournamentSortByValues,

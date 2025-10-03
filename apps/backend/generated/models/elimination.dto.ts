@@ -1,4 +1,4 @@
-import { EliminationType } from '@prisma/client';
+import { EliminationType } from '../client';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class EliminationDto {

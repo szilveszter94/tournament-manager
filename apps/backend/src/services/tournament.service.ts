@@ -7,7 +7,11 @@ import {
 import { UpdateTournamentDto } from '../../generated/models/update-tournament.dto';
 import { BaseResponse } from '../../custom-models/base-response';
 import { CreateTournamentDto } from '../../generated/models/create-tournament.dto';
-import { ParticipantType, Prisma, TournamentStatus } from '@prisma/client';
+import {
+  ParticipantType,
+  Prisma,
+  TournamentStatus,
+} from '../../generated/client';
 import type { SortOrder, TournamentSortBy } from '../../custom-models/shared';
 import handleDateRange from '../utils/helper';
 

@@ -1,4 +1,4 @@
-import { PhaseType } from '@prisma/client';
+import { PhaseType } from '../client';
 import { ApiProperty } from '@nestjs/swagger';
 import { Elimination } from './elimination.entity';
 import { TournamentGroup } from './tournamentGroup.entity';

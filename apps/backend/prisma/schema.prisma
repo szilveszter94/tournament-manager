@@ -6,13 +6,13 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../../../node_modules/.prisma/client"
+  output   = "../generated/client"
 }
 
 generator backend {
   provider                      = "prisma-generator-nestjs-dto"
   output                        = "../generated/models"
-  prismaClientImportPath        = "@prisma/client"
+  prismaClientImportPath        = "../client"
   requiredResponseApiProperty   = "true"
   outputType                    = "class"
   prettier                      = "true"

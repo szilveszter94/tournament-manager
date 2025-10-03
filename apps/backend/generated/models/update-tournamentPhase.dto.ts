@@ -1,4 +1,4 @@
-import { PhaseType } from '@prisma/client';
+import { PhaseType } from '../client';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateTournamentPhaseDto {

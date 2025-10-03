@@ -1,4 +1,4 @@
-import { MatchType } from '@prisma/client';
+import { MatchType } from '../client';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateMatchDto {

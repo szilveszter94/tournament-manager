@@ -1,0 +1,234 @@
+model Elimination {
+  id                Int             @id @default(autoincrement())
+  tournamentPhaseId Int             @unique
+  type              EliminationType @default(Knockout)
+  currentRound      Int             @default(1)
+  isOver            Boolean         @default(false)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  // Relations
+  tournamentPhase TournamentPhase @relation(fields: [tournamentPhaseId], references: [id], onDelete: Cascade)
+  matches         Match[]
+
+  @@index([type, currentRound])
+}
+
+enum EliminationType {
+  Knockout
+  Double
+}
+
+enum MatchType {
+  Group
+  Knockout
+  Bronze
+  Final
+}
+
+enum PhaseType {
+  None
+  GroupStage
+  SingleElimination
+  DoubleElimination
+  RoundRobin
+  Swiss
+}
+
+enum ParticipantType {
+  Individual
+  Team
+}
+
+enum TournamentStatus {
+  Setup
+  Started
+  Over
+}
+
+model Match {
+  id                Int       @id @default(autoincrement())
+  tournamentPhaseId Int
+  eliminationId     Int?
+  tournamentGroupId Int?
+  participant1Id    Int?
+  participant2Id    Int?
+  winnerId          Int?
+  nextMatchId       Int?
+  round             Int?
+  serialNumber      Int?
+  isOver            Boolean   @default(false)
+  matchType         MatchType
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  // Relations
+  tournamentPhase TournamentPhase  @relation(fields: [tournamentPhaseId], references: [id], onDelete: Cascade)
+  elimination     Elimination?     @relation(fields: [eliminationId], references: [id], onDelete: SetNull)
+  group           TournamentGroup? @relation(fields: [tournamentGroupId], references: [id], onDelete: SetNull)
+
+  participant1 Participant? @relation("MatchParticipant1", fields: [participant1Id], references: [id], onDelete: SetNull)
+  participant2 Participant? @relation("MatchParticipant2", fields: [participant2Id], references: [id], onDelete: SetNull)
+  winner       Participant? @relation("MatchWinner", fields: [winnerId], references: [id], onDelete: SetNull)
+
+  // Self relation for brackets flow
+  nextMatch   Match?  @relation("NextMatch", fields: [nextMatchId], references: [id], onDelete: SetNull)
+  prevMatches Match[] @relation("NextMatch")
+
+  @@unique([tournamentPhaseId, serialNumber])
+  @@index([tournamentPhaseId, matchType, round])
+  @@index([eliminationId])
+  @@index([tournamentGroupId])
+  @@index([participant1Id])
+  @@index([participant2Id])
+  @@index([winnerId])
+}
+
+model Participant {
+  id        Int             @id @default(autoincrement())
+  name      String          @unique
+  type      ParticipantType
+  elo       Int             @default(1500)
+  wins      Int             @default(0)
+  losses    Int             @default(0)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  // Relations
+  tournaments ParticipantTournament[]
+  groups      ParticipantGroup[]
+  matchesAsP1 Match[]                 @relation("MatchParticipant1")
+  matchesAsP2 Match[]                 @relation("MatchParticipant2")
+  matchesWon  Match[]                 @relation("MatchWinner")
+  podiums     TournamentWinner[]
+
+  @@index([name])
+}
+
+model ParticipantGroup {
+  id                Int      @id @default(autoincrement())
+  tournamentGroupId Int
+  participantId     Int
+  wins              Int      @default(0)
+  losses            Int      @default(0)
+  points            Int      @default(0)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relations
+  group       TournamentGroup @relation(fields: [tournamentGroupId], references: [id], onDelete: Cascade)
+  participant Participant     @relation(fields: [participantId], references: [id], onDelete: Cascade)
+
+  @@unique([tournamentGroupId, participantId])
+  @@index([participantId])
+}
+
+model ParticipantTournament {
+  id            Int      @id @default(autoincrement())
+  participantId Int
+  tournamentId  Int
+  wins          Int      @default(0)
+  losses        Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  tournament  Tournament  @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  participant Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
+
+  @@unique([participantId, tournamentId])
+  @@index([participantId])
+  @@index([tournamentId])
+}
+
+model Tournament {
+  id        Int              @id @default(autoincrement())
+  name      String
+  status    TournamentStatus @default(Setup)
+  type      ParticipantType
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  // Relations
+  phases       TournamentPhase[]
+  participants ParticipantTournament[]
+  winners      TournamentWinner[]
+
+  @@index([name])
+}
+
+model TournamentGroup {
+  id                  Int      @id @default(autoincrement())
+  tournamentPhaseId   Int
+  groupNumber         Int
+  isGroupMatchesEnded Boolean  @default(false)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  // Relations
+  tournamentPhase   TournamentPhase    @relation(fields: [tournamentPhaseId], references: [id], onDelete: Cascade)
+  participantGroups ParticipantGroup[]
+  matches           Match[]
+
+  @@unique([tournamentPhaseId, groupNumber])
+  @@index([tournamentPhaseId])
+}
+
+model TournamentPhase {
+  id           Int       @id @default(autoincrement())
+  tournamentId Int
+  phaseType    PhaseType
+  order        Int
+  isCompleted  Boolean   @default(false)
+
+  elimination Elimination?
+  groups      TournamentGroup[]
+  matches     Match[]
+
+  tournament Tournament @relation(fields: [tournamentId], references: [id])
+}
+
+model TournamentWinner {
+  id            Int      @id @default(autoincrement())
+  tournamentId  Int
+  participantId Int
+  place         Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  tournament  Tournament  @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  participant Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
+
+  @@unique([tournamentId, place])
+  @@index([tournamentId])
+}
+
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/client"
+}
+
+generator backend {
+  provider                      = "prisma-generator-nestjs-dto"
+  output                        = "../generated/models"
+  prismaClientImportPath        = "../client"
+  requiredResponseApiProperty   = "true"
+  outputType                    = "class"
+  prettier                      = "true"
+  exportRelationModifierClasses = "true"
+  wrapRelationsAsType           = "false"
+  generateFileTypes             = "all"
+  showDefaultValues             = "true"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}

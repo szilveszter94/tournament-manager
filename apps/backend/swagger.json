@@ -166,7 +166,6 @@
             "required": false,
             "in": "query",
             "schema": {
-              "format": "date-time",
               "example": "2012.10.05",
               "type": "string"
             }
@@ -176,7 +175,6 @@
             "required": false,
             "in": "query",
             "schema": {
-              "format": "date-time",
               "example": "2012.10.05",
               "type": "string"
             }
@@ -186,7 +184,6 @@
             "required": false,
             "in": "query",
             "schema": {
-              "format": "date-time",
               "example": "2012.10.05",
               "type": "string"
             }
@@ -196,7 +193,6 @@
             "required": false,
             "in": "query",
             "schema": {
-              "format": "date-time",
               "example": "2012.10.05",
               "type": "string"
             }
@@ -1142,7 +1138,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-01T18:50:25.756Z"
+            "default": "2025-10-03T11:03:48.008Z"
           }
         },
         "required": [
@@ -1174,7 +1170,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-01T18:50:25.748Z"
+            "default": "2025-10-03T11:03:48.001Z"
           }
         }
       },
@@ -1260,7 +1256,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-01T18:50:25.890Z"
+            "default": "2025-10-03T11:03:48.226Z"
           }
         },
         "required": [
@@ -1299,7 +1295,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-01T18:50:25.900Z"
+            "default": "2025-10-03T11:03:48.235Z"
           }
         }
       }
