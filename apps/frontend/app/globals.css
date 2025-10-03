@@ -10,6 +10,7 @@
   --color-secondary: var(--secondary);
   --color-tertiary: var(--tertiary);
   --color-icon: var(--icon);
+  --color-disabled: var(--disabled);
 
   --font-roboto: var(--font-roboto);
   --font-mono: var(--font-roboto-mono);

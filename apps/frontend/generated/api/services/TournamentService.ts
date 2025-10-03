@@ -68,13 +68,49 @@ export class TournamentService {
     }
     /**
      * Get all tournaments
+     * @param query
+     * @param status
+     * @param type
+     * @param sortBy
+     * @param sortOrder
+     * @param createdFrom
+     * @param createdTo
+     * @param updatedFrom
+     * @param updatedTo
+     * @param itemsPerPage
+     * @param currentPage
      * @returns TournamentsResponse
      * @throws ApiError
      */
-    public tournamentControllerFindAll(): CancelablePromise<TournamentsResponse> {
+    public tournamentControllerFindByQuery(
+        query?: string,
+        status?: Array<string>,
+        type?: Array<string>,
+        sortBy?: 'name' | 'createdAt' | 'updatedAt' | 'status' | 'type',
+        sortOrder?: 'asc' | 'desc',
+        createdFrom?: string,
+        createdTo?: string,
+        updatedFrom?: string,
+        updatedTo?: string,
+        itemsPerPage?: number,
+        currentPage?: number,
+    ): CancelablePromise<TournamentsResponse> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/tournament',
+            query: {
+                'query': query,
+                'status': status,
+                'type': type,
+                'sortBy': sortBy,
+                'sortOrder': sortOrder,
+                'createdFrom': createdFrom,
+                'createdTo': createdTo,
+                'updatedFrom': updatedFrom,
+                'updatedTo': updatedTo,
+                'itemsPerPage': itemsPerPage,
+                'currentPage': currentPage,
+            },
         });
     }
     /**

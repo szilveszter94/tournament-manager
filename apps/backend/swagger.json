@@ -102,8 +102,124 @@
     },
     "/tournament": {
       "get": {
-        "operationId": "TournamentController_findAll",
-        "parameters": [],
+        "operationId": "TournamentController_findByQuery",
+        "parameters": [
+          {
+            "name": "query",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "type",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "name",
+                "createdAt",
+                "updatedAt",
+                "status",
+                "type"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortOrder",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "createdFrom",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "date-time",
+              "example": "2012.10.05",
+              "type": "string"
+            }
+          },
+          {
+            "name": "createdTo",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "date-time",
+              "example": "2012.10.05",
+              "type": "string"
+            }
+          },
+          {
+            "name": "updatedFrom",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "date-time",
+              "example": "2012.10.05",
+              "type": "string"
+            }
+          },
+          {
+            "name": "updatedTo",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "date-time",
+              "example": "2012.10.05",
+              "type": "string"
+            }
+          },
+          {
+            "name": "itemsPerPage",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "example": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "currentPage",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
@@ -967,6 +1083,18 @@
           "ok"
         ]
       },
+      "Pagination": {
+        "type": "object",
+        "properties": {
+          "totalPages": {
+            "type": "number",
+            "example": 42
+          }
+        },
+        "required": [
+          "totalPages"
+        ]
+      },
       "TournamentsResponse": {
         "type": "object",
         "properties": {
@@ -981,6 +1109,9 @@
             "items": {
               "$ref": "#/components/schemas/Tournament"
             }
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/Pagination"
           }
         },
         "required": [
@@ -1011,7 +1142,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-09-27T19:32:35.336Z"
+            "default": "2025-10-01T18:50:25.756Z"
           }
         },
         "required": [
@@ -1043,7 +1174,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-09-27T19:32:35.320Z"
+            "default": "2025-10-01T18:50:25.748Z"
           }
         }
       },
@@ -1129,7 +1260,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-09-27T19:32:35.466Z"
+            "default": "2025-10-01T18:50:25.890Z"
           }
         },
         "required": [
@@ -1168,7 +1299,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-09-27T19:32:35.476Z"
+            "default": "2025-10-01T18:50:25.900Z"
           }
         }
       }

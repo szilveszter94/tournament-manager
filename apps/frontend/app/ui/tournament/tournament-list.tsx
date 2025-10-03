@@ -1,20 +1,44 @@
 import { fetchTournaments } from "@/app/tournament/api";
-import Link from "next/link";
 import React from "react";
+import { TournamentQueryParams } from "@/lib/custom-models";
+import Table from "../components/table/table";
 
-export default async function TournamentList({ query }: { query: string }) {
-  const tournamentList = await fetchTournaments();
-  // TODO - implement query
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  query = "";
+export default async function TournamentList({
+  query,
+  currentPage,
+  sortBy,
+  sortOrder,
+  statusList,
+  typeList,
+  itemsPerPage,
+  createdFrom,
+  createdTo,
+  updatedFrom,
+  updatedTo,
+}: TournamentQueryParams) {
+  const response = await fetchTournaments(
+    query,
+    itemsPerPage,
+    currentPage,
+    sortBy,
+    sortOrder,
+    statusList,
+    typeList,
+    createdFrom,
+    createdTo,
+    updatedFrom,
+    updatedTo
+  );
+
+  if (!response.data) {
+    return;
+  }
 
   return (
-    <ul>
-      {tournamentList.data?.map((t) => (
-        <li key={t.id}>
-          <Link href={`tournament/${t.id}`}>{t.name}</Link>
-        </li>
-      ))}
-    </ul>
+    <div>
+      <div className="overflow-x-auto">
+        <Table data={response.data} totalPages={response.pagination?.totalPages ?? 0} />
+      </div>
+    </div>
   );
 }

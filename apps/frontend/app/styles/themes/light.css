@@ -5,6 +5,7 @@ html.light {
   --secondary: #d8faff;
   --tertiary: #e1ece6;
   --icon: #000000;
+  --disabled: #515152;
 
   --on-background: #acffc9;
   --on-foreground: rgb(10, 92, 107);
@@ -16,5 +17,5 @@ html.light {
   --subtitle-text-color: #272727;
 
   --primary-border-color: #d1d5dc;
-  --secondary-border-color: #8ea9d3;
+  --secondary-border-color: #2f3031;
 }

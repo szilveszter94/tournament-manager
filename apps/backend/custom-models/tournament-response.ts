@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Tournament } from '../generated/models/tournament.entity';
 import { BaseResponse } from './base-response';
+import { Pagination } from './pagination';
 
 export class TournamentResponse extends BaseResponse {
   @ApiProperty({ type: () => Tournament, required: false })
@@ -10,4 +11,6 @@ export class TournamentResponse extends BaseResponse {
 export class TournamentsResponse extends BaseResponse {
   @ApiProperty({ type: () => Tournament, isArray: true, required: false })
   data?: Tournament[];
+  @ApiProperty({ type: () => Pagination, required: false })
+  pagination?: Pagination;
 }

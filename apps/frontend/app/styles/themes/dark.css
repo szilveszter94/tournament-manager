@@ -5,6 +5,7 @@ html.dark {
   --secondary: #0b191d;
   --tertiary: #182327;
   --icon: #2d96b3;
+  --disabled: #515152;
 
   --on-background: #000000;
   --on-foreground: #95caff;

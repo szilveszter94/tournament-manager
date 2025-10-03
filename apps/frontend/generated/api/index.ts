@@ -17,6 +17,7 @@ export type { Elimination } from './models/Elimination';
 export { EliminationType } from './models/EliminationType';
 export type { Match } from './models/Match';
 export { MatchType } from './models/MatchType';
+export type { Pagination } from './models/Pagination';
 export type { Participant } from './models/Participant';
 export type { ParticipantGroup } from './models/ParticipantGroup';
 export type { ParticipantResponse } from './models/ParticipantResponse';

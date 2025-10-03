@@ -1,0 +1,136 @@
+import { DateFilter } from "@/generated/backend/shared";
+import {
+  Popover,
+  PopoverButton,
+  PopoverPanel,
+  Transition,
+} from "@headlessui/react";
+import { FunnelIcon } from "@heroicons/react/24/outline";
+import clsx from "clsx";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Fragment, useState } from "react";
+
+interface DateRangeFilterProps {
+  name: string;
+  value: DateFilter;
+}
+
+export default function DateRangePicker({ name, value }: DateRangeFilterProps) {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+  const [dateError, setDateError] = useState<string | null>(null);
+
+  const handleFromChange = (date: string) => {
+    const params = new URLSearchParams(searchParams);
+    if (date) {
+      if (!datesAreValid(date, params.get(value.to))) return;
+      params.set(value.from, date);
+    } else {
+      params.delete(value.from);
+    }
+    params.set('page', '1');
+    replace(`${pathname}?${params.toString()}`);
+  };
+
+  const handleToChange = (date: string) => {
+    const params = new URLSearchParams(searchParams);
+    if (date) {
+      if (!datesAreValid(params.get(value.from), date)) return;
+      params.set(value.to, date);
+    } else {
+      params.delete(value.to);
+    }
+    params.set('page', '1');
+    replace(`${pathname}?${params.toString()}`);
+  };
+
+  const datesAreValid = (
+    fromDate: string | null,
+    toDate: string | null
+  ): boolean => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const from = fromDate ? new Date(fromDate) : null;
+    const to = toDate ? new Date(toDate) : null;
+
+    if (from && from > today) {
+      setDateError("Start date cannot be later than today");
+      return false;
+    }
+
+    if (to && to > today) {
+      setDateError("End date cannot be later than today");
+      return false;
+    }
+
+    if (from && to && from > to) {
+      setDateError("Start date cannot be later than end date");
+      return false;
+    }
+
+    setDateError(null);
+    return true;
+  };
+
+  const getPathValue = (value: string) => {
+    return searchParams.get(value)?.toString();
+  };
+
+  return (
+    <Popover className="relative">
+      <PopoverButton className="w-full bg-secondary text-secondary-border-color hover:font-black cursor-pointer rounded-md py-2 pr-10 text-left focus:outline-none shadow-sm sm:text-sm">
+        <div className="flex gap-1 items-center">
+          <FunnelIcon className="h-5 w-5" />
+          <span
+            className={clsx("text-primary-border-color text-xs", {
+              "text-secondary-border-color":
+                getPathValue(value.from) || getPathValue(value.to),
+            })}
+          >
+            {name}
+          </span>
+        </div>
+      </PopoverButton>
+
+      <Transition
+        as={Fragment}
+        enter="transition ease-out duration-100"
+        enterFrom="opacity-0 translate-y-1"
+        enterTo="opacity-100 translate-y-0"
+        leave="transition ease-in duration-75"
+        leaveFrom="opacity-100 translate-y-0"
+        leaveTo="opacity-0 translate-y-1"
+      >
+        <PopoverPanel className="fixed z-50 w-52 rounded-md bg-secondary p-3 shadow-lg">
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center">
+              <span className="w-12 text-left">From: </span>
+              <input
+                type="date"
+                defaultValue={getPathValue(value.from)}
+                onChange={(e) => handleFromChange(e.target.value)}
+                className="border rounded px-2 py-1 text-xs flex-1"
+                placeholder="From"
+              />
+            </div>
+            <div className="flex items-center">
+              <span className="w-12 text-left">To: </span>
+              <input
+                type="date"
+                defaultValue={getPathValue(value.to)}
+                onChange={(e) => handleToChange(e.target.value)}
+                className="border rounded px-2 py-1 text-xs flex-1"
+                placeholder="To"
+              />
+            </div>
+            {dateError && (
+              <span className="text-red-500 text-xs">{dateError}</span>
+            )}
+          </div>
+        </PopoverPanel>
+      </Transition>
+    </Popover>
+  );
+}

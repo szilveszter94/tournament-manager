@@ -7,6 +7,9 @@ import {
 import { UpdateTournamentDto } from '../../generated/models/update-tournament.dto';
 import { BaseResponse } from '../../custom-models/base-response';
 import { CreateTournamentDto } from '../../generated/models/create-tournament.dto';
+import { ParticipantType, Prisma, TournamentStatus } from '@prisma/client';
+import type { SortOrder, TournamentSortBy } from '../../custom-models/shared';
+import handleDateRange from '../utils/helper';
 
 @Injectable()
 export class TournamentService {
@@ -38,13 +41,58 @@ export class TournamentService {
     }
   }
 
-  async findAll(): Promise<TournamentsResponse> {
+  async findByQuery(
+    query: string | undefined,
+    currentPage: number,
+    itemsPerPage: number,
+    status?: TournamentStatus[],
+    type?: ParticipantType[],
+    sortBy: TournamentSortBy = 'createdAt',
+    sortOrder: SortOrder = 'desc',
+    createdFrom?: string,
+    createdTo?: string,
+    updatedFrom?: string,
+    updatedTo?: string,
+  ): Promise<TournamentsResponse> {
     try {
-      const tournaments = await this.prisma.tournament.findMany();
-      return { ok: true, data: tournaments };
+      const skip = (currentPage - 1) * itemsPerPage;
+
+      const createdRange = handleDateRange(createdFrom, createdTo);
+      const updatedRange = handleDateRange(updatedFrom, updatedTo);
+
+      const where: Prisma.TournamentWhereInput = {
+        ...(query && {
+          name: { contains: query, mode: 'insensitive' },
+        }),
+        ...(status && status.length > 0 && { status: { in: status } }),
+        ...(type && type.length > 0 && { type: { in: type } }),
+        ...(createdRange && { createdAt: createdRange }),
+        ...(updatedRange && { updatedAt: updatedRange }),
+      };
+
+      const [tournaments, totalCount] = await this.prisma.$transaction([
+        this.prisma.tournament.findMany({
+          where,
+          skip,
+          take: itemsPerPage,
+          orderBy: { [sortBy]: sortOrder },
+        }),
+        this.prisma.tournament.count({ where }),
+      ]);
+
+      return {
+        ok: true,
+        data: tournaments,
+        pagination: {
+          totalPages: Math.ceil(totalCount / itemsPerPage),
+        },
+      };
     } catch (e) {
       this.logger.error('Database error while fetching tournaments', e.stack);
-      return { ok: false, error: 'Database error. Failed to get tournaments.' };
+      return {
+        ok: false,
+        error: 'Database error. Failed to get tournaments.',
+      };
     }
   }
 
