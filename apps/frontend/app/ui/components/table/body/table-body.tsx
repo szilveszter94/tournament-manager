@@ -15,11 +15,10 @@ export default function TableBody<T>({ columns, data }: TableBodyProps<T>) {
     const value = row[key];
 
     if (typeof value === "string") {
-      return value.split("T")[0];
-    }
-
-    if (value instanceof Date) {
-      return value.toISOString().split("T")[0];
+      const parsed = new Date(value);
+      if (!isNaN(parsed.getTime())) {
+        return parsed.toISOString().split("T")[0];
+      }
     }
 
     return "";
