@@ -6,7 +6,7 @@ import RadioGroup from "@/app/ui/components/radio-button/radio-group";
 import { radioButtonOptions } from "./constants";
 import CustomButton from "@/app/ui/components/custom-button/custom-button";
 import { ArrowRightCircleIcon } from "@heroicons/react/16/solid";
-import { initialState } from "@/lib/custom-models";
+import { initialState } from "@/lib/custom-models/common";
 
 export default function CreateTournamentForm() {
   const [state, formAction] = useActionState(createTournament, initialState);

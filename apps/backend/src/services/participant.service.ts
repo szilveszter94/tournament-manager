@@ -1,13 +1,18 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
-import {
-  ParticipantResponse,
-  ParticipantsResponse,
-} from '../../custom-models/participant-response';
-import { BaseResponse } from 'custom-models/base-response';
 import { CreateParticipantDto } from '../../generated/models/create-participant.dto';
 import { UpdateParticipantDto } from '../../generated/models/update-participant.dto';
-import { Prisma } from 'generated/client';
+import { Prisma } from '../../generated/client';
+import {
+  FindParticipantQueryDto,
+  ParticipantResponse,
+  ParticipantsResponse,
+} from '../../custom-models/api/participant';
+import { BaseResponse } from '../../custom-models/api/base-response';
+import {
+  handleDateRange as getDateRange,
+  handleNumberRange as getNumberRange,
+} from '../utils/helper';
 
 @Injectable()
 export class ParticipantService {
@@ -36,26 +41,54 @@ export class ParticipantService {
     }
   }
 
-  async findByQuery(
-    query: string | undefined,
-    currentPage: number,
-    itemsPerPage: number,
-  ): Promise<ParticipantsResponse> {
+  async findByQuery({
+    query,
+    currentPage,
+    itemsPerPage,
+    type,
+    sortBy,
+    sortOrder,
+    createdFrom,
+    createdTo,
+    updatedFrom,
+    updatedTo,
+    eloFrom,
+    eloTo,
+    winsFrom,
+    winsTo,
+    lossesFrom,
+    lossesTo,
+  }: FindParticipantQueryDto): Promise<ParticipantsResponse> {
     try {
-      const skip = (currentPage - 1) * itemsPerPage;
+      type = Array.isArray(type) ? type : type ? [type] : [];
+      const convertedCurrentPage = +currentPage;
+      const convertedItemsPerPage = +itemsPerPage;
+      const skip = (convertedCurrentPage - 1) * convertedItemsPerPage;
+
+      const createdRange = getDateRange(createdFrom, createdTo);
+      const updatedRange = getDateRange(updatedFrom, updatedTo);
+      const eloRange = getNumberRange(eloFrom, eloTo);
+      const winsRange = getNumberRange(winsFrom, winsTo);
+      const lossesRange = getNumberRange(lossesFrom, lossesTo);
 
       const where: Prisma.ParticipantWhereInput = {
         ...(query && {
           name: { contains: query, mode: 'insensitive' },
         }),
+        ...(type && type.length > 0 && { type: { in: type } }),
+        ...(createdRange && { createdAt: createdRange }),
+        ...(updatedRange && { updatedAt: updatedRange }),
+        ...(eloRange && { elo: eloRange }),
+        ...(winsRange && { wins: winsRange }),
+        ...(lossesRange && { losses: lossesRange }),
       };
 
       const [participants, totalCount] = await this.prisma.$transaction([
         this.prisma.participant.findMany({
           where,
           skip,
-          take: itemsPerPage,
-          orderBy: { createdAt: 'desc' },
+          take: convertedItemsPerPage,
+          orderBy: { [sortBy]: sortOrder },
         }),
         this.prisma.participant.count({ where }),
       ]);
@@ -64,7 +97,7 @@ export class ParticipantService {
         ok: true,
         data: participants,
         pagination: {
-          totalPages: Math.ceil(totalCount / itemsPerPage),
+          totalPages: Math.ceil(totalCount / convertedItemsPerPage),
           totalItems: totalCount,
         },
       };

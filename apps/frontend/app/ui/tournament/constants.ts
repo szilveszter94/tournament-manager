@@ -1,8 +1,5 @@
 import { ParticipantType, PhaseType, Tournament } from "@/generated/api";
-import {
-  createdDateFilterValues,
-  updatedDateFilterValues,
-} from "@/generated/backend/shared";
+import { createdDateFilterValues, updatedDateFilterValues } from "@/generated/backend/common";
 import {
   Column,
   PARTICIPANT_TYPE_VALUES,

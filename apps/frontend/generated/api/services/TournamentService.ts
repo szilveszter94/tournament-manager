@@ -69,14 +69,14 @@ export class TournamentService {
     /**
      * Get all tournaments
      * @param query
-     * @param status
-     * @param type
-     * @param sortBy
-     * @param sortOrder
-     * @param createdFrom
-     * @param createdTo
-     * @param updatedFrom
      * @param updatedTo
+     * @param updatedFrom
+     * @param createdTo
+     * @param createdFrom
+     * @param sortOrder
+     * @param sortBy
+     * @param type
+     * @param status
      * @param itemsPerPage
      * @param currentPage
      * @returns TournamentsResponse
@@ -84,14 +84,14 @@ export class TournamentService {
      */
     public tournamentControllerFindByQuery(
         query?: string,
-        status?: Array<string>,
-        type?: Array<string>,
-        sortBy?: 'name' | 'createdAt' | 'updatedAt' | 'status' | 'type',
-        sortOrder?: 'asc' | 'desc',
-        createdFrom?: string,
-        createdTo?: string,
-        updatedFrom?: string,
         updatedTo?: string,
+        updatedFrom?: string,
+        createdTo?: string,
+        createdFrom?: string,
+        sortOrder?: 'asc' | 'desc',
+        sortBy?: 'name' | 'createdAt' | 'updatedAt' | 'status' | 'type',
+        type?: Array<'Individual' | 'Team'>,
+        status?: Array<'Setup' | 'Started' | 'Over'>,
         itemsPerPage?: number,
         currentPage?: number,
     ): CancelablePromise<TournamentsResponse> {
@@ -100,14 +100,14 @@ export class TournamentService {
             url: '/tournament',
             query: {
                 'query': query,
-                'status': status,
-                'type': type,
-                'sortBy': sortBy,
-                'sortOrder': sortOrder,
-                'createdFrom': createdFrom,
-                'createdTo': createdTo,
-                'updatedFrom': updatedFrom,
                 'updatedTo': updatedTo,
+                'updatedFrom': updatedFrom,
+                'createdTo': createdTo,
+                'createdFrom': createdFrom,
+                'sortOrder': sortOrder,
+                'sortBy': sortBy,
+                'type': type,
+                'status': status,
                 'itemsPerPage': itemsPerPage,
                 'currentPage': currentPage,
             },

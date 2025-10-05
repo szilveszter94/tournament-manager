@@ -1,37 +1,26 @@
 import TournamentList from "@/app/ui/tournament/tournament-list";
+import { TournamentSearchParams } from "@/lib/custom-models/tournament";
 import {
   DEFAULT_CURRENT_PAGE,
   DEFAULT_ITEMS_PER_PAGE,
 } from "@/lib/global-constants";
 import {
-  parseSortBy,
+  parseTournamentSortBy,
   parseSortOrder,
-  parseStatusList,
-  parseTypeList,
+  parseTournamentStatus,
+  parseParticipantType,
 } from "@/lib/utils";
 
 export default async function Page(props: {
-  searchParams?: Promise<{
-    query?: string;
-    page?: string;
-    sortBy?: string;
-    sortOrder?: string;
-    status: string | string[];
-    type: string | string[];
-    itemsPerPage: string;
-    createdFrom: string;
-    createdTo: string;
-    updatedFrom: string;
-    updatedTo: string;
-  }>;
+  searchParams?: Promise<TournamentSearchParams>;
 }) {
   const searchParams = await props.searchParams;
   const query = searchParams?.query || "";
   const currentPage = Number(searchParams?.page) || DEFAULT_CURRENT_PAGE;
   const sortOrder = parseSortOrder(searchParams?.sortOrder);
-  const sortBy = parseSortBy(searchParams?.sortBy);
-  const statusList = parseStatusList(searchParams?.status);
-  const typeList = parseTypeList(searchParams?.type);
+  const sortBy = parseTournamentSortBy(searchParams?.sortBy);
+  const statusList = parseTournamentStatus(searchParams?.status);
+  const typeList = parseParticipantType(searchParams?.type);
   const itemsPerPage =
     Number(searchParams?.itemsPerPage) || DEFAULT_ITEMS_PER_PAGE;
   const createdFrom = searchParams?.createdFrom ?? "";
@@ -50,10 +39,10 @@ export default async function Page(props: {
           statusList={statusList}
           typeList={typeList}
           itemsPerPage={itemsPerPage}
-          createdFrom = {createdFrom}
-          createdTo = {createdTo}
-          updatedFrom = {updatedFrom}
-          updatedTo = {updatedTo}
+          createdFrom={createdFrom}
+          createdTo={createdTo}
+          updatedFrom={updatedFrom}
+          updatedTo={updatedTo}
         />
       </div>
     </main>

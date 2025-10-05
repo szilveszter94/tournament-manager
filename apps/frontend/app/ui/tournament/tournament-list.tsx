@@ -1,35 +1,11 @@
 import { fetchTournaments } from "@/app/tournament/api";
 import React from "react";
-import { TournamentQueryParams } from "@/lib/custom-models";
 import Table from "../components/table/table";
 import { tournamentTableHeaders } from "./constants";
+import { TournamentQueryParams } from "@/lib/custom-models/tournament";
 
-export default async function TournamentList({
-  query,
-  currentPage,
-  sortBy,
-  sortOrder,
-  statusList,
-  typeList,
-  itemsPerPage,
-  createdFrom,
-  createdTo,
-  updatedFrom,
-  updatedTo,
-}: TournamentQueryParams) {
-  const response = await fetchTournaments(
-    query,
-    itemsPerPage,
-    currentPage,
-    sortBy,
-    sortOrder,
-    statusList,
-    typeList,
-    createdFrom,
-    createdTo,
-    updatedFrom,
-    updatedTo
-  );
+export default async function TournamentList(params: TournamentQueryParams) {
+  const response = await fetchTournaments(params);
 
   if (!response.data) {
     return;

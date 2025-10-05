@@ -1,4 +1,4 @@
-export default function handleDateRange(
+export function handleDateRange(
   from?: string,
   to?: string,
 ): { gte?: Date; lte?: Date } | undefined {
@@ -30,5 +30,32 @@ export default function handleDateRange(
   return {
     ...(fromDate && { gte: new Date(fromDate.setHours(0, 0, 0, 0)) }),
     ...(toDate && { lte: new Date(toDate.setHours(23, 59, 59, 999)) }),
+  };
+}
+
+export function handleNumberRange(
+  min?: string,
+  max?: string,
+): { gte?: number; lte?: number } | undefined {
+  if (!min && !max) return undefined;
+
+  const minValue = min ? Number(min) : undefined;
+  const maxValue = max ? Number(max) : undefined;
+
+  if (minValue !== undefined && isNaN(minValue)) {
+    throw new Error(`Invalid "min" value: ${min}`);
+  }
+
+  if (maxValue !== undefined && isNaN(maxValue)) {
+    throw new Error(`Invalid "max" value: ${max}`);
+  }
+
+  if (minValue !== undefined && maxValue !== undefined && minValue > maxValue) {
+    throw new Error(`Invalid range: min (${min}) is greater than max (${max})`);
+  }
+
+  return {
+    ...(minValue !== undefined && { gte: minValue }),
+    ...(maxValue !== undefined && { lte: maxValue }),
   };
 }

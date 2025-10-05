@@ -1,11 +1,6 @@
 import { Participant } from "@/generated/api";
-import {
-  createdDateFilterValues,
-  eloNumberFilterValues,
-  lossesNumberFilterValues,
-  updatedDateFilterValues,
-  winsNumberFilterValues,
-} from "@/generated/backend/shared";
+import { createdDateFilterValues, updatedDateFilterValues } from "@/generated/backend/common";
+import { eloNumberFilterValues, lossesNumberFilterValues, winsNumberFilterValues } from "@/generated/backend/participant";
 import { Column, PARTICIPANT_TYPE_VALUES } from "@/lib/global-constants";
 
 export const participantColumns: Column<Participant>[] = [

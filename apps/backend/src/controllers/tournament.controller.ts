@@ -10,10 +10,6 @@ import {
 } from '@nestjs/common';
 import { TournamentService } from '../services/tournament.service';
 import {
-  TournamentResponse,
-  TournamentsResponse,
-} from '../../custom-models/tournament-response';
-import {
   ApiTags,
   ApiOkResponse,
   ApiExtraModels,
@@ -22,14 +18,16 @@ import {
   ApiQuery,
 } from '@nestjs/swagger';
 import { UpdateTournamentDto } from '../../generated/models/update-tournament.dto';
-import { BaseResponse } from '../../custom-models/base-response';
 import { CreateTournamentDto } from '../../generated/models/create-tournament.dto';
 import { ParticipantType, TournamentStatus } from '../../generated/client';
-import type { TournamentSortBy, SortOrder } from '../../custom-models/shared';
 import {
-  tournamentSortByValues,
-  sortOrderValues,
-} from '../../custom-models/shared';
+  FindTournamentQueryDto,
+  TournamentResponse,
+  TournamentsResponse,
+} from '../../custom-models/api/tournament';
+import { tournamentSortByValues } from '../../custom-models/shared/tournament';
+import { sortOrderValues } from '../../custom-models/shared/common';
+import { BaseResponse } from '../../custom-models/api/base-response';
 
 @ApiTags('tournament')
 @ApiExtraModels(TournamentResponse)
@@ -37,6 +35,7 @@ import {
 export class TournamentController {
   constructor(private readonly tournamentService: TournamentService) {}
 
+  // GET Tournament by Id
   @Get(':id')
   @ApiOperation({ summary: 'Get a tournament by Id' })
   @ApiOkResponse({ type: TournamentResponse, isArray: false })
@@ -44,6 +43,7 @@ export class TournamentController {
     return this.tournamentService.find(+id);
   }
 
+  // GET Tournaments by query -----------------------------------------------------------------------------------------------------------------
   @Get()
   @ApiOperation({ summary: 'Get all tournaments' })
   @ApiOkResponse({ type: TournamentsResponse, isArray: false })
@@ -104,37 +104,12 @@ export class TournamentController {
     example: '2012.10.05',
   })
   findByQuery(
-    @Query('query') query?: string,
-    @Query('currentPage') currentPage = '1',
-    @Query('itemsPerPage') itemsPerPage = '10',
-    @Query('status') status?: TournamentStatus[],
-    @Query('type') type?: ParticipantType[],
-    @Query('sortBy')
-    sortBy: TournamentSortBy = 'createdAt',
-    @Query('sortOrder') sortOrder: SortOrder = 'desc',
-    @Query('createdFrom') createdFrom?: string,
-    @Query('createdTo') createdTo?: string,
-    @Query('updatedFrom') updatedFrom?: string,
-    @Query('updatedTo') updatedTo?: string,
+    @Query('query') queryParams: FindTournamentQueryDto,
   ): Promise<TournamentsResponse> {
-    const statusList = Array.isArray(status) ? status : status ? [status] : [];
-    const typeList = Array.isArray(type) ? type : type ? [type] : [];
-
-    return this.tournamentService.findByQuery(
-      query,
-      +currentPage,
-      +itemsPerPage,
-      statusList,
-      typeList,
-      sortBy,
-      sortOrder,
-      createdFrom,
-      createdTo,
-      updatedFrom,
-      updatedTo,
-    );
+    return this.tournamentService.findByQuery(queryParams);
   }
 
+  // CREATE new Tournament
   @Post()
   @ApiOperation({ summary: 'Create a new tournament' })
   @ApiOkResponse({ type: TournamentResponse, isArray: false })
@@ -143,6 +118,7 @@ export class TournamentController {
     return this.tournamentService.create(entity);
   }
 
+  // UPDATE Tournament by Id
   @Put(':id')
   @ApiOperation({ summary: 'Update the tournament by Id' })
   @ApiOkResponse({ type: TournamentResponse, isArray: false })
@@ -154,6 +130,7 @@ export class TournamentController {
     return this.tournamentService.update(+id, tournament);
   }
 
+  // DELETE Tournament by Id
   @Delete(':id')
   @ApiOperation({ summary: 'Remove a tournament from the database' })
   @ApiOkResponse({ type: BaseResponse })

@@ -1,11 +1,6 @@
-import {
-  TournamentsResponse,
-  TournamentResponse,
-  TournamentStatus,
-  ParticipantType,
-} from "@/generated/api";
+import { TournamentsResponse, TournamentResponse } from "@/generated/api";
 import { apiClient } from "../../lib/client";
-import { SortOrder, TournamentSortBy } from "@/generated/backend/shared";
+import { TournamentQueryParams } from "@/lib/custom-models/tournament";
 
 export async function fetchTournamentById(
   id: number
@@ -20,31 +15,21 @@ export async function fetchTournamentById(
 }
 
 export async function fetchTournaments(
-  query: string,
-  itemsPerPage: number,
-  currentPage: number,
-  sortBy: TournamentSortBy,
-  sortOrder: SortOrder,
-  status: TournamentStatus[],
-  type: ParticipantType[],
-  createdFrom: string,
-  createdTo: string,
-  updatedFrom: string,
-  updatedTo: string
+  p: TournamentQueryParams
 ): Promise<TournamentsResponse> {
   try {
     const response = await apiClient.tournament.tournamentControllerFindByQuery(
-      query,
-      status,
-      type,
-      sortBy,
-      sortOrder,
-      createdFrom,
-      createdTo,
-      updatedFrom,
-      updatedTo,
-      itemsPerPage,
-      currentPage
+      p.query,
+      p.updatedTo,
+      p.updatedFrom,
+      p.createdTo,
+      p.createdFrom,
+      p.sortOrder,
+      p.sortBy,
+      p.typeList,
+      p.statusList,
+      p.itemsPerPage,
+      p.currentPage
     );
     return response;
   } catch (err) {

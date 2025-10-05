@@ -69,6 +69,19 @@ export class ParticipantService {
     /**
      * Get all participants
      * @param query
+     * @param lossesTo
+     * @param lossesFrom
+     * @param winsTo
+     * @param winsFrom
+     * @param eloTo
+     * @param eloFrom
+     * @param updatedTo
+     * @param updatedFrom
+     * @param createdTo
+     * @param createdFrom
+     * @param sortOrder
+     * @param sortBy
+     * @param type
      * @param itemsPerPage
      * @param currentPage
      * @returns ParticipantsResponse
@@ -76,6 +89,19 @@ export class ParticipantService {
      */
     public participantControllerFindByQuery(
         query?: string,
+        lossesTo?: string,
+        lossesFrom?: string,
+        winsTo?: string,
+        winsFrom?: string,
+        eloTo?: string,
+        eloFrom?: string,
+        updatedTo?: string,
+        updatedFrom?: string,
+        createdTo?: string,
+        createdFrom?: string,
+        sortOrder?: 'asc' | 'desc',
+        sortBy?: 'name' | 'type' | 'elo' | 'wins' | 'losses' | 'createdAt' | 'updatedAt',
+        type?: Array<'Individual' | 'Team'>,
         itemsPerPage?: number,
         currentPage?: number,
     ): CancelablePromise<ParticipantsResponse> {
@@ -84,6 +110,19 @@ export class ParticipantService {
             url: '/participant',
             query: {
                 'query': query,
+                'lossesTo': lossesTo,
+                'lossesFrom': lossesFrom,
+                'winsTo': winsTo,
+                'winsFrom': winsFrom,
+                'eloTo': eloTo,
+                'eloFrom': eloFrom,
+                'updatedTo': updatedTo,
+                'updatedFrom': updatedFrom,
+                'createdTo': createdTo,
+                'createdFrom': createdFrom,
+                'sortOrder': sortOrder,
+                'sortBy': sortBy,
+                'type': type,
                 'itemsPerPage': itemsPerPage,
                 'currentPage': currentPage,
             },

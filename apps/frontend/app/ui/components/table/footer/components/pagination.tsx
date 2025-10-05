@@ -6,6 +6,7 @@ import Link from "next/link";
 import { generatePagination } from "@/lib/utils";
 import { usePathname, useSearchParams } from "next/navigation";
 import { PaginationData } from "@/generated/api";
+import { DEFAULT_ITEMS_PER_PAGE } from "@/lib/global-constants";
 
 type PaginationProps = {
   paginationData: PaginationData | undefined;
@@ -14,7 +15,7 @@ type PaginationProps = {
 export default function Pagination({ paginationData }: PaginationProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const currentPage = Number(searchParams.get("page")) || 1;
+  const currentPage = Number(searchParams.get("page")) || DEFAULT_ITEMS_PER_PAGE;
   const allPages = generatePagination(
     currentPage,
     paginationData?.totalPages ?? 0

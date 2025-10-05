@@ -5,7 +5,7 @@ import CustomButton from "../components/custom-button/custom-button";
 import { CheckCircleIcon } from "@heroicons/react/16/solid";
 import { createParticipant } from "@/app/participant/actions";
 import { useActionState } from "react";
-import { initialState } from "@/lib/custom-models";
+import { initialState } from "@/lib/custom-models/common";
 
 type CreateParticipantProps = {
   type: ParticipantType;

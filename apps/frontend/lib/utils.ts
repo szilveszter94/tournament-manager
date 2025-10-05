@@ -1,22 +1,28 @@
 import { ParticipantType, TournamentStatus } from "@/generated/api";
 import {
-  SortOrder,
-  TournamentSortBy,
-  sortOrderValues,
-  tournamentSortByValues,
-} from "@/generated/backend/shared";
-import {
   PARTICIPANT_TYPE_VALUES,
   TOURNAMENT_STATUS_VALUES,
 } from "./global-constants";
+import { SortOrder, sortOrderValues } from "@/generated/backend/common";
+import {
+  TournamentSortBy,
+  tournamentSortByValues,
+} from "@/generated/backend/tournament";
+import {
+  ParticipantSortBy,
+  participantSortByValues,
+} from "@/generated/backend/participant";
 
 export const parseSortOrder = (value?: string): SortOrder =>
   isAllowed(value, sortOrderValues) ? value : "desc";
 
-export const parseSortBy = (value?: string): TournamentSortBy =>
+export const parseTournamentSortBy = (value?: string): TournamentSortBy =>
   isAllowed(value, tournamentSortByValues) ? value : "createdAt";
 
-export const parseStatusList = (
+export const parseParticipantSortBy = (value?: string): ParticipantSortBy =>
+  isAllowed(value, participantSortByValues) ? value : "createdAt";
+
+export const parseTournamentStatus = (
   values?: string | string[] | null
 ): TournamentStatus[] => {
   if (!values) return [];
@@ -33,7 +39,7 @@ export const parseStatusList = (
   );
 };
 
-export const parseTypeList = (
+export const parseParticipantType = (
   values?: string | string[] | null
 ): ParticipantType[] => {
   if (!values) return [];

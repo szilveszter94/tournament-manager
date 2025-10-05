@@ -1,4 +1,4 @@
-import { copyFile, mkdir } from 'fs/promises';
+import { readFile, writeFile, mkdir, readdir } from 'fs/promises';
 import { generate } from 'openapi-typescript-codegen';
 import { join } from 'path';
 
@@ -11,17 +11,38 @@ async function generateClient() {
     });
     console.log('Next.js API client generated at ./api');
 
-    const source = join(process.cwd(), 'custom-models/shared.ts');
+    const sourceDir = join(process.cwd(), 'custom-models/shared');
     const destinationDir = join(process.cwd(), '../frontend/generated/backend');
-    const destination = join(destinationDir, 'shared.ts');
-
-    await mkdir(destinationDir, { recursive: true });
-    await copyFile(source, destination);
+    await copyAndModifyFolder(sourceDir, destinationDir);
 
     console.log('✅ Copied custom shared.ts model to generated/models');
   } catch (err) {
     console.error('Error generating API client:', err);
     process.exit(1);
+  }
+}
+
+async function copyAndModifyFolder(sourceDir: string, destinationDir: string) {
+  await mkdir(destinationDir, { recursive: true });
+  const entries = await readdir(sourceDir, { withFileTypes: true });
+
+  for (const entry of entries) {
+    const srcPath = join(sourceDir, entry.name);
+    const destPath = join(destinationDir, entry.name);
+
+    if (entry.isDirectory()) {
+      await copyAndModifyFolder(srcPath, destPath);
+    } else {
+      let content = await readFile(srcPath, 'utf-8');
+
+      // Replace old import path with the new one
+      content = content.replace(
+        /from\s+['"]\.\.\/\.\.\/generated\/client['"]/g,
+        `from '@/generated/api'`,
+      );
+
+      await writeFile(destPath, content, 'utf-8');
+    }
   }
 }
 

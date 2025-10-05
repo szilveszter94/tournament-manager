@@ -1,19 +1,15 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
+import { UpdateTournamentDto } from '../../generated/models/update-tournament.dto';
+import { CreateTournamentDto } from '../../generated/models/create-tournament.dto';
+import { Prisma } from '../../generated/client';
+import { handleDateRange } from '../utils/helper';
 import {
   TournamentResponse,
   TournamentsResponse,
-} from '../../custom-models/tournament-response';
-import { UpdateTournamentDto } from '../../generated/models/update-tournament.dto';
-import { BaseResponse } from '../../custom-models/base-response';
-import { CreateTournamentDto } from '../../generated/models/create-tournament.dto';
-import {
-  ParticipantType,
-  Prisma,
-  TournamentStatus,
-} from '../../generated/client';
-import type { SortOrder, TournamentSortBy } from '../../custom-models/shared';
-import handleDateRange from '../utils/helper';
+} from '../../custom-models/api/tournament';
+import { BaseResponse } from '../../custom-models/api/base-response';
+import { FindTournamentQueryDto } from '../../custom-models/api/tournament';
 
 @Injectable()
 export class TournamentService {
@@ -45,21 +41,25 @@ export class TournamentService {
     }
   }
 
-  async findByQuery(
-    query: string | undefined,
-    currentPage: number,
-    itemsPerPage: number,
-    status?: TournamentStatus[],
-    type?: ParticipantType[],
-    sortBy: TournamentSortBy = 'createdAt',
-    sortOrder: SortOrder = 'desc',
-    createdFrom?: string,
-    createdTo?: string,
-    updatedFrom?: string,
-    updatedTo?: string,
-  ): Promise<TournamentsResponse> {
+  async findByQuery({
+    query,
+    currentPage,
+    itemsPerPage,
+    status,
+    type,
+    sortBy,
+    sortOrder,
+    createdFrom,
+    createdTo,
+    updatedFrom,
+    updatedTo,
+  }: FindTournamentQueryDto): Promise<TournamentsResponse> {
     try {
-      const skip = (currentPage - 1) * itemsPerPage;
+      status = Array.isArray(status) ? status : status ? [status] : [];
+      type = Array.isArray(type) ? type : type ? [type] : [];
+      const convertedCurrentPage = +currentPage;
+      const convertedItemsPerPage = +itemsPerPage;
+      const skip = (convertedCurrentPage - 1) * convertedItemsPerPage;
 
       const createdRange = handleDateRange(createdFrom, createdTo);
       const updatedRange = handleDateRange(updatedFrom, updatedTo);
@@ -78,7 +78,7 @@ export class TournamentService {
         this.prisma.tournament.findMany({
           where,
           skip,
-          take: itemsPerPage,
+          take: convertedItemsPerPage,
           orderBy: { [sortBy]: sortOrder },
         }),
         this.prisma.tournament.count({ where }),
@@ -88,7 +88,7 @@ export class TournamentService {
         ok: true,
         data: tournaments,
         pagination: {
-          totalPages: Math.ceil(totalCount / itemsPerPage),
+          totalPages: Math.ceil(totalCount / convertedItemsPerPage),
           totalItems: totalCount,
         },
       };
