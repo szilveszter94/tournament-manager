@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -13,6 +14,7 @@ import {
   ApiExtraModels,
   ApiBody,
   ApiOperation,
+  ApiQuery,
 } from '@nestjs/swagger';
 import { ParticipantService } from '../services/participant.service';
 import {
@@ -39,8 +41,24 @@ export class ParticipantController {
   @Get()
   @ApiOperation({ summary: 'Get all participants' })
   @ApiOkResponse({ type: ParticipantsResponse, isArray: false })
-  findAll(): Promise<ParticipantsResponse> {
-    return this.participantService.findAll();
+  @ApiQuery({ name: 'query', required: false, type: String })
+  @ApiQuery({ name: 'currentPage', required: false, type: Number, example: 1 })
+  @ApiQuery({
+    name: 'itemsPerPage',
+    required: false,
+    type: Number,
+    example: 10,
+  })
+  findByQuery(
+    @Query('query') query?: string,
+    @Query('currentPage') currentPage = '1',
+    @Query('itemsPerPage') itemsPerPage = '10',
+  ): Promise<ParticipantsResponse> {
+    return this.participantService.findByQuery(
+      query,
+      +currentPage,
+      +itemsPerPage,
+    );
   }
 
   @Post()

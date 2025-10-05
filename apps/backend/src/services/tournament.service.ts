@@ -89,6 +89,7 @@ export class TournamentService {
         data: tournaments,
         pagination: {
           totalPages: Math.ceil(totalCount / itemsPerPage),
+          totalItems: totalCount,
         },
       };
     } catch (e) {

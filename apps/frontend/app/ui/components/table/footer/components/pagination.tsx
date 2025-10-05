@@ -5,12 +5,20 @@ import clsx from "clsx";
 import Link from "next/link";
 import { generatePagination } from "@/lib/utils";
 import { usePathname, useSearchParams } from "next/navigation";
+import { PaginationData } from "@/generated/api";
 
-export default function Pagination({ totalPages }: { totalPages: number }) {
+type PaginationProps = {
+  paginationData: PaginationData | undefined;
+};
+
+export default function Pagination({ paginationData }: PaginationProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const currentPage = Number(searchParams.get("page")) || 1;
-  const allPages = generatePagination(currentPage, totalPages);
+  const allPages = generatePagination(
+    currentPage,
+    paginationData?.totalPages ?? 0
+  );
 
   const createPageURL = (pageNumber: number | string) => {
     const params = new URLSearchParams(searchParams);
@@ -50,7 +58,7 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
       <PaginationArrow
         direction="right"
         href={createPageURL(currentPage + 1)}
-        isDisabled={currentPage >= totalPages}
+        isDisabled={currentPage >= (paginationData?.totalPages ?? 0)}
       />
     </div>
   );

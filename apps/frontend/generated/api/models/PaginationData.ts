@@ -2,7 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type Pagination = {
+export type PaginationData = {
     totalPages: number;
+    totalItems: number;
 };
 

@@ -1,4 +1,20 @@
 import { ParticipantType, TournamentStatus } from "@/generated/api";
+import { RangeFilter, FilterType } from "@/generated/backend/shared";
+
+export type Column<T> = {
+  //key: keyof T | string;
+  value: keyof T;
+  name: string;
+  dataType: "string" | "date";
+  filterType: FilterType;
+  typeValues: readonly string[] | RangeFilter;
+  buttons?: ColumnButton[];
+};
+
+export type ColumnButton = {
+  type: "edit" | "delete";
+  path: string;
+};
 
 export const ITEMS_PER_PAGE_LIST = [10, 15, 20, 25, 30];
 export const DEFAULT_ITEMS_PER_PAGE = 10;

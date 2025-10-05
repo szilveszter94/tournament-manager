@@ -365,8 +365,35 @@
     },
     "/participant": {
       "get": {
-        "operationId": "ParticipantController_findAll",
-        "parameters": [],
+        "operationId": "ParticipantController_findByQuery",
+        "parameters": [
+          {
+            "name": "query",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "itemsPerPage",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "example": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "currentPage",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
@@ -1079,16 +1106,21 @@
           "ok"
         ]
       },
-      "Pagination": {
+      "PaginationData": {
         "type": "object",
         "properties": {
           "totalPages": {
             "type": "number",
             "example": 42
+          },
+          "totalItems": {
+            "type": "number",
+            "example": 42
           }
         },
         "required": [
-          "totalPages"
+          "totalPages",
+          "totalItems"
         ]
       },
       "TournamentsResponse": {
@@ -1107,7 +1139,7 @@
             }
           },
           "pagination": {
-            "$ref": "#/components/schemas/Pagination"
+            "$ref": "#/components/schemas/PaginationData"
           }
         },
         "required": [
@@ -1138,7 +1170,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-03T11:03:48.008Z"
+            "default": "2025-10-05T09:56:46.118Z"
           }
         },
         "required": [
@@ -1170,7 +1202,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-03T11:03:48.001Z"
+            "default": "2025-10-05T09:56:46.111Z"
           }
         }
       },
@@ -1219,6 +1251,9 @@
             "items": {
               "$ref": "#/components/schemas/Participant"
             }
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/PaginationData"
           }
         },
         "required": [
@@ -1256,7 +1291,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-03T11:03:48.226Z"
+            "default": "2025-10-05T09:56:46.293Z"
           }
         },
         "required": [
@@ -1295,7 +1330,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-03T11:03:48.235Z"
+            "default": "2025-10-05T09:56:46.303Z"
           }
         }
       }

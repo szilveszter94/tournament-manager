@@ -1,13 +1,56 @@
-import { CreateParticipantDto } from "@/generated/api";
-import { apiClient } from "@/lib/client";
-import { revalidatePath } from "next/cache";
+"use server";
 
-export async function createParticipant(entity: CreateParticipantDto) {
+import { CreateParticipantDto, ParticipantType } from "@/generated/api";
+import { apiClient } from "@/lib/client";
+import { State } from "@/lib/custom-models";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+
+export async function createParticipant(
+  _prevState: State,
+  formData: FormData
+): Promise<State> {
+  const name = formData.get("name")?.toString();
+  const type = formData.get("type") as ParticipantType | null;
+
   try {
-    await apiClient.participant.participantControllerCreate(entity);
-    revalidatePath("/tournament/create");
+    if (!name || !type) {
+      return {
+        message: "Failed to create participant.",
+        errors: {
+          ...(name ? {} : { name: ["Name is required"] }),
+          ...(type
+            ? {}
+            : { participantType: ["A participant type must be selected."] }),
+        },
+      };
+    }
+
+    const entity: CreateParticipantDto = {
+      name: name,
+      type: type,
+      wins: 0,
+      losses: 0,
+      elo: 1500,
+    };
+
+    const result =
+      await apiClient.participant.participantControllerCreate(entity);
+
+    if (!result.ok || !result.data?.id) {
+      return {
+        message: result.error ?? "Failed to create participant",
+        errors: {},
+      };
+    }
   } catch (err) {
     console.error(err);
-    throw new Error(`Failed to create participant with name ${entity.name}`);
+    return {
+      message: "Unexpected server error. Failed to create participant.",
+      errors: {},
+    };
   }
+
+  revalidatePath("/participant");
+  redirect("/participant");
 }

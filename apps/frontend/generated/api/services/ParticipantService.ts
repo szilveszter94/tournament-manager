@@ -68,13 +68,25 @@ export class ParticipantService {
     }
     /**
      * Get all participants
+     * @param query
+     * @param itemsPerPage
+     * @param currentPage
      * @returns ParticipantsResponse
      * @throws ApiError
      */
-    public participantControllerFindAll(): CancelablePromise<ParticipantsResponse> {
+    public participantControllerFindByQuery(
+        query?: string,
+        itemsPerPage?: number,
+        currentPage?: number,
+    ): CancelablePromise<ParticipantsResponse> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/participant',
+            query: {
+                'query': query,
+                'itemsPerPage': itemsPerPage,
+                'currentPage': currentPage,
+            },
         });
     }
     /**

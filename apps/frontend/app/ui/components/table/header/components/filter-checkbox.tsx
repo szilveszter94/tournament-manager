@@ -1,4 +1,4 @@
-import { DateFilter } from "@/generated/backend/shared";
+import { RangeFilter } from "@/generated/backend/shared";
 import {
   Listbox,
   ListboxButton,
@@ -6,7 +6,7 @@ import {
   ListboxOptions,
   Transition,
 } from "@headlessui/react";
-import { FunnelIcon } from "@heroicons/react/16/solid";
+import { FunnelIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Fragment } from "react";
@@ -14,7 +14,7 @@ import { Fragment } from "react";
 type FilterCheckboxProps = {
   filterTypeValue: string;
   filterTypeName: string;
-  filterTypeValues: readonly string[] | DateFilter;
+  filterTypeValues: readonly string[] | RangeFilter;
 };
 
 export default function FilterCheckbox({

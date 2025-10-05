@@ -1,12 +1,13 @@
 import { tournamentTableHeaders } from "@/app/ui/tournament/constants";
 import Pagination from "./components/pagination";
 import ItemsPerPage from "./components/items-per-page";
+import { PaginationData } from "@/generated/api";
 
-type footerProps = {
-  totalPages: number;
+type FooterProps = {
+  paginationData: PaginationData | undefined;
 };
 
-export default function TableFooterRow({ totalPages }: footerProps) {
+export default function TableFooterRow({ paginationData }: FooterProps) {
   return (
     <tfoot>
       <tr>
@@ -16,9 +17,9 @@ export default function TableFooterRow({ totalPages }: footerProps) {
         >
           <div className="flex items-center justify-between">
             <span className="text-xs text-foreground opacity-70">
-              Tournaments List
+              {`${paginationData?.totalItems} items found`}
             </span>
-            <Pagination totalPages={totalPages} />
+            <Pagination paginationData={paginationData}  />
             <ItemsPerPage />
           </div>
         </td>

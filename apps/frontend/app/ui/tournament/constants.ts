@@ -1,24 +1,17 @@
-import { ParticipantType, PhaseType } from "@/generated/api";
+import { ParticipantType, PhaseType, Tournament } from "@/generated/api";
 import {
   createdDateFilterValues,
   updatedDateFilterValues,
 } from "@/generated/backend/shared";
 import {
+  Column,
   PARTICIPANT_TYPE_VALUES,
   TOURNAMENT_STATUS_VALUES,
 } from "@/lib/global-constants";
-import type { DateFilter, FilterType } from "@/generated/backend/shared";
 
 type Option<T> = {
   label: string;
   value: T;
-};
-
-type TournamentHeader = {
-  value: string;
-  name: string;
-  filterType: FilterType;
-  typeValues: readonly string[] | DateFilter;
 };
 
 export const radioButtonOptions = {
@@ -39,30 +32,51 @@ export const radioButtonOptions = {
   ] as Option<ParticipantType>[],
 };
 
-export const tournamentTableHeaders: TournamentHeader[] = [
-  { value: "name", name: "Name", filterType: "search", typeValues: [] },
+export const tournamentTableHeaders: Column<Tournament>[] = [
+  {
+    value: "name",
+    name: "Name",
+    dataType: "string",
+    filterType: "search",
+    typeValues: [],
+  },
   {
     value: "status",
     name: "Status",
+    dataType: "string",
     filterType: "checkbox",
     typeValues: TOURNAMENT_STATUS_VALUES,
   },
   {
     value: "type",
     name: "Type",
+    dataType: "string",
     filterType: "checkbox",
     typeValues: PARTICIPANT_TYPE_VALUES,
   },
   {
     value: "createdAt",
     name: "Created At",
+    dataType: "date",
     filterType: "date",
     typeValues: createdDateFilterValues,
   },
   {
     value: "updatedAt",
     name: "Updated At",
+    dataType: "date",
     filterType: "date",
     typeValues: updatedDateFilterValues,
+  },
+  {
+    value: "id",
+    name: "",
+    dataType: "string",
+    filterType: "search",
+    typeValues: [],
+    buttons: [
+      { type: "edit", path: "/tournament" },
+      { type: "delete", path: "/tournament" },
+    ],
   },
 ];

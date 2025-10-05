@@ -2,6 +2,7 @@ import { fetchTournaments } from "@/app/tournament/api";
 import React from "react";
 import { TournamentQueryParams } from "@/lib/custom-models";
 import Table from "../components/table/table";
+import { tournamentTableHeaders } from "./constants";
 
 export default async function TournamentList({
   query,
@@ -35,10 +36,12 @@ export default async function TournamentList({
   }
 
   return (
-    <div>
-      <div className="overflow-x-auto">
-        <Table data={response.data} totalPages={response.pagination?.totalPages ?? 0} />
-      </div>
+    <div className="overflow-x-auto">
+      <Table
+        columns={tournamentTableHeaders}
+        data={response.data}
+        paginationData={response.pagination}
+      />
     </div>
   );
 }

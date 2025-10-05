@@ -10,20 +10,41 @@ export type TournamentSortBy = (typeof tournamentSortByValues)[number];
 export const sortOrderValues = ['asc', 'desc'] as const;
 export type SortOrder = (typeof sortOrderValues)[number];
 
-export const filterTypeValues = ['search', 'checkbox', 'date'] as const;
+export const filterTypeValues = [
+  'search',
+  'checkbox',
+  'date',
+  'number',
+  'none',
+] as const;
 export type FilterType = (typeof filterTypeValues)[number];
 
-export type DateFilter = {
-  from: string;
-  to: string;
+export type RangeFilter = {
+  min: string;
+  max: string;
 };
 
-export const createdDateFilterValues: DateFilter = {
-  from: 'createdFrom',
-  to: 'createdTo',
+export const createdDateFilterValues: RangeFilter = {
+  min: 'createdFrom',
+  max: 'createdTo',
 };
 
-export const updatedDateFilterValues: DateFilter = {
-  from: 'updatedFrom',
-  to: 'updatedTo',
+export const updatedDateFilterValues: RangeFilter = {
+  min: 'updatedFrom',
+  max: 'updatedTo',
+};
+
+export const eloNumberFilterValues: RangeFilter = {
+  min: 'eloFrom',
+  max: 'eloTo',
+};
+
+export const winsNumberFilterValues: RangeFilter = {
+  min: 'winsFrom',
+  max: 'winsTo',
+};
+
+export const lossesNumberFilterValues: RangeFilter = {
+  min: 'lossesFrom',
+  max: 'lossesTo',
 };

@@ -24,3 +24,9 @@ export type TournamentQueryParams = {
   updatedFrom: string;
   updatedTo: string;
 };
+
+export type ParticipantQueryParams = {
+  query: string;
+  currentPage: number;
+  itemsPerPage: number;
+};

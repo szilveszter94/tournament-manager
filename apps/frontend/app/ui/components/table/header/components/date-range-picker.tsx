@@ -1,4 +1,4 @@
-import { DateFilter } from "@/generated/backend/shared";
+import { RangeFilter } from "@/generated/backend/shared";
 import {
   Popover,
   PopoverButton,
@@ -12,7 +12,7 @@ import { Fragment, useState } from "react";
 
 interface DateRangeFilterProps {
   name: string;
-  value: DateFilter;
+  value: RangeFilter;
 }
 
 export default function DateRangePicker({ name, value }: DateRangeFilterProps) {
@@ -24,24 +24,24 @@ export default function DateRangePicker({ name, value }: DateRangeFilterProps) {
   const handleFromChange = (date: string) => {
     const params = new URLSearchParams(searchParams);
     if (date) {
-      if (!datesAreValid(date, params.get(value.to))) return;
-      params.set(value.from, date);
+      if (!datesAreValid(date, params.get(value.max))) return;
+      params.set(value.min, date);
     } else {
-      params.delete(value.from);
+      params.delete(value.min);
     }
-    params.set('page', '1');
+    params.set("page", "1");
     replace(`${pathname}?${params.toString()}`);
   };
 
   const handleToChange = (date: string) => {
     const params = new URLSearchParams(searchParams);
     if (date) {
-      if (!datesAreValid(params.get(value.from), date)) return;
-      params.set(value.to, date);
+      if (!datesAreValid(params.get(value.min), date)) return;
+      params.set(value.max, date);
     } else {
-      params.delete(value.to);
+      params.delete(value.max);
     }
-    params.set('page', '1');
+    params.set("page", "1");
     replace(`${pathname}?${params.toString()}`);
   };
 
@@ -86,7 +86,7 @@ export default function DateRangePicker({ name, value }: DateRangeFilterProps) {
           <span
             className={clsx("text-primary-border-color text-xs", {
               "text-secondary-border-color":
-                getPathValue(value.from) || getPathValue(value.to),
+                getPathValue(value.min) || getPathValue(value.max),
             })}
           >
             {name}
@@ -109,7 +109,7 @@ export default function DateRangePicker({ name, value }: DateRangeFilterProps) {
               <span className="w-12 text-left">From: </span>
               <input
                 type="date"
-                defaultValue={getPathValue(value.from)}
+                defaultValue={getPathValue(value.min)}
                 onChange={(e) => handleFromChange(e.target.value)}
                 className="border rounded px-2 py-1 text-xs flex-1"
                 placeholder="From"
@@ -119,7 +119,7 @@ export default function DateRangePicker({ name, value }: DateRangeFilterProps) {
               <span className="w-12 text-left">To: </span>
               <input
                 type="date"
-                defaultValue={getPathValue(value.to)}
+                defaultValue={getPathValue(value.max)}
                 onChange={(e) => handleToChange(e.target.value)}
                 className="border rounded px-2 py-1 text-xs flex-1"
                 placeholder="To"

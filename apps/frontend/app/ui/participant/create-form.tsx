@@ -1,26 +1,32 @@
-import { CreateParticipantDto } from "@/generated/api";
+"use client";
+
+import { ParticipantType } from "@/generated/api";
 import CustomButton from "../components/custom-button/custom-button";
 import { CheckCircleIcon } from "@heroicons/react/16/solid";
 import { createParticipant } from "@/app/participant/actions";
+import { useActionState } from "react";
+import { initialState } from "@/lib/custom-models";
 
-export default function CreateParticipantForm() {
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+type CreateParticipantProps = {
+  type: ParticipantType;
+};
 
-    const entity: CreateParticipantDto = {
-      name: "Tibike",
-      elo: 1500,
-      wins: 0,
-      losses: 0,
-    };
-
-    await createParticipant(entity);
-  };
+export default function CreateParticipantForm({
+  type,
+}: CreateParticipantProps) {
+  const [state, formAction] = useActionState(createParticipant, initialState);
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="rounded-md bg-gray-50 p-4 md:p-6"></div>
-
+    <form action={formAction}>
+      <input type="hidden" name="type" value={type} />
+      <input
+        type="text"
+        name="name"
+        placeholder="John Doe"
+        className="w-full rounded-md border px-3 py-2 text-sm"
+        required
+        aria-describedby="name-error"
+      />
       {/* Submit */}
       <CustomButton
         type="submit"
@@ -31,6 +37,7 @@ export default function CreateParticipantForm() {
       >
         Submit
       </CustomButton>
+      {state.message && <p className="text-sm text-red-500">{state.message}</p>}
     </form>
   );
 }
