@@ -19,7 +19,6 @@ export async function fetchTournaments(
 ): Promise<TournamentsResponse> {
   try {
     const response = await apiClient.tournament.tournamentControllerFindByQuery(
-      p.query,
       p.updatedTo,
       p.updatedFrom,
       p.createdTo,
@@ -29,7 +28,8 @@ export async function fetchTournaments(
       p.typeList,
       p.statusList,
       p.itemsPerPage,
-      p.currentPage
+      p.currentPage,
+      p.query
     );
     return response;
   } catch (err) {

@@ -8,7 +8,6 @@ export async function fetchParticipants(
   try {
     const response =
       await apiClient.participant.participantControllerFindByQuery(
-        p.query,
         p.lossesTo,
         p.lossesFrom,
         p.winsTo,
@@ -23,7 +22,8 @@ export async function fetchParticipants(
         p.sortBy,
         p.typeList,
         p.itemsPerPage,
-        p.currentPage
+        p.currentPage,
+        p.query
       );
     return response;
   } catch (err) {

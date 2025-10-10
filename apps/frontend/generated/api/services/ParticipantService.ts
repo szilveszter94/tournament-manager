@@ -68,7 +68,6 @@ export class ParticipantService {
     }
     /**
      * Get all participants
-     * @param query
      * @param lossesTo
      * @param lossesFrom
      * @param winsTo
@@ -84,11 +83,11 @@ export class ParticipantService {
      * @param type
      * @param itemsPerPage
      * @param currentPage
+     * @param query
      * @returns ParticipantsResponse
      * @throws ApiError
      */
     public participantControllerFindByQuery(
-        query?: string,
         lossesTo?: string,
         lossesFrom?: string,
         winsTo?: string,
@@ -104,12 +103,12 @@ export class ParticipantService {
         type?: Array<'Individual' | 'Team'>,
         itemsPerPage?: number,
         currentPage?: number,
+        query?: string,
     ): CancelablePromise<ParticipantsResponse> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/participant',
             query: {
-                'query': query,
                 'lossesTo': lossesTo,
                 'lossesFrom': lossesFrom,
                 'winsTo': winsTo,
@@ -125,6 +124,7 @@ export class ParticipantService {
                 'type': type,
                 'itemsPerPage': itemsPerPage,
                 'currentPage': currentPage,
+                'query': query,
             },
         });
     }

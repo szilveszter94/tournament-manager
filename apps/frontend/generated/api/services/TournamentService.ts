@@ -68,7 +68,6 @@ export class TournamentService {
     }
     /**
      * Get all tournaments
-     * @param query
      * @param updatedTo
      * @param updatedFrom
      * @param createdTo
@@ -79,11 +78,11 @@ export class TournamentService {
      * @param status
      * @param itemsPerPage
      * @param currentPage
+     * @param query
      * @returns TournamentsResponse
      * @throws ApiError
      */
     public tournamentControllerFindByQuery(
-        query?: string,
         updatedTo?: string,
         updatedFrom?: string,
         createdTo?: string,
@@ -94,12 +93,12 @@ export class TournamentService {
         status?: Array<'Setup' | 'Started' | 'Over'>,
         itemsPerPage?: number,
         currentPage?: number,
+        query?: string,
     ): CancelablePromise<TournamentsResponse> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/tournament',
             query: {
-                'query': query,
                 'updatedTo': updatedTo,
                 'updatedFrom': updatedFrom,
                 'createdTo': createdTo,
@@ -110,6 +109,7 @@ export class TournamentService {
                 'status': status,
                 'itemsPerPage': itemsPerPage,
                 'currentPage': currentPage,
+                'query': query,
             },
         });
     }
