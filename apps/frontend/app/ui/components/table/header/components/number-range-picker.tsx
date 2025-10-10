@@ -10,22 +10,25 @@ import clsx from "clsx";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Fragment, useState } from "react";
 
-interface DateRangeFilterProps {
+interface NumberRangeFilterProps {
   name: string;
   value: RangeFilter;
 }
 
-export default function DateRangePicker({ name, value }: DateRangeFilterProps) {
+export default function NumberRangePicker({
+  name,
+  value,
+}: NumberRangeFilterProps) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
-  const [dateError, setDateError] = useState<string | null>(null);
+  const [numberError, setNumberError] = useState<string | null>(null);
 
-  const handleMinChange = (date: string) => {
+  const handleMinChange = (number: string) => {
     const params = new URLSearchParams(searchParams);
-    if (date) {
-      if (!datesAreValid(date, params.get(value.max))) return;
-      params.set(value.min, date);
+    if (number) {
+      if (!numbersAreValid(+number, Number(params.get(value.max)))) return;
+      params.set(value.min, number);
     } else {
       params.delete(value.min);
     }
@@ -33,11 +36,11 @@ export default function DateRangePicker({ name, value }: DateRangeFilterProps) {
     replace(`${pathname}?${params.toString()}`);
   };
 
-  const handleMaxChange = (date: string) => {
+  const handleMaxChange = (number: string) => {
     const params = new URLSearchParams(searchParams);
-    if (date) {
-      if (!datesAreValid(params.get(value.min), date)) return;
-      params.set(value.max, date);
+    if (number) {
+      if (!numbersAreValid(Number(params.get(value.min)), +number)) return;
+      params.set(value.max, number);
     } else {
       params.delete(value.max);
     }
@@ -45,32 +48,26 @@ export default function DateRangePicker({ name, value }: DateRangeFilterProps) {
     replace(`${pathname}?${params.toString()}`);
   };
 
-  const datesAreValid = (
-    fromDate: string | null,
-    toDate: string | null
+  const numbersAreValid = (
+    minValue: number | null,
+    maxValue: number | null
   ): boolean => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const from = fromDate ? new Date(fromDate) : null;
-    const to = toDate ? new Date(toDate) : null;
-
-    if (from && from > today) {
-      setDateError("Start date cannot be later than today");
+    if (minValue !== null && isNaN(minValue)) {
+      setNumberError("Minimum value must be a number");
       return false;
     }
 
-    if (to && to > today) {
-      setDateError("End date cannot be later than today");
+    if (maxValue !== null && isNaN(maxValue)) {
+      setNumberError("Maximum value must be a number");
       return false;
     }
 
-    if (from && to && from > to) {
-      setDateError("Start date cannot be later than end date");
+    if (minValue !== null && maxValue !== null && minValue > maxValue) {
+      setNumberError("Minimum value cannot be greater than maximum value");
       return false;
     }
 
-    setDateError(null);
+    setNumberError(null);
     return true;
   };
 
@@ -106,9 +103,9 @@ export default function DateRangePicker({ name, value }: DateRangeFilterProps) {
         <PopoverPanel className="fixed z-50 w-52 rounded-md bg-secondary p-3 shadow-lg">
           <div className="flex flex-col gap-2">
             <div className="flex items-center">
-              <span className="w-12 text-left">From: </span>
+              <span className="w-12 text-left">Min: </span>
               <input
-                type="date"
+                type="number"
                 defaultValue={getPathValue(value.min)}
                 onChange={(e) => handleMinChange(e.target.value)}
                 className="border rounded px-2 py-1 text-xs flex-1"
@@ -116,17 +113,17 @@ export default function DateRangePicker({ name, value }: DateRangeFilterProps) {
               />
             </div>
             <div className="flex items-center">
-              <span className="w-12 text-left">To: </span>
+              <span className="w-12 text-left">Max: </span>
               <input
-                type="date"
+                type="number"
                 defaultValue={getPathValue(value.max)}
                 onChange={(e) => handleMaxChange(e.target.value)}
                 className="border rounded px-2 py-1 text-xs flex-1"
                 placeholder="To"
               />
             </div>
-            {dateError && (
-              <span className="text-red-500 text-xs">{dateError}</span>
+            {numberError && (
+              <span className="text-red-500 text-xs">{numberError}</span>
             )}
           </div>
         </PopoverPanel>

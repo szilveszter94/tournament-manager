@@ -43,7 +43,7 @@ export class TournamentController {
     return this.tournamentService.find(+id);
   }
 
-  // GET Tournaments by query -----------------------------------------------------------------------------------------------------------------
+  // GET Tournaments by query
   @Get()
   @ApiOperation({ summary: 'Get all tournaments' })
   @ApiOkResponse({ type: TournamentsResponse, isArray: false })
@@ -104,7 +104,7 @@ export class TournamentController {
     example: '2012.10.05',
   })
   findByQuery(
-    @Query('query') queryParams: FindTournamentQueryDto,
+    @Query() queryParams: FindTournamentQueryDto,
   ): Promise<TournamentsResponse> {
     return this.tournamentService.findByQuery(queryParams);
   }

@@ -134,7 +134,7 @@ export class ParticipantController {
     example: '150',
   })
   findByQuery(
-    @Query('query') queryParams: FindParticipantQueryDto,
+    @Query() queryParams: FindParticipantQueryDto,
   ): Promise<ParticipantsResponse> {
     return this.participantService.findByQuery(queryParams);
   }

@@ -12,8 +12,6 @@ export default function TableHeaderRow<T>({ columns }: TableHeaderProps<T>) {
   return (
     <thead className="bg-secondary text-foreground">
       <HeaderRow columns={columns} />
-      {/* Filter row */}
-
       <FilterRow columns={columns} />
     </thead>
   );

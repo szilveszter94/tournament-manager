@@ -1,4 +1,4 @@
-import { RangeFilter } from "@/generated/backend/shared";
+import { RangeFilter } from "@/generated/backend/common";
 import {
   Listbox,
   ListboxButton,

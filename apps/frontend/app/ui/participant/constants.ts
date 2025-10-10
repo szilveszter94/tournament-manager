@@ -41,14 +41,14 @@ export const participantColumns: Column<Participant>[] = [
   },
   {
     value: "createdAt",
-    name: "Created At",
+    name: "Created",
     dataType: "date",
     filterType: "date",
     typeValues: createdDateFilterValues,
   },
   {
     value: "updatedAt",
-    name: "Updated At",
+    name: "Updated",
     dataType: "date",
     filterType: "date",
     typeValues: updatedDateFilterValues,
