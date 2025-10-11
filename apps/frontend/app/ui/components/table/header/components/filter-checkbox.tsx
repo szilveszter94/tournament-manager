@@ -5,18 +5,17 @@ import {
   ListboxButton,
   ListboxOption,
   ListboxOptions,
-  Transition,
 } from "@headlessui/react";
 import { FunnelIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   forwardRef,
-  Fragment,
   useEffect,
   useImperativeHandle,
   useState,
 } from "react";
+import DropdownTransition from "../../../transitions/dropdown-transition";
 
 type FilterCheckboxProps = {
   filterTypeValue: string;
@@ -105,12 +104,7 @@ function FilterCheckbox(
           </div>
         </ListboxButton>
         {/* Dropdown */}
-        <Transition
-          as={Fragment}
-          leave="transition ease-in duration-100"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
+        <DropdownTransition>
           <ListboxOptions className="absolute outline-none mt-1 max-h-60 min-w-max bg-secondary overflow-auto rounded-md shadow-lg sm:text-sm">
             {Object.values(filterTypeValues).map((option) => (
               <ListboxOption
@@ -153,7 +147,7 @@ function FilterCheckbox(
               </div>
             )}
           </ListboxOptions>
-        </Transition>
+        </DropdownTransition>
       </div>
     </Listbox>
   );

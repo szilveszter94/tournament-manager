@@ -1,14 +1,15 @@
-export const sortOrderValues = ['asc', 'desc'] as const;
+export const sortOrderValues = ["asc", "desc"] as const;
 export type SortOrder = (typeof sortOrderValues)[number];
 
+export const rangeFilterTypeValues = ["date", "number"] as const;
 export const filterTypeValues = [
-  'search',
-  'checkbox',
-  'date',
-  'number',
-  'none',
+  "search",
+  "checkbox",
+  "none",
+  ...rangeFilterTypeValues,
 ] as const;
 export type FilterType = (typeof filterTypeValues)[number];
+export type RangeFilterType = (typeof rangeFilterTypeValues)[number];
 
 export type RangeFilter = {
   min: string;
@@ -16,11 +17,11 @@ export type RangeFilter = {
 };
 
 export const createdDateFilterValues: RangeFilter = {
-  min: 'createdFrom',
-  max: 'createdTo',
+  min: "createdFrom",
+  max: "createdTo",
 };
 
 export const updatedDateFilterValues: RangeFilter = {
-  min: 'updatedFrom',
-  max: 'updatedTo',
+  min: "updatedFrom",
+  max: "updatedTo",
 };

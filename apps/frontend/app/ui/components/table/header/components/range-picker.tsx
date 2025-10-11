@@ -1,37 +1,91 @@
-import { RangeFilter } from "@/generated/backend/common";
-import {
-  Popover,
-  PopoverButton,
-  PopoverPanel,
-  Transition,
-} from "@headlessui/react";
+import { RangeFilter, RangeFilterType } from "@/generated/backend/common";
+import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import { FunnelIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
+import DropdownTransition from "../../../transitions/dropdown-transition";
+import { validateDateRange, validateNumberRange } from "../../helper/helper";
 
-interface NumberRangeFilterProps {
+interface RangeFilterProps {
   name: string;
   value: RangeFilter;
+  type: RangeFilterType;
 }
 
-export default function NumberRangePicker({
+export default function RangePicker({
   name,
   value,
-}: NumberRangeFilterProps) {
+  type,
+}: RangeFilterProps) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
-  const [numberError, setNumberError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleMinChange = useDebouncedCallback((number: string) => {
+  const distributeMinChange = (data: string) => {
+    switch (type) {
+      case "date":
+        handleMinDateChange(data);
+        break;
+      case "number":
+        handleMinNumberChange(data);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const distributeMaxChange = (data: string) => {
+    switch (type) {
+      case "date":
+        handleMaxDateChange(data);
+        break;
+      case "number":
+        handleMaxNumberChange(data);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleMaxDateChange = (date: string) => {
+    const params = new URLSearchParams(searchParams);
+    if (date) {
+      const errorMessage = validateDateRange(params.get(value.min), date);
+      setError(errorMessage || null);
+      if (errorMessage) return;
+      params.set(value.max, date);
+    } else {
+      params.delete(value.max);
+    }
+    params.set("page", "1");
+    replace(`${pathname}?${params.toString()}`);
+  };
+
+  const handleMinDateChange = (date: string) => {
+    const params = new URLSearchParams(searchParams);
+    if (date) {
+      const errorMessage = validateDateRange(date, params.get(value.max));
+      setError(errorMessage || null);
+      if (errorMessage) return;
+      params.set(value.min, date);
+    } else {
+      params.delete(value.min);
+    }
+    params.set("page", "1");
+    replace(`${pathname}?${params.toString()}`);
+  };
+
+  const handleMinNumberChange = useDebouncedCallback((number: string) => {
     const params = new URLSearchParams(searchParams);
     const minValue = number.trim() === "" ? null : Number(number);
     const maxValueString = params.get(value.max);
     const maxValue = maxValueString ? Number(maxValueString) : null;
-
-    if (!numbersAreValid(minValue, maxValue)) return;
+    const errorMessage = validateNumberRange(minValue, maxValue);
+    setError(errorMessage || null);
+    if (errorMessage) return;
 
     if (minValue !== null) {
       params.set(value.min, minValue.toString());
@@ -43,13 +97,14 @@ export default function NumberRangePicker({
     replace(`${pathname}?${params.toString()}`);
   }, 300);
 
-  const handleMaxChange = useDebouncedCallback((number: string) => {
+  const handleMaxNumberChange = useDebouncedCallback((number: string) => {
     const params = new URLSearchParams(searchParams);
     const maxValue = number.trim() === "" ? null : Number(number);
     const minValueString = params.get(value.min);
     const minValue = minValueString ? Number(minValueString) : null;
-
-    if (!numbersAreValid(minValue, maxValue)) return;
+    const errorMessage = validateNumberRange(minValue, maxValue);
+    setError(errorMessage || null);
+    if (errorMessage) return;
 
     if (maxValue !== null) {
       params.set(value.max, maxValue.toString());
@@ -61,29 +116,6 @@ export default function NumberRangePicker({
     replace(`${pathname}?${params.toString()}`);
   }, 300);
 
-  const numbersAreValid = (
-    minValue: number | null,
-    maxValue: number | null
-  ): boolean => {
-    if (minValue !== null && isNaN(minValue)) {
-      setNumberError("Minimum value must be a number");
-      return false;
-    }
-
-    if (maxValue !== null && isNaN(maxValue)) {
-      setNumberError("Maximum value must be a number");
-      return false;
-    }
-
-    if (minValue !== null && maxValue !== null && minValue > maxValue) {
-      setNumberError("Minimum value cannot be greater than maximum value");
-      return false;
-    }
-
-    setNumberError(null);
-    return true;
-  };
-
   const getPathValue = (value: string) => {
     const v = searchParams.get(value);
     return v && v.trim() !== "" ? v : null;
@@ -94,7 +126,7 @@ export default function NumberRangePicker({
   };
 
   const clearFilter = (): void => {
-    setNumberError("");
+    setError("");
     const params = new URLSearchParams(searchParams);
     params.delete(value.min);
     params.delete(value.max);
@@ -120,23 +152,15 @@ export default function NumberRangePicker({
             </div>
           </PopoverButton>
 
-          <Transition
-            as={Fragment}
-            enter="transition ease-out duration-100"
-            enterFrom="opacity-0 translate-y-1"
-            enterTo="opacity-100 translate-y-0"
-            leave="transition ease-in duration-75"
-            leaveFrom="opacity-100 translate-y-0"
-            leaveTo="opacity-0 translate-y-1"
-          >
-            <PopoverPanel className="fixed z-50 w-55 rounded-md bg-secondary p-3 shadow-lg">
+          <DropdownTransition>
+            <PopoverPanel className="absolute outline-none py-2 px-4 mt-1 max-h-60 min-w-max bg-secondary overflow-auto rounded-md shadow-lg sm:text-sm">
               <div className="flex flex-col gap-2">
                 <div className="flex items-center">
                   <span className="w-15 text-left">Min: </span>
                   <input
-                    type="number"
+                    type={type}
                     defaultValue={getPathValue(value.min)?.toString()}
-                    onChange={(e) => handleMinChange(e.target.value)}
+                    onChange={(e) => distributeMinChange(e.target.value)}
                     className="border rounded px-2 py-1 text-xs flex-1"
                     placeholder="Min"
                   />
@@ -144,16 +168,14 @@ export default function NumberRangePicker({
                 <div className="flex items-center">
                   <span className="w-15 text-left">Max: </span>
                   <input
-                    type="number"
+                    type={type}
                     defaultValue={getPathValue(value.max)?.toString()}
-                    onChange={(e) => handleMaxChange(e.target.value)}
+                    onChange={(e) => distributeMaxChange(e.target.value)}
                     className="border rounded px-2 py-1 text-xs flex-1"
                     placeholder="Max"
                   />
                 </div>
-                {numberError && (
-                  <span className="text-red-500 text-xs">{numberError}</span>
-                )}
+                {error && <span className="text-red-500 text-xs">{error}</span>}
                 {isFilterActive() && (
                   <div className="flex items-center">
                     <div
@@ -171,7 +193,7 @@ export default function NumberRangePicker({
                 )}
               </div>
             </PopoverPanel>
-          </Transition>
+          </DropdownTransition>
         </>
       )}
     </Popover>

@@ -2,8 +2,7 @@ import { Column } from "@/lib/global-constants";
 import Search, { SearchHandle } from "./search";
 import FilterCheckbox, { FilterCheckboxHandle } from "./filter-checkbox";
 import { RangeFilter } from "@/generated/backend/common";
-import DateRangePicker from "./date-range-picker";
-import NumberRangePicker from "./number-range-picker";
+import RangePicker from "./range-picker";
 import ClearAllFilters from "./clear-all-filters";
 import { useRef } from "react";
 
@@ -49,10 +48,11 @@ export default function FilterRow<T>({ columns }: FilterRowProps<T>) {
             key={col.value as string}
             className="border border-primary-border-color px-4"
           >
-            {col.filterType === "date" ? (
-              <DateRangePicker
+            {col.filterType === "date" || col.filterType === "number" ? (
+              <RangePicker
                 name={col.name}
                 value={col.typeValues as RangeFilter}
+                type={col.filterType}
               />
             ) : col.filterType === "checkbox" ? (
               <FilterCheckbox
@@ -63,11 +63,6 @@ export default function FilterRow<T>({ columns }: FilterRowProps<T>) {
               />
             ) : col.filterType === "search" ? (
               <Search placeholder={col.name} ref={addSearchRef} />
-            ) : col.filterType === "number" ? (
-              <NumberRangePicker
-                name={col.name}
-                value={col.typeValues as RangeFilter}
-              />
             ) : (
               <></>
             )}
