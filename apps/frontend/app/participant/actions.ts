@@ -1,8 +1,9 @@
+// actions/participant.ts
 "use server";
 
 import { CreateParticipantDto, ParticipantType } from "@/generated/api";
 import { apiClient } from "@/lib/client";
-import { State } from "@/lib/custom-models";
+import { State } from "@/lib/custom-models/common";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 

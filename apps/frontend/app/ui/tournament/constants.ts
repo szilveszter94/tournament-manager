@@ -69,7 +69,7 @@ export const tournamentTableHeaders: Column<Tournament>[] = [
     value: "id",
     name: "",
     dataType: "string",
-    filterType: "search",
+    filterType: "none",
     typeValues: [],
     buttons: [
       { type: "edit", path: "/tournament" },

@@ -1,11 +1,11 @@
-// actions/tournaments.ts
+// actions/tournament.ts
 "use server";
 
 import { revalidatePath } from "next/cache";
 import { apiClient } from "@/lib/client";
 import { ParticipantType } from "@/generated/api";
 import { redirect } from "next/navigation";
-import { State } from "@/lib/custom-models";
+import { State } from "@/lib/custom-models/common";
 
 export async function createTournament(
   _prevState: State,

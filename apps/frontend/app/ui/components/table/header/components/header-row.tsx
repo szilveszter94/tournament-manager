@@ -36,15 +36,15 @@ export default function HeaderRow<T>({ columns }: HeaderRowProps<T>) {
       {columns.map((col) =>
         col.buttons ? (
           <th
-            key={col.value}
+            key={col.value.toString()}
             className="border border-primary-border-color px-4 py-2 text-left"
           >
             Buttons
           </th>
         ) : (
           <th
-            key={col.value}
-            onClick={() => toggleSort(col.value)}
+            key={col.value.toString()}
+            onClick={() => toggleSort(col.value.toString())}
             className="border border-primary-border-color cursor-pointer px-4 py-2 text-left hover:bg-on-secondary"
           >
             <div className="flex items-center gap-1">

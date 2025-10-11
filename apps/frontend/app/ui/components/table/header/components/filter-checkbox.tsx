@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { RangeFilter } from "@/generated/backend/common";
 import {
   Listbox,
@@ -6,28 +7,50 @@ import {
   ListboxOptions,
   Transition,
 } from "@headlessui/react";
-import { FunnelIcon } from "@heroicons/react/24/outline";
+import { FunnelIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Fragment } from "react";
+import {
+  forwardRef,
+  Fragment,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from "react";
 
 type FilterCheckboxProps = {
   filterTypeValue: string;
   filterTypeName: string;
   filterTypeValues: readonly string[] | RangeFilter;
 };
+export type FilterCheckboxHandle = { clear: () => void };
 
-export default function FilterCheckbox({
-  filterTypeValue,
-  filterTypeName,
-  filterTypeValues,
-}: FilterCheckboxProps) {
+function FilterCheckbox(
+  { filterTypeValue, filterTypeName, filterTypeValues }: FilterCheckboxProps,
+  ref: React.Ref<FilterCheckboxHandle>
+) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
+  const [selectedValues, setSelectedValues] = useState<string[]>([]);
+  const [remountKey, setRemountKey] = useState(1);
 
-  const getPathValue = (value: string) => {
-    return searchParams.get(value)?.toString();
+  useEffect(() => {
+    const values = getPathValues(filterTypeValue);
+    if (values) {
+      setSelectedValues(values);
+    }
+  }, []);
+
+  useImperativeHandle(ref, () => ({
+    clear: () => {
+      setSelectedValues([]);
+    },
+  }));
+
+  const isFilterActive = () => {
+    const v = searchParams.get(filterTypeValue);
+    return v && v.trim() !== "" ? v : null;
   };
 
   const getPathValues = (value: string): string[] | undefined => {
@@ -45,14 +68,26 @@ export default function FilterCheckbox({
     const filteredValues = values
       .map((v) => v?.trim())
       .filter((v): v is string => !!v);
+    setSelectedValues(filteredValues);
     filteredValues.forEach((s) => params.append(filterType, s));
     replace(`${pathname}?${params.toString()}`);
   };
 
+  const clearFilter = (): void => {
+    const params = new URLSearchParams(searchParams);
+    params.delete(filterTypeValue);
+
+    params.set("page", "1");
+    replace(`${pathname}?${params.toString()}`);
+    setSelectedValues([]);
+    setRemountKey((prev) => prev + 1);
+  };
+
   return (
     <Listbox
+      key={`checkbox-key-${remountKey}`}
       multiple
-      defaultValue={getPathValues(filterTypeValue)}
+      value={selectedValues}
       onChange={(values: string[]) => onFilterChange(filterTypeValue, values)}
     >
       <div className="relative">
@@ -62,7 +97,7 @@ export default function FilterCheckbox({
             <FunnelIcon className="h-5 w-5" />
             <span
               className={clsx("text-primary-border-color text-xs", {
-                "text-secondary-border-color": getPathValue(filterTypeValue),
+                "text-secondary-border-color": isFilterActive(),
               })}
             >
               {filterTypeName}
@@ -94,7 +129,7 @@ export default function FilterCheckbox({
                       checked={selected}
                       readOnly
                       className={`cursor-pointer h-4 w-4 rounded appearance-none border border-primary-border-color 
-                                        ${selected ? "bg-on-primary" : "bg-secondary"}`}
+                        ${selected ? "bg-on-primary" : "bg-secondary"}`}
                     />
                     <label
                       className={`cursor-pointer ${selected ? "font-medium" : "font-normal"}`}
@@ -105,9 +140,25 @@ export default function FilterCheckbox({
                 )}
               </ListboxOption>
             ))}
+            {isFilterActive() && (
+              <div className="flex items-center px-4 py-2">
+                <div
+                  className="relative inline-block cursor-pointer"
+                  title="Clear filter"
+                  onClick={() => clearFilter()}
+                >
+                  <FunnelIcon className="w-5 h-5 text-gray-500" />
+                  <XMarkIcon className="w-4 h-4 text-red-500 absolute -top-1 -right-1" />
+                </div>
+              </div>
+            )}
           </ListboxOptions>
         </Transition>
       </div>
     </Listbox>
   );
 }
+
+export default forwardRef<FilterCheckboxHandle, FilterCheckboxProps>(
+  FilterCheckbox
+);

@@ -57,7 +57,7 @@ export const participantColumns: Column<Participant>[] = [
     value: "id",
     name: "",
     dataType: "string",
-    filterType: "search",
+    filterType: "none",
     typeValues: [],
     buttons: [
       { type: "edit", path: "/participant" },

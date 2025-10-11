@@ -1,5 +1,6 @@
 import { ParticipantType, TournamentStatus } from "@/generated/api";
-import { RangeFilter, FilterType } from "@/generated/backend/shared";
+import { FilterType, RangeFilter } from "@/generated/backend/common";
+
 
 export type Column<T> = {
   //key: keyof T | string;
