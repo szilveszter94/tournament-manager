@@ -15,7 +15,7 @@ export default function Table<T>({ columns, data, paginationData }: TableProps<T
     <table className="min-w-full border border-primary-border-color border-collapse text-sm">
       <TableHeaderRow columns={columns} />
       <TableBody columns={columns} data={data} />
-      <TableFooterRow paginationData={paginationData} />
+      <TableFooterRow paginationData={paginationData} columnsLength={columns.length} />
     </table>
   );
 }

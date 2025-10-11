@@ -92,7 +92,7 @@ function FilterCheckbox(
     >
       <div className="relative">
         {/* Button */}
-        <ListboxButton className="relative w-full bg-secondary text-secondary-border-color hover:font-black cursor-pointer rounded-md focus:outline-none py-2 pr-10 text-left shadow-sm sm:text-sm">
+        <ListboxButton className="relative w-full bg-secondary text-secondary-border-color hover:font-black cursor-pointer rounded-md outline-none py-2 pr-10 text-left sm:text-sm">
           <div className="flex gap-1 items-center">
             <FunnelIcon className="h-5 w-5" />
             <span

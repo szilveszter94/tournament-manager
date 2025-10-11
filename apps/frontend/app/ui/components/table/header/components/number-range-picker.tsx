@@ -107,7 +107,7 @@ export default function NumberRangePicker({
     <Popover className="relative">
       {({ close }) => (
         <>
-          <PopoverButton className="w-full bg-secondary text-secondary-border-color hover:font-black cursor-pointer rounded-md py-2 pr-10 text-left focus:outline-none shadow-sm sm:text-sm">
+          <PopoverButton className="w-full bg-secondary text-secondary-border-color hover:font-black cursor-pointer rounded-md py-2 pr-10 text-left outline-none sm:text-sm">
             <div className="flex gap-1 items-center">
               <FunnelIcon className="h-5 w-5" />
               <span

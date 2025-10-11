@@ -61,7 +61,7 @@ export default function NavSettings() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: -5 }}
             transition={{ duration: 0.35 }}
-            className="absolute right-0 mt-3 w-56 rounded-2xl bg-secondary shadow-xl border border-primary-border-color/50 p-4"
+            className="absolute right-0 z-100 mt-3 w-56 rounded-2xl bg-secondary shadow-xl border border-primary-border-color/50 p-4"
           >
             <p className="text-sm font-semibold mb-3 text-primary-text-color">
               Appearance
