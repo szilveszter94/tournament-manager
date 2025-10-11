@@ -33,6 +33,26 @@ export function handleDateRange(
   };
 }
 
+export function getRandomNumber(min: number, max: number): number {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+export function getRandomDateWithinTwoMonths(monthsFromToday: number): Date {
+  const now = new Date();
+
+  const endDate = new Date();
+  endDate.setMonth(now.getMonth() - monthsFromToday);
+
+  const startDate = new Date();
+  startDate.setMonth(endDate.getMonth() - 2);
+
+  const randomTime =
+    startDate.getTime() +
+    Math.random() * (endDate.getTime() - startDate.getTime());
+
+  return new Date(randomTime);
+}
+
 export function handleNumberRange(
   min?: string,
   max?: string,

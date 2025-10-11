@@ -9,7 +9,10 @@ export default function TournamentDetail({
 }) {
   return (
     <div>
-      <CreateParticipantForm type={tournament.type} />
+      <CreateParticipantForm
+        type={tournament.type}
+        tournamentId={tournament.id}
+      />
       <p>Name: {tournament.name}</p>
       <p>Type: {tournament.type}</p>
     </div>

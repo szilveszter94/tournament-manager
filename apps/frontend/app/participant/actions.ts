@@ -5,13 +5,13 @@ import { CreateParticipantDto, ParticipantType } from "@/generated/api";
 import { apiClient } from "@/lib/client";
 import { State } from "@/lib/custom-models/common";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 
 export async function createParticipant(
   _prevState: State,
   formData: FormData
 ): Promise<State> {
   const name = formData.get("name")?.toString();
+  const tournamentId = Number(formData.get("tournamentId"));
   const type = formData.get("type") as ParticipantType | null;
 
   try {
@@ -36,7 +36,10 @@ export async function createParticipant(
     };
 
     const result =
-      await apiClient.participant.participantControllerCreate(entity);
+      await apiClient.participant.participantControllerAddParticipantToTournament(
+        tournamentId,
+        entity
+      );
 
     if (!result.ok || !result.data?.id) {
       return {
@@ -52,6 +55,9 @@ export async function createParticipant(
     };
   }
 
-  revalidatePath("/participant");
-  redirect("/participant");
+  revalidatePath(`/tournament/${tournamentId}`);
+  return {
+    message: "",
+    errors: {},
+  };
 }

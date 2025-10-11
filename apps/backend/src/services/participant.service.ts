@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 import { CreateParticipantDto } from '../../generated/models/create-participant.dto';
 import { UpdateParticipantDto } from '../../generated/models/update-participant.dto';
@@ -119,7 +119,58 @@ export class ParticipantService {
       return { ok: true, data: participant };
     } catch (e) {
       this.logger.error('Error creating participant', e.stack);
-      return { ok: false, error: 'Database error' };
+      return {
+        ok: false,
+        error: 'Error creating participant. Unexpected server errror.',
+      };
+    }
+  }
+
+  async addParticipantToTournament(
+    entity: CreateParticipantDto,
+    tournamentId: number,
+  ): Promise<ParticipantResponse> {
+    try {
+      const result = await this.prisma.$transaction(async (tx) => {
+        const participant = await tx.participant.upsert({
+          where: { name: entity.name },
+          update: {},
+          create: { name: entity.name, type: entity.type },
+        });
+
+        const existing = await tx.participantTournament.findUnique({
+          where: {
+            participantId_tournamentId: {
+              participantId: participant.id,
+              tournamentId: Number(tournamentId),
+            },
+          },
+        });
+
+        if (existing) {
+          throw new BadRequestException(
+            'Participant is already registered in this tournament',
+          );
+        }
+
+        await tx.participantTournament.create({
+          data: {
+            participantId: participant.id,
+            tournamentId: Number(tournamentId),
+          },
+        });
+
+        return participant;
+      });
+
+      return { ok: true, data: result };
+    } catch (e) {
+      this.logger.error('Error creating participant', e.stack);
+      if (e.status === 400) {
+        return { ok: false, error: `${e.message}` };
+      }
+
+      return { ok: false, error: 'Unexpected server error occurred' };
     }
   }
 

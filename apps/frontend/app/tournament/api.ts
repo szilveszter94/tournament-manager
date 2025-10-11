@@ -1,6 +1,25 @@
-import { TournamentsResponse, TournamentResponse } from "@/generated/api";
+import {
+  TournamentsResponse,
+  TournamentResponse,
+  ParticipantTournamentsResponse,
+} from "@/generated/api";
 import { apiClient } from "../../lib/client";
 import { TournamentQueryParams } from "@/lib/custom-models/tournament";
+
+export async function fetchTournamentParticipantsByTournamentId(
+  tournamentId: number
+): Promise<ParticipantTournamentsResponse> {
+  try {
+    const response =
+      await apiClient.participantTournament.participantTournamentControllerFindByTournamentId(
+        tournamentId
+      );
+    return response;
+  } catch (err) {
+    console.error(err);
+    throw new Error(`Failed to fetch participants with tournamentId ${tournamentId}`);
+  }
+}
 
 export async function fetchTournamentById(
   id: number

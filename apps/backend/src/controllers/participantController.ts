@@ -150,6 +150,21 @@ export class ParticipantController {
     return this.participantService.create(participant);
   }
 
+  // Add Participant to tournament
+  @Post(':tournamentId')
+  @ApiOperation({ summary: 'Create a new participant for a tournament' })
+  @ApiOkResponse({ type: ParticipantResponse })
+  @ApiBody({ type: CreateParticipantDto })
+  addParticipantToTournament(
+    @Param('tournamentId') tournamentId: number,
+    @Body() participant: CreateParticipantDto,
+  ): Promise<ParticipantResponse> {
+    return this.participantService.addParticipantToTournament(
+      participant,
+      +tournamentId,
+    );
+  }
+
   // UPDATE Participant by Id
   @Put(':id')
   @ApiOperation({ summary: 'Update the participant by Id' })

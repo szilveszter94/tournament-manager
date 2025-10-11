@@ -1,14 +1,15 @@
 export const sortOrderValues = ['asc', 'desc'] as const;
 export type SortOrder = (typeof sortOrderValues)[number];
 
+export const rangeFilterTypeValues = ['date', 'number'] as const;
 export const filterTypeValues = [
   'search',
   'checkbox',
-  'date',
-  'number',
   'none',
+  ...rangeFilterTypeValues,
 ] as const;
 export type FilterType = (typeof filterTypeValues)[number];
+export type RangeFilterType = (typeof rangeFilterTypeValues)[number];
 
 export type RangeFilter = {
   min: string;

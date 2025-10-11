@@ -23,6 +23,7 @@ export type { ParticipantGroup } from './models/ParticipantGroup';
 export type { ParticipantResponse } from './models/ParticipantResponse';
 export type { ParticipantsResponse } from './models/ParticipantsResponse';
 export type { ParticipantTournament } from './models/ParticipantTournament';
+export type { ParticipantTournamentsResponse } from './models/ParticipantTournamentsResponse';
 export { ParticipantType } from './models/ParticipantType';
 export { PhaseType } from './models/PhaseType';
 export type { Tournament } from './models/Tournament';
@@ -36,4 +37,5 @@ export type { UpdateParticipantDto } from './models/UpdateParticipantDto';
 export type { UpdateTournamentDto } from './models/UpdateTournamentDto';
 
 export { ParticipantService } from './services/ParticipantService';
+export { ParticipantTournamentService } from './services/ParticipantTournamentService';
 export { TournamentService } from './services/TournamentService';

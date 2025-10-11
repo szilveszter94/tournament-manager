@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TournamentModule } from './modules/tournament.module';
 import { ConfigModule } from '@nestjs/config';
 import { ParticipantModule } from './modules/participant.module';
+import { ParticipantTournamentModule } from './modules/participantTournament.module';
 
 @Module({
   imports: [
@@ -10,6 +11,7 @@ import { ParticipantModule } from './modules/participant.module';
     }),
     TournamentModule,
     ParticipantModule,
+    ParticipantTournamentModule,
   ],
   controllers: [],
   providers: [],

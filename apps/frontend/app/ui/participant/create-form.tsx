@@ -9,16 +9,19 @@ import { initialState } from "@/lib/custom-models/common";
 
 type CreateParticipantProps = {
   type: ParticipantType;
+  tournamentId: number;
 };
 
 export default function CreateParticipantForm({
   type,
+  tournamentId,
 }: CreateParticipantProps) {
   const [state, formAction] = useActionState(createParticipant, initialState);
 
   return (
     <form action={formAction}>
       <input type="hidden" name="type" value={type} />
+      <input type="hidden" name="tournamentId" value={tournamentId} />
       <input
         type="text"
         name="name"

@@ -144,4 +144,25 @@ export class ParticipantService {
             mediaType: 'application/json',
         });
     }
+    /**
+     * Create a new participant for a tournament
+     * @param tournamentId
+     * @param requestBody
+     * @returns ParticipantResponse
+     * @throws ApiError
+     */
+    public participantControllerAddParticipantToTournament(
+        tournamentId: number,
+        requestBody: CreateParticipantDto,
+    ): CancelablePromise<ParticipantResponse> {
+        return this.httpRequest.request({
+            method: 'POST',
+            url: '/participant/{tournamentId}',
+            path: {
+                'tournamentId': tournamentId,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
 }
