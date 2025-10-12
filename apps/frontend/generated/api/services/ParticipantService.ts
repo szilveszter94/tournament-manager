@@ -18,7 +18,7 @@ export class ParticipantService {
      * @throws ApiError
      */
     public participantControllerFindOne(
-        id: number,
+        id: string,
     ): CancelablePromise<ParticipantResponse> {
         return this.httpRequest.request({
             method: 'GET',
@@ -36,7 +36,7 @@ export class ParticipantService {
      * @throws ApiError
      */
     public participantControllerUpdate(
-        id: number,
+        id: string,
         requestBody: UpdateParticipantDto,
     ): CancelablePromise<ParticipantResponse> {
         return this.httpRequest.request({
@@ -56,7 +56,7 @@ export class ParticipantService {
      * @throws ApiError
      */
     public participantControllerDeleteParticipant(
-        id: number,
+        id: string,
     ): CancelablePromise<BaseResponse> {
         return this.httpRequest.request({
             method: 'DELETE',
@@ -140,27 +140,6 @@ export class ParticipantService {
         return this.httpRequest.request({
             method: 'POST',
             url: '/participant',
-            body: requestBody,
-            mediaType: 'application/json',
-        });
-    }
-    /**
-     * Create a new participant for a tournament
-     * @param tournamentId
-     * @param requestBody
-     * @returns ParticipantResponse
-     * @throws ApiError
-     */
-    public participantControllerAddParticipantToTournament(
-        tournamentId: number,
-        requestBody: CreateParticipantDto,
-    ): CancelablePromise<ParticipantResponse> {
-        return this.httpRequest.request({
-            method: 'POST',
-            url: '/participant/{tournamentId}',
-            path: {
-                'tournamentId': tournamentId,
-            },
             body: requestBody,
             mediaType: 'application/json',
         });

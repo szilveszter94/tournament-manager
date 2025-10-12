@@ -1,5 +1,6 @@
 import { ParticipantTournament } from "@/generated/api";
 import React from "react";
+import { DeleteParticipant } from "./delete-form";
 
 export default function TournamentParticipantsList({
   participants,
@@ -8,11 +9,15 @@ export default function TournamentParticipantsList({
 }) {
   return (
     <div>
-      <ul>
-        {participants.map((p) => (
-          <li key={p.id}>{p.participant?.name}</li>
-        ))}
-      </ul>
+      {participants.map((p) => (
+        <div className="flex gap-3 justify-between" key={p.id}>
+          <p>{p.participant?.name}</p>
+          <DeleteParticipant
+            participantId={p.participantId}
+            tournamentId={p.tournamentId}
+          />
+        </div>
+      ))}
     </div>
   );
 }

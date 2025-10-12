@@ -102,8 +102,11 @@ export type ParticipantType = (typeof ParticipantType)[keyof typeof ParticipantT
 
 
 export const TournamentStatus: {
-  Setup: 'Setup',
-  Started: 'Started',
+  AddPlayers: 'AddPlayers',
+  CreateFirstRound: 'CreateFirstRound',
+  FirstRoundStarted: 'FirstRoundStarted',
+  CreateSecondRound: 'CreateSecondRound',
+  SecondRoundStarted: 'SecondRoundStarted',
   Over: 'Over'
 };
 

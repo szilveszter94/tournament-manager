@@ -4,7 +4,6 @@ import {
   fetchTournamentParticipantsByTournamentId,
 } from "../../api";
 import { notFound } from "next/navigation";
-import TournamentParticipantsList from "@/app/ui/tournament/tournament-participants";
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
@@ -19,10 +18,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
 
   return (
     <main className="p-8 max-w-3xl mx-auto">
-      <div className="flex gap-3">
-        <TournamentParticipantsList participants={participantsResponse.data} />
-        <TournamentDetail tournament={response.data} />
-      </div>
+      <TournamentDetail tournament={response.data} participants={participantsResponse.data} />
     </main>
   );
 }

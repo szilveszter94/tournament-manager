@@ -39,7 +39,7 @@ export class ParticipantController {
   @Get(':id')
   @ApiOperation({ summary: 'Get a participant by Id' })
   @ApiOkResponse({ type: ParticipantResponse, isArray: false })
-  findOne(@Param('id') id: number): Promise<ParticipantResponse> {
+  findOne(@Param('id') id: string): Promise<ParticipantResponse> {
     return this.participantService.find(+id);
   }
 
@@ -150,28 +150,13 @@ export class ParticipantController {
     return this.participantService.create(participant);
   }
 
-  // Add Participant to tournament
-  @Post(':tournamentId')
-  @ApiOperation({ summary: 'Create a new participant for a tournament' })
-  @ApiOkResponse({ type: ParticipantResponse })
-  @ApiBody({ type: CreateParticipantDto })
-  addParticipantToTournament(
-    @Param('tournamentId') tournamentId: number,
-    @Body() participant: CreateParticipantDto,
-  ): Promise<ParticipantResponse> {
-    return this.participantService.addParticipantToTournament(
-      participant,
-      +tournamentId,
-    );
-  }
-
   // UPDATE Participant by Id
   @Put(':id')
   @ApiOperation({ summary: 'Update the participant by Id' })
   @ApiOkResponse({ type: ParticipantResponse, isArray: false })
   @ApiBody({ type: UpdateParticipantDto })
   update(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Body() participant: UpdateParticipantDto,
   ): Promise<ParticipantResponse> {
     return this.participantService.update(+id, participant);
@@ -181,7 +166,7 @@ export class ParticipantController {
   @Delete(':id')
   @ApiOperation({ summary: 'Remove a participant from the database' })
   @ApiOkResponse({ type: BaseResponse })
-  deleteParticipant(@Param('id') id: number): Promise<BaseResponse> {
-    return this.participantService.delete(id);
+  deleteParticipant(@Param('id') id: string): Promise<BaseResponse> {
+    return this.participantService.delete(+id);
   }
 }

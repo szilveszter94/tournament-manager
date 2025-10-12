@@ -3,7 +3,7 @@
 import { ParticipantType } from "@/generated/api";
 import CustomButton from "../components/custom-button/custom-button";
 import { CheckCircleIcon } from "@heroicons/react/16/solid";
-import { createParticipant } from "@/app/participant/actions";
+import { addParticipantToTournament } from "@/app/participant/actions";
 import { useActionState } from "react";
 import { initialState } from "@/lib/custom-models/common";
 
@@ -16,7 +16,10 @@ export default function CreateParticipantForm({
   type,
   tournamentId,
 }: CreateParticipantProps) {
-  const [state, formAction] = useActionState(createParticipant, initialState);
+  const [state, formAction] = useActionState(
+    addParticipantToTournament,
+    initialState
+  );
 
   return (
     <form action={formAction}>

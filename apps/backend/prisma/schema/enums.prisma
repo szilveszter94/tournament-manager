@@ -25,7 +25,10 @@ enum ParticipantType {
 }
 
 enum TournamentStatus {
-  Setup
-  Started
+  AddPlayers
+  CreateFirstRound
+  FirstRoundStarted
+  CreateSecondRound
+  SecondRoundStarted
   Over
 }

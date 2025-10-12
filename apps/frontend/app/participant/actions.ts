@@ -6,7 +6,7 @@ import { apiClient } from "@/lib/client";
 import { State } from "@/lib/custom-models/common";
 import { revalidatePath } from "next/cache";
 
-export async function createParticipant(
+export async function addParticipantToTournament(
   _prevState: State,
   formData: FormData
 ): Promise<State> {
@@ -36,8 +36,8 @@ export async function createParticipant(
     };
 
     const result =
-      await apiClient.participant.participantControllerAddParticipantToTournament(
-        tournamentId,
+      await apiClient.participantTournament.participantTournamentControllerAddParticipantToTournament(
+        tournamentId.toString(),
         entity
       );
 
@@ -51,6 +51,54 @@ export async function createParticipant(
     console.error(err);
     return {
       message: "Unexpected server error. Failed to create participant.",
+      errors: {},
+    };
+  }
+
+  revalidatePath(`/tournament/${tournamentId}`);
+  return {
+    message: "",
+    errors: {},
+  };
+}
+
+export async function deleteParticipantFromTournament(
+  participantId: number,
+  tournamentId: number
+): Promise<State> {
+  try {
+    if (!participantId || !tournamentId) {
+      const missing: string[] = [];
+
+      if (!participantId) missing.push("participant ID");
+      if (!tournamentId) missing.push("tournament ID");
+
+      const formatted = missing.join(" and ");
+
+      return {
+        message: `Failed to delete participant. Missing ${formatted}.`,
+        errors: {},
+      };
+    }
+
+    const result =
+      await apiClient.participantTournament.participantTournamentControllerDeleteParticipantFromTournament(
+        participantId.toString(),
+        tournamentId.toString()
+      );
+
+    if (!result.ok) {
+      return {
+        message:
+          result.error ??
+          "Unexpected server error. Failed to delete participant.",
+        errors: {},
+      };
+    }
+  } catch (err) {
+    console.error(err);
+    return {
+      message: "Unexpected server error. Failed to delete participant.",
       errors: {},
     };
   }

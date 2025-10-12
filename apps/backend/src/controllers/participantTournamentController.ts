@@ -1,12 +1,16 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import {
   ApiTags,
   ApiOkResponse,
   ApiExtraModels,
   ApiOperation,
+  ApiBody,
 } from '@nestjs/swagger';
 import { ParticipantTournamentsResponse } from '../../custom-models/api/participant-tournament';
-import { ParticipantTournamentService } from '..//services/participant-tournament.service';
+import { ParticipantTournamentService } from '../services/participant-tournament.service';
+import { CreateParticipantDto } from '../../generated/models/create-participant.dto';
+import { ParticipantResponse } from '../../custom-models/api/participant';
+import { BaseResponse } from '../../custom-models/api/base-response';
 
 @ApiTags('participantTournament')
 @ApiExtraModels(ParticipantTournamentsResponse)
@@ -21,8 +25,37 @@ export class ParticipantTournamentController {
   @ApiOperation({ summary: 'Get participants by tournamentId' })
   @ApiOkResponse({ type: ParticipantTournamentsResponse, isArray: false })
   findByTournamentId(
-    @Param('tournamentId') tournamentId: number,
+    @Param('tournamentId') tournamentId: string,
   ): Promise<ParticipantTournamentsResponse> {
     return this.participantTournamentService.find(+tournamentId);
+  }
+
+  // Add Participant to tournament
+  @Post(':tournamentId')
+  @ApiOperation({ summary: 'Create a new participant for a tournament' })
+  @ApiOkResponse({ type: ParticipantResponse })
+  @ApiBody({ type: CreateParticipantDto })
+  addParticipantToTournament(
+    @Param('tournamentId') tournamentId: string,
+    @Body() participant: CreateParticipantDto,
+  ): Promise<ParticipantResponse> {
+    return this.participantTournamentService.addParticipantToTournament(
+      participant,
+      +tournamentId,
+    );
+  }
+
+  // Add Participant to tournament
+  @Delete(':tournamentId/:participantId')
+  @ApiOperation({ summary: 'Delete a participant from a tournament' })
+  @ApiOkResponse({ type: BaseResponse })
+  deleteParticipantFromTournament(
+    @Param('participantId') participantId: string,
+    @Param('tournamentId') tournamentId: string,
+  ): Promise<BaseResponse> {
+    return this.participantTournamentService.deleteParticipantFromTournament(
+      +participantId,
+      +tournamentId,
+    );
   }
 }
