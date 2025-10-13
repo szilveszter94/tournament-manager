@@ -12,57 +12,22 @@ import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class ParticipantService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
     /**
-     * Get a participant by Id
-     * @param id
-     * @returns ParticipantResponse
+     * Get participants by query and type
+     * @param type
+     * @param query
+     * @returns ParticipantsResponse
      * @throws ApiError
      */
-    public participantControllerFindOne(
-        id: string,
-    ): CancelablePromise<ParticipantResponse> {
+    public participantControllerGetAutocompleteParticipant(
+        type: 'Individual' | 'Team',
+        query: string,
+    ): CancelablePromise<ParticipantsResponse> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/participant/{id}',
-            path: {
-                'id': id,
-            },
-        });
-    }
-    /**
-     * Update the participant by Id
-     * @param id
-     * @param requestBody
-     * @returns ParticipantResponse
-     * @throws ApiError
-     */
-    public participantControllerUpdate(
-        id: string,
-        requestBody: UpdateParticipantDto,
-    ): CancelablePromise<ParticipantResponse> {
-        return this.httpRequest.request({
-            method: 'PUT',
-            url: '/participant/{id}',
-            path: {
-                'id': id,
-            },
-            body: requestBody,
-            mediaType: 'application/json',
-        });
-    }
-    /**
-     * Remove a participant from the database
-     * @param id
-     * @returns BaseResponse
-     * @throws ApiError
-     */
-    public participantControllerDeleteParticipant(
-        id: string,
-    ): CancelablePromise<BaseResponse> {
-        return this.httpRequest.request({
-            method: 'DELETE',
-            url: '/participant/{id}',
-            path: {
-                'id': id,
+            url: '/participant/autocomplete',
+            query: {
+                'type': type,
+                'query': query,
             },
         });
     }
@@ -142,6 +107,61 @@ export class ParticipantService {
             url: '/participant',
             body: requestBody,
             mediaType: 'application/json',
+        });
+    }
+    /**
+     * Get a participant by Id
+     * @param id
+     * @returns ParticipantResponse
+     * @throws ApiError
+     */
+    public participantControllerFindOne(
+        id: string,
+    ): CancelablePromise<ParticipantResponse> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/participant/{id}',
+            path: {
+                'id': id,
+            },
+        });
+    }
+    /**
+     * Update the participant by Id
+     * @param id
+     * @param requestBody
+     * @returns ParticipantResponse
+     * @throws ApiError
+     */
+    public participantControllerUpdate(
+        id: string,
+        requestBody: UpdateParticipantDto,
+    ): CancelablePromise<ParticipantResponse> {
+        return this.httpRequest.request({
+            method: 'PUT',
+            url: '/participant/{id}',
+            path: {
+                'id': id,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+    /**
+     * Remove a participant from the database
+     * @param id
+     * @returns BaseResponse
+     * @throws ApiError
+     */
+    public participantControllerDeleteParticipant(
+        id: string,
+    ): CancelablePromise<BaseResponse> {
+        return this.httpRequest.request({
+            method: 'DELETE',
+            url: '/participant/{id}',
+            path: {
+                'id': id,
+            },
         });
     }
 }

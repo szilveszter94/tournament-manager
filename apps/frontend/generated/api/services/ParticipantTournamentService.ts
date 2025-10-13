@@ -2,8 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { AutocompleteParticipantDto } from '../models/AutocompleteParticipantDto';
 import type { BaseResponse } from '../models/BaseResponse';
-import type { CreateParticipantDto } from '../models/CreateParticipantDto';
 import type { ParticipantResponse } from '../models/ParticipantResponse';
 import type { ParticipantTournamentsResponse } from '../models/ParticipantTournamentsResponse';
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -36,7 +36,7 @@ export class ParticipantTournamentService {
      */
     public participantTournamentControllerAddParticipantToTournament(
         tournamentId: string,
-        requestBody: CreateParticipantDto,
+        requestBody: AutocompleteParticipantDto,
     ): CancelablePromise<ParticipantResponse> {
         return this.httpRequest.request({
             method: 'POST',

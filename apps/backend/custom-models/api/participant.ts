@@ -6,6 +6,11 @@ import { ParticipantType } from '../../generated/client';
 import { TournamentSortBy } from '../../custom-models/shared/tournament';
 import { SortOrder } from '../../custom-models/shared/common';
 
+export class AutocompleteParticipantQueryDto {
+  query: string;
+  type: ParticipantType;
+}
+
 export class FindParticipantQueryDto {
   query?: string;
   currentPage = '1';
@@ -35,4 +40,21 @@ export class ParticipantsResponse extends BaseResponse {
   data?: Participant[];
   @ApiProperty({ type: () => PaginationData, required: false })
   pagination?: PaginationData;
+}
+
+export class AutocompleteParticipantDto {
+  @ApiProperty({
+    type: 'string',
+  })
+  name: string;
+  @ApiProperty({
+    enum: ParticipantType,
+    enumName: 'ParticipantType',
+  })
+  type: ParticipantType;
+  @ApiProperty({
+    type: 'integer',
+    required: false,
+  })
+  participantId?: number;
 }

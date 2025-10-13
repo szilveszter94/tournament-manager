@@ -4,6 +4,7 @@ import { CreateParticipantDto } from '../../generated/models/create-participant.
 import { UpdateParticipantDto } from '../../generated/models/update-participant.dto';
 import { Prisma } from '../../generated/client';
 import {
+  AutocompleteParticipantQueryDto,
   FindParticipantQueryDto,
   ParticipantResponse,
   ParticipantsResponse,
@@ -13,6 +14,8 @@ import {
   handleDateRange as getDateRange,
   handleNumberRange as getNumberRange,
 } from '../utils/helper';
+import { validateParticipantNameLength } from '../utils/service.helper';
+import { minParticipantAutocompleteLength } from '../../custom-models/shared/common';
 
 @Injectable()
 export class ParticipantService {
@@ -107,8 +110,66 @@ export class ParticipantService {
     }
   }
 
+  async getAutocompleteParticipant(
+    queryParams: AutocompleteParticipantQueryDto,
+  ): Promise<ParticipantsResponse> {
+    try {
+      const query = queryParams.query?.trim();
+      if (!query || query.length < minParticipantAutocompleteLength) {
+        return {
+          ok: false,
+          error: `Autocomplete name must be at least ${minParticipantAutocompleteLength} characters.`,
+        };
+      }
+      if (!queryParams.type) {
+        return {
+          ok: false,
+          error: `Autocomplete type must be provided.`,
+        };
+      }
+
+      const participant = await this.prisma.participant.findMany({
+        where: {
+          name: {
+            contains: query,
+            mode: 'insensitive',
+          },
+          type: queryParams.type,
+        },
+        take: 10,
+        orderBy: { name: 'asc' },
+      });
+
+      return { ok: true, data: participant };
+    } catch (e) {
+      this.logger.error(
+        `Database error while finding participant by query ${queryParams.query}`,
+        e.stack,
+      );
+      return {
+        ok: false,
+        error: 'Error finding participants. Unexpected server errror.',
+      };
+    }
+  }
+
   async create(entity: CreateParticipantDto): Promise<ParticipantResponse> {
     try {
+      if (!entity.type) {
+        return {
+          ok: false,
+          error: 'Participant type is not provided.',
+        };
+      }
+
+      if (!validateParticipantNameLength(entity.name)) {
+        const playerType = entity.type === 'Individual' ? 'Player' : 'Team';
+        return {
+          ok: false,
+          error: `${playerType} name must be at least 5 characters.`,
+        };
+      }
+
       const participant = await this.prisma.participant.create({
         data: {
           name: entity.name,
@@ -131,6 +192,21 @@ export class ParticipantService {
     entity: UpdateParticipantDto,
   ): Promise<ParticipantResponse> {
     try {
+      if (!entity.type) {
+        return {
+          ok: false,
+          error: 'Participant type is not provided.',
+        };
+      }
+
+      if (!validateParticipantNameLength(entity.name)) {
+        const playerType = entity.type === 'Individual' ? 'Player' : 'Team';
+        return {
+          ok: false,
+          error: `${playerType} name must be at least 5 characters.`,
+        };
+      }
+
       const participant = await this.prisma.participant.update({
         where: { id },
         data: {

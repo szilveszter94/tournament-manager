@@ -276,14 +276,26 @@
         ]
       }
     },
-    "/participant/{id}": {
+    "/participant/autocomplete": {
       "get": {
-        "operationId": "ParticipantController_findOne",
+        "operationId": "ParticipantController_getAutocompleteParticipant",
         "parameters": [
           {
-            "name": "id",
+            "name": "type",
             "required": true,
-            "in": "path",
+            "in": "query",
+            "schema": {
+              "enum": [
+                "Individual",
+                "Team"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "query",
+            "required": true,
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -295,81 +307,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ParticipantResponse"
+                  "$ref": "#/components/schemas/ParticipantsResponse"
                 }
               }
             }
           }
         },
-        "summary": "Get a participant by Id",
-        "tags": [
-          "participant"
-        ]
-      },
-      "put": {
-        "operationId": "ParticipantController_update",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateParticipantDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ParticipantResponse"
-                }
-              }
-            }
-          }
-        },
-        "summary": "Update the participant by Id",
-        "tags": [
-          "participant"
-        ]
-      },
-      "delete": {
-        "operationId": "ParticipantController_deleteParticipant",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BaseResponse"
-                }
-              }
-            }
-          }
-        },
-        "summary": "Remove a participant from the database",
+        "summary": "Get participants by query and type",
         "tags": [
           "participant"
         ]
@@ -588,6 +532,105 @@
         ]
       }
     },
+    "/participant/{id}": {
+      "get": {
+        "operationId": "ParticipantController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParticipantResponse"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get a participant by Id",
+        "tags": [
+          "participant"
+        ]
+      },
+      "put": {
+        "operationId": "ParticipantController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateParticipantDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParticipantResponse"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Update the participant by Id",
+        "tags": [
+          "participant"
+        ]
+      },
+      "delete": {
+        "operationId": "ParticipantController_deleteParticipant",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Remove a participant from the database",
+        "tags": [
+          "participant"
+        ]
+      }
+    },
     "/participantTournament/{tournamentId}": {
       "get": {
         "operationId": "ParticipantTournamentController_findByTournamentId",
@@ -635,7 +678,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateParticipantDto"
+                "$ref": "#/components/schemas/AutocompleteParticipantDto"
               }
             }
           }
@@ -1428,7 +1471,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-12T17:28:13.875Z"
+            "default": "2025-10-13T17:43:51.543Z"
           }
         },
         "required": [
@@ -1460,7 +1503,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-12T17:28:13.849Z"
+            "default": "2025-10-13T17:43:51.530Z"
           }
         }
       },
@@ -1549,7 +1592,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-12T17:28:14.405Z"
+            "default": "2025-10-13T17:43:52.058Z"
           }
         },
         "required": [
@@ -1588,7 +1631,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-12T17:28:14.418Z"
+            "default": "2025-10-13T17:43:52.074Z"
           }
         }
       },
@@ -1610,6 +1653,28 @@
         },
         "required": [
           "ok"
+        ]
+      },
+      "AutocompleteParticipantDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ParticipantType"
+              }
+            ]
+          },
+          "participantId": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "name",
+          "type"
         ]
       }
     }

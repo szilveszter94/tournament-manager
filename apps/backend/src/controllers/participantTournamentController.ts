@@ -8,8 +8,10 @@ import {
 } from '@nestjs/swagger';
 import { ParticipantTournamentsResponse } from '../../custom-models/api/participant-tournament';
 import { ParticipantTournamentService } from '../services/participant-tournament.service';
-import { CreateParticipantDto } from '../../generated/models/create-participant.dto';
-import { ParticipantResponse } from '../../custom-models/api/participant';
+import {
+  AutocompleteParticipantDto,
+  ParticipantResponse,
+} from '../../custom-models/api/participant';
 import { BaseResponse } from '../../custom-models/api/base-response';
 
 @ApiTags('participantTournament')
@@ -34,13 +36,13 @@ export class ParticipantTournamentController {
   @Post(':tournamentId')
   @ApiOperation({ summary: 'Create a new participant for a tournament' })
   @ApiOkResponse({ type: ParticipantResponse })
-  @ApiBody({ type: CreateParticipantDto })
+  @ApiBody({ type: AutocompleteParticipantDto })
   addParticipantToTournament(
     @Param('tournamentId') tournamentId: string,
-    @Body() participant: CreateParticipantDto,
+    @Body() entity: AutocompleteParticipantDto,
   ): Promise<ParticipantResponse> {
     return this.participantTournamentService.addParticipantToTournament(
-      participant,
+      entity,
       +tournamentId,
     );
   }

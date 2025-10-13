@@ -10,6 +10,7 @@ import {
 } from '../../custom-models/api/tournament';
 import { BaseResponse } from '../../custom-models/api/base-response';
 import { FindTournamentQueryDto } from '../../custom-models/api/tournament';
+import { validateTournamentNameLength } from '../utils/service.helper';
 
 @Injectable()
 export class TournamentService {
@@ -103,6 +104,13 @@ export class TournamentService {
 
   async create(entity: CreateTournamentDto): Promise<TournamentResponse> {
     try {
+      if (!validateTournamentNameLength(entity.name)) {
+        return {
+          ok: false,
+          error: 'Tournament name must be at least 5 characters.',
+        };
+      }
+
       const tournament = await this.prisma.tournament.create({
         data: {
           name: entity.name,
@@ -125,6 +133,13 @@ export class TournamentService {
     entity: UpdateTournamentDto,
   ): Promise<TournamentResponse> {
     try {
+      if (!validateTournamentNameLength(entity.name)) {
+        return {
+          ok: false,
+          error: 'Tournament name must be at least 5 characters.',
+        };
+      }
+
       const tournament = await this.prisma.tournament.update({
         where: { id },
         data: {

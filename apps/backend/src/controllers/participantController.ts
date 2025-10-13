@@ -20,6 +20,7 @@ import { ParticipantService } from '../services/participant.service';
 import { CreateParticipantDto } from '../../generated/models/create-participant.dto';
 import { UpdateParticipantDto } from '../../generated/models/update-participant.dto';
 import {
+  AutocompleteParticipantQueryDto,
   FindParticipantQueryDto,
   ParticipantResponse,
   ParticipantsResponse,
@@ -36,11 +37,19 @@ export class ParticipantController {
   constructor(private readonly participantService: ParticipantService) {}
 
   // GET Participant by Id
-  @Get(':id')
-  @ApiOperation({ summary: 'Get a participant by Id' })
-  @ApiOkResponse({ type: ParticipantResponse, isArray: false })
-  findOne(@Param('id') id: string): Promise<ParticipantResponse> {
-    return this.participantService.find(+id);
+  @Get('autocomplete')
+  @ApiOperation({ summary: 'Get participants by query and type' })
+  @ApiOkResponse({ type: ParticipantsResponse, isArray: false })
+  @ApiQuery({ name: 'query', required: true, type: String })
+  @ApiQuery({
+    name: 'type',
+    required: true,
+    enum: ParticipantType,
+  })
+  getAutocompleteParticipant(
+    @Query() queryParams: AutocompleteParticipantQueryDto,
+  ): Promise<ParticipantsResponse> {
+    return this.participantService.getAutocompleteParticipant(queryParams);
   }
 
   // GET Participants by query
@@ -148,6 +157,14 @@ export class ParticipantController {
     @Body() participant: CreateParticipantDto,
   ): Promise<ParticipantResponse> {
     return this.participantService.create(participant);
+  }
+
+  // GET Participant by Id
+  @Get(':id')
+  @ApiOperation({ summary: 'Get a participant by Id' })
+  @ApiOkResponse({ type: ParticipantResponse, isArray: false })
+  findOne(@Param('id') id: string): Promise<ParticipantResponse> {
+    return this.participantService.find(+id);
   }
 
   // UPDATE Participant by Id

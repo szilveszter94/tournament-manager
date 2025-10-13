@@ -1,7 +1,8 @@
 // actions/participant.ts
 "use server";
 
-import { CreateParticipantDto, ParticipantType } from "@/generated/api";
+import { AutocompleteParticipantDto, ParticipantType } from "@/generated/api";
+import { minParticipantNameLength } from "@/generated/backend/common";
 import { apiClient } from "@/lib/client";
 import { State } from "@/lib/custom-models/common";
 import { revalidatePath } from "next/cache";
@@ -10,29 +11,39 @@ export async function addParticipantToTournament(
   _prevState: State,
   formData: FormData
 ): Promise<State> {
+  console.log("ok");
+  
   const name = formData.get("name")?.toString();
   const tournamentId = Number(formData.get("tournamentId"));
   const type = formData.get("type") as ParticipantType | null;
+  const participantId = Number(formData.get("participantId"));
 
   try {
     if (!name || !type) {
+      const missing: string[] = [];
+
+      if (!name) missing.push("name");
+      if (!type) missing.push("type");
+      const formatted = missing.join(" and ");
+
       return {
-        message: "Failed to create participant.",
-        errors: {
-          ...(name ? {} : { name: ["Name is required"] }),
-          ...(type
-            ? {}
-            : { participantType: ["A participant type must be selected."] }),
-        },
+        message: `Failed to add participant. Missing ${formatted}.`,
+        errors: {},
       };
     }
 
-    const entity: CreateParticipantDto = {
+    if (name.length < minParticipantNameLength) {
+      const typeName = type === "Individual" ? "Player" : "Team";
+      return {
+        message: `${typeName} name must be at least 5 characters.`,
+        errors: {},
+      };
+    }
+
+    const entity: AutocompleteParticipantDto = {
       name: name,
       type: type,
-      wins: 0,
-      losses: 0,
-      elo: 1500,
+      participantId: participantId > 0 ? participantId : undefined,
     };
 
     const result =

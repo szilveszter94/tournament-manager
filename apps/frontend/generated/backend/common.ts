@@ -1,3 +1,7 @@
+export const minTournamentNameLength = 5;
+export const minParticipantNameLength = 5;
+export const minParticipantAutocompleteLength = 3;
+
 export const sortOrderValues = ['asc', 'desc'] as const;
 export type SortOrder = (typeof sortOrderValues)[number];
 

@@ -10,6 +10,7 @@ export { CancelablePromise, CancelError } from './core/CancelablePromise';
 export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
+export type { AutocompleteParticipantDto } from './models/AutocompleteParticipantDto';
 export type { BaseResponse } from './models/BaseResponse';
 export type { CreateParticipantDto } from './models/CreateParticipantDto';
 export type { CreateTournamentDto } from './models/CreateTournamentDto';

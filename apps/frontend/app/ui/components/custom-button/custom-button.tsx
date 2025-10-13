@@ -62,11 +62,7 @@ export default function CustomButton({
         className
       )}
     >
-      {icon && (
-        <span className={clsx(formattedIconSize)}>
-          {icon}
-        </span>
-      )}
+      {icon && <span className={clsx(formattedIconSize)}>{icon}</span>}
       {children}
     </button>
   );
