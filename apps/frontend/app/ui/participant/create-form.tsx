@@ -14,12 +14,8 @@ type Props = {
 };
 
 export default function CreateParticipantForm({ type, tournamentId }: Props) {
-  const [state, formAction] = useActionState(
-    addParticipantToTournament,
-    initialState
-  );
-  const [selectedParticipant, setSelectedParticipant] =
-    useState<Participant | null>(null);
+  const [state, formAction] = useActionState(addParticipantToTournament, initialState);
+  const [selectedParticipant, setSelectedParticipant] = useState<Participant | null>(null);
   const [query, setQuery] = useState("");
 
   const onSetQuery = (term: string) => {
@@ -36,29 +32,11 @@ export default function CreateParticipantForm({ type, tournamentId }: Props) {
       <input type="hidden" name="type" value={type} />
       <input type="hidden" name="tournamentId" value={tournamentId} />
       <input type="hidden" name="name" value={query} />
-      {selectedParticipant && (
-        <input
-          autoComplete="off"
-          type="hidden"
-          name="participantId"
-          value={selectedParticipant.id}
-        />
-      )}
+      {selectedParticipant && <input type="hidden" name="participantId" value={selectedParticipant.id} />}
 
       <div className="flex gap-2">
-        <AutocompleteInput
-          type={type}
-          onSelect={setSelectedParticipant}
-          query={query}
-          setQuery={onSetQuery}
-        />
-        <CustomButton
-          type="submit"
-          variant="primary"
-          size="sm"
-          icon={<PlusCircleIcon />}
-          iconSize={4}
-        >
+        <AutocompleteInput type={type} onSelect={setSelectedParticipant} query={query} setQuery={onSetQuery} />
+        <CustomButton type="submit" variant="primary" size="sm" icon={<PlusCircleIcon />} iconSize={4}>
           Add
         </CustomButton>
       </div>

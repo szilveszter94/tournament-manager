@@ -13,12 +13,7 @@ type AutocompleteInputProps = {
   setQuery: (value: string) => void;
 };
 
-export default function AutocompleteInput({
-  type,
-  onSelect,
-  query,
-  setQuery,
-}: AutocompleteInputProps) {
+export default function AutocompleteInput({ type, onSelect, query, setQuery }: AutocompleteInputProps) {
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [selected, setSelected] = useState<Participant | null>(null);
 
@@ -55,12 +50,7 @@ export default function AutocompleteInput({
 
   return (
     <div className="relative">
-      <Combobox
-        as="div"
-        value={selected}
-        onChange={(p) => onSelectedChange(p)}
-        className="relative"
-      >
+      <Combobox as="div" value={selected} onChange={(p) => onSelectedChange(p)} className="relative">
         <ComboboxInput
           type="search"
           className="w-full rounded-md border px-3 py-2 text-sm"
@@ -77,10 +67,7 @@ export default function AutocompleteInput({
               <ComboboxOption
                 key={p.id}
                 value={p}
-                className={({ active }) =>
-                  `cursor-pointer select-none px-3 py-2 ${active ? "bg-on-secondary" : ""}`
-                }
-              >
+                className={({ focus }) => `cursor-pointer select-none px-3 py-2 ${focus ? "bg-on-secondary" : ""}`}>
                 {p.name}
               </ComboboxOption>
             ))}
