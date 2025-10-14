@@ -191,7 +191,7 @@
               "items": {
                 "type": "string",
                 "enum": [
-                  "AddPlayers",
+                  "RegisterPlayers",
                   "CreateFirstRound",
                   "FirstRoundStarted",
                   "CreateSecondRound",
@@ -754,7 +754,7 @@
       "TournamentStatus": {
         "type": "string",
         "enum": [
-          "AddPlayers",
+          "RegisterPlayers",
           "CreateFirstRound",
           "FirstRoundStarted",
           "CreateSecondRound",
@@ -1454,7 +1454,7 @@
             "type": "string"
           },
           "status": {
-            "default": "AddPlayers",
+            "default": "RegisterPlayers",
             "allOf": [
               {
                 "$ref": "#/components/schemas/TournamentStatus"
@@ -1471,7 +1471,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-13T17:43:51.543Z"
+            "default": "2025-10-14T19:07:05.876Z"
           }
         },
         "required": [
@@ -1486,7 +1486,7 @@
             "type": "string"
           },
           "status": {
-            "default": "AddPlayers",
+            "default": "RegisterPlayers",
             "allOf": [
               {
                 "$ref": "#/components/schemas/TournamentStatus"
@@ -1503,7 +1503,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-13T17:43:51.530Z"
+            "default": "2025-10-14T19:07:05.857Z"
           }
         }
       },
@@ -1592,7 +1592,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-13T17:43:52.058Z"
+            "default": "2025-10-14T19:07:06.897Z"
           }
         },
         "required": [
@@ -1631,7 +1631,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-13T17:43:52.074Z"
+            "default": "2025-10-14T19:07:06.918Z"
           }
         }
       },

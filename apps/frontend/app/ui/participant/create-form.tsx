@@ -34,13 +34,17 @@ export default function CreateParticipantForm({ type, tournamentId }: Props) {
       <input type="hidden" name="name" value={query} />
       {selectedParticipant && <input type="hidden" name="participantId" value={selectedParticipant.id} />}
 
-      <div className="flex gap-2">
-        <AutocompleteInput type={type} onSelect={setSelectedParticipant} query={query} setQuery={onSetQuery} />
-        <CustomButton type="submit" variant="primary" size="sm" icon={<PlusCircleIcon />} iconSize={4}>
-          Add
-        </CustomButton>
+      <div className="flex gap-4 items-center">
+        <div className="flex-3">
+          <AutocompleteInput type={type} onSelect={setSelectedParticipant} query={query} setQuery={onSetQuery} />
+        </div>
+        <div className="flex-1">
+          <CustomButton type="submit" variant="primary" className="w-full" size="md" icon={<PlusCircleIcon />} iconSize={6}>
+            Add
+          </CustomButton>
+        </div>
       </div>
-      {state.message && <p className="text-sm text-red-500">{state.message}</p>}
+      {state.message && <p className="text-sm text-red-primary">{state.message}</p>}
     </form>
   );
 }

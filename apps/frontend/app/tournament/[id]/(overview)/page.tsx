@@ -17,7 +17,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
   }
 
   return (
-    <main className="p-8 max-w-3xl mx-auto">
+    <main className="p-8 mx-auto">
       <TournamentDetail tournament={response.data} participants={participantsResponse.data} />
     </main>
   );

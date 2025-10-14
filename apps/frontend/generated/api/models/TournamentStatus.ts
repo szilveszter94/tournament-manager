@@ -3,7 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export enum TournamentStatus {
-    ADD_PLAYERS = 'AddPlayers',
+    REGISTER_PLAYERS = 'RegisterPlayers',
     CREATE_FIRST_ROUND = 'CreateFirstRound',
     FIRST_ROUND_STARTED = 'FirstRoundStarted',
     CREATE_SECOND_ROUND = 'CreateSecondRound',

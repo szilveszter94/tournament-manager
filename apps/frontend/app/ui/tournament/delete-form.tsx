@@ -28,10 +28,10 @@ export function DeleteParticipant({
       <button type="submit">
         <TrashIcon
           title="Delete Participant"
-          className="cursor-pointer w-5 h-5 text-red-500"
+          className="cursor-pointer w-5 h-5 text-red-primary"
         />
       </button>
-      {state.message && <p className="text-sm text-red-500">{state.message}</p>}
+      {state.message && <p className="text-sm text-red-primary">{state.message}</p>}
     </form>
   );
 }

@@ -15,7 +15,10 @@ html.dark-purple {
   --primary-text-color: #ffffff;
   --secondary-text-color: #111111;
   --subtitle-text-color: #acacac;
-  
+
   --primary-border-color: #364153;
   --secondary-border-color: #d1d5dc;
+
+  --green-primary: #00a63e;
+  --red-primary: #fb2c36;
 }

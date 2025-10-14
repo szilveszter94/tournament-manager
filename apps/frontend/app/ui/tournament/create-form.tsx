@@ -27,7 +27,7 @@ export default function CreateTournamentForm() {
           aria-describedby="name-error"
         />
         {state.errors?.name && (
-          <p id="name-error" className="text-red-500 text-sm">
+          <p id="name-error" className="text-red-primary text-sm">
             {state.errors.name.join(", ")}
           </p>
         )}
@@ -44,7 +44,7 @@ export default function CreateTournamentForm() {
           />
         </div>
         {state.errors?.participantType && (
-          <p id="name-error" className="mt-2 text-sm text-red-500">
+          <p id="name-error" className="mt-2 text-sm text-red-primary">
             {state.errors.participantType.join(", ")}
           </p>
         )}
@@ -61,7 +61,7 @@ export default function CreateTournamentForm() {
         Next
       </CustomButton>
       {state.message && (
-        <p className="text-sm text-red-500">{state.message}</p>
+        <p className="text-sm text-red-primary">{state.message}</p>
       )}
     </form>
   );

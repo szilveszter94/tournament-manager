@@ -90,7 +90,7 @@ export class TournamentService {
         sortOrder?: 'asc' | 'desc',
         sortBy?: 'name' | 'createdAt' | 'updatedAt' | 'status' | 'type',
         type?: Array<'Individual' | 'Team'>,
-        status?: Array<'AddPlayers' | 'CreateFirstRound' | 'FirstRoundStarted' | 'CreateSecondRound' | 'SecondRoundStarted' | 'Over'>,
+        status?: Array<'RegisterPlayers' | 'CreateFirstRound' | 'FirstRoundStarted' | 'CreateSecondRound' | 'SecondRoundStarted' | 'Over'>,
         itemsPerPage?: number,
         currentPage?: number,
         query?: string,

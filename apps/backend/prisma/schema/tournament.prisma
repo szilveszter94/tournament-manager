@@ -1,7 +1,7 @@
 model Tournament {
   id        Int              @id @default(autoincrement())
   name      String
-  status    TournamentStatus @default(AddPlayers)
+  status    TournamentStatus @default(RegisterPlayers)
   type      ParticipantType
   createdAt DateTime         @default(now())
   updatedAt DateTime         @updatedAt

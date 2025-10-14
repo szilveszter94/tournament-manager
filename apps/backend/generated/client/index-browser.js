@@ -246,7 +246,7 @@ exports.ParticipantType = exports.$Enums.ParticipantType = {
 };
 
 exports.TournamentStatus = exports.$Enums.TournamentStatus = {
-  AddPlayers: 'AddPlayers',
+  RegisterPlayers: 'RegisterPlayers',
   CreateFirstRound: 'CreateFirstRound',
   FirstRoundStarted: 'FirstRoundStarted',
   CreateSecondRound: 'CreateSecondRound',

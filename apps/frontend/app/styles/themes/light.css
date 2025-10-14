@@ -18,4 +18,7 @@ html.light {
 
   --primary-border-color: #d1d5dc;
   --secondary-border-color: #2f3031;
+
+  --green-primary: #00a63e;
+  --red-primary: #fb2c36;
 }

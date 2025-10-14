@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import type { Participant, ParticipantType } from "@/generated/api";
 import { fetchAutocompleteParticipants } from "@/app/participant/api";
+import clsx from "clsx";
 
 type AutocompleteInputProps = {
   type: ParticipantType;
@@ -54,7 +55,7 @@ export default function AutocompleteInput({ type, onSelect, query, setQuery }: A
         <ComboboxInput
           type="search"
           className="w-full rounded-md border px-3 py-2 text-sm"
-          placeholder="John Doe"
+          placeholder={clsx(type === "Individual" ? "John Doe" : "The A Squad")}
           autoComplete="off"
           value={query}
           onChange={(e) => onInputChange(e.target.value)}
