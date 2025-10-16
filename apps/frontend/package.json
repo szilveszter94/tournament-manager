@@ -9,6 +9,8 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@dnd-kit/helpers": "^0.1.21",
+    "@dnd-kit/react": "^0.1.21",
     "@headlessui/react": "^2.2.9",
     "@heroicons/react": "^2.2.0",
     "@reduxjs/toolkit": "^2.9.0",

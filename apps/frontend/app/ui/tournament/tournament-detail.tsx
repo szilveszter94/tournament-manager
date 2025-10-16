@@ -1,14 +1,22 @@
 "use client";
 
-import { Participant, ParticipantTournament, Tournament } from "@/generated/api";
-import React from "react";
+import { ParticipantTournament, Tournament } from "@/generated/api";
+import React, { useEffect } from "react";
 import CreateParticipantForm from "../participant/create-form";
-import TournamentParticipants from "./tournament-participants";
 import CustomButton from "../components/custom-button/custom-button";
 import { PlusCircleIcon, TrashIcon } from "@heroicons/react/16/solid";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/app/store/store";
-import { setGroups, clearGroups, removePlayer } from "@/app/store/groupSlice";
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
+import { setGroups, clearGroups, addGroup } from "@/app/store/features/groups/groupSlice";
+import { selectFilteredParticipants } from "@/app/store/features/participants/participantSelector";
+import { setParticipants } from "@/app/store/features/participants/participantSlice";
+import { selectGroupsByTournament } from "@/app/store/features/groups/groupsSelector";
+import { move } from "@dnd-kit/helpers";
+import { DragDropProvider } from "@dnd-kit/react";
+import { Column } from "../components/dnd/column";
+import { Item } from "../components/dnd/item";
+import TournamentParticipants from "./tournament-participants";
+
+const nonPersistentGroup = "nonPersistent";
 
 export default function TournamentDetail({
   tournament,
@@ -17,82 +25,96 @@ export default function TournamentDetail({
   tournament: Tournament;
   participants: ParticipantTournament[];
 }) {
-  const dispatch = useDispatch();
-  const groups = useSelector((state: RootState) => state.groups.groupsByTournament);
+  const dispatch = useAppDispatch();
 
-  const onGenerateGroups = (): void => {
-    const group1: Participant[] = [];
-    const group2: Participant[] = [];
-    participants.forEach((p, index) => {
-      if (index % 2 === 0) {
-        if (p.participant) group1.push(p.participant);
+  useEffect(() => {
+    dispatch(setParticipants(participants));
+  }, [dispatch, participants]);
+
+  const tournamentPersistentGroups = useAppSelector(selectGroupsByTournament(tournament.id));
+  const tournamentNonPersistentGroups = {
+    [nonPersistentGroup]: useAppSelector(selectFilteredParticipants(tournament.id)),
+  };
+
+  const onAddGroup = (): void => {
+    const groupName = `Group ${Object.keys(tournamentPersistentGroups).length + 1}`;
+    dispatch(addGroup({ tournamentId: tournament.id, groupName: groupName, group: [] }));
+  };
+
+  const onSetGroups = (updatedGroups: Record<string, ParticipantTournament[]>) => {
+    const newGroups: Record<string, ParticipantTournament[]> = {};
+    let participants: ParticipantTournament[] = [];
+
+    Object.entries(updatedGroups).forEach(([groupName, groupParticipants]) => {
+      if (groupName === nonPersistentGroup) {
+        participants = groupParticipants;
       } else {
-        if (p.participant) group2.push(p.participant);
+        newGroups[groupName] = groupParticipants;
       }
     });
-    dispatch(setGroups({ tournamentId: tournament.id, groups: [group1, group2] }));
+
+    if (participants.length > 0) {
+      dispatch(setParticipants(participants));
+    }
+
+    dispatch(setGroups({ tournamentId: tournament.id, groups: newGroups }));
   };
 
   const onClearGroups = (): void => {
     dispatch(clearGroups(tournament.id));
-  };
-  const filteredParticipants = (): ParticipantTournament[] => {
-    if (groups && groups[tournament.id]) {
-      const participantIds = new Set(groups[tournament.id]?.flat().map((p) => p.id));
-      return participants.filter((p) => !participantIds.has(p.participantId));
-    }
-    return participants;
-  };
-
-  const onRemovePlayer = (participantId: number): void => {
-    dispatch(removePlayer({ tournamentId: tournament.id, participantId }));
+    dispatch(setParticipants(participants));
   };
 
   return (
-    <div className="flex gap-2 w-full bg-tertiary rounded-2xl">
-      <div className="flex-4 p-6 space-y-6 ">
-        {/* Header */}
-        <div className="flex items-center justify-between border-b border-secondary-border-color pb-3">
-          <div>
-            <h1 className="text-2xl font-bold text-primary-text-color">🏆 {tournament.name}</h1>
-            <p className="text-sm text-foreground">
-              Type: <span className="font-medium">{tournament.type}</span> · Status:{" "}
-              <span className="text-green-primary font-semibold">Register Players</span>
-            </p>
+    <div className="flex flex-col lg:flex-row gap-2 w-full bg-tertiary rounded-2xl">
+      <DragDropProvider
+        onDragOver={(event) => {
+          const updatedGroups = move({ ...tournamentPersistentGroups, ...tournamentNonPersistentGroups }, event);
+          onSetGroups(updatedGroups);
+        }}>
+        <div className="flex-4 p-6 space-y-6 ">
+          {/* Header */}
+          <div className="flex items-center justify-between border-b border-secondary-border-color pb-3">
+            <div>
+              <h1 className="text-2xl font-bold text-primary-text-color">🏆 {tournament.name}</h1>
+              <p className="text-sm text-foreground">
+                Type: <span className="font-medium">{tournament.type}</span> · Status:{" "}
+                <span className="text-green-primary font-semibold">Register Players</span>
+              </p>
+            </div>
+            <span className="text-sm text-foreground">Tournament ID: {tournament.id}</span>
           </div>
-          <span className="text-sm text-foreground">Tournament ID: {tournament.id}</span>
+          {/* Add Participant Form */}
+          <div className="bg-secondary rounded-2xl shadow-sm p-4">
+            <h2 className="text-lg font-semibold mb-3 text-primary-text-color">{`Add ${tournament.type === "Individual" ? "Player" : "Team"}`}</h2>
+            <CreateParticipantForm type={tournament.type} tournamentId={tournament.id} />
+          </div>
+          {/* Main content */}
+          <TournamentParticipants participants={tournamentNonPersistentGroups} />
         </div>
-        {/* Add Participant Form */}
-        <div className="bg-secondary rounded-2xl shadow-sm p-4">
-          <h2 className="text-lg font-semibold mb-3 text-primary-text-color">{`Add ${tournament.type === "Individual" ? "Player" : "Team"}`}</h2>
-          <CreateParticipantForm type={tournament.type} tournamentId={tournament.id} />
-        </div>
-        {/* Main content */}
-        <TournamentParticipants
-          participants={filteredParticipants()}
-          className="grid w-full grid-cols-1 md:grid-cols-2 gap-6"
-        />
-      </div>
-      <div className="flex-6 p-6 space-y-6 rounded-2xl">
-        <div className="flex gap-3 w-100">
-          <CustomButton onClick={onGenerateGroups} icon={<PlusCircleIcon />} variant="primary">
-            Generate Groups
-          </CustomButton>
-          <CustomButton onClick={onClearGroups} icon={<TrashIcon />} variant="primary">
-            Delete Groups
-          </CustomButton>
-        </div>
-        {groups && groups[tournament.id]?.map((g, index) => (
-          <div key={index}>
-            {g.map((p) => (
-              <div className="w-50 flex justify-between gap-2" key={p.id}>
-                <p>{p.name}</p>
-                <TrashIcon className="h-5 w-5 color-red-primary cursor-pointer" onClick={() => onRemovePlayer(p.id)} />
+        <div className="flex-6 py-6 space-y-6 rounded-2xl">
+          <div className="px-5 flex gap-5 w-full">
+            <CustomButton onClick={onAddGroup} icon={<PlusCircleIcon />} variant="primary">
+              Add Group
+            </CustomButton>
+            <CustomButton onClick={onClearGroups} icon={<TrashIcon />} variant="primary">
+              Delete Groups
+            </CustomButton>
+          </div>
+          <div className="flex flex-wrap px-5 gap-5">
+            {Object.entries(tournamentPersistentGroups)?.map(([column, participants]) => (
+              <div className="text-center" key={column}>
+                <div className="bg-secondary border-b border-b-secondary-border-color rounded-t-xl py-2">{column}</div>
+                <Column className="flex rounded-b-xl p-2 flex-col bg-secondary h-80 w-60 overflow-y-auto" id={column}>
+                  {participants.map((p, index) => (
+                    <Item key={p.id.toString()} id={p.id} index={index} column={column} participant={p} />
+                  ))}
+                </Column>
               </div>
             ))}
           </div>
-        ))}
-      </div>
+        </div>
+      </DragDropProvider>
     </div>
   );
 }

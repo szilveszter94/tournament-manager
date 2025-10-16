@@ -1,10 +1,12 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import groupsReducer from "./groupSlice";
+import groupsReducer from "./features/groups/groupSlice";
+import participantReducer from "./features/participants/participantSlice";
 
 const rootReducer = combineReducers({
   groups: groupsReducer,
+  participants: participantReducer
 });
 
 const persistConfig = {

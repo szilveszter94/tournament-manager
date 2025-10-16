@@ -1,20 +1,17 @@
 import { deleteParticipantFromTournament } from "@/app/participant/actions";
 import { initialState } from "@/lib/custom-models/common";
 import { TrashIcon } from "@heroicons/react/16/solid";
+import clsx from "clsx";
 import { useActionState } from "react";
 
-export function DeleteParticipant({
-  participantId,
-  tournamentId,
-}: {
+type DeleteParticipantProps = {
   participantId: number;
   tournamentId: number;
-}) {
-  const deleteParticipant = deleteParticipantFromTournament.bind(
-    null,
-    participantId,
-    tournamentId
-  );
+  className?: string;
+};
+
+export function DeleteParticipant({ participantId, tournamentId, className = "" }: DeleteParticipantProps) {
+  const deleteParticipant = deleteParticipantFromTournament.bind(null, participantId, tournamentId);
   const [state, formAction] = useActionState(deleteParticipant, initialState);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -24,12 +21,12 @@ export function DeleteParticipant({
   };
 
   return (
-    <form action={formAction} onSubmit={handleSubmit}>
+    <form
+      className={clsx({ className: className }, "flex items-center")}
+      action={formAction}
+      onSubmit={handleSubmit}>
       <button type="submit">
-        <TrashIcon
-          title="Delete Participant"
-          className="cursor-pointer w-5 h-5 text-red-primary"
-        />
+        <TrashIcon title="Delete Participant" className="cursor-pointer w-6 h-6 text-red-primary" />
       </button>
       {state.message && <p className="text-sm text-red-primary">{state.message}</p>}
     </form>
