@@ -13,9 +13,12 @@ export default function TournamentParticipants({ participants, className = "" }:
     <div className={className}>
       {/* Participants List */}
       {Object.entries(participants)?.map(([column, participants]) => (
-        <Column className="grid grid-cols-2 gap-2 rounded-xl bg-secondary p-2 h-100 overflow-y-auto" key={column} id={column}>
+        <Column
+          className="grid grid-cols-1 md:grid-cols-2 content-start gap-2 rounded-b-xl p-2 pb-2 bg-secondary h-80 w-full overflow-y-auto"
+          key={column}
+          id={column}>
           {participants.map((p, index) => (
-            <Item key={p.id.toString()} id={p.id} index={index} column={column} participant={p} />
+            <Item key={p.id.toString()} id={p.id} index={index} column={column} participant={p} className="h-12" />
           ))}
         </Column>
       ))}
