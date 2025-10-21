@@ -3,14 +3,11 @@
 
 import { revalidatePath } from "next/cache";
 import { apiClient } from "@/lib/client";
-import { ParticipantType } from "@/generated/api";
+import { ParticipantTournament, ParticipantType, TournamentPhaseDataDto } from "@/generated/api";
 import { redirect } from "next/navigation";
 import { State } from "@/lib/custom-models/common";
 
-export async function createTournament(
-  _prevState: State,
-  formData: FormData
-): Promise<State> {
+export async function createTournament(_prevState: State, formData: FormData): Promise<State> {
   const name = formData.get("name")?.toString();
   const type = formData.get("participantType") as ParticipantType | null;
 
@@ -49,4 +46,17 @@ export async function createTournament(
 
   revalidatePath("/tournament/list");
   redirect(`/tournament/${id}`);
+}
+
+export async function createTournamentPhase(
+  data: Record<string, ParticipantTournament[]>,
+  tournamentId: number
+): Promise<void> {
+  const mappedData: TournamentPhaseDataDto = {
+    groups: Object.entries(data).map(([key, value]) => {
+      const ids = value.map((v) => v.participant?.id).filter((id): id is number => id !== undefined);
+      return { name: key, participantIds: ids };
+    }),
+  };
+  apiClient.tournamentPhase.tournamentPhaseControllerAddPhaseToTournament(tournamentId.toString(), mappedData);
 }

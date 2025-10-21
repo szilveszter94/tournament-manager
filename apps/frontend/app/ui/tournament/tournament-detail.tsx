@@ -4,7 +4,7 @@ import { ParticipantTournament, Tournament } from "@/generated/api";
 import React, { useEffect } from "react";
 import CreateParticipantForm from "../participant/create-form";
 import CustomButton from "../components/custom-button/custom-button";
-import { PlusCircleIcon, TrashIcon } from "@heroicons/react/16/solid";
+import { ForwardIcon, PlusCircleIcon, SparklesIcon, TrashIcon } from "@heroicons/react/16/solid";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { setGroups, clearGroups, addGroup } from "@/app/store/features/groups/groupSlice";
 import { selectFilteredParticipants } from "@/app/store/features/participants/participantSelector";
@@ -15,6 +15,8 @@ import { DragDropProvider } from "@dnd-kit/react";
 import { Column } from "../components/dnd/column";
 import { Item } from "../components/dnd/item";
 import TournamentParticipants from "./tournament-participants";
+import { shuffle } from "@/lib/utils";
+import { createTournamentPhase } from "@/app/tournament/actions";
 
 const nonPersistentGroup = "nonPersistent";
 
@@ -32,13 +34,41 @@ export default function TournamentDetail({
   }, [dispatch, participants]);
 
   const tournamentPersistentGroups = useAppSelector(selectGroupsByTournament(tournament.id));
-  const tournamentNonPersistentGroups = {
+  const tournamentNonPersistentGroup = {
     [nonPersistentGroup]: useAppSelector(selectFilteredParticipants(tournament.id)),
   };
 
   const onAddGroup = (): void => {
     const groupName = `Group ${Object.keys(tournamentPersistentGroups).length + 1}`;
     dispatch(addGroup({ tournamentId: tournament.id, groupName: groupName, group: [] }));
+  };
+
+  const onAutofillGroups = (): void => {
+    const groupCount = Object.keys(tournamentPersistentGroups).length;
+    const allParticipants = [
+      ...Object.values(tournamentPersistentGroups).flat(),
+      ...Object.values(tournamentNonPersistentGroup).flat(),
+    ];
+    if (!allParticipants.length || groupCount <= 0 || allParticipants.length < groupCount) {
+      return;
+    }
+    const shuffledParticipants = shuffle(allParticipants);
+    const newGroups: Record<string, ParticipantTournament[]> = {};
+
+    const baseSize = Math.floor(shuffledParticipants.length / groupCount);
+    let remainder = shuffledParticipants.length % groupCount;
+    let startIndex = 0;
+
+    Object.keys(tournamentPersistentGroups).forEach((groupName) => {
+      const groupSize = baseSize + (remainder > 0 ? 1 : 0);
+      remainder = Math.max(0, remainder - 1);
+
+      const groupParticipants = shuffledParticipants.slice(startIndex, startIndex + groupSize);
+      newGroups[groupName] = groupParticipants;
+      startIndex += groupSize;
+    });
+
+    dispatch(setGroups({ tournamentId: tournament.id, groups: newGroups }));
   };
 
   const onSetGroups = (updatedGroups: Record<string, ParticipantTournament[]>) => {
@@ -65,11 +95,15 @@ export default function TournamentDetail({
     dispatch(setParticipants(participants));
   };
 
+  const onGenerateGroups = async (): Promise<void> => {
+    await createTournamentPhase(tournamentPersistentGroups, tournament.id);
+  };
+
   return (
     <div className="flex flex-col lg:flex-row gap-2 w-full bg-tertiary rounded-2xl">
       <DragDropProvider
         onDragOver={(event) => {
-          const updatedGroups = move({ ...tournamentPersistentGroups, ...tournamentNonPersistentGroups }, event);
+          const updatedGroups = move({ ...tournamentPersistentGroups, ...tournamentNonPersistentGroup }, event);
           onSetGroups(updatedGroups);
         }}>
         <div className="flex-4 p-6 space-y-6 ">
@@ -90,15 +124,21 @@ export default function TournamentDetail({
             <CreateParticipantForm type={tournament.type} tournamentId={tournament.id} />
           </div>
           {/* Main content */}
-          <TournamentParticipants participants={tournamentNonPersistentGroups} />
+          <TournamentParticipants participants={tournamentNonPersistentGroup} />
         </div>
         <div className="flex-6 py-6 space-y-6 rounded-2xl">
-          <div className="px-5 flex gap-5 w-full">
+          <div className="px-5 flex flex-wrap gap-5 w-full justify-center sm:justify-start">
             <CustomButton onClick={onAddGroup} icon={<PlusCircleIcon />} variant="primary">
               Add Group
             </CustomButton>
+            <CustomButton onClick={onAutofillGroups} icon={<SparklesIcon />} variant="primary">
+              Auto Fill
+            </CustomButton>
             <CustomButton onClick={onClearGroups} icon={<TrashIcon />} variant="primary">
               Delete Groups
+            </CustomButton>
+            <CustomButton onClick={onGenerateGroups} icon={<ForwardIcon />} variant="primary">
+              Next
             </CustomButton>
           </div>
           <div className="flex flex-wrap px-5 gap-5">

@@ -1,20 +1,10 @@
 import { ParticipantType, TournamentStatus } from "@/generated/api";
-import {
-  PARTICIPANT_TYPE_VALUES,
-  TOURNAMENT_STATUS_VALUES,
-} from "./global-constants";
+import { PARTICIPANT_TYPE_VALUES, TOURNAMENT_STATUS_VALUES } from "./global-constants";
 import { SortOrder, sortOrderValues } from "@/generated/backend/common";
-import {
-  TournamentSortBy,
-  tournamentSortByValues,
-} from "@/generated/backend/tournament";
-import {
-  ParticipantSortBy,
-  participantSortByValues,
-} from "@/generated/backend/participant";
+import { TournamentSortBy, tournamentSortByValues } from "@/generated/backend/tournament";
+import { ParticipantSortBy, participantSortByValues } from "@/generated/backend/participant";
 
-export const parseSortOrder = (value?: string): SortOrder =>
-  isAllowed(value, sortOrderValues) ? value : "desc";
+export const parseSortOrder = (value?: string): SortOrder => (isAllowed(value, sortOrderValues) ? value : "desc");
 
 export const parseTournamentSortBy = (value?: string): TournamentSortBy =>
   isAllowed(value, tournamentSortByValues) ? value : "createdAt";
@@ -22,9 +12,7 @@ export const parseTournamentSortBy = (value?: string): TournamentSortBy =>
 export const parseParticipantSortBy = (value?: string): ParticipantSortBy =>
   isAllowed(value, participantSortByValues) ? value : "createdAt";
 
-export const parseTournamentStatus = (
-  values?: string | string[] | null
-): TournamentStatus[] => {
+export const parseTournamentStatus = (values?: string | string[] | null): TournamentStatus[] => {
   if (!values) return [];
 
   const arr = Array.isArray(values)
@@ -34,14 +22,10 @@ export const parseTournamentStatus = (
         .map((s) => s.trim())
         .filter(Boolean);
   // keep only valid statuses
-  return arr.filter((v): v is TournamentStatus =>
-    isAllowed(v, TOURNAMENT_STATUS_VALUES)
-  );
+  return arr.filter((v): v is TournamentStatus => isAllowed(v, TOURNAMENT_STATUS_VALUES));
 };
 
-export const parseParticipantType = (
-  values?: string | string[] | null
-): ParticipantType[] => {
+export const parseParticipantType = (values?: string | string[] | null): ParticipantType[] => {
   if (!values) return [];
 
   const arr = Array.isArray(values)
@@ -51,9 +35,7 @@ export const parseParticipantType = (
         .map((s) => s.trim())
         .filter(Boolean);
   // keep only valid statuses
-  return arr.filter((v): v is ParticipantType =>
-    isAllowed(v, PARTICIPANT_TYPE_VALUES)
-  );
+  return arr.filter((v): v is ParticipantType => isAllowed(v, PARTICIPANT_TYPE_VALUES));
 };
 
 export const generatePagination = (currentPage: number, totalPages: number) => {
@@ -78,22 +60,13 @@ export const generatePagination = (currentPage: number, totalPages: number) => {
   // If the current page is somewhere in the middle,
   // show the first page, an ellipsis, the current page and its neighbors,
   // another ellipsis, and the last page.
-  return [
-    1,
-    "...",
-    currentPage - 1,
-    currentPage,
-    currentPage + 1,
-    "...",
-    totalPages,
-  ];
+  return [1, "...", currentPage - 1, currentPage, currentPage + 1, "...", totalPages];
 };
 
-const isAllowed = <T extends string>(
-  value: unknown,
-  allowed: readonly T[]
-): value is T => {
-  return (
-    typeof value === "string" && (allowed as readonly string[]).includes(value)
-  );
+export const shuffle = <T>(array: T[]): T[] => {
+  return [...array].sort(() => Math.random() - 0.5);
+};
+
+const isAllowed = <T extends string>(value: unknown, allowed: readonly T[]): value is T => {
+  return typeof value === "string" && (allowed as readonly string[]).includes(value);
 };

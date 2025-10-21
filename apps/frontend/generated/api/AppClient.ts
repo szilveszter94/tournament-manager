@@ -8,11 +8,13 @@ import { FetchHttpRequest } from './core/FetchHttpRequest';
 import { ParticipantService } from './services/ParticipantService';
 import { ParticipantTournamentService } from './services/ParticipantTournamentService';
 import { TournamentService } from './services/TournamentService';
+import { TournamentPhaseService } from './services/TournamentPhaseService';
 type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
 export class AppClient {
     public readonly participant: ParticipantService;
     public readonly participantTournament: ParticipantTournamentService;
     public readonly tournament: TournamentService;
+    public readonly tournamentPhase: TournamentPhaseService;
     public readonly request: BaseHttpRequest;
     constructor(config?: Partial<OpenAPIConfig>, HttpRequest: HttpRequestConstructor = FetchHttpRequest) {
         this.request = new HttpRequest({
@@ -29,6 +31,7 @@ export class AppClient {
         this.participant = new ParticipantService(this.request);
         this.participantTournament = new ParticipantTournamentService(this.request);
         this.tournament = new TournamentService(this.request);
+        this.tournamentPhase = new TournamentPhaseService(this.request);
     }
 }
 

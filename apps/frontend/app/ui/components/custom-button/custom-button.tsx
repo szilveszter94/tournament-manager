@@ -14,6 +14,7 @@ type ButtonProps = {
   icon?: ReactNode;
   iconSize?: number;
   className?: string;
+  disabled?: boolean;
 };
 
 export default function CustomButton({
@@ -26,6 +27,7 @@ export default function CustomButton({
   icon,
   iconSize = 5,
   className,
+  disabled = false
 }: ButtonProps) {
   const router = useRouter();
   const formattedIconSize = `w-${iconSize} h-${iconSize}`;
@@ -53,15 +55,10 @@ export default function CustomButton({
 
   return (
     <button
+      disabled={disabled}
       type={type}
       onClick={handleClick}
-      className={clsx(
-        baseStyles,
-        variantStyles[variant],
-        sizeStyles[size],
-        className
-      )}
-    >
+      className={clsx(baseStyles, variantStyles[variant], sizeStyles[size], className)}>
       {icon && <span className={clsx(formattedIconSize)}>{icon}</span>}
       {children}
     </button>

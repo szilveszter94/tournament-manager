@@ -739,6 +739,47 @@
           "participantTournament"
         ]
       }
+    },
+    "/tournamentPhase/{tournamentId}": {
+      "post": {
+        "operationId": "TournamentPhaseController_addPhaseToTournament",
+        "parameters": [
+          {
+            "name": "tournamentId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TournamentPhaseDataDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Create a new phase for a tournament",
+        "tags": [
+          "tournamentPhase"
+        ]
+      }
     }
   },
   "info": {
@@ -1471,7 +1512,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-14T19:07:05.876Z"
+            "default": "2025-10-21T19:44:06.141Z"
           }
         },
         "required": [
@@ -1503,7 +1544,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-14T19:07:05.857Z"
+            "default": "2025-10-21T19:44:06.131Z"
           }
         }
       },
@@ -1592,7 +1633,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-14T19:07:06.897Z"
+            "default": "2025-10-21T19:44:06.465Z"
           }
         },
         "required": [
@@ -1631,7 +1672,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-14T19:07:06.918Z"
+            "default": "2025-10-21T19:44:06.474Z"
           }
         }
       },
@@ -1675,6 +1716,41 @@
         "required": [
           "name",
           "type"
+        ]
+      },
+      "ParticipantTournamentGroup": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the group (e.g., Group A, Group B)",
+            "example": "Group A"
+          },
+          "participantIds": {
+            "description": "List of participants belonging to this group",
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "required": [
+          "name",
+          "participantIds"
+        ]
+      },
+      "TournamentPhaseDataDto": {
+        "type": "object",
+        "properties": {
+          "groups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ParticipantTournamentGroup"
+            }
+          }
+        },
+        "required": [
+          "groups"
         ]
       }
     }
