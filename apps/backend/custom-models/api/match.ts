@@ -1,10 +1,11 @@
-import { MatchType } from '../../generated/client';
+import { Match } from 'generated/models/match.entity';
 
-export type CreateGroupMatch = {
-  tournamentPhaseId: number;
-  tournamentGroupId: number;
-  participant1Id: number;
-  participant2Id: number;
-  matchType: MatchType;
-  serialNumber: number;
-};
+export type CreateGroupMatch = Pick<
+  Match,
+  | 'tournamentPhaseId'
+  | 'tournamentGroupId'
+  | 'participant1Id'
+  | 'participant2Id'
+  | 'matchType'
+  | 'serialNumber'
+>;

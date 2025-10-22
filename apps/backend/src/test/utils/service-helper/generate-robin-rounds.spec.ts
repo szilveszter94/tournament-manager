@@ -110,12 +110,12 @@ describe('generateRobinRounds', () => {
 
     // ✅ ensure that matches only contain correct participants
     for (const match of groupA) {
-      expect(groupAPlayers.has(match.participant1Id)).toBe(true);
-      expect(groupAPlayers.has(match.participant2Id)).toBe(true);
+      expect(groupAPlayers.has(match.participant1Id ?? 0)).toBe(true);
+      expect(groupAPlayers.has(match.participant2Id ?? 0)).toBe(true);
     }
     for (const match of groupB) {
-      expect(groupBPlayers.has(match.participant1Id)).toBe(true);
-      expect(groupBPlayers.has(match.participant2Id)).toBe(true);
+      expect(groupBPlayers.has(match.participant1Id ?? 0)).toBe(true);
+      expect(groupBPlayers.has(match.participant2Id ?? 0)).toBe(true);
     }
 
     // ✅ sanity check: known IDs are in their proper groups

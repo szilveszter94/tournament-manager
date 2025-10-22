@@ -7,6 +7,7 @@
     "migrate-db": "npm --workspace=backend exec prisma migrate dev",
     "format-db": "npm --workspace=backend exec prisma format",
     "generate-client": "npm --workspace=backend run prisma:generate",
+    "test-api": "npm --workspace=backend run test",
     "seed-db": "npm --workspace=backend run seed-db",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
