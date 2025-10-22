@@ -35,6 +35,18 @@ export async function fetchTournamentById(
   }
 }
 
+export async function fetchGroupStagesById(
+  id: number
+): Promise<TournamentResponse> {
+  try {
+    const response = await apiClient.tournament.tournamentControllerFindOneWithGroupStages(id.toString());
+    return response;
+  } catch (err) {
+    console.error(err);
+    throw new Error(`Failed to fetch tournament with id ${id}`);
+  }
+}
+
 export async function fetchTournaments(
   p: TournamentQueryParams
 ): Promise<TournamentsResponse> {

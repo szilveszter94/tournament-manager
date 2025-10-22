@@ -100,6 +100,37 @@
         ]
       }
     },
+    "/tournament/groupStages/{id}": {
+      "get": {
+        "operationId": "TournamentController_findOneWithGroupStages",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TournamentResponse"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get a tournament with group stages by Id",
+        "tags": [
+          "tournament"
+        ]
+      }
+    },
     "/tournament": {
       "get": {
         "operationId": "TournamentController_findByQuery",
@@ -1512,7 +1543,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-21T19:44:06.141Z"
+            "default": "2025-10-21T22:18:24.289Z"
           }
         },
         "required": [
@@ -1544,7 +1575,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-21T19:44:06.131Z"
+            "default": "2025-10-21T22:18:24.274Z"
           }
         }
       },
@@ -1633,7 +1664,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-21T19:44:06.465Z"
+            "default": "2025-10-21T22:18:24.725Z"
           }
         },
         "required": [
@@ -1672,7 +1703,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-21T19:44:06.474Z"
+            "default": "2025-10-21T22:18:24.738Z"
           }
         }
       },

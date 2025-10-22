@@ -42,6 +42,56 @@ export class TournamentService {
     }
   }
 
+  async findWithGroupStages(id: number): Promise<TournamentResponse> {
+    try {
+      const tournament = await this.prisma.tournament.findUnique({
+        where: { id },
+        include: {
+          phases: {
+            where: { phaseType: 'GroupStage' },
+            include: {
+              groups: {
+                include: {
+                  participantGroups: {
+                    include: {
+                      participant: true,
+                    },
+                  },
+                },
+              },
+              matches: {
+                include: {
+                  participant1: true,
+                  participant2: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      if (!tournament) {
+        this.logger.warn(`Tournament with ID ${id} not found`);
+        return { ok: false, error: `Tournament with ID ${id} not found` };
+      }
+
+      if (!tournament.phases.length) {
+        return {
+          ok: false,
+          error: `Tournament ${id} has no group stage phase`,
+        };
+      }
+
+      return { ok: true, data: tournament };
+    } catch (e) {
+      this.logger.error(
+        `Database error while finding tournament with ID ${id}`,
+        e.stack,
+      );
+      return { ok: false, error: 'Database error. Failed to get tournament' };
+    }
+  }
+
   async findByQuery({
     query,
     currentPage,

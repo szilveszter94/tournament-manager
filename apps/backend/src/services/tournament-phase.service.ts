@@ -5,7 +5,9 @@ import {
   TournamentPhaseDataDto,
 } from '../../custom-models/api/tournament-phase';
 import { BaseResponse } from '../../custom-models/api/base-response';
-import { PhaseType } from 'generated/client';
+import { PhaseType } from '../../generated/client';
+import { generateRobinRounds } from '../utils/service.helper';
+import { CreateGroupMatch } from '../../custom-models/api/match';
 
 @Injectable()
 export class TournamentPhaseService {
@@ -55,20 +57,29 @@ export class TournamentPhaseService {
           },
         });
 
-        // 3️⃣ Create all groups for that phase
-        const groupsData = entity.groups.map((_, index) => ({
-          groupNumber: index + 1,
-          tournamentPhaseId: phase.id,
-        }));
+        if (!phase) {
+          throw new BadRequestException('Failed to create tournament phase');
+        }
 
-        const createdGroups = await tx.tournamentGroup.createManyAndReturn({
-          data: groupsData,
-        });
+        const groupMap: Record<number, number> = {}; // map groupIndex -> groupId
+        for (let i = 0; i < entity.groups.length; i++) {
+          const group = await tx.tournamentGroup.create({
+            data: {
+              groupNumber: i + 1,
+              tournamentPhaseId: phase.id,
+            },
+          });
+          groupMap[i] = group.id;
+        }
+
+        if (Object.keys(groupMap).length === 0) {
+          throw new BadRequestException('Failed to create tournament groups');
+        }
 
         // 4️⃣ Create participantGroup records (flatten all)
         const participantGroupsData = entity.groups.flatMap((g, index) =>
           g.participantIds.map((pid) => ({
-            tournamentGroupId: createdGroups[index].id,
+            tournamentGroupId: groupMap[index],
             participantId: pid,
           })),
         );
@@ -76,6 +87,16 @@ export class TournamentPhaseService {
         await tx.participantGroup.createMany({
           data: participantGroupsData,
         });
+
+        const matches: CreateGroupMatch[] = generateRobinRounds(
+          entity,
+          groupMap,
+          phase.id,
+        );
+
+        if (matches.length > 0) {
+          await tx.match.createMany({ data: matches });
+        }
       });
 
       return { ok: true };
