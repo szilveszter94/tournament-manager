@@ -51,6 +51,12 @@ export class Match {
     format: 'int32',
     nullable: true,
   })
+  loserId: number | null;
+  @ApiProperty({
+    type: 'integer',
+    format: 'int32',
+    nullable: true,
+  })
   nextMatchId: number | null;
   @ApiProperty({
     type: 'integer',
@@ -118,6 +124,12 @@ export class Match {
     nullable: true,
   })
   winner?: Participant | null;
+  @ApiProperty({
+    type: () => Participant,
+    required: false,
+    nullable: true,
+  })
+  loser?: Participant | null;
   @ApiProperty({
     type: () => Match,
     required: false,

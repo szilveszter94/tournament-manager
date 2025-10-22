@@ -1726,6 +1726,7 @@ export namespace Prisma {
     matchesAsP1: number
     matchesAsP2: number
     matchesWon: number
+    matchesLost: number
     podiums: number
   }
 
@@ -1735,6 +1736,7 @@ export namespace Prisma {
     matchesAsP1?: boolean | ParticipantCountOutputTypeCountMatchesAsP1Args
     matchesAsP2?: boolean | ParticipantCountOutputTypeCountMatchesAsP2Args
     matchesWon?: boolean | ParticipantCountOutputTypeCountMatchesWonArgs
+    matchesLost?: boolean | ParticipantCountOutputTypeCountMatchesLostArgs
     podiums?: boolean | ParticipantCountOutputTypeCountPodiumsArgs
   }
 
@@ -1781,6 +1783,13 @@ export namespace Prisma {
    * ParticipantCountOutputType without action
    */
   export type ParticipantCountOutputTypeCountMatchesWonArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MatchWhereInput
+  }
+
+  /**
+   * ParticipantCountOutputType without action
+   */
+  export type ParticipantCountOutputTypeCountMatchesLostArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MatchWhereInput
   }
 
@@ -3101,6 +3110,7 @@ export namespace Prisma {
     participant1Id: number | null
     participant2Id: number | null
     winnerId: number | null
+    loserId: number | null
     nextMatchId: number | null
     round: number | null
     serialNumber: number | null
@@ -3114,6 +3124,7 @@ export namespace Prisma {
     participant1Id: number | null
     participant2Id: number | null
     winnerId: number | null
+    loserId: number | null
     nextMatchId: number | null
     round: number | null
     serialNumber: number | null
@@ -3127,6 +3138,7 @@ export namespace Prisma {
     participant1Id: number | null
     participant2Id: number | null
     winnerId: number | null
+    loserId: number | null
     nextMatchId: number | null
     round: number | null
     serialNumber: number | null
@@ -3144,6 +3156,7 @@ export namespace Prisma {
     participant1Id: number | null
     participant2Id: number | null
     winnerId: number | null
+    loserId: number | null
     nextMatchId: number | null
     round: number | null
     serialNumber: number | null
@@ -3161,6 +3174,7 @@ export namespace Prisma {
     participant1Id: number
     participant2Id: number
     winnerId: number
+    loserId: number
     nextMatchId: number
     round: number
     serialNumber: number
@@ -3180,6 +3194,7 @@ export namespace Prisma {
     participant1Id?: true
     participant2Id?: true
     winnerId?: true
+    loserId?: true
     nextMatchId?: true
     round?: true
     serialNumber?: true
@@ -3193,6 +3208,7 @@ export namespace Prisma {
     participant1Id?: true
     participant2Id?: true
     winnerId?: true
+    loserId?: true
     nextMatchId?: true
     round?: true
     serialNumber?: true
@@ -3206,6 +3222,7 @@ export namespace Prisma {
     participant1Id?: true
     participant2Id?: true
     winnerId?: true
+    loserId?: true
     nextMatchId?: true
     round?: true
     serialNumber?: true
@@ -3223,6 +3240,7 @@ export namespace Prisma {
     participant1Id?: true
     participant2Id?: true
     winnerId?: true
+    loserId?: true
     nextMatchId?: true
     round?: true
     serialNumber?: true
@@ -3240,6 +3258,7 @@ export namespace Prisma {
     participant1Id?: true
     participant2Id?: true
     winnerId?: true
+    loserId?: true
     nextMatchId?: true
     round?: true
     serialNumber?: true
@@ -3344,6 +3363,7 @@ export namespace Prisma {
     participant1Id: number | null
     participant2Id: number | null
     winnerId: number | null
+    loserId: number | null
     nextMatchId: number | null
     round: number | null
     serialNumber: number | null
@@ -3380,6 +3400,7 @@ export namespace Prisma {
     participant1Id?: boolean
     participant2Id?: boolean
     winnerId?: boolean
+    loserId?: boolean
     nextMatchId?: boolean
     round?: boolean
     serialNumber?: boolean
@@ -3393,6 +3414,7 @@ export namespace Prisma {
     participant1?: boolean | Match$participant1Args<ExtArgs>
     participant2?: boolean | Match$participant2Args<ExtArgs>
     winner?: boolean | Match$winnerArgs<ExtArgs>
+    loser?: boolean | Match$loserArgs<ExtArgs>
     nextMatch?: boolean | Match$nextMatchArgs<ExtArgs>
     prevMatches?: boolean | Match$prevMatchesArgs<ExtArgs>
     _count?: boolean | MatchCountOutputTypeDefaultArgs<ExtArgs>
@@ -3406,6 +3428,7 @@ export namespace Prisma {
     participant1Id?: boolean
     participant2Id?: boolean
     winnerId?: boolean
+    loserId?: boolean
     nextMatchId?: boolean
     round?: boolean
     serialNumber?: boolean
@@ -3419,6 +3442,7 @@ export namespace Prisma {
     participant1?: boolean | Match$participant1Args<ExtArgs>
     participant2?: boolean | Match$participant2Args<ExtArgs>
     winner?: boolean | Match$winnerArgs<ExtArgs>
+    loser?: boolean | Match$loserArgs<ExtArgs>
     nextMatch?: boolean | Match$nextMatchArgs<ExtArgs>
   }, ExtArgs["result"]["match"]>
 
@@ -3430,6 +3454,7 @@ export namespace Prisma {
     participant1Id?: boolean
     participant2Id?: boolean
     winnerId?: boolean
+    loserId?: boolean
     nextMatchId?: boolean
     round?: boolean
     serialNumber?: boolean
@@ -3443,6 +3468,7 @@ export namespace Prisma {
     participant1?: boolean | Match$participant1Args<ExtArgs>
     participant2?: boolean | Match$participant2Args<ExtArgs>
     winner?: boolean | Match$winnerArgs<ExtArgs>
+    loser?: boolean | Match$loserArgs<ExtArgs>
     nextMatch?: boolean | Match$nextMatchArgs<ExtArgs>
   }, ExtArgs["result"]["match"]>
 
@@ -3454,6 +3480,7 @@ export namespace Prisma {
     participant1Id?: boolean
     participant2Id?: boolean
     winnerId?: boolean
+    loserId?: boolean
     nextMatchId?: boolean
     round?: boolean
     serialNumber?: boolean
@@ -3463,7 +3490,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type MatchOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tournamentPhaseId" | "eliminationId" | "tournamentGroupId" | "participant1Id" | "participant2Id" | "winnerId" | "nextMatchId" | "round" | "serialNumber" | "isOver" | "matchType" | "createdAt" | "updatedAt", ExtArgs["result"]["match"]>
+  export type MatchOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tournamentPhaseId" | "eliminationId" | "tournamentGroupId" | "participant1Id" | "participant2Id" | "winnerId" | "loserId" | "nextMatchId" | "round" | "serialNumber" | "isOver" | "matchType" | "createdAt" | "updatedAt", ExtArgs["result"]["match"]>
   export type MatchInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
     elimination?: boolean | Match$eliminationArgs<ExtArgs>
@@ -3471,6 +3498,7 @@ export namespace Prisma {
     participant1?: boolean | Match$participant1Args<ExtArgs>
     participant2?: boolean | Match$participant2Args<ExtArgs>
     winner?: boolean | Match$winnerArgs<ExtArgs>
+    loser?: boolean | Match$loserArgs<ExtArgs>
     nextMatch?: boolean | Match$nextMatchArgs<ExtArgs>
     prevMatches?: boolean | Match$prevMatchesArgs<ExtArgs>
     _count?: boolean | MatchCountOutputTypeDefaultArgs<ExtArgs>
@@ -3482,6 +3510,7 @@ export namespace Prisma {
     participant1?: boolean | Match$participant1Args<ExtArgs>
     participant2?: boolean | Match$participant2Args<ExtArgs>
     winner?: boolean | Match$winnerArgs<ExtArgs>
+    loser?: boolean | Match$loserArgs<ExtArgs>
     nextMatch?: boolean | Match$nextMatchArgs<ExtArgs>
   }
   export type MatchIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3491,6 +3520,7 @@ export namespace Prisma {
     participant1?: boolean | Match$participant1Args<ExtArgs>
     participant2?: boolean | Match$participant2Args<ExtArgs>
     winner?: boolean | Match$winnerArgs<ExtArgs>
+    loser?: boolean | Match$loserArgs<ExtArgs>
     nextMatch?: boolean | Match$nextMatchArgs<ExtArgs>
   }
 
@@ -3503,6 +3533,7 @@ export namespace Prisma {
       participant1: Prisma.$ParticipantPayload<ExtArgs> | null
       participant2: Prisma.$ParticipantPayload<ExtArgs> | null
       winner: Prisma.$ParticipantPayload<ExtArgs> | null
+      loser: Prisma.$ParticipantPayload<ExtArgs> | null
       nextMatch: Prisma.$MatchPayload<ExtArgs> | null
       prevMatches: Prisma.$MatchPayload<ExtArgs>[]
     }
@@ -3514,6 +3545,7 @@ export namespace Prisma {
       participant1Id: number | null
       participant2Id: number | null
       winnerId: number | null
+      loserId: number | null
       nextMatchId: number | null
       round: number | null
       serialNumber: number | null
@@ -3921,6 +3953,7 @@ export namespace Prisma {
     participant1<T extends Match$participant1Args<ExtArgs> = {}>(args?: Subset<T, Match$participant1Args<ExtArgs>>): Prisma__ParticipantClient<$Result.GetResult<Prisma.$ParticipantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     participant2<T extends Match$participant2Args<ExtArgs> = {}>(args?: Subset<T, Match$participant2Args<ExtArgs>>): Prisma__ParticipantClient<$Result.GetResult<Prisma.$ParticipantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     winner<T extends Match$winnerArgs<ExtArgs> = {}>(args?: Subset<T, Match$winnerArgs<ExtArgs>>): Prisma__ParticipantClient<$Result.GetResult<Prisma.$ParticipantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    loser<T extends Match$loserArgs<ExtArgs> = {}>(args?: Subset<T, Match$loserArgs<ExtArgs>>): Prisma__ParticipantClient<$Result.GetResult<Prisma.$ParticipantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     nextMatch<T extends Match$nextMatchArgs<ExtArgs> = {}>(args?: Subset<T, Match$nextMatchArgs<ExtArgs>>): Prisma__MatchClient<$Result.GetResult<Prisma.$MatchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     prevMatches<T extends Match$prevMatchesArgs<ExtArgs> = {}>(args?: Subset<T, Match$prevMatchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -3959,6 +3992,7 @@ export namespace Prisma {
     readonly participant1Id: FieldRef<"Match", 'Int'>
     readonly participant2Id: FieldRef<"Match", 'Int'>
     readonly winnerId: FieldRef<"Match", 'Int'>
+    readonly loserId: FieldRef<"Match", 'Int'>
     readonly nextMatchId: FieldRef<"Match", 'Int'>
     readonly round: FieldRef<"Match", 'Int'>
     readonly serialNumber: FieldRef<"Match", 'Int'>
@@ -4457,6 +4491,25 @@ export namespace Prisma {
   }
 
   /**
+   * Match.loser
+   */
+  export type Match$loserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Participant
+     */
+    select?: ParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Participant
+     */
+    omit?: ParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ParticipantInclude<ExtArgs> | null
+    where?: ParticipantWhereInput
+  }
+
+  /**
    * Match.nextMatch
    */
   export type Match$nextMatchArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4757,6 +4810,7 @@ export namespace Prisma {
     matchesAsP1?: boolean | Participant$matchesAsP1Args<ExtArgs>
     matchesAsP2?: boolean | Participant$matchesAsP2Args<ExtArgs>
     matchesWon?: boolean | Participant$matchesWonArgs<ExtArgs>
+    matchesLost?: boolean | Participant$matchesLostArgs<ExtArgs>
     podiums?: boolean | Participant$podiumsArgs<ExtArgs>
     _count?: boolean | ParticipantCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["participant"]>
@@ -4801,6 +4855,7 @@ export namespace Prisma {
     matchesAsP1?: boolean | Participant$matchesAsP1Args<ExtArgs>
     matchesAsP2?: boolean | Participant$matchesAsP2Args<ExtArgs>
     matchesWon?: boolean | Participant$matchesWonArgs<ExtArgs>
+    matchesLost?: boolean | Participant$matchesLostArgs<ExtArgs>
     podiums?: boolean | Participant$podiumsArgs<ExtArgs>
     _count?: boolean | ParticipantCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -4815,6 +4870,7 @@ export namespace Prisma {
       matchesAsP1: Prisma.$MatchPayload<ExtArgs>[]
       matchesAsP2: Prisma.$MatchPayload<ExtArgs>[]
       matchesWon: Prisma.$MatchPayload<ExtArgs>[]
+      matchesLost: Prisma.$MatchPayload<ExtArgs>[]
       podiums: Prisma.$TournamentWinnerPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -5225,6 +5281,7 @@ export namespace Prisma {
     matchesAsP1<T extends Participant$matchesAsP1Args<ExtArgs> = {}>(args?: Subset<T, Participant$matchesAsP1Args<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     matchesAsP2<T extends Participant$matchesAsP2Args<ExtArgs> = {}>(args?: Subset<T, Participant$matchesAsP2Args<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     matchesWon<T extends Participant$matchesWonArgs<ExtArgs> = {}>(args?: Subset<T, Participant$matchesWonArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    matchesLost<T extends Participant$matchesLostArgs<ExtArgs> = {}>(args?: Subset<T, Participant$matchesLostArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     podiums<T extends Participant$podiumsArgs<ExtArgs> = {}>(args?: Subset<T, Participant$podiumsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentWinnerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -5750,6 +5807,30 @@ export namespace Prisma {
    * Participant.matchesWon
    */
   export type Participant$matchesWonArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Match
+     */
+    select?: MatchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Match
+     */
+    omit?: MatchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MatchInclude<ExtArgs> | null
+    where?: MatchWhereInput
+    orderBy?: MatchOrderByWithRelationInput | MatchOrderByWithRelationInput[]
+    cursor?: MatchWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MatchScalarFieldEnum | MatchScalarFieldEnum[]
+  }
+
+  /**
+   * Participant.matchesLost
+   */
+  export type Participant$matchesLostArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Match
      */
@@ -12799,6 +12880,7 @@ export namespace Prisma {
     participant1Id: 'participant1Id',
     participant2Id: 'participant2Id',
     winnerId: 'winnerId',
+    loserId: 'loserId',
     nextMatchId: 'nextMatchId',
     round: 'round',
     serialNumber: 'serialNumber',
@@ -13145,6 +13227,7 @@ export namespace Prisma {
     participant1Id?: IntNullableFilter<"Match"> | number | null
     participant2Id?: IntNullableFilter<"Match"> | number | null
     winnerId?: IntNullableFilter<"Match"> | number | null
+    loserId?: IntNullableFilter<"Match"> | number | null
     nextMatchId?: IntNullableFilter<"Match"> | number | null
     round?: IntNullableFilter<"Match"> | number | null
     serialNumber?: IntNullableFilter<"Match"> | number | null
@@ -13158,6 +13241,7 @@ export namespace Prisma {
     participant1?: XOR<ParticipantNullableScalarRelationFilter, ParticipantWhereInput> | null
     participant2?: XOR<ParticipantNullableScalarRelationFilter, ParticipantWhereInput> | null
     winner?: XOR<ParticipantNullableScalarRelationFilter, ParticipantWhereInput> | null
+    loser?: XOR<ParticipantNullableScalarRelationFilter, ParticipantWhereInput> | null
     nextMatch?: XOR<MatchNullableScalarRelationFilter, MatchWhereInput> | null
     prevMatches?: MatchListRelationFilter
   }
@@ -13170,6 +13254,7 @@ export namespace Prisma {
     participant1Id?: SortOrderInput | SortOrder
     participant2Id?: SortOrderInput | SortOrder
     winnerId?: SortOrderInput | SortOrder
+    loserId?: SortOrderInput | SortOrder
     nextMatchId?: SortOrderInput | SortOrder
     round?: SortOrderInput | SortOrder
     serialNumber?: SortOrderInput | SortOrder
@@ -13183,6 +13268,7 @@ export namespace Prisma {
     participant1?: ParticipantOrderByWithRelationInput
     participant2?: ParticipantOrderByWithRelationInput
     winner?: ParticipantOrderByWithRelationInput
+    loser?: ParticipantOrderByWithRelationInput
     nextMatch?: MatchOrderByWithRelationInput
     prevMatches?: MatchOrderByRelationAggregateInput
   }
@@ -13199,6 +13285,7 @@ export namespace Prisma {
     participant1Id?: IntNullableFilter<"Match"> | number | null
     participant2Id?: IntNullableFilter<"Match"> | number | null
     winnerId?: IntNullableFilter<"Match"> | number | null
+    loserId?: IntNullableFilter<"Match"> | number | null
     nextMatchId?: IntNullableFilter<"Match"> | number | null
     round?: IntNullableFilter<"Match"> | number | null
     serialNumber?: IntNullableFilter<"Match"> | number | null
@@ -13212,6 +13299,7 @@ export namespace Prisma {
     participant1?: XOR<ParticipantNullableScalarRelationFilter, ParticipantWhereInput> | null
     participant2?: XOR<ParticipantNullableScalarRelationFilter, ParticipantWhereInput> | null
     winner?: XOR<ParticipantNullableScalarRelationFilter, ParticipantWhereInput> | null
+    loser?: XOR<ParticipantNullableScalarRelationFilter, ParticipantWhereInput> | null
     nextMatch?: XOR<MatchNullableScalarRelationFilter, MatchWhereInput> | null
     prevMatches?: MatchListRelationFilter
   }, "id" | "tournamentGroupId_serialNumber">
@@ -13224,6 +13312,7 @@ export namespace Prisma {
     participant1Id?: SortOrderInput | SortOrder
     participant2Id?: SortOrderInput | SortOrder
     winnerId?: SortOrderInput | SortOrder
+    loserId?: SortOrderInput | SortOrder
     nextMatchId?: SortOrderInput | SortOrder
     round?: SortOrderInput | SortOrder
     serialNumber?: SortOrderInput | SortOrder
@@ -13249,6 +13338,7 @@ export namespace Prisma {
     participant1Id?: IntNullableWithAggregatesFilter<"Match"> | number | null
     participant2Id?: IntNullableWithAggregatesFilter<"Match"> | number | null
     winnerId?: IntNullableWithAggregatesFilter<"Match"> | number | null
+    loserId?: IntNullableWithAggregatesFilter<"Match"> | number | null
     nextMatchId?: IntNullableWithAggregatesFilter<"Match"> | number | null
     round?: IntNullableWithAggregatesFilter<"Match"> | number | null
     serialNumber?: IntNullableWithAggregatesFilter<"Match"> | number | null
@@ -13275,6 +13365,7 @@ export namespace Prisma {
     matchesAsP1?: MatchListRelationFilter
     matchesAsP2?: MatchListRelationFilter
     matchesWon?: MatchListRelationFilter
+    matchesLost?: MatchListRelationFilter
     podiums?: TournamentWinnerListRelationFilter
   }
 
@@ -13292,6 +13383,7 @@ export namespace Prisma {
     matchesAsP1?: MatchOrderByRelationAggregateInput
     matchesAsP2?: MatchOrderByRelationAggregateInput
     matchesWon?: MatchOrderByRelationAggregateInput
+    matchesLost?: MatchOrderByRelationAggregateInput
     podiums?: TournamentWinnerOrderByRelationAggregateInput
   }
 
@@ -13312,6 +13404,7 @@ export namespace Prisma {
     matchesAsP1?: MatchListRelationFilter
     matchesAsP2?: MatchListRelationFilter
     matchesWon?: MatchListRelationFilter
+    matchesLost?: MatchListRelationFilter
     podiums?: TournamentWinnerListRelationFilter
   }, "id" | "name">
 
@@ -13844,6 +13937,7 @@ export namespace Prisma {
     participant1?: ParticipantCreateNestedOneWithoutMatchesAsP1Input
     participant2?: ParticipantCreateNestedOneWithoutMatchesAsP2Input
     winner?: ParticipantCreateNestedOneWithoutMatchesWonInput
+    loser?: ParticipantCreateNestedOneWithoutMatchesLostInput
     nextMatch?: MatchCreateNestedOneWithoutPrevMatchesInput
     prevMatches?: MatchCreateNestedManyWithoutNextMatchInput
   }
@@ -13856,6 +13950,7 @@ export namespace Prisma {
     participant1Id?: number | null
     participant2Id?: number | null
     winnerId?: number | null
+    loserId?: number | null
     nextMatchId?: number | null
     round?: number | null
     serialNumber?: number | null
@@ -13879,6 +13974,7 @@ export namespace Prisma {
     participant1?: ParticipantUpdateOneWithoutMatchesAsP1NestedInput
     participant2?: ParticipantUpdateOneWithoutMatchesAsP2NestedInput
     winner?: ParticipantUpdateOneWithoutMatchesWonNestedInput
+    loser?: ParticipantUpdateOneWithoutMatchesLostNestedInput
     nextMatch?: MatchUpdateOneWithoutPrevMatchesNestedInput
     prevMatches?: MatchUpdateManyWithoutNextMatchNestedInput
   }
@@ -13891,6 +13987,7 @@ export namespace Prisma {
     participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
     participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
     winnerId?: NullableIntFieldUpdateOperationsInput | number | null
+    loserId?: NullableIntFieldUpdateOperationsInput | number | null
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
@@ -13909,6 +14006,7 @@ export namespace Prisma {
     participant1Id?: number | null
     participant2Id?: number | null
     winnerId?: number | null
+    loserId?: number | null
     nextMatchId?: number | null
     round?: number | null
     serialNumber?: number | null
@@ -13935,6 +14033,7 @@ export namespace Prisma {
     participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
     participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
     winnerId?: NullableIntFieldUpdateOperationsInput | number | null
+    loserId?: NullableIntFieldUpdateOperationsInput | number | null
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
@@ -13957,6 +14056,7 @@ export namespace Prisma {
     matchesAsP1?: MatchCreateNestedManyWithoutParticipant1Input
     matchesAsP2?: MatchCreateNestedManyWithoutParticipant2Input
     matchesWon?: MatchCreateNestedManyWithoutWinnerInput
+    matchesLost?: MatchCreateNestedManyWithoutLoserInput
     podiums?: TournamentWinnerCreateNestedManyWithoutParticipantInput
   }
 
@@ -13974,6 +14074,7 @@ export namespace Prisma {
     matchesAsP1?: MatchUncheckedCreateNestedManyWithoutParticipant1Input
     matchesAsP2?: MatchUncheckedCreateNestedManyWithoutParticipant2Input
     matchesWon?: MatchUncheckedCreateNestedManyWithoutWinnerInput
+    matchesLost?: MatchUncheckedCreateNestedManyWithoutLoserInput
     podiums?: TournamentWinnerUncheckedCreateNestedManyWithoutParticipantInput
   }
 
@@ -13990,6 +14091,7 @@ export namespace Prisma {
     matchesAsP1?: MatchUpdateManyWithoutParticipant1NestedInput
     matchesAsP2?: MatchUpdateManyWithoutParticipant2NestedInput
     matchesWon?: MatchUpdateManyWithoutWinnerNestedInput
+    matchesLost?: MatchUpdateManyWithoutLoserNestedInput
     podiums?: TournamentWinnerUpdateManyWithoutParticipantNestedInput
   }
 
@@ -14007,6 +14109,7 @@ export namespace Prisma {
     matchesAsP1?: MatchUncheckedUpdateManyWithoutParticipant1NestedInput
     matchesAsP2?: MatchUncheckedUpdateManyWithoutParticipant2NestedInput
     matchesWon?: MatchUncheckedUpdateManyWithoutWinnerNestedInput
+    matchesLost?: MatchUncheckedUpdateManyWithoutLoserNestedInput
     podiums?: TournamentWinnerUncheckedUpdateManyWithoutParticipantNestedInput
   }
 
@@ -14635,6 +14738,7 @@ export namespace Prisma {
     participant1Id?: SortOrder
     participant2Id?: SortOrder
     winnerId?: SortOrder
+    loserId?: SortOrder
     nextMatchId?: SortOrder
     round?: SortOrder
     serialNumber?: SortOrder
@@ -14652,6 +14756,7 @@ export namespace Prisma {
     participant1Id?: SortOrder
     participant2Id?: SortOrder
     winnerId?: SortOrder
+    loserId?: SortOrder
     nextMatchId?: SortOrder
     round?: SortOrder
     serialNumber?: SortOrder
@@ -14665,6 +14770,7 @@ export namespace Prisma {
     participant1Id?: SortOrder
     participant2Id?: SortOrder
     winnerId?: SortOrder
+    loserId?: SortOrder
     nextMatchId?: SortOrder
     round?: SortOrder
     serialNumber?: SortOrder
@@ -14682,6 +14788,7 @@ export namespace Prisma {
     participant1Id?: SortOrder
     participant2Id?: SortOrder
     winnerId?: SortOrder
+    loserId?: SortOrder
     nextMatchId?: SortOrder
     round?: SortOrder
     serialNumber?: SortOrder
@@ -14699,6 +14806,7 @@ export namespace Prisma {
     participant1Id?: SortOrder
     participant2Id?: SortOrder
     winnerId?: SortOrder
+    loserId?: SortOrder
     nextMatchId?: SortOrder
     round?: SortOrder
     serialNumber?: SortOrder
@@ -15306,6 +15414,12 @@ export namespace Prisma {
     connect?: ParticipantWhereUniqueInput
   }
 
+  export type ParticipantCreateNestedOneWithoutMatchesLostInput = {
+    create?: XOR<ParticipantCreateWithoutMatchesLostInput, ParticipantUncheckedCreateWithoutMatchesLostInput>
+    connectOrCreate?: ParticipantCreateOrConnectWithoutMatchesLostInput
+    connect?: ParticipantWhereUniqueInput
+  }
+
   export type MatchCreateNestedOneWithoutPrevMatchesInput = {
     create?: XOR<MatchCreateWithoutPrevMatchesInput, MatchUncheckedCreateWithoutPrevMatchesInput>
     connectOrCreate?: MatchCreateOrConnectWithoutPrevMatchesInput
@@ -15396,6 +15510,16 @@ export namespace Prisma {
     update?: XOR<XOR<ParticipantUpdateToOneWithWhereWithoutMatchesWonInput, ParticipantUpdateWithoutMatchesWonInput>, ParticipantUncheckedUpdateWithoutMatchesWonInput>
   }
 
+  export type ParticipantUpdateOneWithoutMatchesLostNestedInput = {
+    create?: XOR<ParticipantCreateWithoutMatchesLostInput, ParticipantUncheckedCreateWithoutMatchesLostInput>
+    connectOrCreate?: ParticipantCreateOrConnectWithoutMatchesLostInput
+    upsert?: ParticipantUpsertWithoutMatchesLostInput
+    disconnect?: ParticipantWhereInput | boolean
+    delete?: ParticipantWhereInput | boolean
+    connect?: ParticipantWhereUniqueInput
+    update?: XOR<XOR<ParticipantUpdateToOneWithWhereWithoutMatchesLostInput, ParticipantUpdateWithoutMatchesLostInput>, ParticipantUncheckedUpdateWithoutMatchesLostInput>
+  }
+
   export type MatchUpdateOneWithoutPrevMatchesNestedInput = {
     create?: XOR<MatchCreateWithoutPrevMatchesInput, MatchUncheckedCreateWithoutPrevMatchesInput>
     connectOrCreate?: MatchCreateOrConnectWithoutPrevMatchesInput
@@ -15469,6 +15593,13 @@ export namespace Prisma {
     connect?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
   }
 
+  export type MatchCreateNestedManyWithoutLoserInput = {
+    create?: XOR<MatchCreateWithoutLoserInput, MatchUncheckedCreateWithoutLoserInput> | MatchCreateWithoutLoserInput[] | MatchUncheckedCreateWithoutLoserInput[]
+    connectOrCreate?: MatchCreateOrConnectWithoutLoserInput | MatchCreateOrConnectWithoutLoserInput[]
+    createMany?: MatchCreateManyLoserInputEnvelope
+    connect?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+  }
+
   export type TournamentWinnerCreateNestedManyWithoutParticipantInput = {
     create?: XOR<TournamentWinnerCreateWithoutParticipantInput, TournamentWinnerUncheckedCreateWithoutParticipantInput> | TournamentWinnerCreateWithoutParticipantInput[] | TournamentWinnerUncheckedCreateWithoutParticipantInput[]
     connectOrCreate?: TournamentWinnerCreateOrConnectWithoutParticipantInput | TournamentWinnerCreateOrConnectWithoutParticipantInput[]
@@ -15508,6 +15639,13 @@ export namespace Prisma {
     create?: XOR<MatchCreateWithoutWinnerInput, MatchUncheckedCreateWithoutWinnerInput> | MatchCreateWithoutWinnerInput[] | MatchUncheckedCreateWithoutWinnerInput[]
     connectOrCreate?: MatchCreateOrConnectWithoutWinnerInput | MatchCreateOrConnectWithoutWinnerInput[]
     createMany?: MatchCreateManyWinnerInputEnvelope
+    connect?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+  }
+
+  export type MatchUncheckedCreateNestedManyWithoutLoserInput = {
+    create?: XOR<MatchCreateWithoutLoserInput, MatchUncheckedCreateWithoutLoserInput> | MatchCreateWithoutLoserInput[] | MatchUncheckedCreateWithoutLoserInput[]
+    connectOrCreate?: MatchCreateOrConnectWithoutLoserInput | MatchCreateOrConnectWithoutLoserInput[]
+    createMany?: MatchCreateManyLoserInputEnvelope
     connect?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
   }
 
@@ -15596,6 +15734,20 @@ export namespace Prisma {
     deleteMany?: MatchScalarWhereInput | MatchScalarWhereInput[]
   }
 
+  export type MatchUpdateManyWithoutLoserNestedInput = {
+    create?: XOR<MatchCreateWithoutLoserInput, MatchUncheckedCreateWithoutLoserInput> | MatchCreateWithoutLoserInput[] | MatchUncheckedCreateWithoutLoserInput[]
+    connectOrCreate?: MatchCreateOrConnectWithoutLoserInput | MatchCreateOrConnectWithoutLoserInput[]
+    upsert?: MatchUpsertWithWhereUniqueWithoutLoserInput | MatchUpsertWithWhereUniqueWithoutLoserInput[]
+    createMany?: MatchCreateManyLoserInputEnvelope
+    set?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+    disconnect?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+    delete?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+    connect?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+    update?: MatchUpdateWithWhereUniqueWithoutLoserInput | MatchUpdateWithWhereUniqueWithoutLoserInput[]
+    updateMany?: MatchUpdateManyWithWhereWithoutLoserInput | MatchUpdateManyWithWhereWithoutLoserInput[]
+    deleteMany?: MatchScalarWhereInput | MatchScalarWhereInput[]
+  }
+
   export type TournamentWinnerUpdateManyWithoutParticipantNestedInput = {
     create?: XOR<TournamentWinnerCreateWithoutParticipantInput, TournamentWinnerUncheckedCreateWithoutParticipantInput> | TournamentWinnerCreateWithoutParticipantInput[] | TournamentWinnerUncheckedCreateWithoutParticipantInput[]
     connectOrCreate?: TournamentWinnerCreateOrConnectWithoutParticipantInput | TournamentWinnerCreateOrConnectWithoutParticipantInput[]
@@ -15677,6 +15829,20 @@ export namespace Prisma {
     connect?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
     update?: MatchUpdateWithWhereUniqueWithoutWinnerInput | MatchUpdateWithWhereUniqueWithoutWinnerInput[]
     updateMany?: MatchUpdateManyWithWhereWithoutWinnerInput | MatchUpdateManyWithWhereWithoutWinnerInput[]
+    deleteMany?: MatchScalarWhereInput | MatchScalarWhereInput[]
+  }
+
+  export type MatchUncheckedUpdateManyWithoutLoserNestedInput = {
+    create?: XOR<MatchCreateWithoutLoserInput, MatchUncheckedCreateWithoutLoserInput> | MatchCreateWithoutLoserInput[] | MatchUncheckedCreateWithoutLoserInput[]
+    connectOrCreate?: MatchCreateOrConnectWithoutLoserInput | MatchCreateOrConnectWithoutLoserInput[]
+    upsert?: MatchUpsertWithWhereUniqueWithoutLoserInput | MatchUpsertWithWhereUniqueWithoutLoserInput[]
+    createMany?: MatchCreateManyLoserInputEnvelope
+    set?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+    disconnect?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+    delete?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+    connect?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+    update?: MatchUpdateWithWhereUniqueWithoutLoserInput | MatchUpdateWithWhereUniqueWithoutLoserInput[]
+    updateMany?: MatchUpdateManyWithWhereWithoutLoserInput | MatchUpdateManyWithWhereWithoutLoserInput[]
     deleteMany?: MatchScalarWhereInput | MatchScalarWhereInput[]
   }
 
@@ -16406,6 +16572,7 @@ export namespace Prisma {
     participant1?: ParticipantCreateNestedOneWithoutMatchesAsP1Input
     participant2?: ParticipantCreateNestedOneWithoutMatchesAsP2Input
     winner?: ParticipantCreateNestedOneWithoutMatchesWonInput
+    loser?: ParticipantCreateNestedOneWithoutMatchesLostInput
     nextMatch?: MatchCreateNestedOneWithoutPrevMatchesInput
     prevMatches?: MatchCreateNestedManyWithoutNextMatchInput
   }
@@ -16417,6 +16584,7 @@ export namespace Prisma {
     participant1Id?: number | null
     participant2Id?: number | null
     winnerId?: number | null
+    loserId?: number | null
     nextMatchId?: number | null
     round?: number | null
     serialNumber?: number | null
@@ -16494,6 +16662,7 @@ export namespace Prisma {
     participant1Id?: IntNullableFilter<"Match"> | number | null
     participant2Id?: IntNullableFilter<"Match"> | number | null
     winnerId?: IntNullableFilter<"Match"> | number | null
+    loserId?: IntNullableFilter<"Match"> | number | null
     nextMatchId?: IntNullableFilter<"Match"> | number | null
     round?: IntNullableFilter<"Match"> | number | null
     serialNumber?: IntNullableFilter<"Match"> | number | null
@@ -16587,6 +16756,7 @@ export namespace Prisma {
     groups?: ParticipantGroupCreateNestedManyWithoutParticipantInput
     matchesAsP2?: MatchCreateNestedManyWithoutParticipant2Input
     matchesWon?: MatchCreateNestedManyWithoutWinnerInput
+    matchesLost?: MatchCreateNestedManyWithoutLoserInput
     podiums?: TournamentWinnerCreateNestedManyWithoutParticipantInput
   }
 
@@ -16603,6 +16773,7 @@ export namespace Prisma {
     groups?: ParticipantGroupUncheckedCreateNestedManyWithoutParticipantInput
     matchesAsP2?: MatchUncheckedCreateNestedManyWithoutParticipant2Input
     matchesWon?: MatchUncheckedCreateNestedManyWithoutWinnerInput
+    matchesLost?: MatchUncheckedCreateNestedManyWithoutLoserInput
     podiums?: TournamentWinnerUncheckedCreateNestedManyWithoutParticipantInput
   }
 
@@ -16623,6 +16794,7 @@ export namespace Prisma {
     groups?: ParticipantGroupCreateNestedManyWithoutParticipantInput
     matchesAsP1?: MatchCreateNestedManyWithoutParticipant1Input
     matchesWon?: MatchCreateNestedManyWithoutWinnerInput
+    matchesLost?: MatchCreateNestedManyWithoutLoserInput
     podiums?: TournamentWinnerCreateNestedManyWithoutParticipantInput
   }
 
@@ -16639,6 +16811,7 @@ export namespace Prisma {
     groups?: ParticipantGroupUncheckedCreateNestedManyWithoutParticipantInput
     matchesAsP1?: MatchUncheckedCreateNestedManyWithoutParticipant1Input
     matchesWon?: MatchUncheckedCreateNestedManyWithoutWinnerInput
+    matchesLost?: MatchUncheckedCreateNestedManyWithoutLoserInput
     podiums?: TournamentWinnerUncheckedCreateNestedManyWithoutParticipantInput
   }
 
@@ -16659,6 +16832,7 @@ export namespace Prisma {
     groups?: ParticipantGroupCreateNestedManyWithoutParticipantInput
     matchesAsP1?: MatchCreateNestedManyWithoutParticipant1Input
     matchesAsP2?: MatchCreateNestedManyWithoutParticipant2Input
+    matchesLost?: MatchCreateNestedManyWithoutLoserInput
     podiums?: TournamentWinnerCreateNestedManyWithoutParticipantInput
   }
 
@@ -16675,12 +16849,51 @@ export namespace Prisma {
     groups?: ParticipantGroupUncheckedCreateNestedManyWithoutParticipantInput
     matchesAsP1?: MatchUncheckedCreateNestedManyWithoutParticipant1Input
     matchesAsP2?: MatchUncheckedCreateNestedManyWithoutParticipant2Input
+    matchesLost?: MatchUncheckedCreateNestedManyWithoutLoserInput
     podiums?: TournamentWinnerUncheckedCreateNestedManyWithoutParticipantInput
   }
 
   export type ParticipantCreateOrConnectWithoutMatchesWonInput = {
     where: ParticipantWhereUniqueInput
     create: XOR<ParticipantCreateWithoutMatchesWonInput, ParticipantUncheckedCreateWithoutMatchesWonInput>
+  }
+
+  export type ParticipantCreateWithoutMatchesLostInput = {
+    name: string
+    type: $Enums.ParticipantType
+    elo?: number
+    wins?: number
+    losses?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tournaments?: ParticipantTournamentCreateNestedManyWithoutParticipantInput
+    groups?: ParticipantGroupCreateNestedManyWithoutParticipantInput
+    matchesAsP1?: MatchCreateNestedManyWithoutParticipant1Input
+    matchesAsP2?: MatchCreateNestedManyWithoutParticipant2Input
+    matchesWon?: MatchCreateNestedManyWithoutWinnerInput
+    podiums?: TournamentWinnerCreateNestedManyWithoutParticipantInput
+  }
+
+  export type ParticipantUncheckedCreateWithoutMatchesLostInput = {
+    id?: number
+    name: string
+    type: $Enums.ParticipantType
+    elo?: number
+    wins?: number
+    losses?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tournaments?: ParticipantTournamentUncheckedCreateNestedManyWithoutParticipantInput
+    groups?: ParticipantGroupUncheckedCreateNestedManyWithoutParticipantInput
+    matchesAsP1?: MatchUncheckedCreateNestedManyWithoutParticipant1Input
+    matchesAsP2?: MatchUncheckedCreateNestedManyWithoutParticipant2Input
+    matchesWon?: MatchUncheckedCreateNestedManyWithoutWinnerInput
+    podiums?: TournamentWinnerUncheckedCreateNestedManyWithoutParticipantInput
+  }
+
+  export type ParticipantCreateOrConnectWithoutMatchesLostInput = {
+    where: ParticipantWhereUniqueInput
+    create: XOR<ParticipantCreateWithoutMatchesLostInput, ParticipantUncheckedCreateWithoutMatchesLostInput>
   }
 
   export type MatchCreateWithoutPrevMatchesInput = {
@@ -16696,6 +16909,7 @@ export namespace Prisma {
     participant1?: ParticipantCreateNestedOneWithoutMatchesAsP1Input
     participant2?: ParticipantCreateNestedOneWithoutMatchesAsP2Input
     winner?: ParticipantCreateNestedOneWithoutMatchesWonInput
+    loser?: ParticipantCreateNestedOneWithoutMatchesLostInput
     nextMatch?: MatchCreateNestedOneWithoutPrevMatchesInput
   }
 
@@ -16707,6 +16921,7 @@ export namespace Prisma {
     participant1Id?: number | null
     participant2Id?: number | null
     winnerId?: number | null
+    loserId?: number | null
     nextMatchId?: number | null
     round?: number | null
     serialNumber?: number | null
@@ -16734,6 +16949,7 @@ export namespace Prisma {
     participant1?: ParticipantCreateNestedOneWithoutMatchesAsP1Input
     participant2?: ParticipantCreateNestedOneWithoutMatchesAsP2Input
     winner?: ParticipantCreateNestedOneWithoutMatchesWonInput
+    loser?: ParticipantCreateNestedOneWithoutMatchesLostInput
     prevMatches?: MatchCreateNestedManyWithoutNextMatchInput
   }
 
@@ -16745,6 +16961,7 @@ export namespace Prisma {
     participant1Id?: number | null
     participant2Id?: number | null
     winnerId?: number | null
+    loserId?: number | null
     round?: number | null
     serialNumber?: number | null
     isOver?: boolean
@@ -16877,6 +17094,7 @@ export namespace Prisma {
     groups?: ParticipantGroupUpdateManyWithoutParticipantNestedInput
     matchesAsP2?: MatchUpdateManyWithoutParticipant2NestedInput
     matchesWon?: MatchUpdateManyWithoutWinnerNestedInput
+    matchesLost?: MatchUpdateManyWithoutLoserNestedInput
     podiums?: TournamentWinnerUpdateManyWithoutParticipantNestedInput
   }
 
@@ -16893,6 +17111,7 @@ export namespace Prisma {
     groups?: ParticipantGroupUncheckedUpdateManyWithoutParticipantNestedInput
     matchesAsP2?: MatchUncheckedUpdateManyWithoutParticipant2NestedInput
     matchesWon?: MatchUncheckedUpdateManyWithoutWinnerNestedInput
+    matchesLost?: MatchUncheckedUpdateManyWithoutLoserNestedInput
     podiums?: TournamentWinnerUncheckedUpdateManyWithoutParticipantNestedInput
   }
 
@@ -16919,6 +17138,7 @@ export namespace Prisma {
     groups?: ParticipantGroupUpdateManyWithoutParticipantNestedInput
     matchesAsP1?: MatchUpdateManyWithoutParticipant1NestedInput
     matchesWon?: MatchUpdateManyWithoutWinnerNestedInput
+    matchesLost?: MatchUpdateManyWithoutLoserNestedInput
     podiums?: TournamentWinnerUpdateManyWithoutParticipantNestedInput
   }
 
@@ -16935,6 +17155,7 @@ export namespace Prisma {
     groups?: ParticipantGroupUncheckedUpdateManyWithoutParticipantNestedInput
     matchesAsP1?: MatchUncheckedUpdateManyWithoutParticipant1NestedInput
     matchesWon?: MatchUncheckedUpdateManyWithoutWinnerNestedInput
+    matchesLost?: MatchUncheckedUpdateManyWithoutLoserNestedInput
     podiums?: TournamentWinnerUncheckedUpdateManyWithoutParticipantNestedInput
   }
 
@@ -16961,6 +17182,7 @@ export namespace Prisma {
     groups?: ParticipantGroupUpdateManyWithoutParticipantNestedInput
     matchesAsP1?: MatchUpdateManyWithoutParticipant1NestedInput
     matchesAsP2?: MatchUpdateManyWithoutParticipant2NestedInput
+    matchesLost?: MatchUpdateManyWithoutLoserNestedInput
     podiums?: TournamentWinnerUpdateManyWithoutParticipantNestedInput
   }
 
@@ -16977,6 +17199,51 @@ export namespace Prisma {
     groups?: ParticipantGroupUncheckedUpdateManyWithoutParticipantNestedInput
     matchesAsP1?: MatchUncheckedUpdateManyWithoutParticipant1NestedInput
     matchesAsP2?: MatchUncheckedUpdateManyWithoutParticipant2NestedInput
+    matchesLost?: MatchUncheckedUpdateManyWithoutLoserNestedInput
+    podiums?: TournamentWinnerUncheckedUpdateManyWithoutParticipantNestedInput
+  }
+
+  export type ParticipantUpsertWithoutMatchesLostInput = {
+    update: XOR<ParticipantUpdateWithoutMatchesLostInput, ParticipantUncheckedUpdateWithoutMatchesLostInput>
+    create: XOR<ParticipantCreateWithoutMatchesLostInput, ParticipantUncheckedCreateWithoutMatchesLostInput>
+    where?: ParticipantWhereInput
+  }
+
+  export type ParticipantUpdateToOneWithWhereWithoutMatchesLostInput = {
+    where?: ParticipantWhereInput
+    data: XOR<ParticipantUpdateWithoutMatchesLostInput, ParticipantUncheckedUpdateWithoutMatchesLostInput>
+  }
+
+  export type ParticipantUpdateWithoutMatchesLostInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    type?: EnumParticipantTypeFieldUpdateOperationsInput | $Enums.ParticipantType
+    elo?: IntFieldUpdateOperationsInput | number
+    wins?: IntFieldUpdateOperationsInput | number
+    losses?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tournaments?: ParticipantTournamentUpdateManyWithoutParticipantNestedInput
+    groups?: ParticipantGroupUpdateManyWithoutParticipantNestedInput
+    matchesAsP1?: MatchUpdateManyWithoutParticipant1NestedInput
+    matchesAsP2?: MatchUpdateManyWithoutParticipant2NestedInput
+    matchesWon?: MatchUpdateManyWithoutWinnerNestedInput
+    podiums?: TournamentWinnerUpdateManyWithoutParticipantNestedInput
+  }
+
+  export type ParticipantUncheckedUpdateWithoutMatchesLostInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    type?: EnumParticipantTypeFieldUpdateOperationsInput | $Enums.ParticipantType
+    elo?: IntFieldUpdateOperationsInput | number
+    wins?: IntFieldUpdateOperationsInput | number
+    losses?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tournaments?: ParticipantTournamentUncheckedUpdateManyWithoutParticipantNestedInput
+    groups?: ParticipantGroupUncheckedUpdateManyWithoutParticipantNestedInput
+    matchesAsP1?: MatchUncheckedUpdateManyWithoutParticipant1NestedInput
+    matchesAsP2?: MatchUncheckedUpdateManyWithoutParticipant2NestedInput
+    matchesWon?: MatchUncheckedUpdateManyWithoutWinnerNestedInput
     podiums?: TournamentWinnerUncheckedUpdateManyWithoutParticipantNestedInput
   }
 
@@ -17004,6 +17271,7 @@ export namespace Prisma {
     participant1?: ParticipantUpdateOneWithoutMatchesAsP1NestedInput
     participant2?: ParticipantUpdateOneWithoutMatchesAsP2NestedInput
     winner?: ParticipantUpdateOneWithoutMatchesWonNestedInput
+    loser?: ParticipantUpdateOneWithoutMatchesLostNestedInput
     nextMatch?: MatchUpdateOneWithoutPrevMatchesNestedInput
   }
 
@@ -17015,6 +17283,7 @@ export namespace Prisma {
     participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
     participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
     winnerId?: NullableIntFieldUpdateOperationsInput | number | null
+    loserId?: NullableIntFieldUpdateOperationsInput | number | null
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
@@ -17108,6 +17377,7 @@ export namespace Prisma {
     group?: TournamentGroupCreateNestedOneWithoutMatchesInput
     participant2?: ParticipantCreateNestedOneWithoutMatchesAsP2Input
     winner?: ParticipantCreateNestedOneWithoutMatchesWonInput
+    loser?: ParticipantCreateNestedOneWithoutMatchesLostInput
     nextMatch?: MatchCreateNestedOneWithoutPrevMatchesInput
     prevMatches?: MatchCreateNestedManyWithoutNextMatchInput
   }
@@ -17119,6 +17389,7 @@ export namespace Prisma {
     tournamentGroupId?: number | null
     participant2Id?: number | null
     winnerId?: number | null
+    loserId?: number | null
     nextMatchId?: number | null
     round?: number | null
     serialNumber?: number | null
@@ -17151,6 +17422,7 @@ export namespace Prisma {
     group?: TournamentGroupCreateNestedOneWithoutMatchesInput
     participant1?: ParticipantCreateNestedOneWithoutMatchesAsP1Input
     winner?: ParticipantCreateNestedOneWithoutMatchesWonInput
+    loser?: ParticipantCreateNestedOneWithoutMatchesLostInput
     nextMatch?: MatchCreateNestedOneWithoutPrevMatchesInput
     prevMatches?: MatchCreateNestedManyWithoutNextMatchInput
   }
@@ -17162,6 +17434,7 @@ export namespace Prisma {
     tournamentGroupId?: number | null
     participant1Id?: number | null
     winnerId?: number | null
+    loserId?: number | null
     nextMatchId?: number | null
     round?: number | null
     serialNumber?: number | null
@@ -17194,6 +17467,7 @@ export namespace Prisma {
     group?: TournamentGroupCreateNestedOneWithoutMatchesInput
     participant1?: ParticipantCreateNestedOneWithoutMatchesAsP1Input
     participant2?: ParticipantCreateNestedOneWithoutMatchesAsP2Input
+    loser?: ParticipantCreateNestedOneWithoutMatchesLostInput
     nextMatch?: MatchCreateNestedOneWithoutPrevMatchesInput
     prevMatches?: MatchCreateNestedManyWithoutNextMatchInput
   }
@@ -17205,6 +17479,7 @@ export namespace Prisma {
     tournamentGroupId?: number | null
     participant1Id?: number | null
     participant2Id?: number | null
+    loserId?: number | null
     nextMatchId?: number | null
     round?: number | null
     serialNumber?: number | null
@@ -17222,6 +17497,51 @@ export namespace Prisma {
 
   export type MatchCreateManyWinnerInputEnvelope = {
     data: MatchCreateManyWinnerInput | MatchCreateManyWinnerInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MatchCreateWithoutLoserInput = {
+    round?: number | null
+    serialNumber?: number | null
+    isOver?: boolean
+    matchType: $Enums.MatchType
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tournamentPhase: TournamentPhaseCreateNestedOneWithoutMatchesInput
+    elimination?: EliminationCreateNestedOneWithoutMatchesInput
+    group?: TournamentGroupCreateNestedOneWithoutMatchesInput
+    participant1?: ParticipantCreateNestedOneWithoutMatchesAsP1Input
+    participant2?: ParticipantCreateNestedOneWithoutMatchesAsP2Input
+    winner?: ParticipantCreateNestedOneWithoutMatchesWonInput
+    nextMatch?: MatchCreateNestedOneWithoutPrevMatchesInput
+    prevMatches?: MatchCreateNestedManyWithoutNextMatchInput
+  }
+
+  export type MatchUncheckedCreateWithoutLoserInput = {
+    id?: number
+    tournamentPhaseId: number
+    eliminationId?: number | null
+    tournamentGroupId?: number | null
+    participant1Id?: number | null
+    participant2Id?: number | null
+    winnerId?: number | null
+    nextMatchId?: number | null
+    round?: number | null
+    serialNumber?: number | null
+    isOver?: boolean
+    matchType: $Enums.MatchType
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    prevMatches?: MatchUncheckedCreateNestedManyWithoutNextMatchInput
+  }
+
+  export type MatchCreateOrConnectWithoutLoserInput = {
+    where: MatchWhereUniqueInput
+    create: XOR<MatchCreateWithoutLoserInput, MatchUncheckedCreateWithoutLoserInput>
+  }
+
+  export type MatchCreateManyLoserInputEnvelope = {
+    data: MatchCreateManyLoserInput | MatchCreateManyLoserInput[]
     skipDuplicates?: boolean
   }
 
@@ -17357,6 +17677,22 @@ export namespace Prisma {
     data: XOR<MatchUpdateManyMutationInput, MatchUncheckedUpdateManyWithoutWinnerInput>
   }
 
+  export type MatchUpsertWithWhereUniqueWithoutLoserInput = {
+    where: MatchWhereUniqueInput
+    update: XOR<MatchUpdateWithoutLoserInput, MatchUncheckedUpdateWithoutLoserInput>
+    create: XOR<MatchCreateWithoutLoserInput, MatchUncheckedCreateWithoutLoserInput>
+  }
+
+  export type MatchUpdateWithWhereUniqueWithoutLoserInput = {
+    where: MatchWhereUniqueInput
+    data: XOR<MatchUpdateWithoutLoserInput, MatchUncheckedUpdateWithoutLoserInput>
+  }
+
+  export type MatchUpdateManyWithWhereWithoutLoserInput = {
+    where: MatchScalarWhereInput
+    data: XOR<MatchUpdateManyMutationInput, MatchUncheckedUpdateManyWithoutLoserInput>
+  }
+
   export type TournamentWinnerUpsertWithWhereUniqueWithoutParticipantInput = {
     where: TournamentWinnerWhereUniqueInput
     update: XOR<TournamentWinnerUpdateWithoutParticipantInput, TournamentWinnerUncheckedUpdateWithoutParticipantInput>
@@ -17421,6 +17757,7 @@ export namespace Prisma {
     matchesAsP1?: MatchCreateNestedManyWithoutParticipant1Input
     matchesAsP2?: MatchCreateNestedManyWithoutParticipant2Input
     matchesWon?: MatchCreateNestedManyWithoutWinnerInput
+    matchesLost?: MatchCreateNestedManyWithoutLoserInput
     podiums?: TournamentWinnerCreateNestedManyWithoutParticipantInput
   }
 
@@ -17437,6 +17774,7 @@ export namespace Prisma {
     matchesAsP1?: MatchUncheckedCreateNestedManyWithoutParticipant1Input
     matchesAsP2?: MatchUncheckedCreateNestedManyWithoutParticipant2Input
     matchesWon?: MatchUncheckedCreateNestedManyWithoutWinnerInput
+    matchesLost?: MatchUncheckedCreateNestedManyWithoutLoserInput
     podiums?: TournamentWinnerUncheckedCreateNestedManyWithoutParticipantInput
   }
 
@@ -17498,6 +17836,7 @@ export namespace Prisma {
     matchesAsP1?: MatchUpdateManyWithoutParticipant1NestedInput
     matchesAsP2?: MatchUpdateManyWithoutParticipant2NestedInput
     matchesWon?: MatchUpdateManyWithoutWinnerNestedInput
+    matchesLost?: MatchUpdateManyWithoutLoserNestedInput
     podiums?: TournamentWinnerUpdateManyWithoutParticipantNestedInput
   }
 
@@ -17514,6 +17853,7 @@ export namespace Prisma {
     matchesAsP1?: MatchUncheckedUpdateManyWithoutParticipant1NestedInput
     matchesAsP2?: MatchUncheckedUpdateManyWithoutParticipant2NestedInput
     matchesWon?: MatchUncheckedUpdateManyWithoutWinnerNestedInput
+    matchesLost?: MatchUncheckedUpdateManyWithoutLoserNestedInput
     podiums?: TournamentWinnerUncheckedUpdateManyWithoutParticipantNestedInput
   }
 
@@ -17555,6 +17895,7 @@ export namespace Prisma {
     matchesAsP1?: MatchCreateNestedManyWithoutParticipant1Input
     matchesAsP2?: MatchCreateNestedManyWithoutParticipant2Input
     matchesWon?: MatchCreateNestedManyWithoutWinnerInput
+    matchesLost?: MatchCreateNestedManyWithoutLoserInput
     podiums?: TournamentWinnerCreateNestedManyWithoutParticipantInput
   }
 
@@ -17571,6 +17912,7 @@ export namespace Prisma {
     matchesAsP1?: MatchUncheckedCreateNestedManyWithoutParticipant1Input
     matchesAsP2?: MatchUncheckedCreateNestedManyWithoutParticipant2Input
     matchesWon?: MatchUncheckedCreateNestedManyWithoutWinnerInput
+    matchesLost?: MatchUncheckedCreateNestedManyWithoutLoserInput
     podiums?: TournamentWinnerUncheckedCreateNestedManyWithoutParticipantInput
   }
 
@@ -17634,6 +17976,7 @@ export namespace Prisma {
     matchesAsP1?: MatchUpdateManyWithoutParticipant1NestedInput
     matchesAsP2?: MatchUpdateManyWithoutParticipant2NestedInput
     matchesWon?: MatchUpdateManyWithoutWinnerNestedInput
+    matchesLost?: MatchUpdateManyWithoutLoserNestedInput
     podiums?: TournamentWinnerUpdateManyWithoutParticipantNestedInput
   }
 
@@ -17650,6 +17993,7 @@ export namespace Prisma {
     matchesAsP1?: MatchUncheckedUpdateManyWithoutParticipant1NestedInput
     matchesAsP2?: MatchUncheckedUpdateManyWithoutParticipant2NestedInput
     matchesWon?: MatchUncheckedUpdateManyWithoutWinnerNestedInput
+    matchesLost?: MatchUncheckedUpdateManyWithoutLoserNestedInput
     podiums?: TournamentWinnerUncheckedUpdateManyWithoutParticipantNestedInput
   }
 
@@ -17858,6 +18202,7 @@ export namespace Prisma {
     participant1?: ParticipantCreateNestedOneWithoutMatchesAsP1Input
     participant2?: ParticipantCreateNestedOneWithoutMatchesAsP2Input
     winner?: ParticipantCreateNestedOneWithoutMatchesWonInput
+    loser?: ParticipantCreateNestedOneWithoutMatchesLostInput
     nextMatch?: MatchCreateNestedOneWithoutPrevMatchesInput
     prevMatches?: MatchCreateNestedManyWithoutNextMatchInput
   }
@@ -17869,6 +18214,7 @@ export namespace Prisma {
     participant1Id?: number | null
     participant2Id?: number | null
     winnerId?: number | null
+    loserId?: number | null
     nextMatchId?: number | null
     round?: number | null
     serialNumber?: number | null
@@ -18016,6 +18362,7 @@ export namespace Prisma {
     participant1?: ParticipantCreateNestedOneWithoutMatchesAsP1Input
     participant2?: ParticipantCreateNestedOneWithoutMatchesAsP2Input
     winner?: ParticipantCreateNestedOneWithoutMatchesWonInput
+    loser?: ParticipantCreateNestedOneWithoutMatchesLostInput
     nextMatch?: MatchCreateNestedOneWithoutPrevMatchesInput
     prevMatches?: MatchCreateNestedManyWithoutNextMatchInput
   }
@@ -18027,6 +18374,7 @@ export namespace Prisma {
     participant1Id?: number | null
     participant2Id?: number | null
     winnerId?: number | null
+    loserId?: number | null
     nextMatchId?: number | null
     round?: number | null
     serialNumber?: number | null
@@ -18218,6 +18566,7 @@ export namespace Prisma {
     matchesAsP1?: MatchCreateNestedManyWithoutParticipant1Input
     matchesAsP2?: MatchCreateNestedManyWithoutParticipant2Input
     matchesWon?: MatchCreateNestedManyWithoutWinnerInput
+    matchesLost?: MatchCreateNestedManyWithoutLoserInput
   }
 
   export type ParticipantUncheckedCreateWithoutPodiumsInput = {
@@ -18234,6 +18583,7 @@ export namespace Prisma {
     matchesAsP1?: MatchUncheckedCreateNestedManyWithoutParticipant1Input
     matchesAsP2?: MatchUncheckedCreateNestedManyWithoutParticipant2Input
     matchesWon?: MatchUncheckedCreateNestedManyWithoutWinnerInput
+    matchesLost?: MatchUncheckedCreateNestedManyWithoutLoserInput
   }
 
   export type ParticipantCreateOrConnectWithoutPodiumsInput = {
@@ -18297,6 +18647,7 @@ export namespace Prisma {
     matchesAsP1?: MatchUpdateManyWithoutParticipant1NestedInput
     matchesAsP2?: MatchUpdateManyWithoutParticipant2NestedInput
     matchesWon?: MatchUpdateManyWithoutWinnerNestedInput
+    matchesLost?: MatchUpdateManyWithoutLoserNestedInput
   }
 
   export type ParticipantUncheckedUpdateWithoutPodiumsInput = {
@@ -18313,6 +18664,7 @@ export namespace Prisma {
     matchesAsP1?: MatchUncheckedUpdateManyWithoutParticipant1NestedInput
     matchesAsP2?: MatchUncheckedUpdateManyWithoutParticipant2NestedInput
     matchesWon?: MatchUncheckedUpdateManyWithoutWinnerNestedInput
+    matchesLost?: MatchUncheckedUpdateManyWithoutLoserNestedInput
   }
 
   export type MatchCreateManyEliminationInput = {
@@ -18322,6 +18674,7 @@ export namespace Prisma {
     participant1Id?: number | null
     participant2Id?: number | null
     winnerId?: number | null
+    loserId?: number | null
     nextMatchId?: number | null
     round?: number | null
     serialNumber?: number | null
@@ -18343,6 +18696,7 @@ export namespace Prisma {
     participant1?: ParticipantUpdateOneWithoutMatchesAsP1NestedInput
     participant2?: ParticipantUpdateOneWithoutMatchesAsP2NestedInput
     winner?: ParticipantUpdateOneWithoutMatchesWonNestedInput
+    loser?: ParticipantUpdateOneWithoutMatchesLostNestedInput
     nextMatch?: MatchUpdateOneWithoutPrevMatchesNestedInput
     prevMatches?: MatchUpdateManyWithoutNextMatchNestedInput
   }
@@ -18354,6 +18708,7 @@ export namespace Prisma {
     participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
     participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
     winnerId?: NullableIntFieldUpdateOperationsInput | number | null
+    loserId?: NullableIntFieldUpdateOperationsInput | number | null
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
@@ -18371,6 +18726,7 @@ export namespace Prisma {
     participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
     participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
     winnerId?: NullableIntFieldUpdateOperationsInput | number | null
+    loserId?: NullableIntFieldUpdateOperationsInput | number | null
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
@@ -18388,6 +18744,7 @@ export namespace Prisma {
     participant1Id?: number | null
     participant2Id?: number | null
     winnerId?: number | null
+    loserId?: number | null
     round?: number | null
     serialNumber?: number | null
     isOver?: boolean
@@ -18409,6 +18766,7 @@ export namespace Prisma {
     participant1?: ParticipantUpdateOneWithoutMatchesAsP1NestedInput
     participant2?: ParticipantUpdateOneWithoutMatchesAsP2NestedInput
     winner?: ParticipantUpdateOneWithoutMatchesWonNestedInput
+    loser?: ParticipantUpdateOneWithoutMatchesLostNestedInput
     prevMatches?: MatchUpdateManyWithoutNextMatchNestedInput
   }
 
@@ -18420,6 +18778,7 @@ export namespace Prisma {
     participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
     participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
     winnerId?: NullableIntFieldUpdateOperationsInput | number | null
+    loserId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
     isOver?: BoolFieldUpdateOperationsInput | boolean
@@ -18437,6 +18796,7 @@ export namespace Prisma {
     participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
     participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
     winnerId?: NullableIntFieldUpdateOperationsInput | number | null
+    loserId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
     isOver?: BoolFieldUpdateOperationsInput | boolean
@@ -18471,6 +18831,7 @@ export namespace Prisma {
     tournamentGroupId?: number | null
     participant2Id?: number | null
     winnerId?: number | null
+    loserId?: number | null
     nextMatchId?: number | null
     round?: number | null
     serialNumber?: number | null
@@ -18487,6 +18848,7 @@ export namespace Prisma {
     tournamentGroupId?: number | null
     participant1Id?: number | null
     winnerId?: number | null
+    loserId?: number | null
     nextMatchId?: number | null
     round?: number | null
     serialNumber?: number | null
@@ -18503,6 +18865,24 @@ export namespace Prisma {
     tournamentGroupId?: number | null
     participant1Id?: number | null
     participant2Id?: number | null
+    loserId?: number | null
+    nextMatchId?: number | null
+    round?: number | null
+    serialNumber?: number | null
+    isOver?: boolean
+    matchType: $Enums.MatchType
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MatchCreateManyLoserInput = {
+    id?: number
+    tournamentPhaseId: number
+    eliminationId?: number | null
+    tournamentGroupId?: number | null
+    participant1Id?: number | null
+    participant2Id?: number | null
+    winnerId?: number | null
     nextMatchId?: number | null
     round?: number | null
     serialNumber?: number | null
@@ -18587,6 +18967,7 @@ export namespace Prisma {
     group?: TournamentGroupUpdateOneWithoutMatchesNestedInput
     participant2?: ParticipantUpdateOneWithoutMatchesAsP2NestedInput
     winner?: ParticipantUpdateOneWithoutMatchesWonNestedInput
+    loser?: ParticipantUpdateOneWithoutMatchesLostNestedInput
     nextMatch?: MatchUpdateOneWithoutPrevMatchesNestedInput
     prevMatches?: MatchUpdateManyWithoutNextMatchNestedInput
   }
@@ -18598,6 +18979,7 @@ export namespace Prisma {
     tournamentGroupId?: NullableIntFieldUpdateOperationsInput | number | null
     participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
     winnerId?: NullableIntFieldUpdateOperationsInput | number | null
+    loserId?: NullableIntFieldUpdateOperationsInput | number | null
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
@@ -18615,6 +18997,7 @@ export namespace Prisma {
     tournamentGroupId?: NullableIntFieldUpdateOperationsInput | number | null
     participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
     winnerId?: NullableIntFieldUpdateOperationsInput | number | null
+    loserId?: NullableIntFieldUpdateOperationsInput | number | null
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
@@ -18636,6 +19019,7 @@ export namespace Prisma {
     group?: TournamentGroupUpdateOneWithoutMatchesNestedInput
     participant1?: ParticipantUpdateOneWithoutMatchesAsP1NestedInput
     winner?: ParticipantUpdateOneWithoutMatchesWonNestedInput
+    loser?: ParticipantUpdateOneWithoutMatchesLostNestedInput
     nextMatch?: MatchUpdateOneWithoutPrevMatchesNestedInput
     prevMatches?: MatchUpdateManyWithoutNextMatchNestedInput
   }
@@ -18647,6 +19031,7 @@ export namespace Prisma {
     tournamentGroupId?: NullableIntFieldUpdateOperationsInput | number | null
     participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
     winnerId?: NullableIntFieldUpdateOperationsInput | number | null
+    loserId?: NullableIntFieldUpdateOperationsInput | number | null
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
@@ -18664,6 +19049,7 @@ export namespace Prisma {
     tournamentGroupId?: NullableIntFieldUpdateOperationsInput | number | null
     participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
     winnerId?: NullableIntFieldUpdateOperationsInput | number | null
+    loserId?: NullableIntFieldUpdateOperationsInput | number | null
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
@@ -18685,6 +19071,7 @@ export namespace Prisma {
     group?: TournamentGroupUpdateOneWithoutMatchesNestedInput
     participant1?: ParticipantUpdateOneWithoutMatchesAsP1NestedInput
     participant2?: ParticipantUpdateOneWithoutMatchesAsP2NestedInput
+    loser?: ParticipantUpdateOneWithoutMatchesLostNestedInput
     nextMatch?: MatchUpdateOneWithoutPrevMatchesNestedInput
     prevMatches?: MatchUpdateManyWithoutNextMatchNestedInput
   }
@@ -18696,6 +19083,7 @@ export namespace Prisma {
     tournamentGroupId?: NullableIntFieldUpdateOperationsInput | number | null
     participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
     participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
+    loserId?: NullableIntFieldUpdateOperationsInput | number | null
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
@@ -18713,6 +19101,59 @@ export namespace Prisma {
     tournamentGroupId?: NullableIntFieldUpdateOperationsInput | number | null
     participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
     participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
+    loserId?: NullableIntFieldUpdateOperationsInput | number | null
+    nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
+    round?: NullableIntFieldUpdateOperationsInput | number | null
+    serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    isOver?: BoolFieldUpdateOperationsInput | boolean
+    matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MatchUpdateWithoutLoserInput = {
+    round?: NullableIntFieldUpdateOperationsInput | number | null
+    serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    isOver?: BoolFieldUpdateOperationsInput | boolean
+    matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tournamentPhase?: TournamentPhaseUpdateOneRequiredWithoutMatchesNestedInput
+    elimination?: EliminationUpdateOneWithoutMatchesNestedInput
+    group?: TournamentGroupUpdateOneWithoutMatchesNestedInput
+    participant1?: ParticipantUpdateOneWithoutMatchesAsP1NestedInput
+    participant2?: ParticipantUpdateOneWithoutMatchesAsP2NestedInput
+    winner?: ParticipantUpdateOneWithoutMatchesWonNestedInput
+    nextMatch?: MatchUpdateOneWithoutPrevMatchesNestedInput
+    prevMatches?: MatchUpdateManyWithoutNextMatchNestedInput
+  }
+
+  export type MatchUncheckedUpdateWithoutLoserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    tournamentPhaseId?: IntFieldUpdateOperationsInput | number
+    eliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    tournamentGroupId?: NullableIntFieldUpdateOperationsInput | number | null
+    participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
+    participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerId?: NullableIntFieldUpdateOperationsInput | number | null
+    nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
+    round?: NullableIntFieldUpdateOperationsInput | number | null
+    serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    isOver?: BoolFieldUpdateOperationsInput | boolean
+    matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    prevMatches?: MatchUncheckedUpdateManyWithoutNextMatchNestedInput
+  }
+
+  export type MatchUncheckedUpdateManyWithoutLoserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    tournamentPhaseId?: IntFieldUpdateOperationsInput | number
+    eliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    tournamentGroupId?: NullableIntFieldUpdateOperationsInput | number | null
+    participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
+    participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerId?: NullableIntFieldUpdateOperationsInput | number | null
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
@@ -18861,6 +19302,7 @@ export namespace Prisma {
     participant1Id?: number | null
     participant2Id?: number | null
     winnerId?: number | null
+    loserId?: number | null
     nextMatchId?: number | null
     round?: number | null
     serialNumber?: number | null
@@ -18911,6 +19353,7 @@ export namespace Prisma {
     participant1?: ParticipantUpdateOneWithoutMatchesAsP1NestedInput
     participant2?: ParticipantUpdateOneWithoutMatchesAsP2NestedInput
     winner?: ParticipantUpdateOneWithoutMatchesWonNestedInput
+    loser?: ParticipantUpdateOneWithoutMatchesLostNestedInput
     nextMatch?: MatchUpdateOneWithoutPrevMatchesNestedInput
     prevMatches?: MatchUpdateManyWithoutNextMatchNestedInput
   }
@@ -18922,6 +19365,7 @@ export namespace Prisma {
     participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
     participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
     winnerId?: NullableIntFieldUpdateOperationsInput | number | null
+    loserId?: NullableIntFieldUpdateOperationsInput | number | null
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
@@ -18939,6 +19383,7 @@ export namespace Prisma {
     participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
     participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
     winnerId?: NullableIntFieldUpdateOperationsInput | number | null
+    loserId?: NullableIntFieldUpdateOperationsInput | number | null
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
@@ -18963,6 +19408,7 @@ export namespace Prisma {
     participant1Id?: number | null
     participant2Id?: number | null
     winnerId?: number | null
+    loserId?: number | null
     nextMatchId?: number | null
     round?: number | null
     serialNumber?: number | null
@@ -19011,6 +19457,7 @@ export namespace Prisma {
     participant1?: ParticipantUpdateOneWithoutMatchesAsP1NestedInput
     participant2?: ParticipantUpdateOneWithoutMatchesAsP2NestedInput
     winner?: ParticipantUpdateOneWithoutMatchesWonNestedInput
+    loser?: ParticipantUpdateOneWithoutMatchesLostNestedInput
     nextMatch?: MatchUpdateOneWithoutPrevMatchesNestedInput
     prevMatches?: MatchUpdateManyWithoutNextMatchNestedInput
   }
@@ -19022,6 +19469,7 @@ export namespace Prisma {
     participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
     participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
     winnerId?: NullableIntFieldUpdateOperationsInput | number | null
+    loserId?: NullableIntFieldUpdateOperationsInput | number | null
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
@@ -19039,6 +19487,7 @@ export namespace Prisma {
     participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
     participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
     winnerId?: NullableIntFieldUpdateOperationsInput | number | null
+    loserId?: NullableIntFieldUpdateOperationsInput | number | null
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null

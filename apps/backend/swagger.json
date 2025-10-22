@@ -811,6 +811,55 @@
           "tournamentPhase"
         ]
       }
+    },
+    "/participantTournament/{matchId}/{tournamentId}": {
+      "post": {
+        "operationId": "MatchController_update",
+        "parameters": [
+          {
+            "name": "matchId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tournamentId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMatchWinnerDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Update a match by matchId",
+        "tags": [
+          "match"
+        ]
+      }
     }
   },
   "info": {
@@ -1026,6 +1075,12 @@
               "$ref": "#/components/schemas/Match"
             }
           },
+          "matchesLost": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Match"
+            }
+          },
           "podiums": {
             "type": "array",
             "items": {
@@ -1184,6 +1239,11 @@
             "format": "int32",
             "nullable": true
           },
+          "loserId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
           "nextMatchId": {
             "type": "integer",
             "format": "int32",
@@ -1260,6 +1320,14 @@
               }
             ]
           },
+          "loser": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Participant"
+              }
+            ]
+          },
           "nextMatch": {
             "nullable": true,
             "allOf": [
@@ -1283,6 +1351,7 @@
           "participant1Id",
           "participant2Id",
           "winnerId",
+          "loserId",
           "nextMatchId",
           "round",
           "serialNumber",
@@ -1543,7 +1612,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-22T18:09:12.794Z"
+            "default": "2025-10-22T19:23:59.389Z"
           }
         },
         "required": [
@@ -1575,7 +1644,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-22T18:09:12.781Z"
+            "default": "2025-10-22T19:23:59.378Z"
           }
         }
       },
@@ -1664,7 +1733,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-22T18:09:13.082Z"
+            "default": "2025-10-22T19:23:59.695Z"
           }
         },
         "required": [
@@ -1703,7 +1772,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-22T18:09:13.089Z"
+            "default": "2025-10-22T19:23:59.702Z"
           }
         }
       },
@@ -1782,6 +1851,29 @@
         },
         "required": [
           "groups"
+        ]
+      },
+      "UpdateMatchWinnerDto": {
+        "type": "object",
+        "properties": {
+          "winnerId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "loserId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isOver": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "winnerId",
+          "loserId",
+          "isOver"
         ]
       }
     }

@@ -16,7 +16,7 @@ import { Column } from "../components/dnd/column";
 import { Item } from "../components/dnd/item";
 import TournamentParticipants from "./tournament-participants";
 import { shuffle } from "@/lib/utils";
-import { createTournamentPhase } from "@/app/tournament/actions";
+import { createTournamentPhase } from "@/app/tournament/api";
 
 const nonPersistentGroup = "nonPersistent";
 

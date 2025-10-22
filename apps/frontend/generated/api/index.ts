@@ -36,9 +36,11 @@ export type { TournamentResponse } from './models/TournamentResponse';
 export type { TournamentsResponse } from './models/TournamentsResponse';
 export { TournamentStatus } from './models/TournamentStatus';
 export type { TournamentWinner } from './models/TournamentWinner';
+export type { UpdateMatchWinnerDto } from './models/UpdateMatchWinnerDto';
 export type { UpdateParticipantDto } from './models/UpdateParticipantDto';
 export type { UpdateTournamentDto } from './models/UpdateTournamentDto';
 
+export { MatchService } from './services/MatchService';
 export { ParticipantService } from './services/ParticipantService';
 export { ParticipantTournamentService } from './services/ParticipantTournamentService';
 export { TournamentService } from './services/TournamentService';

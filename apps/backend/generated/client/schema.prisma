@@ -57,6 +57,7 @@ model Match {
   participant1Id    Int?
   participant2Id    Int?
   winnerId          Int?
+  loserId           Int?
   nextMatchId       Int?
   round             Int?
   serialNumber      Int?
@@ -73,6 +74,7 @@ model Match {
   participant1 Participant? @relation("MatchParticipant1", fields: [participant1Id], references: [id], onDelete: SetNull)
   participant2 Participant? @relation("MatchParticipant2", fields: [participant2Id], references: [id], onDelete: SetNull)
   winner       Participant? @relation("MatchWinner", fields: [winnerId], references: [id], onDelete: SetNull)
+  loser        Participant? @relation("MatchLoser", fields: [loserId], references: [id], onDelete: SetNull)
 
   // Self relation for brackets flow
   nextMatch   Match?  @relation("NextMatch", fields: [nextMatchId], references: [id], onDelete: SetNull)
@@ -103,6 +105,7 @@ model Participant {
   matchesAsP1 Match[]                 @relation("MatchParticipant1")
   matchesAsP2 Match[]                 @relation("MatchParticipant2")
   matchesWon  Match[]                 @relation("MatchWinner")
+  matchesLost Match[]                 @relation("MatchLoser")
   podiums     TournamentWinner[]
 
   @@index([name])

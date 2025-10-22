@@ -14,6 +14,7 @@ model Participant {
   matchesAsP1 Match[]                 @relation("MatchParticipant1")
   matchesAsP2 Match[]                 @relation("MatchParticipant2")
   matchesWon  Match[]                 @relation("MatchWinner")
+  matchesLost Match[]                 @relation("MatchLoser")
   podiums     TournamentWinner[]
 
   @@index([name])

@@ -76,6 +76,12 @@ export class Participant {
   })
   matchesWon?: Match[];
   @ApiProperty({
+    type: () => Match,
+    isArray: true,
+    required: false,
+  })
+  matchesLost?: Match[];
+  @ApiProperty({
     type: () => TournamentWinner,
     isArray: true,
     required: false,

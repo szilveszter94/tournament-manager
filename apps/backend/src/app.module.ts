@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ParticipantModule } from './modules/participant.module';
 import { ParticipantTournamentModule } from './modules/participantTournament.module';
 import { TournamentPhaseModule } from './modules/tournamentPhase.module';
+import { MatchModule } from './modules/match.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { TournamentPhaseModule } from './modules/tournamentPhase.module';
     ParticipantModule,
     ParticipantTournamentModule,
     TournamentPhaseModule,
+    MatchModule,
   ],
   controllers: [],
   providers: [],

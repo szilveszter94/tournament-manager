@@ -21,6 +21,7 @@ export type Participant = {
     matchesAsP1?: Array<Match>;
     matchesAsP2?: Array<Match>;
     matchesWon?: Array<Match>;
+    matchesLost?: Array<Match>;
     podiums?: Array<TournamentWinner>;
 };
 

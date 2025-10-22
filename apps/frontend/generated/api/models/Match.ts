@@ -15,6 +15,7 @@ export type Match = {
     participant1Id: number | null;
     participant2Id: number | null;
     winnerId: number | null;
+    loserId: number | null;
     nextMatchId: number | null;
     round: number | null;
     serialNumber: number | null;
@@ -28,6 +29,7 @@ export type Match = {
     participant1?: Participant | null;
     participant2?: Participant | null;
     winner?: Participant | null;
+    loser?: Participant | null;
     nextMatch?: Match | null;
     prevMatches?: Array<Match>;
 };

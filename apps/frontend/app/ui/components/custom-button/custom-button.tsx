@@ -9,7 +9,7 @@ type ButtonProps = {
   type?: "button" | "submit" | "reset";
   onClick?: () => void;
   href?: string; // optional for navigation
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "green";
   size?: "sm" | "md" | "lg" | "xl";
   icon?: ReactNode;
   iconSize?: number;
@@ -27,15 +27,16 @@ export default function CustomButton({
   icon,
   iconSize = 5,
   className,
-  disabled = false
+  disabled = false,
 }: ButtonProps) {
   const router = useRouter();
   const formattedIconSize = `w-${iconSize} h-${iconSize}`;
   const baseStyles =
     "flex items-center justify-center gap-2 font-bold rounded-lg transition text-primary-text-color flex-1";
   const variantStyles = {
-    primary: "bg-primary hover:bg-on-primary",
-    secondary: "bg-secondary hover:bg-on-secondary",
+    primary: clsx("bg-primary ", !disabled && "hover:bg-on-primary"),
+    secondary: clsx("bg-secondary", !disabled && "hover:bg-on-secondary"),
+    green: clsx("bg-green-primary"),
   };
 
   const sizeStyles = {
@@ -46,6 +47,7 @@ export default function CustomButton({
   };
 
   function handleClick() {
+    if (disabled) return;
     if (href) {
       router.push(href);
     } else if (onClick) {
@@ -58,7 +60,13 @@ export default function CustomButton({
       disabled={disabled}
       type={type}
       onClick={handleClick}
-      className={clsx(baseStyles, variantStyles[variant], sizeStyles[size], className)}>
+      className={clsx(
+        baseStyles,
+        variantStyles[variant],
+        sizeStyles[size],
+        disabled && "opacity-50 cursor-none",
+        className
+      )}>
       {icon && <span className={clsx(formattedIconSize)}>{icon}</span>}
       {children}
     </button>

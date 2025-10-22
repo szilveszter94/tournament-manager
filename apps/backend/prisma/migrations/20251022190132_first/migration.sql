@@ -35,6 +35,7 @@ CREATE TABLE "public"."Match" (
     "participant1Id" INTEGER,
     "participant2Id" INTEGER,
     "winnerId" INTEGER,
+    "loserId" INTEGER,
     "nextMatchId" INTEGER,
     "round" INTEGER,
     "serialNumber" INTEGER,
@@ -217,6 +218,9 @@ ALTER TABLE "public"."Match" ADD CONSTRAINT "Match_participant2Id_fkey" FOREIGN 
 
 -- AddForeignKey
 ALTER TABLE "public"."Match" ADD CONSTRAINT "Match_winnerId_fkey" FOREIGN KEY ("winnerId") REFERENCES "public"."Participant"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "public"."Match" ADD CONSTRAINT "Match_loserId_fkey" FOREIGN KEY ("loserId") REFERENCES "public"."Participant"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "public"."Match" ADD CONSTRAINT "Match_nextMatchId_fkey" FOREIGN KEY ("nextMatchId") REFERENCES "public"."Match"("id") ON DELETE SET NULL ON UPDATE CASCADE;

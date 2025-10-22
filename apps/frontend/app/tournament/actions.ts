@@ -3,7 +3,7 @@
 
 import { revalidatePath } from "next/cache";
 import { apiClient } from "@/lib/client";
-import { ParticipantTournament, ParticipantType, TournamentPhaseDataDto } from "@/generated/api";
+import { ParticipantType, UpdateMatchWinnerDto } from "@/generated/api";
 import { redirect } from "next/navigation";
 import { State } from "@/lib/custom-models/common";
 
@@ -48,15 +48,37 @@ export async function createTournament(_prevState: State, formData: FormData): P
   redirect(`/tournament/${id}`);
 }
 
-export async function createTournamentPhase(
-  data: Record<string, ParticipantTournament[]>,
-  tournamentId: number
-): Promise<void> {
-  const mappedData: TournamentPhaseDataDto = {
-    groups: Object.entries(data).map(([key, value]) => {
-      const ids = value.map((v) => v.participant?.id).filter((id): id is number => id !== undefined);
-      return { name: key, participantIds: ids };
-    }),
+export async function updateGroupStageMatch(
+  matchId: number,
+  tournamentId: number,
+  winnerId: number | null,
+  loserId: number | null
+): Promise<State> {
+  try {
+    const entity: UpdateMatchWinnerDto = {
+      winnerId: winnerId,
+      loserId: loserId,
+      isOver: true,
+    };
+
+    if (!matchId || !tournamentId) {
+      return {
+        message: "Failed to update match",
+        errors: {},
+      };
+    }
+
+    await apiClient.match.matchControllerUpdate(matchId.toString(), tournamentId.toString(), entity);
+  } catch {
+    return {
+      message: "Failed to update match",
+      errors: {},
+    };
+  }
+
+  revalidatePath(`/tournament/groupStages/${tournamentId}`);
+  return {
+    message: "",
+    errors: {},
   };
-  apiClient.tournamentPhase.tournamentPhaseControllerAddPhaseToTournament(tournamentId.toString(), mappedData);
 }

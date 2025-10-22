@@ -1,4 +1,5 @@
-import { Match } from 'generated/models/match.entity';
+import { PickType } from '@nestjs/swagger';
+import { Match } from '../../generated/models/match.entity';
 
 export type CreateGroupMatch = Pick<
   Match,
@@ -9,3 +10,9 @@ export type CreateGroupMatch = Pick<
   | 'matchType'
   | 'serialNumber'
 >;
+
+export class UpdateMatchWinnerDto extends PickType(Match, [
+  'winnerId',
+  'loserId',
+  'isOver',
+] as const) {}

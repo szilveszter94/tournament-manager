@@ -138,6 +138,7 @@ exports.Prisma.MatchScalarFieldEnum = {
   participant1Id: 'participant1Id',
   participant2Id: 'participant2Id',
   winnerId: 'winnerId',
+  loserId: 'loserId',
   nextMatchId: 'nextMatchId',
   round: 'round',
   serialNumber: 'serialNumber',
