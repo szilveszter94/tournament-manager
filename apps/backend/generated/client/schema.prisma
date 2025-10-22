@@ -78,7 +78,7 @@ model Match {
   nextMatch   Match?  @relation("NextMatch", fields: [nextMatchId], references: [id], onDelete: SetNull)
   prevMatches Match[] @relation("NextMatch")
 
-  @@unique([tournamentPhaseId, serialNumber])
+  @@unique([tournamentGroupId, serialNumber])
   @@index([tournamentPhaseId, matchType, round])
   @@index([eliminationId])
   @@index([tournamentGroupId])

@@ -159,7 +159,7 @@ CREATE INDEX "Match_participant2Id_idx" ON "public"."Match"("participant2Id");
 CREATE INDEX "Match_winnerId_idx" ON "public"."Match"("winnerId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Match_tournamentPhaseId_serialNumber_key" ON "public"."Match"("tournamentPhaseId", "serialNumber");
+CREATE UNIQUE INDEX "Match_tournamentGroupId_serialNumber_key" ON "public"."Match"("tournamentGroupId", "serialNumber");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Participant_name_key" ON "public"."Participant"("name");

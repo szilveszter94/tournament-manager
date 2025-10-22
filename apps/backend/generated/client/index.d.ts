@@ -13189,7 +13189,7 @@ export namespace Prisma {
 
   export type MatchWhereUniqueInput = Prisma.AtLeast<{
     id?: number
-    tournamentPhaseId_serialNumber?: MatchTournamentPhaseIdSerialNumberCompoundUniqueInput
+    tournamentGroupId_serialNumber?: MatchTournamentGroupIdSerialNumberCompoundUniqueInput
     AND?: MatchWhereInput | MatchWhereInput[]
     OR?: MatchWhereInput[]
     NOT?: MatchWhereInput | MatchWhereInput[]
@@ -13214,7 +13214,7 @@ export namespace Prisma {
     winner?: XOR<ParticipantNullableScalarRelationFilter, ParticipantWhereInput> | null
     nextMatch?: XOR<MatchNullableScalarRelationFilter, MatchWhereInput> | null
     prevMatches?: MatchListRelationFilter
-  }, "id" | "tournamentPhaseId_serialNumber">
+  }, "id" | "tournamentGroupId_serialNumber">
 
   export type MatchOrderByWithAggregationInput = {
     id?: SortOrder
@@ -14622,8 +14622,8 @@ export namespace Prisma {
     nulls?: NullsOrder
   }
 
-  export type MatchTournamentPhaseIdSerialNumberCompoundUniqueInput = {
-    tournamentPhaseId: number
+  export type MatchTournamentGroupIdSerialNumberCompoundUniqueInput = {
+    tournamentGroupId: number
     serialNumber: number
   }
 

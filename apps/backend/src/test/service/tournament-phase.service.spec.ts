@@ -18,7 +18,7 @@ const testData: TournamentPhaseDataDto = {
 describe('TournamentPhaseService', () => {
   let service: TournamentPhaseService;
   let prisma: PrismaService;
-
+  console.log('✅ Testing tournament phase service...');
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -40,11 +40,13 @@ describe('TournamentPhaseService', () => {
   it('should return error if no groups are provided', async () => {
     const result = await service.createGroupStage({ groups: [] }, 1);
     expect(result).toEqual({ ok: false, error: 'Groups not provided.' });
+    console.log('✅ Error if no groups provided passed');
   });
 
   it('should return error if tournamentId is invalid', async () => {
     const result = await service.createGroupStage(testData, 0);
     expect(result).toEqual({ ok: false, error: 'Invalid tournament ID: 0' });
+    console.log('✅ Error if tournamentId is invalid passed');
   });
 
   it('should handle "tournament not found" error', async () => {
@@ -64,6 +66,7 @@ describe('TournamentPhaseService', () => {
     );
 
     expect(result).toEqual({ ok: false, error: 'Tournament not found' });
+    console.log('✅ Error if tournament not found');
   });
 
   it('should create group stage successfully', async () => {
@@ -110,5 +113,6 @@ describe('TournamentPhaseService', () => {
     const result = await service.createGroupStage(testData, 1);
 
     expect(result).toEqual({ ok: true });
+    console.log('✅ Create group stages correctly passed');
   });
 });

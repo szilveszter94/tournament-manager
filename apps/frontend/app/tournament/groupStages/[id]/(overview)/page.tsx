@@ -29,6 +29,12 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                       <h3 className="font-semibold text-lg mb-3">{`Group ${group.id} matches`}</h3>
                       {phase.matches
                         ?.filter((m) => m.tournamentGroupId === group.id)
+                        ?.sort((a, b) => {
+                          if (a.serialNumber === null && b.serialNumber === null) return 0;
+                          if (a.serialNumber === null) return 1;
+                          if (b.serialNumber === null) return -1;
+                          return a.serialNumber - b.serialNumber;
+                        })
                         ?.map((match, index) => (
                           <div key={match.id}>
                             <h3 className="font-semibold text-lg mb-3">{`Match ${index + 1}`}</h3>

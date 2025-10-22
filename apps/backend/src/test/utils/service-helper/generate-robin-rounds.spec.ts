@@ -1,7 +1,9 @@
+import { CreateGroupMatch } from 'custom-models/api/match';
 import { TournamentPhaseDataDto } from '../../../../custom-models/api/tournament-phase';
 import { generateRobinRounds } from '../../../utils/service.helper';
 
 describe('generateRobinRounds', () => {
+  console.log('✅ Testing Robin rounds generator...');
   it('should generate all matches for a single group of 4 participants', () => {
     const testData: TournamentPhaseDataDto = {
       groups: [
@@ -22,6 +24,7 @@ describe('generateRobinRounds', () => {
       expect(match.participant1Id).toBeDefined();
       expect(match.participant2Id).toBeDefined();
     });
+    console.log('✅ 4 participants validation passed');
   });
 
   it('should handle even number of participants', () => {
@@ -33,6 +36,7 @@ describe('generateRobinRounds', () => {
 
     const result = generateRobinRounds(testData, groupMap, phaseId);
     expect(result).toHaveLength(6);
+    console.log('✅ Even number of participants validation passed');
   });
 
   it('should handle odd number of participants (add bye rounds correctly)', () => {
@@ -44,6 +48,7 @@ describe('generateRobinRounds', () => {
 
     const result = generateRobinRounds(testData, groupMap, phaseId);
     expect(result).toHaveLength(10);
+    console.log('✅ Odd number of participants validation passed');
   });
 
   it('should generate matches for multiple groups', () => {
@@ -66,6 +71,55 @@ describe('generateRobinRounds', () => {
 
     expect(groupA).toHaveLength(3);
     expect(groupB).toHaveLength(3);
+    console.log('✅ Multiple groups validation passed');
+  });
+
+  it('should generate matches with unique, sequential serialNumbers per group', () => {
+    const testData: TournamentPhaseDataDto = {
+      groups: [
+        { name: 'A', participantIds: [1, 2, 3, 4] },
+        { name: 'B', participantIds: [5, 6, 7] },
+      ],
+    };
+
+    const groupMap = { 0: 101, 1: 102 };
+    const phaseId = 1;
+
+    const matches = generateRobinRounds(testData, groupMap, phaseId);
+
+    // group matches by group ID
+    const byGroup = matches.reduce<Record<number, CreateGroupMatch[]>>(
+      (acc, match) => {
+        if (!match.tournamentGroupId) {
+          return acc;
+        }
+        if (!acc[match.tournamentGroupId]) acc[match.tournamentGroupId] = [];
+        acc[match.tournamentGroupId].push(match);
+        return acc;
+      },
+      {},
+    );
+
+    for (const [groupId, groupMatches] of Object.entries(byGroup)) {
+      // sort by serialNumber
+      const serials = groupMatches
+        .map((m) => m.serialNumber ?? 0)
+        .sort((a, b) => a - b);
+
+      // Check that serials start from 1
+      expect(serials[0]).toBe(1);
+
+      // Check that serial numbers are sequential (difference = 1)
+      for (let i = 1; i < serials.length; i++) {
+        expect(serials[i] - serials[i - 1]).toBe(1);
+      }
+
+      // Check that serials are unique
+      const uniqueSerials = new Set(serials);
+      expect(uniqueSerials.size).toBe(serials.length);
+
+      console.log(`✅ Group ${groupId} passed serialNumber validation`);
+    }
   });
 
   it('should generate groups correctly', () => {
@@ -128,5 +182,6 @@ describe('generateRobinRounds', () => {
 
     expect(groupAHas13).toBe(true);
     expect(groupBHas24).toBe(true);
+    console.log('✅ Groups validation passed');
   });
 });
