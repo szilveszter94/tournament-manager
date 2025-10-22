@@ -51,6 +51,7 @@ const generateRobinRoundMatches = (
 ): CreateGroupMatch[] => {
   const generatedMatches: CreateGroupMatch[] = [];
   const shuffledPlayers = shuffle(participants);
+  let serialNumber = 1;
   let list = [...shuffledPlayers];
 
   const isOdd = list.length % 2 !== 0;
@@ -71,6 +72,7 @@ const generateRobinRoundMatches = (
           participant1Id: p1,
           participant2Id: p2,
           matchType,
+          serialNumber: serialNumber++,
         });
       }
     }

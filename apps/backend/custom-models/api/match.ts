@@ -6,4 +6,5 @@ export type CreateGroupMatch = {
   participant1Id: number;
   participant2Id: number;
   matchType: MatchType;
+  serialNumber: number;
 };
