@@ -68,7 +68,7 @@ describe('generateRobinRounds', () => {
     expect(groupB).toHaveLength(3);
   });
 
-  it('should handle huge number of participants', () => {
+  it('should generate groups correctly', () => {
     const testData: TournamentPhaseDataDto = {
       groups: [
         {
