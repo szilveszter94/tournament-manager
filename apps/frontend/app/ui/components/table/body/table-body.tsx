@@ -35,9 +35,7 @@ export default function TableBody<T>({ columns, data }: TableBodyProps<T>) {
                         <ArrowTopRightOnSquareIcon className="w-5 h-5 text-icon" />
                       </Link>
                     ) : b.type === "delete" ? (
-                      <Link key={id} title="Open Tournament" href={`${b.path}/${row[col.value]}`}>
-                        <TrashIcon title="Delete Tournament" className="cursor-pointer w-5 h-5 text-red-500" />
-                      </Link>
+                      <TrashIcon key={id} title="Delete Tournament" className="cursor-pointer w-5 h-5 text-red-500" />
                     ) : (
                       ""
                     )

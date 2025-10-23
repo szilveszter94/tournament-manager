@@ -73,7 +73,7 @@ export const tournamentTableHeaders: Column<Tournament>[] = [
     typeValues: [],
     buttons: [
       { type: "edit", path: "/tournament" },
-      { type: "delete", path: "/tournament/groupStages" },
+      { type: "delete", path: "/tournament" },
     ],
   },
 ];

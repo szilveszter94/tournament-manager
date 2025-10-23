@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
 import {
   ApiTags,
   ApiOkResponse,
@@ -21,16 +21,6 @@ export class ParticipantTournamentController {
   constructor(
     private readonly participantTournamentService: ParticipantTournamentService,
   ) {}
-
-  // GET Participant by Id
-  @Get(':tournamentId')
-  @ApiOperation({ summary: 'Get participants by tournamentId' })
-  @ApiOkResponse({ type: ParticipantTournamentsResponse, isArray: false })
-  findByTournamentId(
-    @Param('tournamentId') tournamentId: string,
-  ): Promise<ParticipantTournamentsResponse> {
-    return this.participantTournamentService.find(+tournamentId);
-  }
 
   // Add Participant to tournament
   @Post(':tournamentId')

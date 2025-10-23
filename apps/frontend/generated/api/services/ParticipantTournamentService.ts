@@ -5,28 +5,10 @@
 import type { AutocompleteParticipantDto } from '../models/AutocompleteParticipantDto';
 import type { BaseResponse } from '../models/BaseResponse';
 import type { ParticipantResponse } from '../models/ParticipantResponse';
-import type { ParticipantTournamentsResponse } from '../models/ParticipantTournamentsResponse';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class ParticipantTournamentService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-    /**
-     * Get participants by tournamentId
-     * @param tournamentId
-     * @returns ParticipantTournamentsResponse
-     * @throws ApiError
-     */
-    public participantTournamentControllerFindByTournamentId(
-        tournamentId: string,
-    ): CancelablePromise<ParticipantTournamentsResponse> {
-        return this.httpRequest.request({
-            method: 'GET',
-            url: '/participantTournament/{tournamentId}',
-            path: {
-                'tournamentId': tournamentId,
-            },
-        });
-    }
     /**
      * Create a new participant for a tournament
      * @param tournamentId

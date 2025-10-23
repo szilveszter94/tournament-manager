@@ -43,14 +43,6 @@ export class TournamentController {
     return this.tournamentService.find(+id);
   }
 
-  // GET Tournament with group stages by Id
-  @Get('groupStages/:id')
-  @ApiOperation({ summary: 'Get a tournament with group stages by Id' })
-  @ApiOkResponse({ type: TournamentResponse, isArray: false })
-  findOneWithGroupStages(@Param('id') id: string): Promise<TournamentResponse> {
-    return this.tournamentService.findWithGroupStages(+id);
-  }
-
   // GET Tournaments by query
   @Get()
   @ApiOperation({ summary: 'Get all tournaments' })

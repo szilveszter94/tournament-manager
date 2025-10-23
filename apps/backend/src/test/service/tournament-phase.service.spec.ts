@@ -35,7 +35,7 @@ describe('TournamentPhaseService', () => {
 
     service = module.get<TournamentPhaseService>(TournamentPhaseService);
     prisma = module.get<PrismaService>(PrismaService);
-    jest.spyOn(service['logger'], 'error').mockImplementation(() => {});
+    //jest.spyOn(service['logger'], 'error').mockImplementation(() => {});
   });
 
   it('should return error if no groups are provided', async () => {
@@ -81,6 +81,7 @@ describe('TournamentPhaseService', () => {
                 id: 1,
                 phases: [],
               }),
+              update: jest.fn().mockResolvedValue({ id: 1, phases: [] }),
             },
             tournamentPhase: {
               create: jest.fn().mockResolvedValue({ id: 1 }),
@@ -115,7 +116,6 @@ describe('TournamentPhaseService', () => {
       );
 
     const result = await service.createGroupStage(testData, 1);
-
     expect(result).toEqual({ ok: true });
     console.log('✅ Create group stages correctly passed');
   });

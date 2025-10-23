@@ -20,18 +20,19 @@ import GenerateGroupsForm from "./generate-groups-form";
 
 const nonPersistentGroup = "nonPersistent";
 
-export default function TournamentDetail({
-  tournament,
-  participants,
-}: {
+type TournamentDetailProps = {
   tournament: Tournament;
-  participants: ParticipantTournament[];
-}) {
+};
+
+export default function TournamentDetail({ tournament }: TournamentDetailProps) {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(setParticipants(participants));
-  }, [dispatch, participants]);
+    if (!tournament.participants) {
+      return;
+    }
+    dispatch(setParticipants(tournament.participants));
+  }, [dispatch, tournament]);
 
   const tournamentPersistentGroups = useAppSelector(selectGroupsByTournament(tournament.id));
   const tournamentNonPersistentGroup = {
@@ -93,7 +94,7 @@ export default function TournamentDetail({
 
   const onClearGroups = (): void => {
     dispatch(clearGroups(tournament.id));
-    dispatch(setParticipants(participants));
+    if (tournament.participants) dispatch(setParticipants(tournament.participants));
   };
 
   return (

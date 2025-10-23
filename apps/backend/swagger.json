@@ -100,37 +100,6 @@
         ]
       }
     },
-    "/tournament/groupStages/{id}": {
-      "get": {
-        "operationId": "TournamentController_findOneWithGroupStages",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TournamentResponse"
-                }
-              }
-            }
-          }
-        },
-        "summary": "Get a tournament with group stages by Id",
-        "tags": [
-          "tournament"
-        ]
-      }
-    },
     "/tournament": {
       "get": {
         "operationId": "TournamentController_findByQuery",
@@ -660,35 +629,6 @@
       }
     },
     "/participantTournament/{tournamentId}": {
-      "get": {
-        "operationId": "ParticipantTournamentController_findByTournamentId",
-        "parameters": [
-          {
-            "name": "tournamentId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ParticipantTournamentsResponse"
-                }
-              }
-            }
-          }
-        },
-        "summary": "Get participants by tournamentId",
-        "tags": [
-          "participantTournament"
-        ]
-      },
       "post": {
         "operationId": "ParticipantTournamentController_addParticipantToTournament",
         "parameters": [
@@ -1627,7 +1567,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-23T11:32:06.177Z"
+            "default": "2025-10-23T13:56:23.726Z"
           }
         },
         "required": [
@@ -1667,7 +1607,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-23T11:32:06.161Z"
+            "default": "2025-10-23T13:56:23.712Z"
           }
         }
       },
@@ -1756,7 +1696,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-23T11:32:06.882Z"
+            "default": "2025-10-23T13:56:24.065Z"
           }
         },
         "required": [
@@ -1795,7 +1735,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-23T11:32:06.892Z"
+            "default": "2025-10-23T13:56:24.074Z"
           }
         }
       },

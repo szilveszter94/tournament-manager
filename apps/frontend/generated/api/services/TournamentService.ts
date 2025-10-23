@@ -67,23 +67,6 @@ export class TournamentService {
         });
     }
     /**
-     * Get a tournament with group stages by Id
-     * @param id
-     * @returns TournamentResponse
-     * @throws ApiError
-     */
-    public tournamentControllerFindOneWithGroupStages(
-        id: string,
-    ): CancelablePromise<TournamentResponse> {
-        return this.httpRequest.request({
-            method: 'GET',
-            url: '/tournament/groupStages/{id}',
-            path: {
-                'id': id,
-            },
-        });
-    }
-    /**
      * Get all tournaments
      * @param updatedTo
      * @param updatedFrom

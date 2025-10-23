@@ -76,7 +76,7 @@ export async function updateGroupStageMatch(
     };
   }
 
-  revalidatePath(`/tournament/groupStages/${tournamentId}`);
+  revalidatePath(`/tournament/${tournamentId}`);
   return {
     message: "",
     errors: {},
@@ -102,7 +102,7 @@ export async function generateGroupStages(
     };
   }
 
-  redirect(`/tournament/groupStages/${tournamentId}`);
+  revalidatePath(`/tournament/${tournamentId}`);
   return {
     message: "",
     errors: {},
