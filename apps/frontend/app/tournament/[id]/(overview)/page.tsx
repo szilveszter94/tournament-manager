@@ -16,7 +16,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
   if (response.data.status === TournamentStatus.STARTED && response.data.phase === PhaseType.GROUP_STAGE) {
     return (
       <main className="p-8 mx-auto">
-        <MatchList response={response} tournamentId={tournamentId} />
+        <MatchList tournament={response.data} tournamentId={tournamentId} />
       </main>
     );
   }

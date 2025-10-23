@@ -13,7 +13,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
 
   return (
     <main className="p-8 mx-auto">
-      <MatchList response={response} tournamentId={tournamentId} />
+      <MatchList tournament={response.data} tournamentId={tournamentId} />
     </main>
   );
 }

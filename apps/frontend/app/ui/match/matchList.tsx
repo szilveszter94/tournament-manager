@@ -1,17 +1,17 @@
-import { PhaseType, TournamentResponse } from "@/generated/api";
+import { PhaseType, Tournament } from "@/generated/api";
 import UpdateMatchForm from "./updateMatchForm";
 
 type MatchListProps = {
-  response: TournamentResponse;
+  tournament: Tournament;
   tournamentId: number;
 };
 
-export default function MatchList({ response, tournamentId }: MatchListProps) {
+export default function MatchList({ tournament, tournamentId }: MatchListProps) {
   return (
     <div className="overflow-x-auto">
-      {response.data && (
+      {tournament && (
         <div className="space-y-8">
-          {response.data.phases
+          {tournament.phases
             ?.filter((p) => p.phaseType === PhaseType.GROUP_STAGE)
             ?.map((phase) => (
               <div key={phase.id}>
@@ -40,21 +40,7 @@ export default function MatchList({ response, tournamentId }: MatchListProps) {
                               <h3 className="font-semibold text-lg mb-3">{`Match ${match.serialNumber}`}</h3>
                               <div className="space-y-2">
                                 <div className="flex gap-2 items-center border text-foreground rounded-md p-4">
-                                  <UpdateMatchForm
-                                    match={match}
-                                    tournamentId={tournamentId}
-                                    winnerId={match.participant1Id}
-                                    loserId={match.participant2Id}
-                                    name={match.participant1?.name ?? "Unknown"}
-                                  />
-                                  vs{" "}
-                                  <UpdateMatchForm
-                                    match={match}
-                                    tournamentId={tournamentId}
-                                    winnerId={match.participant2Id}
-                                    loserId={match.participant1Id}
-                                    name={match.participant2?.name ?? "Unknown"}
-                                  />
+                                  <UpdateMatchForm match={match} tournamentId={tournamentId} />
                                 </div>
                               </div>
                             </div>

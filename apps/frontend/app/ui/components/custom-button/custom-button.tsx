@@ -3,6 +3,7 @@
 import { ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
+import { useFormStatus } from "react-dom";
 
 type ButtonProps = {
   children: ReactNode;
@@ -29,6 +30,7 @@ export default function CustomButton({
   className,
   disabled = false,
 }: ButtonProps) {
+  const { pending } = useFormStatus();
   const router = useRouter();
   const formattedIconSize = `w-${iconSize} h-${iconSize}`;
   const baseStyles =
@@ -47,7 +49,7 @@ export default function CustomButton({
   };
 
   function handleClick() {
-    if (disabled) return;
+    if (disabled || pending) return;
     if (href) {
       router.push(href);
     } else if (onClick) {
@@ -57,7 +59,7 @@ export default function CustomButton({
 
   return (
     <button
-      disabled={disabled}
+      disabled={disabled || pending}
       type={type}
       onClick={handleClick}
       className={clsx(
@@ -68,7 +70,11 @@ export default function CustomButton({
         className
       )}>
       {icon && <span className={clsx(formattedIconSize)}>{icon}</span>}
-      {children}
+      {pending ? (
+        <div className="h-4 w-4 rounded-full border-2 border-t-transparent border-secondary animate-spin"></div>
+      ) : (
+        children
+      )}
     </button>
   );
 }
