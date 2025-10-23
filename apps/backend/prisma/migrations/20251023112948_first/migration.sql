@@ -11,7 +11,7 @@ CREATE TYPE "public"."PhaseType" AS ENUM ('None', 'GroupStage', 'SingleEliminati
 CREATE TYPE "public"."ParticipantType" AS ENUM ('Individual', 'Team');
 
 -- CreateEnum
-CREATE TYPE "public"."TournamentStatus" AS ENUM ('RegisterPlayers', 'CreateFirstRound', 'FirstRoundStarted', 'CreateSecondRound', 'SecondRoundStarted', 'Over');
+CREATE TYPE "public"."TournamentStatus" AS ENUM ('RegisterPlayers', 'Started', 'Over');
 
 -- CreateTable
 CREATE TABLE "public"."Elimination" (
@@ -92,6 +92,7 @@ CREATE TABLE "public"."ParticipantTournament" (
 CREATE TABLE "public"."Tournament" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
+    "phase" "public"."PhaseType",
     "status" "public"."TournamentStatus" NOT NULL DEFAULT 'RegisterPlayers',
     "type" "public"."ParticipantType" NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

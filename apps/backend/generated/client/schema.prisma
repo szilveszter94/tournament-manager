@@ -42,10 +42,7 @@ enum ParticipantType {
 
 enum TournamentStatus {
   RegisterPlayers
-  CreateFirstRound
-  FirstRoundStarted
-  CreateSecondRound
-  SecondRoundStarted
+  Started
   Over
 }
 
@@ -150,6 +147,7 @@ model ParticipantTournament {
 model Tournament {
   id        Int              @id @default(autoincrement())
   name      String
+  phase     PhaseType?
   status    TournamentStatus @default(RegisterPlayers)
   type      ParticipantType
   createdAt DateTime         @default(now())

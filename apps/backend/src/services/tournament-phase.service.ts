@@ -5,7 +5,7 @@ import {
   TournamentPhaseDataDto,
 } from '../../custom-models/api/tournament-phase';
 import { BaseResponse } from '../../custom-models/api/base-response';
-import { PhaseType } from '../../generated/client';
+import { PhaseType, TournamentStatus } from '../../generated/client';
 import { generateRobinRounds } from '../utils/service.helper';
 import { CreateGroupMatch } from '../../custom-models/api/match';
 
@@ -38,6 +38,14 @@ export class TournamentPhaseService {
           include: { phases: true },
         });
         if (!tournament) throw new BadRequestException('Tournament not found');
+
+        await tx.tournament.update({
+          where: { id: tournamentId },
+          data: {
+            phase: PhaseType.GroupStage,
+            status: TournamentStatus.Started,
+          },
+        });
 
         const existingPhase = tournament.phases.find(
           (p) => p.phaseType === PhaseType.GroupStage,

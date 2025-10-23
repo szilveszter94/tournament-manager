@@ -26,9 +26,6 @@ enum ParticipantType {
 
 enum TournamentStatus {
   RegisterPlayers
-  CreateFirstRound
-  FirstRoundStarted
-  CreateSecondRound
-  SecondRoundStarted
+  Started
   Over
 }

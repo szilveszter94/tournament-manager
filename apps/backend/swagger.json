@@ -223,10 +223,7 @@
                 "type": "string",
                 "enum": [
                   "RegisterPlayers",
-                  "CreateFirstRound",
-                  "FirstRoundStarted",
-                  "CreateSecondRound",
-                  "SecondRoundStarted",
+                  "Started",
                   "Over"
                 ]
               }
@@ -872,24 +869,6 @@
   "servers": [],
   "components": {
     "schemas": {
-      "TournamentStatus": {
-        "type": "string",
-        "enum": [
-          "RegisterPlayers",
-          "CreateFirstRound",
-          "FirstRoundStarted",
-          "CreateSecondRound",
-          "SecondRoundStarted",
-          "Over"
-        ]
-      },
-      "ParticipantType": {
-        "type": "string",
-        "enum": [
-          "Individual",
-          "Team"
-        ]
-      },
       "PhaseType": {
         "type": "string",
         "enum": [
@@ -899,6 +878,21 @@
           "DoubleElimination",
           "RoundRobin",
           "Swiss"
+        ]
+      },
+      "TournamentStatus": {
+        "type": "string",
+        "enum": [
+          "RegisterPlayers",
+          "Started",
+          "Over"
+        ]
+      },
+      "ParticipantType": {
+        "type": "string",
+        "enum": [
+          "Individual",
+          "Team"
         ]
       },
       "EliminationType": {
@@ -1485,6 +1479,14 @@
           "name": {
             "type": "string"
           },
+          "phase": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PhaseType"
+              }
+            ]
+          },
           "status": {
             "allOf": [
               {
@@ -1529,6 +1531,7 @@
         "required": [
           "id",
           "name",
+          "phase",
           "status",
           "type",
           "createdAt",
@@ -1598,6 +1601,14 @@
           "name": {
             "type": "string"
           },
+          "phase": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PhaseType"
+              }
+            ]
+          },
           "status": {
             "default": "RegisterPlayers",
             "allOf": [
@@ -1616,7 +1627,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-23T08:53:58.541Z"
+            "default": "2025-10-23T11:32:06.177Z"
           }
         },
         "required": [
@@ -1630,6 +1641,14 @@
           "name": {
             "type": "string"
           },
+          "phase": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PhaseType"
+              }
+            ]
+          },
           "status": {
             "default": "RegisterPlayers",
             "allOf": [
@@ -1648,7 +1667,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-23T08:53:58.528Z"
+            "default": "2025-10-23T11:32:06.161Z"
           }
         }
       },
@@ -1737,7 +1756,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-23T08:53:59.027Z"
+            "default": "2025-10-23T11:32:06.882Z"
           }
         },
         "required": [
@@ -1776,7 +1795,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-23T08:53:59.036Z"
+            "default": "2025-10-23T11:32:06.892Z"
           }
         }
       },

@@ -103,10 +103,7 @@ export type ParticipantType = (typeof ParticipantType)[keyof typeof ParticipantT
 
 export const TournamentStatus: {
   RegisterPlayers: 'RegisterPlayers',
-  CreateFirstRound: 'CreateFirstRound',
-  FirstRoundStarted: 'FirstRoundStarted',
-  CreateSecondRound: 'CreateSecondRound',
-  SecondRoundStarted: 'SecondRoundStarted',
+  Started: 'Started',
   Over: 'Over'
 };
 
@@ -8218,6 +8215,7 @@ export namespace Prisma {
   export type TournamentMinAggregateOutputType = {
     id: number | null
     name: string | null
+    phase: $Enums.PhaseType | null
     status: $Enums.TournamentStatus | null
     type: $Enums.ParticipantType | null
     createdAt: Date | null
@@ -8227,6 +8225,7 @@ export namespace Prisma {
   export type TournamentMaxAggregateOutputType = {
     id: number | null
     name: string | null
+    phase: $Enums.PhaseType | null
     status: $Enums.TournamentStatus | null
     type: $Enums.ParticipantType | null
     createdAt: Date | null
@@ -8236,6 +8235,7 @@ export namespace Prisma {
   export type TournamentCountAggregateOutputType = {
     id: number
     name: number
+    phase: number
     status: number
     type: number
     createdAt: number
@@ -8255,6 +8255,7 @@ export namespace Prisma {
   export type TournamentMinAggregateInputType = {
     id?: true
     name?: true
+    phase?: true
     status?: true
     type?: true
     createdAt?: true
@@ -8264,6 +8265,7 @@ export namespace Prisma {
   export type TournamentMaxAggregateInputType = {
     id?: true
     name?: true
+    phase?: true
     status?: true
     type?: true
     createdAt?: true
@@ -8273,6 +8275,7 @@ export namespace Prisma {
   export type TournamentCountAggregateInputType = {
     id?: true
     name?: true
+    phase?: true
     status?: true
     type?: true
     createdAt?: true
@@ -8369,6 +8372,7 @@ export namespace Prisma {
   export type TournamentGroupByOutputType = {
     id: number
     name: string
+    phase: $Enums.PhaseType | null
     status: $Enums.TournamentStatus
     type: $Enums.ParticipantType
     createdAt: Date
@@ -8397,6 +8401,7 @@ export namespace Prisma {
   export type TournamentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    phase?: boolean
     status?: boolean
     type?: boolean
     createdAt?: boolean
@@ -8410,6 +8415,7 @@ export namespace Prisma {
   export type TournamentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    phase?: boolean
     status?: boolean
     type?: boolean
     createdAt?: boolean
@@ -8419,6 +8425,7 @@ export namespace Prisma {
   export type TournamentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    phase?: boolean
     status?: boolean
     type?: boolean
     createdAt?: boolean
@@ -8428,13 +8435,14 @@ export namespace Prisma {
   export type TournamentSelectScalar = {
     id?: boolean
     name?: boolean
+    phase?: boolean
     status?: boolean
     type?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type TournamentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "status" | "type" | "createdAt" | "updatedAt", ExtArgs["result"]["tournament"]>
+  export type TournamentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "phase" | "status" | "type" | "createdAt" | "updatedAt", ExtArgs["result"]["tournament"]>
   export type TournamentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     phases?: boolean | Tournament$phasesArgs<ExtArgs>
     participants?: boolean | Tournament$participantsArgs<ExtArgs>
@@ -8454,6 +8462,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: number
       name: string
+      phase: $Enums.PhaseType | null
       status: $Enums.TournamentStatus
       type: $Enums.ParticipantType
       createdAt: Date
@@ -8886,6 +8895,7 @@ export namespace Prisma {
   interface TournamentFieldRefs {
     readonly id: FieldRef<"Tournament", 'Int'>
     readonly name: FieldRef<"Tournament", 'String'>
+    readonly phase: FieldRef<"Tournament", 'PhaseType'>
     readonly status: FieldRef<"Tournament", 'TournamentStatus'>
     readonly type: FieldRef<"Tournament", 'ParticipantType'>
     readonly createdAt: FieldRef<"Tournament", 'DateTime'>
@@ -12950,6 +12960,7 @@ export namespace Prisma {
   export const TournamentScalarFieldEnum: {
     id: 'id',
     name: 'name',
+    phase: 'phase',
     status: 'status',
     type: 'type',
     createdAt: 'createdAt',
@@ -13116,20 +13127,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'TournamentStatus'
-   */
-  export type EnumTournamentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TournamentStatus'>
-    
-
-
-  /**
-   * Reference to a field of type 'TournamentStatus[]'
-   */
-  export type ListEnumTournamentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TournamentStatus[]'>
-    
-
-
-  /**
    * Reference to a field of type 'PhaseType'
    */
   export type EnumPhaseTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PhaseType'>
@@ -13140,6 +13137,20 @@ export namespace Prisma {
    * Reference to a field of type 'PhaseType[]'
    */
   export type ListEnumPhaseTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PhaseType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'TournamentStatus'
+   */
+  export type EnumTournamentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TournamentStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'TournamentStatus[]'
+   */
+  export type ListEnumTournamentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TournamentStatus[]'>
     
 
 
@@ -13605,6 +13616,7 @@ export namespace Prisma {
     NOT?: TournamentWhereInput | TournamentWhereInput[]
     id?: IntFilter<"Tournament"> | number
     name?: StringFilter<"Tournament"> | string
+    phase?: EnumPhaseTypeNullableFilter<"Tournament"> | $Enums.PhaseType | null
     status?: EnumTournamentStatusFilter<"Tournament"> | $Enums.TournamentStatus
     type?: EnumParticipantTypeFilter<"Tournament"> | $Enums.ParticipantType
     createdAt?: DateTimeFilter<"Tournament"> | Date | string
@@ -13617,6 +13629,7 @@ export namespace Prisma {
   export type TournamentOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
+    phase?: SortOrderInput | SortOrder
     status?: SortOrder
     type?: SortOrder
     createdAt?: SortOrder
@@ -13632,6 +13645,7 @@ export namespace Prisma {
     OR?: TournamentWhereInput[]
     NOT?: TournamentWhereInput | TournamentWhereInput[]
     name?: StringFilter<"Tournament"> | string
+    phase?: EnumPhaseTypeNullableFilter<"Tournament"> | $Enums.PhaseType | null
     status?: EnumTournamentStatusFilter<"Tournament"> | $Enums.TournamentStatus
     type?: EnumParticipantTypeFilter<"Tournament"> | $Enums.ParticipantType
     createdAt?: DateTimeFilter<"Tournament"> | Date | string
@@ -13644,6 +13658,7 @@ export namespace Prisma {
   export type TournamentOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
+    phase?: SortOrderInput | SortOrder
     status?: SortOrder
     type?: SortOrder
     createdAt?: SortOrder
@@ -13661,6 +13676,7 @@ export namespace Prisma {
     NOT?: TournamentScalarWhereWithAggregatesInput | TournamentScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Tournament"> | number
     name?: StringWithAggregatesFilter<"Tournament"> | string
+    phase?: EnumPhaseTypeNullableWithAggregatesFilter<"Tournament"> | $Enums.PhaseType | null
     status?: EnumTournamentStatusWithAggregatesFilter<"Tournament"> | $Enums.TournamentStatus
     type?: EnumParticipantTypeWithAggregatesFilter<"Tournament"> | $Enums.ParticipantType
     createdAt?: DateTimeWithAggregatesFilter<"Tournament"> | Date | string
@@ -14303,6 +14319,7 @@ export namespace Prisma {
 
   export type TournamentCreateInput = {
     name: string
+    phase?: $Enums.PhaseType | null
     status?: $Enums.TournamentStatus
     type: $Enums.ParticipantType
     createdAt?: Date | string
@@ -14315,6 +14332,7 @@ export namespace Prisma {
   export type TournamentUncheckedCreateInput = {
     id?: number
     name: string
+    phase?: $Enums.PhaseType | null
     status?: $Enums.TournamentStatus
     type: $Enums.ParticipantType
     createdAt?: Date | string
@@ -14326,6 +14344,7 @@ export namespace Prisma {
 
   export type TournamentUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
+    phase?: NullableEnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType | null
     status?: EnumTournamentStatusFieldUpdateOperationsInput | $Enums.TournamentStatus
     type?: EnumParticipantTypeFieldUpdateOperationsInput | $Enums.ParticipantType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14338,6 +14357,7 @@ export namespace Prisma {
   export type TournamentUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    phase?: NullableEnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType | null
     status?: EnumTournamentStatusFieldUpdateOperationsInput | $Enums.TournamentStatus
     type?: EnumParticipantTypeFieldUpdateOperationsInput | $Enums.ParticipantType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14350,6 +14370,7 @@ export namespace Prisma {
   export type TournamentCreateManyInput = {
     id?: number
     name: string
+    phase?: $Enums.PhaseType | null
     status?: $Enums.TournamentStatus
     type: $Enums.ParticipantType
     createdAt?: Date | string
@@ -14358,6 +14379,7 @@ export namespace Prisma {
 
   export type TournamentUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
+    phase?: NullableEnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType | null
     status?: EnumTournamentStatusFieldUpdateOperationsInput | $Enums.TournamentStatus
     type?: EnumParticipantTypeFieldUpdateOperationsInput | $Enums.ParticipantType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14367,6 +14389,7 @@ export namespace Prisma {
   export type TournamentUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    phase?: NullableEnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType | null
     status?: EnumTournamentStatusFieldUpdateOperationsInput | $Enums.TournamentStatus
     type?: EnumParticipantTypeFieldUpdateOperationsInput | $Enums.ParticipantType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15113,6 +15136,13 @@ export namespace Prisma {
     losses?: SortOrder
   }
 
+  export type EnumPhaseTypeNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.PhaseType | EnumPhaseTypeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.PhaseType[] | ListEnumPhaseTypeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.PhaseType[] | ListEnumPhaseTypeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumPhaseTypeNullableFilter<$PrismaModel> | $Enums.PhaseType | null
+  }
+
   export type EnumTournamentStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.TournamentStatus | EnumTournamentStatusFieldRefInput<$PrismaModel>
     in?: $Enums.TournamentStatus[] | ListEnumTournamentStatusFieldRefInput<$PrismaModel>
@@ -15133,6 +15163,7 @@ export namespace Prisma {
   export type TournamentCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    phase?: SortOrder
     status?: SortOrder
     type?: SortOrder
     createdAt?: SortOrder
@@ -15146,6 +15177,7 @@ export namespace Prisma {
   export type TournamentMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    phase?: SortOrder
     status?: SortOrder
     type?: SortOrder
     createdAt?: SortOrder
@@ -15155,6 +15187,7 @@ export namespace Prisma {
   export type TournamentMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    phase?: SortOrder
     status?: SortOrder
     type?: SortOrder
     createdAt?: SortOrder
@@ -15163,6 +15196,16 @@ export namespace Prisma {
 
   export type TournamentSumOrderByAggregateInput = {
     id?: SortOrder
+  }
+
+  export type EnumPhaseTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PhaseType | EnumPhaseTypeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.PhaseType[] | ListEnumPhaseTypeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.PhaseType[] | ListEnumPhaseTypeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumPhaseTypeNullableWithAggregatesFilter<$PrismaModel> | $Enums.PhaseType | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumPhaseTypeNullableFilter<$PrismaModel>
+    _max?: NestedEnumPhaseTypeNullableFilter<$PrismaModel>
   }
 
   export type EnumTournamentStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -15987,6 +16030,10 @@ export namespace Prisma {
     connect?: TournamentWinnerWhereUniqueInput | TournamentWinnerWhereUniqueInput[]
   }
 
+  export type NullableEnumPhaseTypeFieldUpdateOperationsInput = {
+    set?: $Enums.PhaseType | null
+  }
+
   export type EnumTournamentStatusFieldUpdateOperationsInput = {
     set?: $Enums.TournamentStatus
   }
@@ -16531,11 +16578,28 @@ export namespace Prisma {
     _max?: NestedEnumParticipantTypeFilter<$PrismaModel>
   }
 
+  export type NestedEnumPhaseTypeNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.PhaseType | EnumPhaseTypeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.PhaseType[] | ListEnumPhaseTypeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.PhaseType[] | ListEnumPhaseTypeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumPhaseTypeNullableFilter<$PrismaModel> | $Enums.PhaseType | null
+  }
+
   export type NestedEnumTournamentStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.TournamentStatus | EnumTournamentStatusFieldRefInput<$PrismaModel>
     in?: $Enums.TournamentStatus[] | ListEnumTournamentStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.TournamentStatus[] | ListEnumTournamentStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumTournamentStatusFilter<$PrismaModel> | $Enums.TournamentStatus
+  }
+
+  export type NestedEnumPhaseTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PhaseType | EnumPhaseTypeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.PhaseType[] | ListEnumPhaseTypeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.PhaseType[] | ListEnumPhaseTypeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumPhaseTypeNullableWithAggregatesFilter<$PrismaModel> | $Enums.PhaseType | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumPhaseTypeNullableFilter<$PrismaModel>
+    _max?: NestedEnumPhaseTypeNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumTournamentStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -17896,6 +17960,7 @@ export namespace Prisma {
 
   export type TournamentCreateWithoutParticipantsInput = {
     name: string
+    phase?: $Enums.PhaseType | null
     status?: $Enums.TournamentStatus
     type: $Enums.ParticipantType
     createdAt?: Date | string
@@ -17907,6 +17972,7 @@ export namespace Prisma {
   export type TournamentUncheckedCreateWithoutParticipantsInput = {
     id?: number
     name: string
+    phase?: $Enums.PhaseType | null
     status?: $Enums.TournamentStatus
     type: $Enums.ParticipantType
     createdAt?: Date | string
@@ -17971,6 +18037,7 @@ export namespace Prisma {
 
   export type TournamentUpdateWithoutParticipantsInput = {
     name?: StringFieldUpdateOperationsInput | string
+    phase?: NullableEnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType | null
     status?: EnumTournamentStatusFieldUpdateOperationsInput | $Enums.TournamentStatus
     type?: EnumParticipantTypeFieldUpdateOperationsInput | $Enums.ParticipantType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17982,6 +18049,7 @@ export namespace Prisma {
   export type TournamentUncheckedUpdateWithoutParticipantsInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    phase?: NullableEnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType | null
     status?: EnumTournamentStatusFieldUpdateOperationsInput | $Enums.TournamentStatus
     type?: EnumParticipantTypeFieldUpdateOperationsInput | $Enums.ParticipantType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18436,6 +18504,7 @@ export namespace Prisma {
 
   export type TournamentCreateWithoutPhasesInput = {
     name: string
+    phase?: $Enums.PhaseType | null
     status?: $Enums.TournamentStatus
     type: $Enums.ParticipantType
     createdAt?: Date | string
@@ -18447,6 +18516,7 @@ export namespace Prisma {
   export type TournamentUncheckedCreateWithoutPhasesInput = {
     id?: number
     name: string
+    phase?: $Enums.PhaseType | null
     status?: $Enums.TournamentStatus
     type: $Enums.ParticipantType
     createdAt?: Date | string
@@ -18548,6 +18618,7 @@ export namespace Prisma {
 
   export type TournamentUpdateWithoutPhasesInput = {
     name?: StringFieldUpdateOperationsInput | string
+    phase?: NullableEnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType | null
     status?: EnumTournamentStatusFieldUpdateOperationsInput | $Enums.TournamentStatus
     type?: EnumParticipantTypeFieldUpdateOperationsInput | $Enums.ParticipantType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18559,6 +18630,7 @@ export namespace Prisma {
   export type TournamentUncheckedUpdateWithoutPhasesInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    phase?: NullableEnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType | null
     status?: EnumTournamentStatusFieldUpdateOperationsInput | $Enums.TournamentStatus
     type?: EnumParticipantTypeFieldUpdateOperationsInput | $Enums.ParticipantType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18569,6 +18641,7 @@ export namespace Prisma {
 
   export type TournamentCreateWithoutWinnersInput = {
     name: string
+    phase?: $Enums.PhaseType | null
     status?: $Enums.TournamentStatus
     type: $Enums.ParticipantType
     createdAt?: Date | string
@@ -18580,6 +18653,7 @@ export namespace Prisma {
   export type TournamentUncheckedCreateWithoutWinnersInput = {
     id?: number
     name: string
+    phase?: $Enums.PhaseType | null
     status?: $Enums.TournamentStatus
     type: $Enums.ParticipantType
     createdAt?: Date | string
@@ -18644,6 +18718,7 @@ export namespace Prisma {
 
   export type TournamentUpdateWithoutWinnersInput = {
     name?: StringFieldUpdateOperationsInput | string
+    phase?: NullableEnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType | null
     status?: EnumTournamentStatusFieldUpdateOperationsInput | $Enums.TournamentStatus
     type?: EnumParticipantTypeFieldUpdateOperationsInput | $Enums.ParticipantType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18655,6 +18730,7 @@ export namespace Prisma {
   export type TournamentUncheckedUpdateWithoutWinnersInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    phase?: NullableEnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType | null
     status?: EnumTournamentStatusFieldUpdateOperationsInput | $Enums.TournamentStatus
     type?: EnumParticipantTypeFieldUpdateOperationsInput | $Enums.ParticipantType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

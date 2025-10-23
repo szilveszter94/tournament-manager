@@ -2,7 +2,7 @@
 
 import { Transition } from "@headlessui/react";
 import { GroupCard } from "./group-card";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const mockGroups = [
   {
@@ -26,14 +26,14 @@ export default function GroupStagesPage() {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setShow(true), 50);
+    const timer = setTimeout(() => setShow(true), 100);
     return () => clearTimeout(timer);
   }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-950 to-gray-900 text-white p-6">
       <Transition
-        as={Fragment}
+        as="div"
         show={show}
         enter="transition duration-700 ease-out"
         enterFrom="opacity-0 -translate-y-3"

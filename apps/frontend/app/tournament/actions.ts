@@ -3,7 +3,7 @@
 
 import { revalidatePath } from "next/cache";
 import { apiClient } from "@/lib/client";
-import { ParticipantType, UpdateMatchWinnerDto } from "@/generated/api";
+import { ParticipantTournament, ParticipantType, TournamentPhaseDataDto, UpdateMatchWinnerDto } from "@/generated/api";
 import { redirect } from "next/navigation";
 import { State } from "@/lib/custom-models/common";
 
@@ -77,6 +77,32 @@ export async function updateGroupStageMatch(
   }
 
   revalidatePath(`/tournament/groupStages/${tournamentId}`);
+  return {
+    message: "",
+    errors: {},
+  };
+}
+
+export async function generateGroupStages(
+  data: Record<string, ParticipantTournament[]>,
+  tournamentId: number
+): Promise<State> {
+  try {
+    const mappedData: TournamentPhaseDataDto = {
+      groups: Object.entries(data).map(([key, value], index) => {
+        const ids = value.map((v) => v.participant?.id).filter((id): id is number => id !== undefined);
+        return { name: key, serialNumber: index + 1, participantIds: ids };
+      }),
+    };
+    await apiClient.tournamentPhase.tournamentPhaseControllerAddPhaseToTournament(tournamentId.toString(), mappedData);
+  } catch {
+    return {
+      message: "Failed to generate groups",
+      errors: {},
+    };
+  }
+
+  redirect(`/tournament/groupStages/${tournamentId}`);
   return {
     message: "",
     errors: {},

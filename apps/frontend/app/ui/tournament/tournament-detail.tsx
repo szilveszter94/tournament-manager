@@ -4,7 +4,7 @@ import { ParticipantTournament, Tournament } from "@/generated/api";
 import React, { useEffect } from "react";
 import CreateParticipantForm from "../participant/create-form";
 import CustomButton from "../components/custom-button/custom-button";
-import { ForwardIcon, PlusCircleIcon, SparklesIcon, TrashIcon } from "@heroicons/react/16/solid";
+import { PlusCircleIcon, SparklesIcon, TrashIcon } from "@heroicons/react/16/solid";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { setGroups, clearGroups, addGroup } from "@/app/store/features/groups/groupSlice";
 import { selectFilteredParticipants } from "@/app/store/features/participants/participantSelector";
@@ -16,7 +16,7 @@ import { Column } from "../components/dnd/column";
 import { Item } from "../components/dnd/item";
 import TournamentParticipants from "./tournament-participants";
 import { getGroupLabel, shuffle } from "@/lib/utils";
-import { createTournamentPhase } from "@/app/tournament/api";
+import GenerateGroupsForm from "./generate-groups-form";
 
 const nonPersistentGroup = "nonPersistent";
 
@@ -96,10 +96,6 @@ export default function TournamentDetail({
     dispatch(setParticipants(participants));
   };
 
-  const onGenerateGroups = async (): Promise<void> => {
-    await createTournamentPhase(tournamentPersistentGroups, tournament.id);
-  };
-
   return (
     <div className="flex flex-col lg:flex-row gap-2 w-full bg-tertiary rounded-2xl">
       <DragDropProvider
@@ -138,9 +134,7 @@ export default function TournamentDetail({
             <CustomButton onClick={onClearGroups} icon={<TrashIcon />} variant="primary">
               Delete Groups
             </CustomButton>
-            <CustomButton onClick={onGenerateGroups} icon={<ForwardIcon />} variant="primary">
-              Next
-            </CustomButton>
+            <GenerateGroupsForm data={tournamentPersistentGroups} tournamentId={tournament.id} />
           </div>
           <div className="flex flex-wrap px-5 gap-5">
             {Object.entries(tournamentPersistentGroups)?.map(([column, participants]) => (

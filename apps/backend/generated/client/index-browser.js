@@ -183,6 +183,7 @@ exports.Prisma.ParticipantTournamentScalarFieldEnum = {
 exports.Prisma.TournamentScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  phase: 'phase',
   status: 'status',
   type: 'type',
   createdAt: 'createdAt',
@@ -247,15 +248,6 @@ exports.ParticipantType = exports.$Enums.ParticipantType = {
   Team: 'Team'
 };
 
-exports.TournamentStatus = exports.$Enums.TournamentStatus = {
-  RegisterPlayers: 'RegisterPlayers',
-  CreateFirstRound: 'CreateFirstRound',
-  FirstRoundStarted: 'FirstRoundStarted',
-  CreateSecondRound: 'CreateSecondRound',
-  SecondRoundStarted: 'SecondRoundStarted',
-  Over: 'Over'
-};
-
 exports.PhaseType = exports.$Enums.PhaseType = {
   None: 'None',
   GroupStage: 'GroupStage',
@@ -263,6 +255,12 @@ exports.PhaseType = exports.$Enums.PhaseType = {
   DoubleElimination: 'DoubleElimination',
   RoundRobin: 'RoundRobin',
   Swiss: 'Swiss'
+};
+
+exports.TournamentStatus = exports.$Enums.TournamentStatus = {
+  RegisterPlayers: 'RegisterPlayers',
+  Started: 'Started',
+  Over: 'Over'
 };
 
 exports.Prisma.ModelName = {

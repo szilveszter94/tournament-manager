@@ -34,9 +34,6 @@ export const updatedDateFilterValues: RangeFilter = {
 
 export const userFriendlyStats: Record<TournamentStatus, string> = {
   RegisterPlayers: 'Register Players',
-  CreateFirstRound: 'Create First Round',
-  FirstRoundStarted: 'First Round',
-  CreateSecondRound: 'Create Second Round',
-  SecondRoundStarted: 'Second Round',
-  Over: 'Tournament Ended'
+  Started: 'Tournament Started',
+  Over: 'Tournament Ended',
 };

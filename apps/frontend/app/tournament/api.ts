@@ -3,8 +3,6 @@ import {
   TournamentResponse,
   ParticipantTournamentsResponse,
   UpdateMatchWinnerDto,
-  ParticipantTournament,
-  TournamentPhaseDataDto,
 } from "@/generated/api";
 import { apiClient } from "../../lib/client";
 import { TournamentQueryParams } from "@/lib/custom-models/tournament";
@@ -77,18 +75,5 @@ export async function fetchTournaments(p: TournamentQueryParams): Promise<Tourna
     console.error(err);
     throw new Error("Failed to fetch tournaments");
   }
-}
-
-export async function createTournamentPhase(
-  data: Record<string, ParticipantTournament[]>,
-  tournamentId: number
-): Promise<void> {
-  const mappedData: TournamentPhaseDataDto = {
-    groups: Object.entries(data).map(([key, value], index) => {
-      const ids = value.map((v) => v.participant?.id).filter((id): id is number => id !== undefined);
-      return { name: key, serialNumber: index + 1, participantIds: ids };
-    }),
-  };
-  apiClient.tournamentPhase.tournamentPhaseControllerAddPhaseToTournament(tournamentId.toString(), mappedData);
 }
 

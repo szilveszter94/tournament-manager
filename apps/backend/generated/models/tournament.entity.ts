@@ -1,4 +1,4 @@
-import { ParticipantType, TournamentStatus } from '../client';
+import { ParticipantType, PhaseType, TournamentStatus } from '../client';
 import { ApiProperty } from '@nestjs/swagger';
 import { TournamentPhase } from './tournamentPhase.entity';
 import { ParticipantTournament } from './participantTournament.entity';
@@ -14,6 +14,12 @@ export class Tournament {
     type: 'string',
   })
   name: string;
+  @ApiProperty({
+    enum: PhaseType,
+    enumName: 'PhaseType',
+    nullable: true,
+  })
+  phase: PhaseType | null;
   @ApiProperty({
     enum: TournamentStatus,
     enumName: 'TournamentStatus',
