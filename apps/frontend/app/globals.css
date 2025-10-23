@@ -37,7 +37,3 @@ body {
   color: var(--color-foreground);
   font-family: var(--font-roboto), sans-serif;
 }
-
-button {
-  cursor: pointer;
-}

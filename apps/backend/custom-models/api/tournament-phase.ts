@@ -8,6 +8,11 @@ export class ParticipantTournamentGroup {
   })
   name: string;
   @ApiProperty({
+    description: 'The order of the group',
+    type: Number,
+  })
+  serialNumber: number;
+  @ApiProperty({
     description: 'List of participants belonging to this group',
     type: [Number],
   })

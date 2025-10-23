@@ -9,6 +9,7 @@ describe('generateRobinRounds', () => {
       groups: [
         {
           name: 'Group-1',
+          serialNumber: 1,
           participantIds: [1, 2, 3, 4],
         },
       ],
@@ -29,7 +30,9 @@ describe('generateRobinRounds', () => {
 
   it('should handle even number of participants', () => {
     const testData: TournamentPhaseDataDto = {
-      groups: [{ name: 'Group-1', participantIds: [1, 2, 3, 4] }],
+      groups: [
+        { name: 'Group-1', serialNumber: 1, participantIds: [1, 2, 3, 4] },
+      ],
     };
     const groupMap = { 0: 11 };
     const phaseId = 2;
@@ -41,7 +44,9 @@ describe('generateRobinRounds', () => {
 
   it('should handle odd number of participants (add bye rounds correctly)', () => {
     const testData: TournamentPhaseDataDto = {
-      groups: [{ name: 'Group-1', participantIds: [1, 2, 3, 4, 5] }],
+      groups: [
+        { name: 'Group-1', serialNumber: 1, participantIds: [1, 2, 3, 4, 5] },
+      ],
     };
     const groupMap = { 0: 11 };
     const phaseId = 2;
@@ -54,8 +59,8 @@ describe('generateRobinRounds', () => {
   it('should generate matches for multiple groups', () => {
     const testData: TournamentPhaseDataDto = {
       groups: [
-        { name: 'A', participantIds: [1, 2, 3] },
-        { name: 'B', participantIds: [4, 5, 6] },
+        { name: 'A', serialNumber: 1, participantIds: [1, 2, 3] },
+        { name: 'B', serialNumber: 2, participantIds: [4, 5, 6] },
       ],
     };
     const groupMap = { 0: 101, 1: 102 };
@@ -77,8 +82,8 @@ describe('generateRobinRounds', () => {
   it('should generate matches with unique, sequential serialNumbers per group', () => {
     const testData: TournamentPhaseDataDto = {
       groups: [
-        { name: 'A', participantIds: [1, 2, 3, 4] },
-        { name: 'B', participantIds: [5, 6, 7] },
+        { name: 'A', serialNumber: 1, participantIds: [1, 2, 3, 4] },
+        { name: 'B', serialNumber: 2, participantIds: [5, 6, 7] },
       ],
     };
 
@@ -127,6 +132,7 @@ describe('generateRobinRounds', () => {
       groups: [
         {
           name: 'A',
+          serialNumber: 1,
           participantIds: [
             1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
             20, 21,
@@ -134,6 +140,7 @@ describe('generateRobinRounds', () => {
         },
         {
           name: 'B',
+          serialNumber: 2,
           participantIds: [
             22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37,
           ],

@@ -10,6 +10,10 @@ export class TournamentGroup {
   })
   id: number;
   @ApiProperty({
+    type: 'string',
+  })
+  name: string;
+  @ApiProperty({
     type: 'integer',
     format: 'int32',
   })

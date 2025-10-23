@@ -103,6 +103,7 @@ CREATE TABLE "public"."Tournament" (
 -- CreateTable
 CREATE TABLE "public"."TournamentGroup" (
     "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
     "tournamentPhaseId" INTEGER NOT NULL,
     "groupNumber" INTEGER NOT NULL,
     "isGroupMatchesEnded" BOOLEAN NOT NULL DEFAULT false,

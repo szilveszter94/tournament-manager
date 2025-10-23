@@ -9394,6 +9394,7 @@ export namespace Prisma {
 
   export type TournamentGroupMinAggregateOutputType = {
     id: number | null
+    name: string | null
     tournamentPhaseId: number | null
     groupNumber: number | null
     isGroupMatchesEnded: boolean | null
@@ -9403,6 +9404,7 @@ export namespace Prisma {
 
   export type TournamentGroupMaxAggregateOutputType = {
     id: number | null
+    name: string | null
     tournamentPhaseId: number | null
     groupNumber: number | null
     isGroupMatchesEnded: boolean | null
@@ -9412,6 +9414,7 @@ export namespace Prisma {
 
   export type TournamentGroupCountAggregateOutputType = {
     id: number
+    name: number
     tournamentPhaseId: number
     groupNumber: number
     isGroupMatchesEnded: number
@@ -9435,6 +9438,7 @@ export namespace Prisma {
 
   export type TournamentGroupMinAggregateInputType = {
     id?: true
+    name?: true
     tournamentPhaseId?: true
     groupNumber?: true
     isGroupMatchesEnded?: true
@@ -9444,6 +9448,7 @@ export namespace Prisma {
 
   export type TournamentGroupMaxAggregateInputType = {
     id?: true
+    name?: true
     tournamentPhaseId?: true
     groupNumber?: true
     isGroupMatchesEnded?: true
@@ -9453,6 +9458,7 @@ export namespace Prisma {
 
   export type TournamentGroupCountAggregateInputType = {
     id?: true
+    name?: true
     tournamentPhaseId?: true
     groupNumber?: true
     isGroupMatchesEnded?: true
@@ -9549,6 +9555,7 @@ export namespace Prisma {
 
   export type TournamentGroupGroupByOutputType = {
     id: number
+    name: string
     tournamentPhaseId: number
     groupNumber: number
     isGroupMatchesEnded: boolean
@@ -9577,6 +9584,7 @@ export namespace Prisma {
 
   export type TournamentGroupSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    name?: boolean
     tournamentPhaseId?: boolean
     groupNumber?: boolean
     isGroupMatchesEnded?: boolean
@@ -9590,6 +9598,7 @@ export namespace Prisma {
 
   export type TournamentGroupSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    name?: boolean
     tournamentPhaseId?: boolean
     groupNumber?: boolean
     isGroupMatchesEnded?: boolean
@@ -9600,6 +9609,7 @@ export namespace Prisma {
 
   export type TournamentGroupSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    name?: boolean
     tournamentPhaseId?: boolean
     groupNumber?: boolean
     isGroupMatchesEnded?: boolean
@@ -9610,6 +9620,7 @@ export namespace Prisma {
 
   export type TournamentGroupSelectScalar = {
     id?: boolean
+    name?: boolean
     tournamentPhaseId?: boolean
     groupNumber?: boolean
     isGroupMatchesEnded?: boolean
@@ -9617,7 +9628,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type TournamentGroupOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tournamentPhaseId" | "groupNumber" | "isGroupMatchesEnded" | "createdAt" | "updatedAt", ExtArgs["result"]["tournamentGroup"]>
+  export type TournamentGroupOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "tournamentPhaseId" | "groupNumber" | "isGroupMatchesEnded" | "createdAt" | "updatedAt", ExtArgs["result"]["tournamentGroup"]>
   export type TournamentGroupInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
     participantGroups?: boolean | TournamentGroup$participantGroupsArgs<ExtArgs>
@@ -9640,6 +9651,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
+      name: string
       tournamentPhaseId: number
       groupNumber: number
       isGroupMatchesEnded: boolean
@@ -10072,6 +10084,7 @@ export namespace Prisma {
    */
   interface TournamentGroupFieldRefs {
     readonly id: FieldRef<"TournamentGroup", 'Int'>
+    readonly name: FieldRef<"TournamentGroup", 'String'>
     readonly tournamentPhaseId: FieldRef<"TournamentGroup", 'Int'>
     readonly groupNumber: FieldRef<"TournamentGroup", 'Int'>
     readonly isGroupMatchesEnded: FieldRef<"TournamentGroup", 'Boolean'>
@@ -12948,6 +12961,7 @@ export namespace Prisma {
 
   export const TournamentGroupScalarFieldEnum: {
     id: 'id',
+    name: 'name',
     tournamentPhaseId: 'tournamentPhaseId',
     groupNumber: 'groupNumber',
     isGroupMatchesEnded: 'isGroupMatchesEnded',
@@ -13658,6 +13672,7 @@ export namespace Prisma {
     OR?: TournamentGroupWhereInput[]
     NOT?: TournamentGroupWhereInput | TournamentGroupWhereInput[]
     id?: IntFilter<"TournamentGroup"> | number
+    name?: StringFilter<"TournamentGroup"> | string
     tournamentPhaseId?: IntFilter<"TournamentGroup"> | number
     groupNumber?: IntFilter<"TournamentGroup"> | number
     isGroupMatchesEnded?: BoolFilter<"TournamentGroup"> | boolean
@@ -13670,6 +13685,7 @@ export namespace Prisma {
 
   export type TournamentGroupOrderByWithRelationInput = {
     id?: SortOrder
+    name?: SortOrder
     tournamentPhaseId?: SortOrder
     groupNumber?: SortOrder
     isGroupMatchesEnded?: SortOrder
@@ -13686,6 +13702,7 @@ export namespace Prisma {
     AND?: TournamentGroupWhereInput | TournamentGroupWhereInput[]
     OR?: TournamentGroupWhereInput[]
     NOT?: TournamentGroupWhereInput | TournamentGroupWhereInput[]
+    name?: StringFilter<"TournamentGroup"> | string
     tournamentPhaseId?: IntFilter<"TournamentGroup"> | number
     groupNumber?: IntFilter<"TournamentGroup"> | number
     isGroupMatchesEnded?: BoolFilter<"TournamentGroup"> | boolean
@@ -13698,6 +13715,7 @@ export namespace Prisma {
 
   export type TournamentGroupOrderByWithAggregationInput = {
     id?: SortOrder
+    name?: SortOrder
     tournamentPhaseId?: SortOrder
     groupNumber?: SortOrder
     isGroupMatchesEnded?: SortOrder
@@ -13715,6 +13733,7 @@ export namespace Prisma {
     OR?: TournamentGroupScalarWhereWithAggregatesInput[]
     NOT?: TournamentGroupScalarWhereWithAggregatesInput | TournamentGroupScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"TournamentGroup"> | number
+    name?: StringWithAggregatesFilter<"TournamentGroup"> | string
     tournamentPhaseId?: IntWithAggregatesFilter<"TournamentGroup"> | number
     groupNumber?: IntWithAggregatesFilter<"TournamentGroup"> | number
     isGroupMatchesEnded?: BoolWithAggregatesFilter<"TournamentGroup"> | boolean
@@ -14355,6 +14374,7 @@ export namespace Prisma {
   }
 
   export type TournamentGroupCreateInput = {
+    name: string
     groupNumber: number
     isGroupMatchesEnded?: boolean
     createdAt?: Date | string
@@ -14366,6 +14386,7 @@ export namespace Prisma {
 
   export type TournamentGroupUncheckedCreateInput = {
     id?: number
+    name: string
     tournamentPhaseId: number
     groupNumber: number
     isGroupMatchesEnded?: boolean
@@ -14376,6 +14397,7 @@ export namespace Prisma {
   }
 
   export type TournamentGroupUpdateInput = {
+    name?: StringFieldUpdateOperationsInput | string
     groupNumber?: IntFieldUpdateOperationsInput | number
     isGroupMatchesEnded?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14387,6 +14409,7 @@ export namespace Prisma {
 
   export type TournamentGroupUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
     tournamentPhaseId?: IntFieldUpdateOperationsInput | number
     groupNumber?: IntFieldUpdateOperationsInput | number
     isGroupMatchesEnded?: BoolFieldUpdateOperationsInput | boolean
@@ -14398,6 +14421,7 @@ export namespace Prisma {
 
   export type TournamentGroupCreateManyInput = {
     id?: number
+    name: string
     tournamentPhaseId: number
     groupNumber: number
     isGroupMatchesEnded?: boolean
@@ -14406,6 +14430,7 @@ export namespace Prisma {
   }
 
   export type TournamentGroupUpdateManyMutationInput = {
+    name?: StringFieldUpdateOperationsInput | string
     groupNumber?: IntFieldUpdateOperationsInput | number
     isGroupMatchesEnded?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14414,6 +14439,7 @@ export namespace Prisma {
 
   export type TournamentGroupUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
     tournamentPhaseId?: IntFieldUpdateOperationsInput | number
     groupNumber?: IntFieldUpdateOperationsInput | number
     isGroupMatchesEnded?: BoolFieldUpdateOperationsInput | boolean
@@ -15156,6 +15182,7 @@ export namespace Prisma {
 
   export type TournamentGroupCountOrderByAggregateInput = {
     id?: SortOrder
+    name?: SortOrder
     tournamentPhaseId?: SortOrder
     groupNumber?: SortOrder
     isGroupMatchesEnded?: SortOrder
@@ -15171,6 +15198,7 @@ export namespace Prisma {
 
   export type TournamentGroupMaxOrderByAggregateInput = {
     id?: SortOrder
+    name?: SortOrder
     tournamentPhaseId?: SortOrder
     groupNumber?: SortOrder
     isGroupMatchesEnded?: SortOrder
@@ -15180,6 +15208,7 @@ export namespace Prisma {
 
   export type TournamentGroupMinOrderByAggregateInput = {
     id?: SortOrder
+    name?: SortOrder
     tournamentPhaseId?: SortOrder
     groupNumber?: SortOrder
     isGroupMatchesEnded?: SortOrder
@@ -16721,6 +16750,7 @@ export namespace Prisma {
   }
 
   export type TournamentGroupCreateWithoutMatchesInput = {
+    name: string
     groupNumber: number
     isGroupMatchesEnded?: boolean
     createdAt?: Date | string
@@ -16731,6 +16761,7 @@ export namespace Prisma {
 
   export type TournamentGroupUncheckedCreateWithoutMatchesInput = {
     id?: number
+    name: string
     tournamentPhaseId: number
     groupNumber: number
     isGroupMatchesEnded?: boolean
@@ -17053,6 +17084,7 @@ export namespace Prisma {
   }
 
   export type TournamentGroupUpdateWithoutMatchesInput = {
+    name?: StringFieldUpdateOperationsInput | string
     groupNumber?: IntFieldUpdateOperationsInput | number
     isGroupMatchesEnded?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17063,6 +17095,7 @@ export namespace Prisma {
 
   export type TournamentGroupUncheckedUpdateWithoutMatchesInput = {
     id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
     tournamentPhaseId?: IntFieldUpdateOperationsInput | number
     groupNumber?: IntFieldUpdateOperationsInput | number
     isGroupMatchesEnded?: BoolFieldUpdateOperationsInput | boolean
@@ -17722,6 +17755,7 @@ export namespace Prisma {
   }
 
   export type TournamentGroupCreateWithoutParticipantGroupsInput = {
+    name: string
     groupNumber: number
     isGroupMatchesEnded?: boolean
     createdAt?: Date | string
@@ -17732,6 +17766,7 @@ export namespace Prisma {
 
   export type TournamentGroupUncheckedCreateWithoutParticipantGroupsInput = {
     id?: number
+    name: string
     tournamentPhaseId: number
     groupNumber: number
     isGroupMatchesEnded?: boolean
@@ -17795,6 +17830,7 @@ export namespace Prisma {
   }
 
   export type TournamentGroupUpdateWithoutParticipantGroupsInput = {
+    name?: StringFieldUpdateOperationsInput | string
     groupNumber?: IntFieldUpdateOperationsInput | number
     isGroupMatchesEnded?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17805,6 +17841,7 @@ export namespace Prisma {
 
   export type TournamentGroupUncheckedUpdateWithoutParticipantGroupsInput = {
     id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
     tournamentPhaseId?: IntFieldUpdateOperationsInput | number
     groupNumber?: IntFieldUpdateOperationsInput | number
     isGroupMatchesEnded?: BoolFieldUpdateOperationsInput | boolean
@@ -18322,6 +18359,7 @@ export namespace Prisma {
   }
 
   export type TournamentGroupCreateWithoutTournamentPhaseInput = {
+    name: string
     groupNumber: number
     isGroupMatchesEnded?: boolean
     createdAt?: Date | string
@@ -18332,6 +18370,7 @@ export namespace Prisma {
 
   export type TournamentGroupUncheckedCreateWithoutTournamentPhaseInput = {
     id?: number
+    name: string
     groupNumber: number
     isGroupMatchesEnded?: boolean
     createdAt?: Date | string
@@ -18472,6 +18511,7 @@ export namespace Prisma {
     OR?: TournamentGroupScalarWhereInput[]
     NOT?: TournamentGroupScalarWhereInput | TournamentGroupScalarWhereInput[]
     id?: IntFilter<"TournamentGroup"> | number
+    name?: StringFilter<"TournamentGroup"> | string
     tournamentPhaseId?: IntFilter<"TournamentGroup"> | number
     groupNumber?: IntFilter<"TournamentGroup"> | number
     isGroupMatchesEnded?: BoolFilter<"TournamentGroup"> | boolean
@@ -19395,6 +19435,7 @@ export namespace Prisma {
 
   export type TournamentGroupCreateManyTournamentPhaseInput = {
     id?: number
+    name: string
     groupNumber: number
     isGroupMatchesEnded?: boolean
     createdAt?: Date | string
@@ -19419,6 +19460,7 @@ export namespace Prisma {
   }
 
   export type TournamentGroupUpdateWithoutTournamentPhaseInput = {
+    name?: StringFieldUpdateOperationsInput | string
     groupNumber?: IntFieldUpdateOperationsInput | number
     isGroupMatchesEnded?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19429,6 +19471,7 @@ export namespace Prisma {
 
   export type TournamentGroupUncheckedUpdateWithoutTournamentPhaseInput = {
     id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
     groupNumber?: IntFieldUpdateOperationsInput | number
     isGroupMatchesEnded?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19439,6 +19482,7 @@ export namespace Prisma {
 
   export type TournamentGroupUncheckedUpdateManyWithoutTournamentPhaseInput = {
     id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
     groupNumber?: IntFieldUpdateOperationsInput | number
     isGroupMatchesEnded?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

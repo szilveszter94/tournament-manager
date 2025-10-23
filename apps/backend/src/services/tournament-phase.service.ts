@@ -62,17 +62,18 @@ export class TournamentPhaseService {
         }
 
         const groupMap: Record<number, number> = {}; // map groupIndex -> groupId
-        for (let i = 0; i < entity.groups.length; i++) {
+        for (const [i, groupData] of entity.groups.entries()) {
           const group = await tx.tournamentGroup.create({
             data: {
-              groupNumber: i + 1,
+              name: groupData.name,
+              groupNumber: groupData.serialNumber,
               tournamentPhaseId: phase.id,
             },
           });
           groupMap[i] = group.id;
         }
 
-        if (Object.keys(groupMap).length === 0) {
+        if (!groupMap || Object.keys(groupMap).length === 0) {
           throw new BadRequestException('Failed to create tournament groups');
         }
 

@@ -84,9 +84,9 @@ export async function createTournamentPhase(
   tournamentId: number
 ): Promise<void> {
   const mappedData: TournamentPhaseDataDto = {
-    groups: Object.entries(data).map(([key, value]) => {
+    groups: Object.entries(data).map(([key, value], index) => {
       const ids = value.map((v) => v.participant?.id).filter((id): id is number => id !== undefined);
-      return { name: key, participantIds: ids };
+      return { name: key, serialNumber: index + 1, participantIds: ids };
     }),
   };
   apiClient.tournamentPhase.tournamentPhaseControllerAddPhaseToTournament(tournamentId.toString(), mappedData);

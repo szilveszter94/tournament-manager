@@ -2,6 +2,11 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateTournamentGroupDto {
   @ApiProperty({
+    type: 'string',
+    required: false,
+  })
+  name?: string;
+  @ApiProperty({
     type: 'integer',
     format: 'int32',
     required: false,

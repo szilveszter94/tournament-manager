@@ -1159,6 +1159,9 @@
             "type": "integer",
             "format": "int32"
           },
+          "name": {
+            "type": "string"
+          },
           "tournamentPhaseId": {
             "type": "integer",
             "format": "int32"
@@ -1196,6 +1199,7 @@
         },
         "required": [
           "id",
+          "name",
           "tournamentPhaseId",
           "groupNumber",
           "isGroupMatchesEnded",
@@ -1612,7 +1616,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-22T19:23:59.389Z"
+            "default": "2025-10-23T08:53:58.541Z"
           }
         },
         "required": [
@@ -1644,7 +1648,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-22T19:23:59.378Z"
+            "default": "2025-10-23T08:53:58.528Z"
           }
         }
       },
@@ -1733,7 +1737,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-22T19:23:59.695Z"
+            "default": "2025-10-23T08:53:59.027Z"
           }
         },
         "required": [
@@ -1772,7 +1776,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-22T19:23:59.702Z"
+            "default": "2025-10-23T08:53:59.036Z"
           }
         }
       },
@@ -1826,6 +1830,10 @@
             "description": "The name of the group (e.g., Group A, Group B)",
             "example": "Group A"
           },
+          "serialNumber": {
+            "type": "number",
+            "description": "The order of the group"
+          },
           "participantIds": {
             "description": "List of participants belonging to this group",
             "type": "array",
@@ -1836,6 +1844,7 @@
         },
         "required": [
           "name",
+          "serialNumber",
           "participantIds"
         ]
       },

@@ -64,7 +64,7 @@ export default function CustomButton({
         baseStyles,
         variantStyles[variant],
         sizeStyles[size],
-        disabled && "opacity-50 cursor-none",
+        disabled ? "opacity-50 cursor-auto" : "cursor-pointer",
         className
       )}>
       {icon && <span className={clsx(formattedIconSize)}>{icon}</span>}

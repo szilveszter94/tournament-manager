@@ -8,6 +8,10 @@ export type ParticipantTournamentGroup = {
      */
     name: string;
     /**
+     * The order of the group
+     */
+    serialNumber: number;
+    /**
      * List of participants belonging to this group
      */
     participantIds: Array<number>;

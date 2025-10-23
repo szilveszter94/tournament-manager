@@ -10,6 +10,7 @@ const testData: TournamentPhaseDataDto = {
   groups: [
     {
       name: 'Group-1',
+      serialNumber: 1,
       participantIds: [1, 2, 3, 4, 5],
     },
   ],
@@ -61,7 +62,7 @@ describe('TournamentPhaseService', () => {
       );
 
     const result = await service.createGroupStage(
-      { groups: [{ name: 'Group-1', participantIds: [] }] },
+      { groups: [{ name: 'Group-1', serialNumber: 1, participantIds: [] }] },
       5,
     );
 
@@ -85,24 +86,27 @@ describe('TournamentPhaseService', () => {
               create: jest.fn().mockResolvedValue({ id: 1 }),
             },
             tournamentGroup: {
-              create: jest
-                .fn()
-                .mockImplementation(
-                  ({
-                    data,
-                  }: {
-                    data: { groupNumber: number; tournamentPhaseId: number };
-                  }): TournamentGroup[] => [
-                    {
-                      id: data.groupNumber,
-                      groupNumber: data.groupNumber,
-                      tournamentPhaseId: data.tournamentPhaseId,
-                      isGroupMatchesEnded: false,
-                      createdAt: new Date(),
-                      updatedAt: new Date(),
-                    },
-                  ],
-                ),
+              create: jest.fn().mockImplementation(
+                ({
+                  data,
+                }: {
+                  data: {
+                    serialNumber: number;
+                    tournamentPhaseId: number;
+                    name: string;
+                  };
+                }): TournamentGroup[] => [
+                  {
+                    id: data.serialNumber,
+                    name: data.name,
+                    groupNumber: data.serialNumber,
+                    tournamentPhaseId: data.tournamentPhaseId,
+                    isGroupMatchesEnded: false,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                  },
+                ],
+              ),
             },
             participantGroup: { createMany: jest.fn() },
             match: { createMany: jest.fn() },

@@ -191,6 +191,7 @@ exports.Prisma.TournamentScalarFieldEnum = {
 
 exports.Prisma.TournamentGroupScalarFieldEnum = {
   id: 'id',
+  name: 'name',
   tournamentPhaseId: 'tournamentPhaseId',
   groupNumber: 'groupNumber',
   isGroupMatchesEnded: 'isGroupMatchesEnded',

@@ -7,6 +7,10 @@ export class TournamentGroupDto {
   })
   id: number;
   @ApiProperty({
+    type: 'string',
+  })
+  name: string;
+  @ApiProperty({
     type: 'integer',
     format: 'int32',
   })

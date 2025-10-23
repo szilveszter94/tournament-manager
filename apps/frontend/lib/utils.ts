@@ -70,3 +70,12 @@ export const shuffle = <T>(array: T[]): T[] => {
 const isAllowed = <T extends string>(value: unknown, allowed: readonly T[]): value is T => {
   return typeof value === "string" && (allowed as readonly string[]).includes(value);
 };
+
+export const getGroupLabel = (index: number): string => {
+  let label = "";
+  while (index >= 0) {
+    label = String.fromCharCode((index % 26) + 65) + label;
+    index = Math.floor(index / 26) - 1;
+  }
+  return label;
+};

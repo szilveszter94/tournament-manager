@@ -15,7 +15,7 @@ import { DragDropProvider } from "@dnd-kit/react";
 import { Column } from "../components/dnd/column";
 import { Item } from "../components/dnd/item";
 import TournamentParticipants from "./tournament-participants";
-import { shuffle } from "@/lib/utils";
+import { getGroupLabel, shuffle } from "@/lib/utils";
 import { createTournamentPhase } from "@/app/tournament/api";
 
 const nonPersistentGroup = "nonPersistent";
@@ -39,7 +39,8 @@ export default function TournamentDetail({
   };
 
   const onAddGroup = (): void => {
-    const groupName = `Group ${Object.keys(tournamentPersistentGroups).length + 1}`;
+    const groupNr = Object.keys(tournamentPersistentGroups).length;
+    const groupName = `Group ${getGroupLabel(groupNr)}`;
     dispatch(addGroup({ tournamentId: tournament.id, groupName: groupName, group: [] }));
   };
 
