@@ -12,6 +12,7 @@
   --color-icon: var(--icon);
   --color-disabled: var(--disabled);
   --color-gray-primary: var(--gray-primary);
+  --color-gray-secondary: var(--gray-secondary);
 
   --font-roboto: var(--font-roboto);
   --font-mono: var(--font-roboto-mono);

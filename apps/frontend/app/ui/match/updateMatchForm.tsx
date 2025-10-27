@@ -7,6 +7,7 @@ import { Match } from "@/generated/api";
 import Modal from "../components/modal/modal";
 import CustomButton from "../components/custom-button/custom-button";
 import clsx from "clsx";
+import { PencilIcon, PlusCircleIcon } from "@heroicons/react/16/solid";
 
 type Props = {
   match: Match;
@@ -21,7 +22,10 @@ export default function UpdateMatchForm({ tournamentId, match }: Props) {
   const [state, formAction] = useActionState(updateMatch, initialState);
 
   const handleSubmit = (winnerId: number | null, loserId: number | null) => {
-    if (!formRef.current) return;
+    if (!formRef.current || (match.winnerId === winnerId && match.loserId === loserId)) {
+      setOpen(false);
+      return;
+    }
 
     // Set hidden input values right before submit
     const winnerInput = formRef.current.querySelector<HTMLInputElement>('input[name="winnerId"]');
@@ -38,16 +42,16 @@ export default function UpdateMatchForm({ tournamentId, match }: Props) {
   };
 
   return (
-    <div className="flex items-center justify-between gap-3 bg-tertiary px-4 mx-2 rounded-lg">
+    <div className="flex items-center justify-between">
       {/* Match Info */}
-      <div className="flex justify-start items-center gap-2 flex-1">
+      <div className="flex justify-start bg-tertiary items-center gap-2 px-4 py-1 mr-2 rounded-lg flex-1">
         <span className="text-sm text-gray-primary w-5 text-right">#{match.serialNumber}.</span>
-
-        <div className="flex-1 flex justify-start items-center text-sm font-medium px-3 py-2 rounded-md">
+        <div className="flex-1 flex flex-wrap justify-start items-center text-sm font-medium px-3 rounded-md min-w-50">
           <span
             className={clsx(
-              "truncate max-w-[45%]",
-              match.winnerId === match.participant1Id && "font-semibold text-green-600"
+              match.winnerId === match.participant1Id && "font-semibold text-green-primary",
+              match.loserId === match.participant1Id && "font-semibold text-red-primary",
+              "truncate"
             )}>
             {match.participant1?.name ?? "Unknown"}
           </span>
@@ -56,19 +60,24 @@ export default function UpdateMatchForm({ tournamentId, match }: Props) {
 
           <span
             className={clsx(
-              "truncate max-w-[45%] text-right",
-              match.winnerId === match.participant2Id && "font-semibold text-green-600"
+              match.winnerId === match.participant2Id && "font-semibold text-green-primary",
+              match.loserId === match.participant2Id && "font-semibold text-red-primary",
+              "truncate"
             )}>
             {match.participant2?.name ?? "Unknown"}
           </span>
         </div>
-      </div>
 
-      {/* Set Result Button */}
-      <div>
-        <CustomButton variant={match.isOver ? "secondary" : "primary"} size="sm" onClick={() => setOpen(true)}>
-          {match.winnerId ? "Edit Result" : "Set Result"}
-        </CustomButton>
+        {/* Set Result Button */}
+        <div>
+          <CustomButton
+            icon={match.isOver ? <PencilIcon /> : <PlusCircleIcon />}
+            variant={match.isOver ? "secondary" : "primary"}
+            size="sm"
+            onClick={() => setOpen(true)}>
+            {match.isOver ? "Edit" : "Set"}
+          </CustomButton>
+        </div>
       </div>
 
       {/* Modal */}
@@ -88,7 +97,7 @@ export default function UpdateMatchForm({ tournamentId, match }: Props) {
             </CustomButton>
           </div>
         </Modal>
-        {state.message && <p className="text-xs text-red-500 mt-2 text-center">{state.message}</p>}
+        {state.message && <p className="text-xs text-red-primary mt-2 text-center">{state.message}</p>}
       </form>
     </div>
   );

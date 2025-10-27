@@ -5,6 +5,7 @@ import UpdateMatchForm from "./updateMatchForm";
 import { useMemo, useState } from "react";
 import { Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/16/solid";
+import clsx from "clsx";
 
 type MatchListProps = {
   tournament: Tournament;
@@ -61,61 +62,70 @@ export default function MatchList({ tournament, tournamentId }: MatchListProps) 
   return (
     <div className="overflow-x-auto">
       {tournament && (
-        <div className="space-y-8">
+        <div className="space-y-4 bg-secondary rounded-xl">
           {filteredPhases.map((phase) => (
-            <div key={phase.id}>
-              <h2 className="text-xl font-bold mb-4">Group Stage</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="w-full overflow-x-auto" key={phase.id}>
+              <div className="flex divide-x-1 divide-gray-primary gap-2">
                 {phase.groups?.map((group) => (
-                  <div key={group.id} className="p-4">
-                    <div className="mb-5">
-                      <h3 className="font-semibold text-lg mb-3">{`${group.name}`}</h3>
-                      <h3 className="text-sm text-gray-primary mb-1 mx-2">Rankings</h3>
-                      <div className="space-y-1 h-50 overflow-y-auto">
-                        {group.filteredParticipants?.map((p, index) => (
-                          <div
-                            key={p.id}
-                            className="flex justify-between bg-tertiary px-3 mx-2 py-1 rounded-md hover:bg-on-tertiary transition">
-                            <div className="flex gap-2">
-                              <span className="text-sm text-gray-primary w-5 text-right">#{index + 1}.</span>
-                              <span className="text-sm text-foreground text-right">
-                                {p.participant?.name ?? "Unknown"}
-                              </span>
-                            </div>
-                            <span className="text-gray-primary text-sm">
-                              {p?.wins}W / {p?.losses}L
-                            </span>
-                          </div>
+                  <div key={group.id} className="p-4 flex flex-col w-full">
+                    {/* Group Header */}
+                    <div className="mb-4">
+                      <h3 className="font-semibold text-lg text-center">{`${group.name}`}</h3>
+                      <h3 className="text-sm text-gray-primary mb-1">Rankings</h3>
+                      <div className="space-y-1 max-h-50 overflow-y-auto">
+                        <table className="w-full border-collapse bg-tertiary rounded-lg overflow-hidden text-sm">
+                          <thead className="bg-on-secondary text-gray-primary">
+                            <tr>
+                              <th className="px-4 py-2 text-left w-10">#</th>
+                              <th className="px-4 py-2 text-left">Player</th>
+                              <th className="px-4 py-2 text-center">Wins</th>
+                              <th className="px-4 py-2 text-center">Losses</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {group.filteredParticipants?.map((p, index) => (
+                              <tr className={clsx(index <= 1 ? "bg-primary" : "bg-tertiary")} key={p.id}>
+                                <td className="px-4 py-2 text-gray-secondary text-right">{index + 1}.</td>
+                                <td className="px-4 py-2 font-medium text-foreground">
+                                  {p.participant?.name ?? "Unknown"}
+                                </td>
+                                <td className="px-4 py-2 text-gray-secondary text-center">{p.wins}</td>
+                                <td className="px-4 py-2 text-gray-secondary text-center">{p.losses}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    {/* Matches Toggle */}
+                    <div className="flex gap-2 justify-between items-center mb-2">
+                      <h3 className="text-sm text-gray-400 mb-1">Matches</h3>
+                      <button
+                        onClick={() => toggleGroup(group.id)}
+                        className="p-2 rounded-md hover:bg-primary transition">
+                        <ChevronDownIcon
+                          className={`w-5 h-5 transform transition-transform ${expandedGroups[group.id] ? "rotate-180" : ""}`}
+                        />
+                      </button>
+                    </div>
+
+                    {/* Matches List */}
+                    <Transition
+                      as="div"
+                      show={expandedGroups[group.id] ?? false}
+                      enter="transition-all duration-500 ease-out"
+                      enterFrom="opacity-0 max-h-0"
+                      enterTo="opacity-100 max-h-screen"
+                      leave="transition-all duration-300 ease-in"
+                      leaveFrom="opacity-100 max-h-screen"
+                      leaveTo="opacity-0 max-h-0">
+                      <div className="space-y-1 max-h-60 overflow-y-auto">
+                        {group.matches?.map((match) => (
+                          <UpdateMatchForm key={match.id} match={match} tournamentId={tournamentId} />
                         ))}
                       </div>
-                    </div>
-                    <div>
-                      <div className="flex gap-2 justify-between mb-2">
-                        <h3 className="text-sm text-gray-400 mb-1 mt-2 mx-2">Matches</h3>
-                        <button
-                          onClick={() => toggleGroup(group.id)}
-                          className="p-2 rounded-md hover:bg-primary transition">
-                          <ChevronDownIcon
-                            className={`w-5 h-5 transform transition-transform ${expandedGroups[group.id] ? "rotate-180" : ""}`}
-                          />
-                        </button>
-                      </div>
-                      <Transition
-                        as="div"
-                        show={expandedGroups[group.id] ?? false}
-                        enter="transition-all duration-500 ease-out"
-                        enterFrom="opacity-0 max-h-0"
-                        enterTo="opacity-100 max-h-screen"
-                        leave="transition-all duration-300 ease-in"
-                        leaveFrom="opacity-100 max-h-screen"
-                        leaveTo="opacity-0 max-h-0">
-                        <div className="space-y-1 h-60 overflow-y-auto">
-                          {group.matches?.map((match) => (
-                            <UpdateMatchForm key={match.id} match={match} tournamentId={tournamentId} />
-                          ))}
-                        </div>
-                      </Transition>
-                    </div>
+                    </Transition>
                   </div>
                 ))}
               </div>

@@ -11,8 +11,8 @@ import {
 import { BaseResponse } from '../../custom-models/api/base-response';
 import { FindTournamentQueryDto } from '../../custom-models/api/tournament';
 import { validateTournamentNameLength } from '../utils/service.helper';
-import { TournamentRepository } from 'src/repository/tournament.repository';
-import { TournamentLoader } from 'src/loader/tournament.loader';
+import { TournamentRepository } from '../repository/tournament.repository';
+import { TournamentLoader } from '../loader/tournament.loader';
 
 @Injectable()
 export class TournamentService {
