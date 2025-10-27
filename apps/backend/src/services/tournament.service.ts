@@ -11,92 +11,38 @@ import {
 import { BaseResponse } from '../../custom-models/api/base-response';
 import { FindTournamentQueryDto } from '../../custom-models/api/tournament';
 import { validateTournamentNameLength } from '../utils/service.helper';
+import { TournamentRepository } from 'src/repository/tournament.repository';
+import { TournamentLoader } from 'src/loader/tournament.loader';
 
 @Injectable()
 export class TournamentService {
   private readonly logger = new Logger(TournamentService.name);
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly repository: TournamentRepository,
+    private readonly loader: TournamentLoader,
+  ) {}
 
   async find(id: number): Promise<TournamentResponse> {
     try {
-      const tournament = await this.prisma.tournament.findUnique({
-        where: { id },
-      });
+      const tournament = await this.repository.findBasic(id);
 
       if (!tournament) {
         this.logger.warn(`Tournament with ID ${id} not found`);
-        return { ok: false, error: `Tournament with ID ${id} not found` };
+        return { ok: false, error: `Tournament ${id} not found` };
       }
 
       if (
         tournament.phase === PhaseType.GroupStage &&
         tournament.status === TournamentStatus.Started
       ) {
-        const detailedTournament = await this.prisma.tournament.findUnique({
-          where: { id },
-          include: {
-            phases: {
-              where: { phaseType: 'GroupStage' },
-              include: {
-                groups: {
-                  include: {
-                    participantGroups: {
-                      include: {
-                        participant: true,
-                      },
-                    },
-                  },
-                },
-                matches: {
-                  include: {
-                    participant1: true,
-                    participant2: true,
-                  },
-                },
-              },
-            },
-          },
-        });
-
-        if (!detailedTournament) {
-          this.logger.warn(`Tournament with ID ${id} not found`);
-          return { ok: false, error: `Tournament with ID ${id} not found` };
-        }
-
-        if (!detailedTournament.phases.length) {
-          return {
-            ok: false,
-            error: `Tournament ${id} has no group stage phase`,
-          };
-        }
-
-        return { ok: true, data: detailedTournament };
+        return this.loader.loadGroupStageStarted(id);
       }
 
-      const tournamentWithParticipants =
-        await this.prisma.tournament.findUnique({
-          where: { id },
-          include: {
-            participants: {
-              include: {
-                participant: true,
-              },
-            },
-          },
-        });
-
-      if (!tournamentWithParticipants) {
-        this.logger.warn(`Tournament with ID ${id} not found`);
-        return { ok: false, error: `Tournament with ID ${id} not found` };
-      }
-
-      return { ok: true, data: tournamentWithParticipants };
+      return this.loader.loadDefault(id);
     } catch (e) {
-      this.logger.error(
-        `Database error while finding tournament with ID ${id}`,
-        e.stack,
-      );
+      this.logger.error(`Database error while finding tournament ${id}`, e);
       return { ok: false, error: 'Database error. Failed to get tournament' };
     }
   }

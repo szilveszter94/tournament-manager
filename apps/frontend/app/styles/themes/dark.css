@@ -6,11 +6,13 @@ html.dark {
   --tertiary: #182327;
   --icon: #2d96b3;
   --disabled: #515152;
+  --gray-primary: #7d7f81;
 
   --on-background: #000000;
   --on-foreground: #95caff;
   --on-primary: #0d6f92;
   --on-secondary: rgb(15, 43, 49);
+  --on-tertiary: #23292b;
 
   --primary-text-color: #ffffff;
   --secondary-text-color: #000000;

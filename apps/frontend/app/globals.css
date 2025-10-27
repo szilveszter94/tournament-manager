@@ -11,6 +11,7 @@
   --color-tertiary: var(--tertiary);
   --color-icon: var(--icon);
   --color-disabled: var(--disabled);
+  --color-gray-primary: var(--gray-primary);
 
   --font-roboto: var(--font-roboto);
   --font-mono: var(--font-roboto-mono);
@@ -19,6 +20,7 @@
   --color-on-foreground: var(--on-foreground);
   --color-on-primary: var(--on-primary);
   --color-on-secondary: var(--on-secondary);
+  --color-on-tertiary: var(--on-tertiary);
 
   --color-primary-text-color: var(--primary-text-color);
   --color-secondary-text-color: var(--secondary-text-color);

@@ -2,7 +2,7 @@
 
 import { ParticipantTournament, Tournament } from "@/generated/api";
 import React, { useEffect } from "react";
-import CreateParticipantForm from "../participant/create-form";
+import CreateParticipantForm from "../participant/create-participant-form";
 import CustomButton from "../components/custom-button/custom-button";
 import { PlusCircleIcon, SparklesIcon, TrashIcon } from "@heroicons/react/16/solid";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";

@@ -133,8 +133,8 @@ async function main() {
       data: teamParticipants.map((p) => ({
         participantId: p.id,
         tournamentId: t.id,
-        wins: p.wins,
-        losses: p.losses,
+        wins: 0,
+        losses: 0,
       })),
     });
   }
@@ -148,8 +148,8 @@ async function main() {
       data: individualParticipants.map((p) => ({
         participantId: p.id,
         tournamentId: t.id,
-        wins: p.wins,
-        losses: p.losses,
+        wins: 0,
+        losses: 0,
       })),
     });
   }

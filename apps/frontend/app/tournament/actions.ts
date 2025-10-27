@@ -51,10 +51,20 @@ export async function createTournament(_prevState: State, formData: FormData): P
 export async function updateGroupStageMatch(
   matchId: number,
   tournamentId: number,
-  winnerId: number | null,
-  loserId: number | null
+  _prevState: State,
+  formData: FormData
 ): Promise<State> {
+  const winnerId = Number(formData.get("winnerId"));
+  const loserId = Number(formData.get("loserId"));
+  
   try {
+    if (winnerId <= 0 || loserId <= 0) {
+      return {
+        message: "Winner not selected.",
+        errors: {},
+      };
+    }
+
     const entity: UpdateMatchWinnerDto = {
       winnerId: winnerId,
       loserId: loserId,

@@ -6,11 +6,13 @@ html.dark-purple {
   --tertiary: #26253d;
   --icon: #5147ea;
   --disabled: #515152;
+  --gray-primary: #7d7f81;
 
   --on-background: #0c0c0c;
   --on-foreground: #d4a7ff;
   --on-primary: #7972fd;
   --on-secondary: #343466;
+  --on-tertiary: #2c2b36;
 
   --primary-text-color: #ffffff;
   --secondary-text-color: #111111;

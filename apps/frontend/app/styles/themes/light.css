@@ -6,11 +6,13 @@ html.light {
   --tertiary: #e1ece6;
   --icon: #000000;
   --disabled: #515152;
+  --gray-primary: #7d7f81;
 
   --on-background: #acffc9;
   --on-foreground: rgb(10, 92, 107);
   --on-primary: #03ffea;
   --on-secondary: #abf4ff;
+  --on-tertiary: #b2c5ba;
 
   --secondary-text-color: #ffffff;
   --primary-text-color: #141414;
