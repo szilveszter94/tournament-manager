@@ -3,6 +3,9 @@ import { PrismaService } from './prisma.service';
 import { BaseResponse } from '../../custom-models/api/base-response';
 import { UpdateMatchWinnerDto } from '../../custom-models/api/match';
 import { Prisma } from '../../generated/client';
+import { Match } from '../../generated/models/match.entity';
+import { Participant } from '../../generated/models/participant.entity';
+import { handleEloChange } from '../utils/service.helper';
 
 @Injectable()
 export class MatchService {
@@ -53,21 +56,60 @@ export class MatchService {
         }
       }
 
-      const { winner, loser } = this.getStatChange(
-        Boolean(match.isOver && match.winnerId && match.loserId),
+      const [winner, loser] = await Promise.all([
+        this.prisma.participant.findUnique({ where: { id: entity.winnerId } }),
+        this.prisma.participant.findUnique({ where: { id: entity.loserId } }),
+      ]);
+
+      if (!winner || !loser) {
+        throw new Error(`One or both participants not found`);
+      }
+
+      const isUpdate = Boolean(match.isOver && match.winnerId && match.loserId);
+      const { winnerStats, loserStats } = this.getStatChange(isUpdate);
+
+      const isEloUpdate = Boolean(
+        isUpdate &&
+          match.eloWon &&
+          match.eloLost &&
+          match.winnerElo &&
+          match.loserElo,
       );
+      const { winnerElo, loserElo } = this.getParticipantElos(
+        match,
+        isEloUpdate,
+        winner,
+        loser,
+      );
+      const { winnerEloChange, loserEloChange, eloWon, eloLost } =
+        handleEloChange(winner, loser, match, isEloUpdate);
+
       await this.prisma.$transaction(async (tx) => {
         await Promise.all([
           this.updateParticipantStats(
             tx,
             entity.winnerId,
             tournamentId,
-            winner,
+            winnerStats,
+            winnerEloChange,
           ),
-          this.updateParticipantStats(tx, entity.loserId, tournamentId, loser),
+          this.updateParticipantStats(
+            tx,
+            entity.loserId,
+            tournamentId,
+            loserStats,
+            -loserEloChange,
+          ),
           tx.match.update({
             where: { id: matchId },
-            data: { ...entity, isOver: true },
+            data: {
+              ...entity,
+              isOver: true,
+              winnerElo,
+              loserElo,
+              eloWon,
+              eloLost,
+            },
           }),
         ]);
       });
@@ -89,6 +131,7 @@ export class MatchService {
     participantId: number | null,
     tournamentId: number,
     stats: { wins: number; losses: number },
+    eloChange: number,
   ) {
     // 1️⃣ Update participant stats
     if (participantId) {
@@ -112,6 +155,7 @@ export class MatchService {
             wins: { increment: stats.wins },
             losses: { increment: stats.losses },
             updatedAt: new Date(),
+            elo: { increment: eloChange },
           },
         }),
         tx.participantTournament.update({
@@ -127,13 +171,31 @@ export class MatchService {
   }
 
   private getStatChange = (
-    isReversal: boolean,
+    isUpdate: boolean,
   ): {
-    winner: { wins: number; losses: number };
-    loser: { wins: number; losses: number };
+    winnerStats: { wins: number; losses: number };
+    loserStats: { wins: number; losses: number };
   } => {
-    return isReversal
-      ? { winner: { wins: 1, losses: -1 }, loser: { wins: -1, losses: 1 } }
-      : { winner: { wins: 1, losses: 0 }, loser: { wins: 0, losses: 1 } };
+    return isUpdate
+      ? {
+          winnerStats: { wins: 1, losses: -1 },
+          loserStats: { wins: -1, losses: 1 },
+        }
+      : {
+          winnerStats: { wins: 1, losses: 0 },
+          loserStats: { wins: 0, losses: 1 },
+        };
   };
+
+  private getParticipantElos(
+    match: Match,
+    isEloUpdate: boolean,
+    winner: Participant,
+    loser: Participant,
+  ): { winnerElo: number; loserElo: number } {
+    const winnerElo = Number(isEloUpdate ? match.loserElo : winner.elo);
+    const loserElo = Number(isEloUpdate ? match.winnerElo : loser.elo);
+
+    return { winnerElo, loserElo };
+  }
 }

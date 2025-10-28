@@ -3111,6 +3111,10 @@ export namespace Prisma {
     nextMatchId: number | null
     round: number | null
     serialNumber: number | null
+    winnerElo: number | null
+    loserElo: number | null
+    eloWon: number | null
+    eloLost: number | null
   }
 
   export type MatchSumAggregateOutputType = {
@@ -3125,6 +3129,10 @@ export namespace Prisma {
     nextMatchId: number | null
     round: number | null
     serialNumber: number | null
+    winnerElo: number | null
+    loserElo: number | null
+    eloWon: number | null
+    eloLost: number | null
   }
 
   export type MatchMinAggregateOutputType = {
@@ -3139,6 +3147,10 @@ export namespace Prisma {
     nextMatchId: number | null
     round: number | null
     serialNumber: number | null
+    winnerElo: number | null
+    loserElo: number | null
+    eloWon: number | null
+    eloLost: number | null
     isOver: boolean | null
     matchType: $Enums.MatchType | null
     createdAt: Date | null
@@ -3157,6 +3169,10 @@ export namespace Prisma {
     nextMatchId: number | null
     round: number | null
     serialNumber: number | null
+    winnerElo: number | null
+    loserElo: number | null
+    eloWon: number | null
+    eloLost: number | null
     isOver: boolean | null
     matchType: $Enums.MatchType | null
     createdAt: Date | null
@@ -3175,6 +3191,10 @@ export namespace Prisma {
     nextMatchId: number
     round: number
     serialNumber: number
+    winnerElo: number
+    loserElo: number
+    eloWon: number
+    eloLost: number
     isOver: number
     matchType: number
     createdAt: number
@@ -3195,6 +3215,10 @@ export namespace Prisma {
     nextMatchId?: true
     round?: true
     serialNumber?: true
+    winnerElo?: true
+    loserElo?: true
+    eloWon?: true
+    eloLost?: true
   }
 
   export type MatchSumAggregateInputType = {
@@ -3209,6 +3233,10 @@ export namespace Prisma {
     nextMatchId?: true
     round?: true
     serialNumber?: true
+    winnerElo?: true
+    loserElo?: true
+    eloWon?: true
+    eloLost?: true
   }
 
   export type MatchMinAggregateInputType = {
@@ -3223,6 +3251,10 @@ export namespace Prisma {
     nextMatchId?: true
     round?: true
     serialNumber?: true
+    winnerElo?: true
+    loserElo?: true
+    eloWon?: true
+    eloLost?: true
     isOver?: true
     matchType?: true
     createdAt?: true
@@ -3241,6 +3273,10 @@ export namespace Prisma {
     nextMatchId?: true
     round?: true
     serialNumber?: true
+    winnerElo?: true
+    loserElo?: true
+    eloWon?: true
+    eloLost?: true
     isOver?: true
     matchType?: true
     createdAt?: true
@@ -3259,6 +3295,10 @@ export namespace Prisma {
     nextMatchId?: true
     round?: true
     serialNumber?: true
+    winnerElo?: true
+    loserElo?: true
+    eloWon?: true
+    eloLost?: true
     isOver?: true
     matchType?: true
     createdAt?: true
@@ -3364,6 +3404,10 @@ export namespace Prisma {
     nextMatchId: number | null
     round: number | null
     serialNumber: number | null
+    winnerElo: number | null
+    loserElo: number | null
+    eloWon: number | null
+    eloLost: number | null
     isOver: boolean
     matchType: $Enums.MatchType
     createdAt: Date
@@ -3401,6 +3445,10 @@ export namespace Prisma {
     nextMatchId?: boolean
     round?: boolean
     serialNumber?: boolean
+    winnerElo?: boolean
+    loserElo?: boolean
+    eloWon?: boolean
+    eloLost?: boolean
     isOver?: boolean
     matchType?: boolean
     createdAt?: boolean
@@ -3429,6 +3477,10 @@ export namespace Prisma {
     nextMatchId?: boolean
     round?: boolean
     serialNumber?: boolean
+    winnerElo?: boolean
+    loserElo?: boolean
+    eloWon?: boolean
+    eloLost?: boolean
     isOver?: boolean
     matchType?: boolean
     createdAt?: boolean
@@ -3455,6 +3507,10 @@ export namespace Prisma {
     nextMatchId?: boolean
     round?: boolean
     serialNumber?: boolean
+    winnerElo?: boolean
+    loserElo?: boolean
+    eloWon?: boolean
+    eloLost?: boolean
     isOver?: boolean
     matchType?: boolean
     createdAt?: boolean
@@ -3481,13 +3537,17 @@ export namespace Prisma {
     nextMatchId?: boolean
     round?: boolean
     serialNumber?: boolean
+    winnerElo?: boolean
+    loserElo?: boolean
+    eloWon?: boolean
+    eloLost?: boolean
     isOver?: boolean
     matchType?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type MatchOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tournamentPhaseId" | "eliminationId" | "tournamentGroupId" | "participant1Id" | "participant2Id" | "winnerId" | "loserId" | "nextMatchId" | "round" | "serialNumber" | "isOver" | "matchType" | "createdAt" | "updatedAt", ExtArgs["result"]["match"]>
+  export type MatchOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tournamentPhaseId" | "eliminationId" | "tournamentGroupId" | "participant1Id" | "participant2Id" | "winnerId" | "loserId" | "nextMatchId" | "round" | "serialNumber" | "winnerElo" | "loserElo" | "eloWon" | "eloLost" | "isOver" | "matchType" | "createdAt" | "updatedAt", ExtArgs["result"]["match"]>
   export type MatchInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
     elimination?: boolean | Match$eliminationArgs<ExtArgs>
@@ -3546,6 +3606,10 @@ export namespace Prisma {
       nextMatchId: number | null
       round: number | null
       serialNumber: number | null
+      winnerElo: number | null
+      loserElo: number | null
+      eloWon: number | null
+      eloLost: number | null
       isOver: boolean
       matchType: $Enums.MatchType
       createdAt: Date
@@ -3993,6 +4057,10 @@ export namespace Prisma {
     readonly nextMatchId: FieldRef<"Match", 'Int'>
     readonly round: FieldRef<"Match", 'Int'>
     readonly serialNumber: FieldRef<"Match", 'Int'>
+    readonly winnerElo: FieldRef<"Match", 'Int'>
+    readonly loserElo: FieldRef<"Match", 'Int'>
+    readonly eloWon: FieldRef<"Match", 'Int'>
+    readonly eloLost: FieldRef<"Match", 'Int'>
     readonly isOver: FieldRef<"Match", 'Boolean'>
     readonly matchType: FieldRef<"Match", 'MatchType'>
     readonly createdAt: FieldRef<"Match", 'DateTime'>
@@ -12907,6 +12975,10 @@ export namespace Prisma {
     nextMatchId: 'nextMatchId',
     round: 'round',
     serialNumber: 'serialNumber',
+    winnerElo: 'winnerElo',
+    loserElo: 'loserElo',
+    eloWon: 'eloWon',
+    eloLost: 'eloLost',
     isOver: 'isOver',
     matchType: 'matchType',
     createdAt: 'createdAt',
@@ -13256,6 +13328,10 @@ export namespace Prisma {
     nextMatchId?: IntNullableFilter<"Match"> | number | null
     round?: IntNullableFilter<"Match"> | number | null
     serialNumber?: IntNullableFilter<"Match"> | number | null
+    winnerElo?: IntNullableFilter<"Match"> | number | null
+    loserElo?: IntNullableFilter<"Match"> | number | null
+    eloWon?: IntNullableFilter<"Match"> | number | null
+    eloLost?: IntNullableFilter<"Match"> | number | null
     isOver?: BoolFilter<"Match"> | boolean
     matchType?: EnumMatchTypeFilter<"Match"> | $Enums.MatchType
     createdAt?: DateTimeFilter<"Match"> | Date | string
@@ -13283,6 +13359,10 @@ export namespace Prisma {
     nextMatchId?: SortOrderInput | SortOrder
     round?: SortOrderInput | SortOrder
     serialNumber?: SortOrderInput | SortOrder
+    winnerElo?: SortOrderInput | SortOrder
+    loserElo?: SortOrderInput | SortOrder
+    eloWon?: SortOrderInput | SortOrder
+    eloLost?: SortOrderInput | SortOrder
     isOver?: SortOrder
     matchType?: SortOrder
     createdAt?: SortOrder
@@ -13314,6 +13394,10 @@ export namespace Prisma {
     nextMatchId?: IntNullableFilter<"Match"> | number | null
     round?: IntNullableFilter<"Match"> | number | null
     serialNumber?: IntNullableFilter<"Match"> | number | null
+    winnerElo?: IntNullableFilter<"Match"> | number | null
+    loserElo?: IntNullableFilter<"Match"> | number | null
+    eloWon?: IntNullableFilter<"Match"> | number | null
+    eloLost?: IntNullableFilter<"Match"> | number | null
     isOver?: BoolFilter<"Match"> | boolean
     matchType?: EnumMatchTypeFilter<"Match"> | $Enums.MatchType
     createdAt?: DateTimeFilter<"Match"> | Date | string
@@ -13341,6 +13425,10 @@ export namespace Prisma {
     nextMatchId?: SortOrderInput | SortOrder
     round?: SortOrderInput | SortOrder
     serialNumber?: SortOrderInput | SortOrder
+    winnerElo?: SortOrderInput | SortOrder
+    loserElo?: SortOrderInput | SortOrder
+    eloWon?: SortOrderInput | SortOrder
+    eloLost?: SortOrderInput | SortOrder
     isOver?: SortOrder
     matchType?: SortOrder
     createdAt?: SortOrder
@@ -13367,6 +13455,10 @@ export namespace Prisma {
     nextMatchId?: IntNullableWithAggregatesFilter<"Match"> | number | null
     round?: IntNullableWithAggregatesFilter<"Match"> | number | null
     serialNumber?: IntNullableWithAggregatesFilter<"Match"> | number | null
+    winnerElo?: IntNullableWithAggregatesFilter<"Match"> | number | null
+    loserElo?: IntNullableWithAggregatesFilter<"Match"> | number | null
+    eloWon?: IntNullableWithAggregatesFilter<"Match"> | number | null
+    eloLost?: IntNullableWithAggregatesFilter<"Match"> | number | null
     isOver?: BoolWithAggregatesFilter<"Match"> | boolean
     matchType?: EnumMatchTypeWithAggregatesFilter<"Match"> | $Enums.MatchType
     createdAt?: DateTimeWithAggregatesFilter<"Match"> | Date | string
@@ -13962,6 +14054,10 @@ export namespace Prisma {
   export type MatchCreateInput = {
     round?: number | null
     serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
     isOver?: boolean
     matchType: $Enums.MatchType
     createdAt?: Date | string
@@ -13989,6 +14085,10 @@ export namespace Prisma {
     nextMatchId?: number | null
     round?: number | null
     serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
     isOver?: boolean
     matchType: $Enums.MatchType
     createdAt?: Date | string
@@ -13999,6 +14099,10 @@ export namespace Prisma {
   export type MatchUpdateInput = {
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
     isOver?: BoolFieldUpdateOperationsInput | boolean
     matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14026,6 +14130,10 @@ export namespace Prisma {
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
     isOver?: BoolFieldUpdateOperationsInput | boolean
     matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14045,6 +14153,10 @@ export namespace Prisma {
     nextMatchId?: number | null
     round?: number | null
     serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
     isOver?: boolean
     matchType: $Enums.MatchType
     createdAt?: Date | string
@@ -14054,6 +14166,10 @@ export namespace Prisma {
   export type MatchUpdateManyMutationInput = {
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
     isOver?: BoolFieldUpdateOperationsInput | boolean
     matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14072,6 +14188,10 @@ export namespace Prisma {
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
     isOver?: BoolFieldUpdateOperationsInput | boolean
     matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14791,6 +14911,10 @@ export namespace Prisma {
     nextMatchId?: SortOrder
     round?: SortOrder
     serialNumber?: SortOrder
+    winnerElo?: SortOrder
+    loserElo?: SortOrder
+    eloWon?: SortOrder
+    eloLost?: SortOrder
     isOver?: SortOrder
     matchType?: SortOrder
     createdAt?: SortOrder
@@ -14809,6 +14933,10 @@ export namespace Prisma {
     nextMatchId?: SortOrder
     round?: SortOrder
     serialNumber?: SortOrder
+    winnerElo?: SortOrder
+    loserElo?: SortOrder
+    eloWon?: SortOrder
+    eloLost?: SortOrder
   }
 
   export type MatchMaxOrderByAggregateInput = {
@@ -14823,6 +14951,10 @@ export namespace Prisma {
     nextMatchId?: SortOrder
     round?: SortOrder
     serialNumber?: SortOrder
+    winnerElo?: SortOrder
+    loserElo?: SortOrder
+    eloWon?: SortOrder
+    eloLost?: SortOrder
     isOver?: SortOrder
     matchType?: SortOrder
     createdAt?: SortOrder
@@ -14841,6 +14973,10 @@ export namespace Prisma {
     nextMatchId?: SortOrder
     round?: SortOrder
     serialNumber?: SortOrder
+    winnerElo?: SortOrder
+    loserElo?: SortOrder
+    eloWon?: SortOrder
+    eloLost?: SortOrder
     isOver?: SortOrder
     matchType?: SortOrder
     createdAt?: SortOrder
@@ -14859,6 +14995,10 @@ export namespace Prisma {
     nextMatchId?: SortOrder
     round?: SortOrder
     serialNumber?: SortOrder
+    winnerElo?: SortOrder
+    loserElo?: SortOrder
+    eloWon?: SortOrder
+    eloLost?: SortOrder
   }
 
   export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -16656,6 +16796,10 @@ export namespace Prisma {
   export type MatchCreateWithoutEliminationInput = {
     round?: number | null
     serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
     isOver?: boolean
     matchType: $Enums.MatchType
     createdAt?: Date | string
@@ -16681,6 +16825,10 @@ export namespace Prisma {
     nextMatchId?: number | null
     round?: number | null
     serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
     isOver?: boolean
     matchType: $Enums.MatchType
     createdAt?: Date | string
@@ -16759,6 +16907,10 @@ export namespace Prisma {
     nextMatchId?: IntNullableFilter<"Match"> | number | null
     round?: IntNullableFilter<"Match"> | number | null
     serialNumber?: IntNullableFilter<"Match"> | number | null
+    winnerElo?: IntNullableFilter<"Match"> | number | null
+    loserElo?: IntNullableFilter<"Match"> | number | null
+    eloWon?: IntNullableFilter<"Match"> | number | null
+    eloLost?: IntNullableFilter<"Match"> | number | null
     isOver?: BoolFilter<"Match"> | boolean
     matchType?: EnumMatchTypeFilter<"Match"> | $Enums.MatchType
     createdAt?: DateTimeFilter<"Match"> | Date | string
@@ -16994,6 +17146,10 @@ export namespace Prisma {
   export type MatchCreateWithoutPrevMatchesInput = {
     round?: number | null
     serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
     isOver?: boolean
     matchType: $Enums.MatchType
     createdAt?: Date | string
@@ -17020,6 +17176,10 @@ export namespace Prisma {
     nextMatchId?: number | null
     round?: number | null
     serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
     isOver?: boolean
     matchType: $Enums.MatchType
     createdAt?: Date | string
@@ -17034,6 +17194,10 @@ export namespace Prisma {
   export type MatchCreateWithoutNextMatchInput = {
     round?: number | null
     serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
     isOver?: boolean
     matchType: $Enums.MatchType
     createdAt?: Date | string
@@ -17059,6 +17223,10 @@ export namespace Prisma {
     loserId?: number | null
     round?: number | null
     serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
     isOver?: boolean
     matchType: $Enums.MatchType
     createdAt?: Date | string
@@ -17358,6 +17526,10 @@ export namespace Prisma {
   export type MatchUpdateWithoutPrevMatchesInput = {
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
     isOver?: BoolFieldUpdateOperationsInput | boolean
     matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17384,6 +17556,10 @@ export namespace Prisma {
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
     isOver?: BoolFieldUpdateOperationsInput | boolean
     matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17465,6 +17641,10 @@ export namespace Prisma {
   export type MatchCreateWithoutParticipant1Input = {
     round?: number | null
     serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
     isOver?: boolean
     matchType: $Enums.MatchType
     createdAt?: Date | string
@@ -17490,6 +17670,10 @@ export namespace Prisma {
     nextMatchId?: number | null
     round?: number | null
     serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
     isOver?: boolean
     matchType: $Enums.MatchType
     createdAt?: Date | string
@@ -17510,6 +17694,10 @@ export namespace Prisma {
   export type MatchCreateWithoutParticipant2Input = {
     round?: number | null
     serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
     isOver?: boolean
     matchType: $Enums.MatchType
     createdAt?: Date | string
@@ -17535,6 +17723,10 @@ export namespace Prisma {
     nextMatchId?: number | null
     round?: number | null
     serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
     isOver?: boolean
     matchType: $Enums.MatchType
     createdAt?: Date | string
@@ -17555,6 +17747,10 @@ export namespace Prisma {
   export type MatchCreateWithoutWinnerInput = {
     round?: number | null
     serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
     isOver?: boolean
     matchType: $Enums.MatchType
     createdAt?: Date | string
@@ -17580,6 +17776,10 @@ export namespace Prisma {
     nextMatchId?: number | null
     round?: number | null
     serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
     isOver?: boolean
     matchType: $Enums.MatchType
     createdAt?: Date | string
@@ -17600,6 +17800,10 @@ export namespace Prisma {
   export type MatchCreateWithoutLoserInput = {
     round?: number | null
     serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
     isOver?: boolean
     matchType: $Enums.MatchType
     createdAt?: Date | string
@@ -17625,6 +17829,10 @@ export namespace Prisma {
     nextMatchId?: number | null
     round?: number | null
     serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
     isOver?: boolean
     matchType: $Enums.MatchType
     createdAt?: Date | string
@@ -18298,6 +18506,10 @@ export namespace Prisma {
   export type MatchCreateWithoutGroupInput = {
     round?: number | null
     serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
     isOver?: boolean
     matchType: $Enums.MatchType
     createdAt?: Date | string
@@ -18323,6 +18535,10 @@ export namespace Prisma {
     nextMatchId?: number | null
     round?: number | null
     serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
     isOver?: boolean
     matchType: $Enums.MatchType
     createdAt?: Date | string
@@ -18460,6 +18676,10 @@ export namespace Prisma {
   export type MatchCreateWithoutTournamentPhaseInput = {
     round?: number | null
     serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
     isOver?: boolean
     matchType: $Enums.MatchType
     createdAt?: Date | string
@@ -18485,6 +18705,10 @@ export namespace Prisma {
     nextMatchId?: number | null
     round?: number | null
     serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
     isOver?: boolean
     matchType: $Enums.MatchType
     createdAt?: Date | string
@@ -18794,6 +19018,10 @@ export namespace Prisma {
     nextMatchId?: number | null
     round?: number | null
     serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
     isOver?: boolean
     matchType: $Enums.MatchType
     createdAt?: Date | string
@@ -18803,6 +19031,10 @@ export namespace Prisma {
   export type MatchUpdateWithoutEliminationInput = {
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
     isOver?: BoolFieldUpdateOperationsInput | boolean
     matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18828,6 +19060,10 @@ export namespace Prisma {
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
     isOver?: BoolFieldUpdateOperationsInput | boolean
     matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18846,6 +19082,10 @@ export namespace Prisma {
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
     isOver?: BoolFieldUpdateOperationsInput | boolean
     matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18863,6 +19103,10 @@ export namespace Prisma {
     loserId?: number | null
     round?: number | null
     serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
     isOver?: boolean
     matchType: $Enums.MatchType
     createdAt?: Date | string
@@ -18872,6 +19116,10 @@ export namespace Prisma {
   export type MatchUpdateWithoutNextMatchInput = {
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
     isOver?: BoolFieldUpdateOperationsInput | boolean
     matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18897,6 +19145,10 @@ export namespace Prisma {
     loserId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
     isOver?: BoolFieldUpdateOperationsInput | boolean
     matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18915,6 +19167,10 @@ export namespace Prisma {
     loserId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
     isOver?: BoolFieldUpdateOperationsInput | boolean
     matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18951,6 +19207,10 @@ export namespace Prisma {
     nextMatchId?: number | null
     round?: number | null
     serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
     isOver?: boolean
     matchType: $Enums.MatchType
     createdAt?: Date | string
@@ -18968,6 +19228,10 @@ export namespace Prisma {
     nextMatchId?: number | null
     round?: number | null
     serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
     isOver?: boolean
     matchType: $Enums.MatchType
     createdAt?: Date | string
@@ -18985,6 +19249,10 @@ export namespace Prisma {
     nextMatchId?: number | null
     round?: number | null
     serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
     isOver?: boolean
     matchType: $Enums.MatchType
     createdAt?: Date | string
@@ -19002,6 +19270,10 @@ export namespace Prisma {
     nextMatchId?: number | null
     round?: number | null
     serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
     isOver?: boolean
     matchType: $Enums.MatchType
     createdAt?: Date | string
@@ -19074,6 +19346,10 @@ export namespace Prisma {
   export type MatchUpdateWithoutParticipant1Input = {
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
     isOver?: BoolFieldUpdateOperationsInput | boolean
     matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19099,6 +19375,10 @@ export namespace Prisma {
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
     isOver?: BoolFieldUpdateOperationsInput | boolean
     matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19117,6 +19397,10 @@ export namespace Prisma {
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
     isOver?: BoolFieldUpdateOperationsInput | boolean
     matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19126,6 +19410,10 @@ export namespace Prisma {
   export type MatchUpdateWithoutParticipant2Input = {
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
     isOver?: BoolFieldUpdateOperationsInput | boolean
     matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19151,6 +19439,10 @@ export namespace Prisma {
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
     isOver?: BoolFieldUpdateOperationsInput | boolean
     matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19169,6 +19461,10 @@ export namespace Prisma {
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
     isOver?: BoolFieldUpdateOperationsInput | boolean
     matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19178,6 +19474,10 @@ export namespace Prisma {
   export type MatchUpdateWithoutWinnerInput = {
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
     isOver?: BoolFieldUpdateOperationsInput | boolean
     matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19203,6 +19503,10 @@ export namespace Prisma {
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
     isOver?: BoolFieldUpdateOperationsInput | boolean
     matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19221,6 +19525,10 @@ export namespace Prisma {
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
     isOver?: BoolFieldUpdateOperationsInput | boolean
     matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19230,6 +19538,10 @@ export namespace Prisma {
   export type MatchUpdateWithoutLoserInput = {
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
     isOver?: BoolFieldUpdateOperationsInput | boolean
     matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19255,6 +19567,10 @@ export namespace Prisma {
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
     isOver?: BoolFieldUpdateOperationsInput | boolean
     matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19273,6 +19589,10 @@ export namespace Prisma {
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
     isOver?: BoolFieldUpdateOperationsInput | boolean
     matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19422,6 +19742,10 @@ export namespace Prisma {
     nextMatchId?: number | null
     round?: number | null
     serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
     isOver?: boolean
     matchType: $Enums.MatchType
     createdAt?: Date | string
@@ -19460,6 +19784,10 @@ export namespace Prisma {
   export type MatchUpdateWithoutGroupInput = {
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
     isOver?: BoolFieldUpdateOperationsInput | boolean
     matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19485,6 +19813,10 @@ export namespace Prisma {
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
     isOver?: BoolFieldUpdateOperationsInput | boolean
     matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19503,6 +19835,10 @@ export namespace Prisma {
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
     isOver?: BoolFieldUpdateOperationsInput | boolean
     matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19529,6 +19865,10 @@ export namespace Prisma {
     nextMatchId?: number | null
     round?: number | null
     serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
     isOver?: boolean
     matchType: $Enums.MatchType
     createdAt?: Date | string
@@ -19568,6 +19908,10 @@ export namespace Prisma {
   export type MatchUpdateWithoutTournamentPhaseInput = {
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
     isOver?: BoolFieldUpdateOperationsInput | boolean
     matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19593,6 +19937,10 @@ export namespace Prisma {
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
     isOver?: BoolFieldUpdateOperationsInput | boolean
     matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19611,6 +19959,10 @@ export namespace Prisma {
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
     round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
     isOver?: BoolFieldUpdateOperationsInput | boolean
     matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

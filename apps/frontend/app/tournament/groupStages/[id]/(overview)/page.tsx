@@ -1,5 +1,5 @@
 import { fetchTournamentById } from "@/app/tournament/api";
-import MatchList from "@/app/ui/match/matchList";
+import MatchList from "@/app/ui/tournament/groupStages/tournamentGroups";
 import { notFound } from "next/navigation";
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {

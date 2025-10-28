@@ -19,6 +19,10 @@ export type Match = {
     nextMatchId: number | null;
     round: number | null;
     serialNumber: number | null;
+    winnerElo: number | null;
+    loserElo: number | null;
+    eloWon: number | null;
+    eloLost: number | null;
     isOver: boolean;
     matchType: MatchType;
     createdAt: string;

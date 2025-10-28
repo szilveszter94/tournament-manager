@@ -2,7 +2,7 @@ import TournamentDetail from "@/app/ui/tournament/tournament-detail";
 import { fetchTournamentById } from "../../api";
 import { notFound } from "next/navigation";
 import { PhaseType, TournamentStatus } from "@/generated/api";
-import MatchList from "@/app/ui/match/matchList";
+import MatchList from "@/app/ui/tournament/groupStages/tournamentGroups";
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;

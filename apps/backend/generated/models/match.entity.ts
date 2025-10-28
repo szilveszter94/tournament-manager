@@ -71,6 +71,30 @@ export class Match {
   })
   serialNumber: number | null;
   @ApiProperty({
+    type: 'integer',
+    format: 'int32',
+    nullable: true,
+  })
+  winnerElo: number | null;
+  @ApiProperty({
+    type: 'integer',
+    format: 'int32',
+    nullable: true,
+  })
+  loserElo: number | null;
+  @ApiProperty({
+    type: 'integer',
+    format: 'int32',
+    nullable: true,
+  })
+  eloWon: number | null;
+  @ApiProperty({
+    type: 'integer',
+    format: 'int32',
+    nullable: true,
+  })
+  eloLost: number | null;
+  @ApiProperty({
     type: 'boolean',
   })
   isOver: boolean;

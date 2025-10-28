@@ -1197,6 +1197,26 @@
             "format": "int32",
             "nullable": true
           },
+          "winnerElo": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "loserElo": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "eloWon": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "eloLost": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
           "isOver": {
             "type": "boolean"
           },
@@ -1293,6 +1313,10 @@
           "nextMatchId",
           "round",
           "serialNumber",
+          "winnerElo",
+          "loserElo",
+          "eloWon",
+          "eloLost",
           "isOver",
           "matchType",
           "createdAt",
@@ -1567,7 +1591,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-27T19:03:25.163Z"
+            "default": "2025-10-28T16:05:15.536Z"
           }
         },
         "required": [
@@ -1607,7 +1631,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-27T19:03:25.150Z"
+            "default": "2025-10-28T16:05:15.523Z"
           }
         }
       },
@@ -1696,7 +1720,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-27T19:03:25.514Z"
+            "default": "2025-10-28T16:05:20.219Z"
           }
         },
         "required": [
@@ -1735,7 +1759,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-27T19:03:25.521Z"
+            "default": "2025-10-28T16:05:20.225Z"
           }
         }
       },

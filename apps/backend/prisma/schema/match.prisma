@@ -10,6 +10,10 @@ model Match {
   nextMatchId       Int?
   round             Int?
   serialNumber      Int?
+  winnerElo Int?
+  loserElo Int?
+  eloWon            Int?
+  eloLost           Int?
   isOver            Boolean   @default(false)
   matchType         MatchType
   createdAt         DateTime  @default(now())

@@ -5,6 +5,8 @@ import {
 import { MatchType } from '../../generated/client';
 import type { CreateGroupMatch } from '../../custom-models/api/match';
 import { TournamentPhaseDataDto } from '../../custom-models/api/tournament-phase';
+import { Participant } from '../../generated/models/participant.entity';
+import { Match } from '../../generated/models/match.entity';
 
 export const validateTournamentNameLength = (
   name: string | undefined,
@@ -41,6 +43,65 @@ export const generateRobinRounds = (
 
 export const shuffle = <T>(array: T[]): T[] => {
   return [...array].sort(() => Math.random() - 0.5);
+};
+
+export const calculateEloChange = (
+  winnerElo: number,
+  loserElo: number,
+  k = 32,
+): { winnerEloChange: number; loserEloChange: number } => {
+  const expectedWinner = 1 / (1 + 10 ** ((loserElo - winnerElo) / 400));
+  const expectedLoser = 1 - expectedWinner;
+
+  const winnerEloChange = Math.ceil(k * (1 - expectedWinner));
+  const loserEloChange = Math.ceil(k * expectedLoser);
+
+  return { winnerEloChange, loserEloChange };
+};
+
+export const handleEloChange = (
+  winner: Participant,
+  loser: Participant,
+  match: Match,
+  isReverse: boolean,
+): {
+  winnerEloChange: number;
+  loserEloChange: number;
+  eloWon: number;
+  eloLost: number;
+} => {
+  const originalWinnerElo = match.winnerElo ?? 0; // e.g. 1500
+  const originalLoserElo = match.loserElo ?? 0; // e.g. 1500
+  const eloWon = match.eloWon ?? 0; // e.g. +8
+  const eloLost = match.eloLost ?? 0; // e.g. +8
+
+  if (isReverse) {
+    // Step 2️⃣: Recalculate new deltas based on the reversed outcome
+    const { winnerEloChange, loserEloChange } = calculateEloChange(
+      originalLoserElo,
+      originalWinnerElo,
+    );
+
+    // Step 3️⃣: Compute *final* change to apply to current elo
+    return {
+      winnerEloChange: eloLost + winnerEloChange, // e.g. 8 + 8 = 16
+      loserEloChange: eloWon + loserEloChange, // e.g. 8 + 8 = 16
+      eloWon: loserEloChange,
+      eloLost: winnerEloChange,
+    };
+  }
+
+  // Normal case — just calculate forward change
+  const { winnerEloChange, loserEloChange } = calculateEloChange(
+    winner.elo,
+    loser.elo,
+  );
+  return {
+    winnerEloChange,
+    loserEloChange,
+    eloWon: winnerEloChange,
+    eloLost: loserEloChange,
+  };
 };
 
 const generateRobinRoundMatches = (
