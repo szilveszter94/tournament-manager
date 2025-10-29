@@ -11,10 +11,11 @@ import { PencilIcon, PlusCircleIcon } from "@heroicons/react/16/solid";
 
 type Props = {
   match: Match;
+  groupName: string | undefined;
   tournamentId: number;
 };
 
-export default function UpdateMatchForm({ tournamentId, match }: Props) {
+export default function UpdateMatchForm({ tournamentId, groupName, match }: Props) {
   const [open, setOpen] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -86,7 +87,7 @@ export default function UpdateMatchForm({ tournamentId, match }: Props) {
         <input type="hidden" name="loserId" />
         <Modal open={open} onClose={() => setOpen(false)} title={`Set Match Result`}>
           <p className="text-sm mb-5 text-gray-primary text-center">
-            Choose the winner for match <strong>#{match.serialNumber}</strong>
+            Choose the winner for match <strong>{groupName}#{match.serialNumber}</strong>
           </p>
           <div className="flex gap-3">
             <CustomButton type="submit" onClick={() => handleSubmit(match.participant1Id, match.participant2Id)}>

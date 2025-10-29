@@ -1,5 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { PhaseType } from '../../generated/client';
+import { UpdateTournamentDto } from '../../generated/models/update-tournament.dto';
+import { UpdateTournamentPhaseDto } from '../../generated/models/update-tournamentPhase.dto';
 
 export class ParticipantTournamentGroup {
   @ApiProperty({
@@ -35,3 +37,10 @@ export const phaseOrders: Record<PhaseType, number> = {
   SingleElimination: 4,
   DoubleElimination: 5,
 };
+
+export class UpdateTournamentAndPhaseDto {
+  @ApiProperty({ type: () => UpdateTournamentDto, required: true })
+  tournamentEntity?: UpdateTournamentDto;
+  @ApiProperty({ type: () => UpdateTournamentPhaseDto, required: true })
+  phaseEntity?: UpdateTournamentPhaseDto;
+}

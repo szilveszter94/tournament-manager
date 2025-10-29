@@ -3,6 +3,5 @@ export const navItems = [
   { label: "About", href: "/" },
   { label: "Tournaments", href: "/tournament" },
   { label: "Participants", href: "/participant" },
-  { label: "Test", href: "/test" },
   { label: "Leaderboard", href: "/" },
 ];

@@ -3,7 +3,14 @@
 
 import { revalidatePath } from "next/cache";
 import { apiClient } from "@/lib/client";
-import { GroupStagePhaseDataDto, ParticipantTournament, ParticipantType, UpdateMatchWinnerDto } from "@/generated/api";
+import {
+  GroupStagePhaseDataDto,
+  ParticipantTournament,
+  ParticipantType,
+  TournamentStatus,
+  UpdateMatchWinnerDto,
+  UpdateTournamentAndPhaseDto,
+} from "@/generated/api";
 import { redirect } from "next/navigation";
 import { State } from "@/lib/custom-models/common";
 
@@ -56,7 +63,7 @@ export async function updateGroupStageMatch(
 ): Promise<State> {
   const winnerId = Number(formData.get("winnerId"));
   const loserId = Number(formData.get("loserId"));
-  
+
   try {
     if (winnerId <= 0 || loserId <= 0) {
       return {
@@ -104,7 +111,49 @@ export async function generateGroupStages(
         return { name: key, serialNumber: index + 1, participantIds: ids };
       }),
     };
-    await apiClient.tournamentPhase.tournamentPhaseControllerAddGrupStageToTournament(tournamentId.toString(), mappedData);
+    await apiClient.tournamentPhase.tournamentPhaseControllerAddGrupStageToTournament(
+      tournamentId.toString(),
+      mappedData
+    );
+  } catch {
+    return {
+      message: "Failed to generate groups",
+      errors: {},
+    };
+  }
+
+  revalidatePath(`/tournament/${tournamentId}`);
+  return {
+    message: "",
+    errors: {},
+  };
+}
+
+export async function completeGroupStage(phaseId: number | undefined, tournamentId: number): Promise<State> {
+  try {
+    if (!phaseId) {
+      return {
+        message: "Phase id is not valid",
+        errors: {},
+      };
+    }
+
+    if (!tournamentId) {
+      return {
+        message: "Tournament id is not valid",
+        errors: {},
+      };
+    }
+
+    const body = {
+      phaseEntity: { isCompleted: true },
+      tournamentEntity: { status: TournamentStatus.GROUP_STAGE_COMPLETED },
+    } as UpdateTournamentAndPhaseDto;
+    await apiClient.tournamentPhase.tournamentPhaseControllerUpdateTournamentPhase(
+      phaseId.toString(),
+      tournamentId.toString(),
+      body
+    );
   } catch {
     return {
       message: "Failed to generate groups",

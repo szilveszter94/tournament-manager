@@ -38,7 +38,9 @@ export { TournamentStatus } from './models/TournamentStatus';
 export type { TournamentWinner } from './models/TournamentWinner';
 export type { UpdateMatchWinnerDto } from './models/UpdateMatchWinnerDto';
 export type { UpdateParticipantDto } from './models/UpdateParticipantDto';
+export type { UpdateTournamentAndPhaseDto } from './models/UpdateTournamentAndPhaseDto';
 export type { UpdateTournamentDto } from './models/UpdateTournamentDto';
+export type { UpdateTournamentPhaseDto } from './models/UpdateTournamentPhaseDto';
 
 export { MatchService } from './services/MatchService';
 export { ParticipantService } from './services/ParticipantService';

@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 import { UpdateTournamentDto } from '../../generated/models/update-tournament.dto';
 import { CreateTournamentDto } from '../../generated/models/create-tournament.dto';
-import { PhaseType, Prisma, TournamentStatus } from '../../generated/client';
+import { Prisma, TournamentStatus } from '../../generated/client';
 import { handleDateRange } from '../utils/helper';
 import {
   TournamentResponse,
@@ -33,10 +33,7 @@ export class TournamentService {
         return { ok: false, error: `Tournament ${id} not found` };
       }
 
-      if (
-        tournament.phase === PhaseType.GroupStage &&
-        tournament.status === TournamentStatus.Started
-      ) {
+      if (tournament.status === TournamentStatus.GroupStage) {
         return this.loader.loadGroupStageStarted(id);
       }
 

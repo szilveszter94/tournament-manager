@@ -3,11 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { ParticipantType } from './ParticipantType';
-import type { PhaseType } from './PhaseType';
 import type { TournamentStatus } from './TournamentStatus';
 export type CreateTournamentDto = {
     name: string;
-    phase?: PhaseType | null;
     status?: TournamentStatus;
     type: ParticipantType;
     createdAt?: string;

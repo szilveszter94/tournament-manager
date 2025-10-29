@@ -26,6 +26,15 @@ enum ParticipantType {
 
 enum TournamentStatus {
   RegisterPlayers
-  Started
+  GroupStage
+  GroupStageCompleted
+  SingleElimination
+  SingleEliminationCompleted
+  DoubleElimination
+  DoubleEliminationCompleted
+  RoundRobin
+  RoundRobinCompleted
+  Swiss
+  SwissCompleted
   Over
 }

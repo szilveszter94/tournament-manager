@@ -4,6 +4,15 @@
 /* eslint-disable */
 export enum TournamentStatus {
     REGISTER_PLAYERS = 'RegisterPlayers',
-    STARTED = 'Started',
+    GROUP_STAGE = 'GroupStage',
+    GROUP_STAGE_COMPLETED = 'GroupStageCompleted',
+    SINGLE_ELIMINATION = 'SingleElimination',
+    SINGLE_ELIMINATION_COMPLETED = 'SingleEliminationCompleted',
+    DOUBLE_ELIMINATION = 'DoubleElimination',
+    DOUBLE_ELIMINATION_COMPLETED = 'DoubleEliminationCompleted',
+    ROUND_ROBIN = 'RoundRobin',
+    ROUND_ROBIN_COMPLETED = 'RoundRobinCompleted',
+    SWISS = 'Swiss',
+    SWISS_COMPLETED = 'SwissCompleted',
     OVER = 'Over',
 }

@@ -1,4 +1,4 @@
-import { ParticipantType, PhaseType, TournamentStatus } from '../client';
+import { ParticipantType, TournamentStatus } from '../client';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateTournamentDto {
@@ -6,13 +6,6 @@ export class CreateTournamentDto {
     type: 'string',
   })
   name: string;
-  @ApiProperty({
-    enum: PhaseType,
-    enumName: 'PhaseType',
-    required: false,
-    nullable: true,
-  })
-  phase?: PhaseType | null;
   @ApiProperty({
     enum: TournamentStatus,
     enumName: 'TournamentStatus',

@@ -1,3 +1,5 @@
+import { TournamentStatus } from "@/generated/api";
+import { userFriendlyStats } from "@/generated/backend/common";
 import { Column } from "@/lib/global-constants";
 import { ArrowTopRightOnSquareIcon, TrashIcon } from "@heroicons/react/16/solid";
 import Link from "next/link";
@@ -19,6 +21,19 @@ export default function TableBody<T>({ columns, data }: TableBodyProps<T>) {
     }
 
     return "";
+  };
+
+  const getStatusFriendlyName = (row: T, key: keyof T): string => {
+    const value = row[key];
+
+    if (typeof value === "string") {
+      const parsed = value as TournamentStatus;
+      if (parsed) {
+        return userFriendlyStats[parsed];
+      }
+    }
+
+    return String(value);
   };
 
   return (
@@ -43,6 +58,8 @@ export default function TableBody<T>({ columns, data }: TableBodyProps<T>) {
                 </div>
               ) : col.dataType === "date" ? (
                 <span>{getDate(row, col.value)}</span>
+              ) : col.value === "status" ? (
+                <span>{getStatusFriendlyName(row, col.value)}</span>
               ) : (
                 <span>{String(row[col.value])}</span>
               )}

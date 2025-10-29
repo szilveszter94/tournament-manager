@@ -192,7 +192,16 @@
                 "type": "string",
                 "enum": [
                   "RegisterPlayers",
-                  "Started",
+                  "GroupStage",
+                  "GroupStageCompleted",
+                  "SingleElimination",
+                  "SingleEliminationCompleted",
+                  "DoubleElimination",
+                  "DoubleEliminationCompleted",
+                  "RoundRobin",
+                  "RoundRobinCompleted",
+                  "Swiss",
+                  "SwissCompleted",
                   "Over"
                 ]
               }
@@ -708,6 +717,55 @@
         ]
       }
     },
+    "/tournamentPhase/{phaseId}/{tournamentId}": {
+      "post": {
+        "operationId": "TournamentPhaseController_updateTournamentPhase",
+        "parameters": [
+          {
+            "name": "phaseId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tournamentId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTournamentAndPhaseDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Update tournamnet phase",
+        "tags": [
+          "tournamentPhase"
+        ]
+      }
+    },
     "/tournamentPhase/groupStage/{tournamentId}": {
       "post": {
         "operationId": "TournamentPhaseController_addGrupStageToTournament",
@@ -809,6 +867,30 @@
   "servers": [],
   "components": {
     "schemas": {
+      "TournamentStatus": {
+        "type": "string",
+        "enum": [
+          "RegisterPlayers",
+          "GroupStage",
+          "GroupStageCompleted",
+          "SingleElimination",
+          "SingleEliminationCompleted",
+          "DoubleElimination",
+          "DoubleEliminationCompleted",
+          "RoundRobin",
+          "RoundRobinCompleted",
+          "Swiss",
+          "SwissCompleted",
+          "Over"
+        ]
+      },
+      "ParticipantType": {
+        "type": "string",
+        "enum": [
+          "Individual",
+          "Team"
+        ]
+      },
       "PhaseType": {
         "type": "string",
         "enum": [
@@ -818,21 +900,6 @@
           "DoubleElimination",
           "RoundRobin",
           "Swiss"
-        ]
-      },
-      "TournamentStatus": {
-        "type": "string",
-        "enum": [
-          "RegisterPlayers",
-          "Started",
-          "Over"
-        ]
-      },
-      "ParticipantType": {
-        "type": "string",
-        "enum": [
-          "Individual",
-          "Team"
         ]
       },
       "EliminationType": {
@@ -1443,14 +1510,6 @@
           "name": {
             "type": "string"
           },
-          "phase": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PhaseType"
-              }
-            ]
-          },
           "status": {
             "allOf": [
               {
@@ -1495,7 +1554,6 @@
         "required": [
           "id",
           "name",
-          "phase",
           "status",
           "type",
           "createdAt",
@@ -1565,14 +1623,6 @@
           "name": {
             "type": "string"
           },
-          "phase": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PhaseType"
-              }
-            ]
-          },
           "status": {
             "default": "RegisterPlayers",
             "allOf": [
@@ -1591,7 +1641,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-29T20:12:17.916Z"
+            "default": "2025-10-29T22:16:06.576Z"
           }
         },
         "required": [
@@ -1605,14 +1655,6 @@
           "name": {
             "type": "string"
           },
-          "phase": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PhaseType"
-              }
-            ]
-          },
           "status": {
             "default": "RegisterPlayers",
             "allOf": [
@@ -1631,7 +1673,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-29T20:12:17.906Z"
+            "default": "2025-10-29T22:16:06.566Z"
           }
         }
       },
@@ -1720,7 +1762,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-29T20:12:18.227Z"
+            "default": "2025-10-29T22:16:06.974Z"
           }
         },
         "required": [
@@ -1759,7 +1801,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-29T20:12:18.235Z"
+            "default": "2025-10-29T22:16:06.984Z"
           }
         }
       },
@@ -1843,6 +1885,41 @@
         },
         "required": [
           "groups"
+        ]
+      },
+      "UpdateTournamentPhaseDto": {
+        "type": "object",
+        "properties": {
+          "phaseType": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PhaseType"
+              }
+            ]
+          },
+          "order": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isCompleted": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      },
+      "UpdateTournamentAndPhaseDto": {
+        "type": "object",
+        "properties": {
+          "tournamentEntity": {
+            "$ref": "#/components/schemas/UpdateTournamentDto"
+          },
+          "phaseEntity": {
+            "$ref": "#/components/schemas/UpdateTournamentPhaseDto"
+          }
+        },
+        "required": [
+          "tournamentEntity",
+          "phaseEntity"
         ]
       },
       "UpdateMatchWinnerDto": {
