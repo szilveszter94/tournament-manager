@@ -708,9 +708,9 @@
         ]
       }
     },
-    "/tournamentPhase/{tournamentId}": {
+    "/tournamentPhase/groupStage/{tournamentId}": {
       "post": {
-        "operationId": "TournamentPhaseController_addPhaseToTournament",
+        "operationId": "TournamentPhaseController_addGrupStageToTournament",
         "parameters": [
           {
             "name": "tournamentId",
@@ -726,7 +726,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TournamentPhaseDataDto"
+                "$ref": "#/components/schemas/GroupStagePhaseDataDto"
               }
             }
           }
@@ -743,7 +743,7 @@
             }
           }
         },
-        "summary": "Create a new phase for a tournament",
+        "summary": "Create group stage phase for a tournament",
         "tags": [
           "tournamentPhase"
         ]
@@ -1591,7 +1591,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-28T16:05:15.536Z"
+            "default": "2025-10-29T20:12:17.916Z"
           }
         },
         "required": [
@@ -1631,7 +1631,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-28T16:05:15.523Z"
+            "default": "2025-10-29T20:12:17.906Z"
           }
         }
       },
@@ -1720,7 +1720,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-28T16:05:20.219Z"
+            "default": "2025-10-29T20:12:18.227Z"
           }
         },
         "required": [
@@ -1759,7 +1759,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-28T16:05:20.225Z"
+            "default": "2025-10-29T20:12:18.235Z"
           }
         }
       },
@@ -1831,7 +1831,7 @@
           "participantIds"
         ]
       },
-      "TournamentPhaseDataDto": {
+      "GroupStagePhaseDataDto": {
         "type": "object",
         "properties": {
           "groups": {

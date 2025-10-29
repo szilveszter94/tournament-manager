@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 import {
   phaseOrders,
-  TournamentPhaseDataDto,
+  GroupStagePhaseDataDto,
 } from '../../custom-models/api/tournament-phase';
 import { BaseResponse } from '../../custom-models/api/base-response';
 import { PhaseType, TournamentStatus } from '../../generated/client';
@@ -16,7 +16,7 @@ export class TournamentPhaseService {
   constructor(private readonly prisma: PrismaService) {}
 
   async createGroupStage(
-    entity: TournamentPhaseDataDto,
+    entity: GroupStagePhaseDataDto,
     tournamentId: number,
   ): Promise<BaseResponse> {
     try {

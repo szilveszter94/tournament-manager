@@ -1,12 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TournamentPhaseService } from '../../services/tournament-phase.service';
 import { PrismaService } from '../../services/prisma.service';
-import { TournamentPhaseDataDto } from '../../../custom-models/api/tournament-phase';
+import { GroupStagePhaseDataDto } from '../../../custom-models/api/tournament-phase';
 import { PrismaClient } from '@prisma/client/extension';
 import { Tournament } from '../../../generated/client';
 import { TournamentGroup } from 'generated/models/tournamentGroup.entity';
 
-const testData: TournamentPhaseDataDto = {
+const testData: GroupStagePhaseDataDto = {
   groups: [
     {
       name: 'Group-1',

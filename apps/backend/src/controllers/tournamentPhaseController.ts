@@ -8,10 +8,10 @@ import {
 } from '@nestjs/swagger';
 import { TournamentPhaseService } from '../services/tournament-phase.service';
 import { BaseResponse } from '../../custom-models/api/base-response';
-import { TournamentPhaseDataDto } from '../../custom-models/api/tournament-phase';
+import { GroupStagePhaseDataDto } from '../../custom-models/api/tournament-phase';
 
 @ApiTags('tournamentPhase')
-@ApiExtraModels(TournamentPhaseDataDto)
+@ApiExtraModels(GroupStagePhaseDataDto)
 @Controller('tournamentPhase')
 export class TournamentPhaseController {
   constructor(
@@ -19,13 +19,13 @@ export class TournamentPhaseController {
   ) {}
 
   // Add Phase to the tournament
-  @Post(':tournamentId')
-  @ApiOperation({ summary: 'Create a new phase for a tournament' })
+  @Post('groupStage/:tournamentId')
+  @ApiOperation({ summary: 'Create group stage phase for a tournament' })
   @ApiOkResponse({ type: BaseResponse })
-  @ApiBody({ type: TournamentPhaseDataDto })
-  addPhaseToTournament(
+  @ApiBody({ type: GroupStagePhaseDataDto })
+  addGrupStageToTournament(
     @Param('tournamentId') tournamentId: string,
-    @Body() entity: TournamentPhaseDataDto,
+    @Body() entity: GroupStagePhaseDataDto,
   ): Promise<BaseResponse> {
     return this.tournamentPhaseService.createGroupStage(entity, +tournamentId);
   }

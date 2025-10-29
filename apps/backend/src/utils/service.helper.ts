@@ -4,7 +4,7 @@ import {
 } from '../../custom-models/shared/common';
 import { MatchType } from '../../generated/client';
 import type { CreateGroupMatch } from '../../custom-models/api/match';
-import { TournamentPhaseDataDto } from '../../custom-models/api/tournament-phase';
+import { GroupStagePhaseDataDto } from '../../custom-models/api/tournament-phase';
 import { Participant } from '../../generated/models/participant.entity';
 import { Match } from '../../generated/models/match.entity';
 
@@ -21,7 +21,7 @@ export const validateParticipantNameLength = (
 };
 
 export const generateRobinRounds = (
-  entity: TournamentPhaseDataDto,
+  entity: GroupStagePhaseDataDto,
   groupMap: Record<number, number>,
   tournamentPhaseId: number,
 ): CreateGroupMatch[] => {

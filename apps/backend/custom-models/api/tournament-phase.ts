@@ -19,7 +19,7 @@ export class ParticipantTournamentGroup {
   participantIds: number[];
 }
 
-export class TournamentPhaseDataDto {
+export class GroupStagePhaseDataDto {
   @ApiProperty({
     type: [ParticipantTournamentGroup],
     required: true,

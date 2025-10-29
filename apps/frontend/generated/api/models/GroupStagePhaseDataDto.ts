@@ -3,7 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { ParticipantTournamentGroup } from './ParticipantTournamentGroup';
-export type TournamentPhaseDataDto = {
+export type GroupStagePhaseDataDto = {
     groups: Array<ParticipantTournamentGroup>;
 };
 

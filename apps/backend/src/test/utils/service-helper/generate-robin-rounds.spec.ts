@@ -1,11 +1,11 @@
 import { CreateGroupMatch } from 'custom-models/api/match';
-import { TournamentPhaseDataDto } from '../../../../custom-models/api/tournament-phase';
+import { GroupStagePhaseDataDto } from '../../../../custom-models/api/tournament-phase';
 import { generateRobinRounds } from '../../../utils/service.helper';
 
 describe('generateRobinRounds', () => {
   console.log('✅ Testing Robin rounds generator...');
   it('should generate all matches for a single group of 4 participants', () => {
-    const testData: TournamentPhaseDataDto = {
+    const testData: GroupStagePhaseDataDto = {
       groups: [
         {
           name: 'Group-1',
@@ -29,7 +29,7 @@ describe('generateRobinRounds', () => {
   });
 
   it('should handle even number of participants', () => {
-    const testData: TournamentPhaseDataDto = {
+    const testData: GroupStagePhaseDataDto = {
       groups: [
         { name: 'Group-1', serialNumber: 1, participantIds: [1, 2, 3, 4] },
       ],
@@ -43,7 +43,7 @@ describe('generateRobinRounds', () => {
   });
 
   it('should handle odd number of participants (add bye rounds correctly)', () => {
-    const testData: TournamentPhaseDataDto = {
+    const testData: GroupStagePhaseDataDto = {
       groups: [
         { name: 'Group-1', serialNumber: 1, participantIds: [1, 2, 3, 4, 5] },
       ],
@@ -57,7 +57,7 @@ describe('generateRobinRounds', () => {
   });
 
   it('should generate matches for multiple groups', () => {
-    const testData: TournamentPhaseDataDto = {
+    const testData: GroupStagePhaseDataDto = {
       groups: [
         { name: 'A', serialNumber: 1, participantIds: [1, 2, 3] },
         { name: 'B', serialNumber: 2, participantIds: [4, 5, 6] },
@@ -80,7 +80,7 @@ describe('generateRobinRounds', () => {
   });
 
   it('should generate matches with unique, sequential serialNumbers per group', () => {
-    const testData: TournamentPhaseDataDto = {
+    const testData: GroupStagePhaseDataDto = {
       groups: [
         { name: 'A', serialNumber: 1, participantIds: [1, 2, 3, 4] },
         { name: 'B', serialNumber: 2, participantIds: [5, 6, 7] },
@@ -128,7 +128,7 @@ describe('generateRobinRounds', () => {
   });
 
   it('should generate groups correctly', () => {
-    const testData: TournamentPhaseDataDto = {
+    const testData: GroupStagePhaseDataDto = {
       groups: [
         {
           name: 'A',
