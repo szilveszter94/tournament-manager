@@ -59,6 +59,10 @@ export class TournamentPhaseService {
         return { ok: false, error: 'Groups not provided.' };
       }
 
+      if (entity.groups.some((g) => g.participantIds.length <= 3)) {
+        return { ok: false, error: 'Minimum participants per group is 4.' };
+      }
+
       if (tournamentId <= 0) {
         return {
           ok: false,
@@ -145,9 +149,6 @@ export class TournamentPhaseService {
       return { ok: true };
     } catch (e) {
       this.logger.error('Error creating tournament phase', e.stack);
-      if (e.status === 400) {
-        return { ok: false, error: `${e.message}` };
-      }
       return { ok: false, error: 'Unexpected server error occurred' };
     }
   }

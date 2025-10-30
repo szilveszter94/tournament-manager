@@ -48,7 +48,7 @@ export async function fetchTournaments(p: TournamentQueryParams): Promise<Tourna
     return response;
   } catch (err) {
     console.error(err);
-    throw new Error("Failed to fetch tournaments");
+    throw new Error("Server not responding.");
   }
 }
 

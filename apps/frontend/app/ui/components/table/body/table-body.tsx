@@ -50,7 +50,7 @@ export default function TableBody<T>({ columns, data }: TableBodyProps<T>) {
                         <ArrowTopRightOnSquareIcon className="w-5 h-5 text-icon" />
                       </Link>
                     ) : b.type === "delete" ? (
-                      <TrashIcon key={id} title="Delete Tournament" className="cursor-pointer w-5 h-5 text-red-500" />
+                      <TrashIcon key={id} title="Delete Tournament" className="cursor-pointer w-5 h-5 text-red-primary" />
                     ) : (
                       ""
                     )

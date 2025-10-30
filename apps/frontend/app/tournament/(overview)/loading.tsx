@@ -1,5 +1,5 @@
-import { ParticipantSkeleton } from "@/app/ui/participant/skeleton";
+import { TournamentListSkeleton } from "@/app/ui/components/skeletons/tournament-list-skeleton";
 
 export default function Loading() {
-  return <ParticipantSkeleton />;
+  return <TournamentListSkeleton />;
 }

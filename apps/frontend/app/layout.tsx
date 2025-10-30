@@ -3,6 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import Navbar from "@/app/ui/components/navbar/navbar";
 import Providers from "./providers/providers";
+import Snackbar from "./ui/components/snackbar/snackbar";
 
 const roboto = Roboto({
   variable: "--font-roboto",
@@ -26,6 +27,7 @@ export default function RootLayout({
           <Providers>
             <Navbar />
             {children}
+            <Snackbar />
           </Providers>
         </ThemeProvider>
       </body>

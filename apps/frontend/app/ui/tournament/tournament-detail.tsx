@@ -6,7 +6,13 @@ import CreateParticipantForm from "../participant/create-participant-form";
 import CustomButton from "../components/custom-button/custom-button";
 import { PlusCircleIcon, SparklesIcon, TrashIcon } from "@heroicons/react/16/solid";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
-import { setGroups, clearGroups, addGroup } from "@/app/store/features/groups/groupSlice";
+import {
+  setGroups,
+  clearGroups,
+  addGroup,
+  updateGroupsByParticipants,
+  removeGroupByName,
+} from "@/app/store/features/groups/groupSlice";
 import { selectFilteredParticipants } from "@/app/store/features/participants/participantSelector";
 import { setParticipants } from "@/app/store/features/participants/participantSlice";
 import { selectGroupsByTournament } from "@/app/store/features/groups/groupsSelector";
@@ -31,12 +37,15 @@ export default function TournamentDetail({ tournament }: TournamentDetailProps) 
     if (!tournament.participants) {
       return;
     }
+
     dispatch(setParticipants(tournament.participants));
+    dispatch(updateGroupsByParticipants({ tournamentId: tournament.id, participants: tournament.participants }));
   }, [dispatch, tournament]);
 
   const tournamentPersistentGroups = useAppSelector(selectGroupsByTournament(tournament.id));
+  const nonPersistentParticipants = useAppSelector(selectFilteredParticipants(tournament.id));
   const tournamentNonPersistentGroup = {
-    [nonPersistentGroup]: useAppSelector(selectFilteredParticipants(tournament.id)),
+    [nonPersistentGroup]: nonPersistentParticipants,
   };
 
   const onAddGroup = (): void => {
@@ -88,7 +97,6 @@ export default function TournamentDetail({ tournament }: TournamentDetailProps) 
     if (participants.length > 0) {
       dispatch(setParticipants(participants));
     }
-
     dispatch(setGroups({ tournamentId: tournament.id, groups: newGroups }));
   };
 
@@ -97,11 +105,22 @@ export default function TournamentDetail({ tournament }: TournamentDetailProps) 
     if (tournament.participants) dispatch(setParticipants(tournament.participants));
   };
 
+  const onRemoveGroupByName = (name: string): void => {
+    dispatch(removeGroupByName({ tournamentId: tournament.id, groupName: name }));
+    if (tournament.participants) dispatch(setParticipants(tournament.participants));
+  };
+
   return (
     <div className="flex flex-col lg:flex-row gap-2 w-full bg-tertiary rounded-2xl">
       <DragDropProvider
         onDragOver={(event) => {
-          const updatedGroups = move({ ...tournamentPersistentGroups, ...tournamentNonPersistentGroup }, event);
+          const updatedGroups = move(
+            {
+              ...tournamentPersistentGroups,
+              [nonPersistentGroup]: [...(tournamentNonPersistentGroup[nonPersistentGroup] || [])],
+            },
+            event
+          );
           onSetGroups(updatedGroups);
         }}>
         <div className="flex-4 p-6 space-y-6 ">
@@ -140,7 +159,14 @@ export default function TournamentDetail({ tournament }: TournamentDetailProps) 
           <div className="flex flex-wrap px-5 gap-5">
             {Object.entries(tournamentPersistentGroups)?.map(([column, participants]) => (
               <div className="text-center" key={column}>
-                <div className="bg-secondary border-b border-b-secondary-border-color rounded-t-xl py-2">{column}</div>
+                <div className="bg-secondary flex justify-between items-center px-3 border-b border-b-secondary-border-color rounded-t-xl py-2">
+                  <span>{column}</span>
+                  <TrashIcon
+                    onClick={() => onRemoveGroupByName(column)}
+                    title="Delete Group"
+                    className="cursor-pointer w-5 h-5 text-red-primary"
+                  />
+                </div>
                 <Column className="flex rounded-b-xl p-2 flex-col bg-secondary h-80 w-60 overflow-y-auto" id={column}>
                   {participants.map((p, index) => (
                     <Item key={p.id.toString()} id={p.id} index={index} column={column} participant={p} />

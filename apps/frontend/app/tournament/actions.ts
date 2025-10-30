@@ -25,6 +25,7 @@ export async function createTournament(_prevState: State, formData: FormData): P
         ...(name ? {} : { name: ["Name is required"] }),
         ...(type ? {} : { participantType: ["A participant type must be selected."] }),
       },
+      success: false,
     };
   }
 
@@ -39,6 +40,7 @@ export async function createTournament(_prevState: State, formData: FormData): P
       return {
         message: result.error ?? "Failed to create tournament",
         errors: {},
+        success: false,
       };
     }
 
@@ -48,6 +50,7 @@ export async function createTournament(_prevState: State, formData: FormData): P
     return {
       message: "Unexpected server error. Failed to create tournament.",
       errors: {},
+      success: false,
     };
   }
 
@@ -69,6 +72,7 @@ export async function updateGroupStageMatch(
       return {
         message: "Winner not selected.",
         errors: {},
+        success: false,
       };
     }
 
@@ -82,6 +86,7 @@ export async function updateGroupStageMatch(
       return {
         message: "Failed to update match",
         errors: {},
+        success: false,
       };
     }
 
@@ -90,6 +95,7 @@ export async function updateGroupStageMatch(
     return {
       message: "Failed to update match",
       errors: {},
+      success: false,
     };
   }
 
@@ -97,6 +103,7 @@ export async function updateGroupStageMatch(
   return {
     message: "",
     errors: {},
+    success: true,
   };
 }
 
@@ -111,21 +118,40 @@ export async function generateGroupStages(
         return { name: key, serialNumber: index + 1, participantIds: ids };
       }),
     };
-    await apiClient.tournamentPhase.tournamentPhaseControllerAddGrupStageToTournament(
+
+    if (mappedData.groups.some((g) => g.participantIds.length <= 3)) {
+      return {
+        message: "Minimum participants per group is 4",
+        errors: {},
+        success: false,
+      };
+    }
+
+    const result = await apiClient.tournamentPhase.tournamentPhaseControllerAddGrupStageToTournament(
       tournamentId.toString(),
       mappedData
     );
+
+    if (!result.ok) {
+      return {
+        message: `${result.error}`,
+        errors: {},
+        success: false,
+      };
+    }
   } catch {
     return {
       message: "Failed to generate groups",
       errors: {},
+      success: false,
     };
   }
 
   revalidatePath(`/tournament/${tournamentId}`);
   return {
-    message: "",
+    message: "Group stages generated successfully",
     errors: {},
+    success: false,
   };
 }
 
@@ -135,6 +161,7 @@ export async function completeGroupStage(phaseId: number | undefined, tournament
       return {
         message: "Phase id is not valid",
         errors: {},
+        success: false,
       };
     }
 
@@ -142,6 +169,7 @@ export async function completeGroupStage(phaseId: number | undefined, tournament
       return {
         message: "Tournament id is not valid",
         errors: {},
+        success: false,
       };
     }
 
@@ -158,6 +186,7 @@ export async function completeGroupStage(phaseId: number | undefined, tournament
     return {
       message: "Failed to generate groups",
       errors: {},
+      success: false,
     };
   }
 
@@ -165,5 +194,6 @@ export async function completeGroupStage(phaseId: number | undefined, tournament
   return {
     message: "",
     errors: {},
+    success: true,
   };
 }

@@ -28,7 +28,7 @@ export async function fetchParticipants(
     return response;
   } catch (err) {
     console.error(err);
-    throw new Error("Failed to fetch participants");
+    throw new Error("Server not responding");
   }
 }
 

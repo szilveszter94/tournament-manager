@@ -8,7 +8,7 @@ type TournamentParticipantProps = {
   className?: string;
 };
 
-export default function TournamentParticipants({ participants, className = "" }: TournamentParticipantProps) {
+export default function TournamentParticipants({ participants, className }: TournamentParticipantProps) {
   return (
     <div className={className}>
       {/* Participants List */}

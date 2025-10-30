@@ -32,6 +32,8 @@
 
   --color-green-primary: var(--green-primary);
   --color-red-primary: var(--red-primary);
+  --color-yellow-primary: var(--yellow-primary);
+  --color-blue-primary: var(--blue-primary);
 }
 
 /* Base styles */

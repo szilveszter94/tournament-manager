@@ -11,7 +11,7 @@ export const selectFilteredParticipants = (tournamentId: number) =>
           .flat()
           .map((p) => p.participant?.id)
       );
-
+      
       return participants.filter((p) => !participantIds.has(p.participantId));
     }
   );

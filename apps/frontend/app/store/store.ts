@@ -3,10 +3,12 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import groupsReducer from "./features/groups/groupSlice";
 import participantReducer from "./features/participants/participantSlice";
+import snackbarReducer from "./features/snackbar/snackbarSlice";
 
 const rootReducer = combineReducers({
   groups: groupsReducer,
-  participants: participantReducer
+  participants: participantReducer,
+  snackbar: snackbarReducer,
 });
 
 const persistConfig = {
