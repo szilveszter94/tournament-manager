@@ -1,13 +1,13 @@
 "use client";
 
 import { initialState } from "@/lib/custom-models/common";
-import { useActionState, useRef, useState } from "react";
+import { useActionState, useRef } from "react";
 import { updateGroupStageMatch } from "@/app/tournament/actions";
 import { Match } from "@/generated/api";
-import Modal from "../../components/modal/base/modal";
 import CustomButton from "../../components/custom-button/custom-button";
 import clsx from "clsx";
 import { PencilIcon, PlusCircleIcon } from "@heroicons/react/16/solid";
+import { useModal } from "@/app/providers/modal-provider";
 
 type Props = {
   match: Match;
@@ -16,30 +16,41 @@ type Props = {
 };
 
 export default function UpdateMatchForm({ tournamentId, groupName, match }: Props) {
-  const [open, setOpen] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
+  const modal = useModal();
 
   const updateMatch = updateGroupStageMatch.bind(null, match.id, tournamentId);
   const [state, formAction] = useActionState(updateMatch, initialState);
 
-  const handleSubmit = (winnerId: number | null, loserId: number | null) => {
-    if (!formRef.current || (match.winnerId === winnerId && match.loserId === loserId)) {
-      setOpen(false);
+  const showModal = async () => {
+    if (!match.participant1Id || !match.participant2Id) {
       return;
     }
 
-    // Set hidden input values right before submit
-    const winnerInput = formRef.current.querySelector<HTMLInputElement>('input[name="winnerId"]');
-    const loserInput = formRef.current.querySelector<HTMLInputElement>('input[name="loserId"]');
+    const selected = await modal({
+      type: "option",
+      title: "Set Match Result",
+      message: `Choose the winner for ${groupName} match: ${match.serialNumber}`,
+      option1: { label: match.participant1?.name ?? "Unknown", value: match.participant1Id },
+      option2: { label: match.participant2?.name ?? "Unknown", value: match.participant2Id },
+    });
 
-    if (winnerInput && loserInput) {
-      winnerInput.value = winnerId?.toString() ?? "";
-      loserInput.value = loserId?.toString() ?? "";
+    if (selected > 0) {
+      if (!formRef.current || match.winnerId === selected) {
+        return;
+      }
+      const winnerId = selected;
+      const loserId = match.participant1Id === selected ? match.participant2Id : match.participant1Id;
+      const winnerInput = formRef.current.querySelector<HTMLInputElement>('input[name="winnerId"]');
+      const loserInput = formRef.current.querySelector<HTMLInputElement>('input[name="loserId"]');
+
+      if (winnerInput && loserInput) {
+        winnerInput.value = winnerId?.toString() ?? "";
+        loserInput.value = loserId?.toString() ?? "";
+
+        formRef.current.requestSubmit();
+      }
     }
-
-    // Submit with correct data
-    formRef.current.requestSubmit();
-    setOpen(false);
   };
 
   return (
@@ -75,29 +86,16 @@ export default function UpdateMatchForm({ tournamentId, groupName, match }: Prop
             icon={match.isOver ? <PencilIcon /> : <PlusCircleIcon />}
             variant={match.isOver ? "secondary" : "primary"}
             size="sm"
-            onClick={() => setOpen(true)}>
+            onClick={() => showModal()}>
             {match.isOver ? "Edit" : "Set"}
           </CustomButton>
         </div>
       </div>
 
-      {/* Modal */}
+      {/* Form */}
       <form ref={formRef} action={formAction}>
         <input type="hidden" name="winnerId" />
         <input type="hidden" name="loserId" />
-        <Modal open={open} onClose={() => setOpen(false)} title={`Set Match Result`}>
-          <p className="text-sm mb-5 text-gray-primary text-center">
-            Choose the winner for match <strong>{groupName}#{match.serialNumber}</strong>
-          </p>
-          <div className="flex gap-3">
-            <CustomButton type="submit" onClick={() => handleSubmit(match.participant1Id, match.participant2Id)}>
-              {match.participant1?.name}
-            </CustomButton>
-            <CustomButton type="submit" onClick={() => handleSubmit(match.participant2Id, match.participant1Id)}>
-              {match.participant2?.name}
-            </CustomButton>
-          </div>
-        </Modal>
         {state.message && <p className="text-xs text-red-primary mt-2 text-center">{state.message}</p>}
       </form>
     </div>

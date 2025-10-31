@@ -4,7 +4,7 @@ import { ThemeProvider } from "next-themes";
 import Navbar from "@/app/ui/components/navbar/navbar";
 import StoreProvider from "./providers/store-provider";
 import Snackbar from "./ui/components/snackbar/snackbar";
-import { ConfirmProvider } from "./providers/confirm-provider";
+import { ModalProvider } from "./providers/modal-provider";
 
 const roboto = Roboto({
   variable: "--font-roboto",
@@ -26,11 +26,11 @@ export default function RootLayout({
       <body className={`${roboto.variable} ${robotoMono.variable} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" themes={["light", "dark", "dark-purple"]} enableSystem>
           <StoreProvider>
-            <ConfirmProvider>
+            <ModalProvider>
               <Navbar />
               {children}
               <Snackbar />
-            </ConfirmProvider>
+            </ModalProvider>
           </StoreProvider>
         </ThemeProvider>
       </body>

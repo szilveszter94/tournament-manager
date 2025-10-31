@@ -9,7 +9,7 @@ type ConfirmModalProps = {
   title?: string;
   message?: string;
   onClose: () => void;
-  onConfirm: (result: boolean) => void; // true for Yes, false for No
+  onConfirm: (result: number) => void;
 };
 
 export default function ConfirmModal({
@@ -21,7 +21,7 @@ export default function ConfirmModal({
 }: ConfirmModalProps) {
   const [loading, setLoading] = useState(false);
 
-  const handleConfirm = (result: boolean) => {
+  const handleConfirm = (result: number) => {
     setLoading(true);
     onConfirm(result);
     setLoading(false);
@@ -32,10 +32,10 @@ export default function ConfirmModal({
     <Modal open={open} onClose={onClose} title={title}>
       <p className="mb-6 text-sm text-muted-foreground">{message}</p>
       <div className="flex justify-end gap-3">
-        <CustomButton variant="secondary" onClick={() => handleConfirm(false)} disabled={loading}>
+        <CustomButton variant="secondary" onClick={() => handleConfirm(0)} disabled={loading}>
           No
         </CustomButton>
-        <CustomButton variant="primary" onClick={() => handleConfirm(true)} disabled={loading}>
+        <CustomButton variant="primary" onClick={() => handleConfirm(1)} disabled={loading}>
           Yes
         </CustomButton>
       </div>

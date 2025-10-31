@@ -3,7 +3,7 @@ import { initialState } from "@/lib/custom-models/common";
 import { TrashIcon } from "@heroicons/react/16/solid";
 import clsx from "clsx";
 import { useActionState, useRef } from "react";
-import { useConfirm } from "@/app/providers/confirm-provider";
+import { useModal } from "@/app/providers/modal-provider";
 
 type DeleteParticipantProps = {
   participantId: number;
@@ -15,14 +15,15 @@ export function DeleteParticipantForm({ participantId, tournamentId, className =
   const deleteParticipant = deleteParticipantFromTournament.bind(null, participantId, tournamentId);
   const [state, formAction] = useActionState(deleteParticipant, initialState);
   const formRef = useRef<HTMLFormElement | null>(null);
-  const confirm = useConfirm();
+  const modal = useModal();
 
   const onDeleteClick = async () => {
-    const ok = await confirm({
+    const ok = await modal({
+      type: "confirm",
       title: "Remove participant?",
       message: "Are you sure you want to remove this participant from the tournament?",
     });
-    if (ok) {
+    if (ok > 0) {
       formRef.current?.requestSubmit();
     }
   };
