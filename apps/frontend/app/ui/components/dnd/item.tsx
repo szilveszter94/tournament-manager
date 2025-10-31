@@ -1,7 +1,7 @@
 import React from "react";
 import { useSortable } from "@dnd-kit/react/sortable";
 import { ParticipantTournament } from "@/generated/api";
-import { DeleteParticipant } from "../../tournament/create-group-stages/delete-form";
+import { DeleteParticipantForm } from "../../tournament/create-group-stages/delete-participant-form";
 import clsx from "clsx";
 
 type ItemProps = {
@@ -30,7 +30,7 @@ export function Item({ id, index, column, participant, className }: ItemProps) {
       ref={ref}
       data-dragging={isDragging}>
       <p className="text-xl">{participant?.participant?.name ?? `Anonymus-${participant.id}`}</p>
-      <DeleteParticipant participantId={participant.participantId} tournamentId={participant.tournamentId} />
+      <DeleteParticipantForm participantId={participant.participantId} tournamentId={participant.tournamentId} />
     </div>
   );
 }

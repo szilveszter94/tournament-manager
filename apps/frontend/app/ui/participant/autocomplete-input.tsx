@@ -49,6 +49,14 @@ export default function AutocompleteInput({ type, onSelect, query, setQuery }: A
     search(value);
   };
 
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const form = e.currentTarget.form;
+      if (form) form.requestSubmit();
+    }
+  };
+
   return (
     <div className="relative">
       <Combobox as="div" value={selected} onChange={(p) => onSelectedChange(p)} className="relative">
@@ -59,6 +67,7 @@ export default function AutocompleteInput({ type, onSelect, query, setQuery }: A
           autoComplete="off"
           value={query}
           onChange={(e) => onInputChange(e.target.value)}
+          onKeyDown={onKeyDown}
         />
 
         {/* Dropdown */}

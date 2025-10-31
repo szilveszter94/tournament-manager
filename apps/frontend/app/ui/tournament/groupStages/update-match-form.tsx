@@ -4,7 +4,7 @@ import { initialState } from "@/lib/custom-models/common";
 import { useActionState, useRef, useState } from "react";
 import { updateGroupStageMatch } from "@/app/tournament/actions";
 import { Match } from "@/generated/api";
-import Modal from "../../components/modal/modal";
+import Modal from "../../components/modal/base/modal";
 import CustomButton from "../../components/custom-button/custom-button";
 import clsx from "clsx";
 import { PencilIcon, PlusCircleIcon } from "@heroicons/react/16/solid";

@@ -1,4 +1,5 @@
 "use client";
+
 import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from "@headlessui/react";
 import { Fragment, ReactNode } from "react";
 
@@ -36,7 +37,7 @@ export default function Modal({ open, onClose, title, children }: ModalProps) {
               leave="ease-in duration-200"
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95">
-              <DialogPanel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-secondary border border-secondary-border-color p-6 text-left align-middle shadow-xl transition-all">
+              <DialogPanel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-tertiary border border-secondary-border-color p-6 text-left align-middle shadow-xl transition-all">
                 {title && <DialogTitle className="text-lg font-semibold mb-4">{title}</DialogTitle>}
                 {children}
               </DialogPanel>

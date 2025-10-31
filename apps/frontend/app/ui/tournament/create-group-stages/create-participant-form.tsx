@@ -1,11 +1,11 @@
 "use client";
 
 import { useActionState, useState } from "react";
-import CustomButton from "../components/custom-button/custom-button";
+import CustomButton from "../../components/custom-button/custom-button";
 import { PlusCircleIcon } from "@heroicons/react/16/solid";
 import { addParticipantToTournament } from "@/app/participant/actions";
 import { initialState } from "@/lib/custom-models/common";
-import AutocompleteInput from "./autocomplete-input";
+import AutocompleteInput from "../../participant/autocomplete-input";
 import type { Participant, ParticipantType } from "@/generated/api";
 
 type Props = {
@@ -39,7 +39,13 @@ export default function CreateParticipantForm({ type, tournamentId }: Props) {
           <AutocompleteInput type={type} onSelect={setSelectedParticipant} query={query} setQuery={onSetQuery} />
         </div>
         <div className="flex-1">
-          <CustomButton type="submit" variant="primary" className="w-full" size="md" icon={<PlusCircleIcon />} iconSize={6}>
+          <CustomButton
+            type="submit"
+            variant="primary"
+            className="w-full"
+            size="md"
+            icon={<PlusCircleIcon />}
+            iconSize={6}>
             Add
           </CustomButton>
         </div>
