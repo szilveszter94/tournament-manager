@@ -1,7 +1,6 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { ForwardIcon } from "@heroicons/react/16/solid";
 import CustomButton from "../../components/custom-button/custom-button";
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useEffect } from "react";
 import { generateGroupStages } from "@/app/tournament/actions";
 import { ParticipantTournament } from "@/generated/api";
 import { initialState } from "@/lib/custom-models/common";
@@ -16,27 +15,21 @@ type GenerateGroupFormProps = {
 export default function GenerateGroupsForm({ data, tournamentId }: GenerateGroupFormProps) {
   const dispatch = useDispatch();
   const generateGroupsAction = generateGroupStages.bind(null, data, tournamentId);
-  const [state, formAction] = useActionState(generateGroupsAction, initialState);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [state, formAction, isPending] = useActionState(generateGroupsAction, initialState);
 
   useEffect(() => {
-    if (isSubmitted && state.message) {
+    if (!isPending && state.message) {
       dispatch(
         showSnackbar({
           message: state.message,
           type: state.success ? "success" : "error",
         })
       );
-      setIsSubmitted(false);
     }
-  }, [state.message, state.success, dispatch]);
-
-  const handleSubmit = () => {
-    setIsSubmitted(true);
-  };
+  }, [state, isPending, dispatch]);
 
   return (
-    <form action={formAction} onSubmit={handleSubmit}>
+    <form action={formAction}>
       <CustomButton type="submit" icon={<ForwardIcon />} variant="primary">
         Next
       </CustomButton>
