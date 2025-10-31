@@ -2,8 +2,8 @@
 
 import { ParticipantTournament, Tournament } from "@/generated/api";
 import React, { useEffect } from "react";
-import CreateParticipantForm from "../participant/create-participant-form";
-import CustomButton from "../components/custom-button/custom-button";
+import CreateParticipantForm from "../../participant/create-participant-form";
+import CustomButton from "../../components/custom-button/custom-button";
 import { PlusCircleIcon, SparklesIcon, TrashIcon } from "@heroicons/react/16/solid";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import {
@@ -18,19 +18,19 @@ import { setParticipants } from "@/app/store/features/participants/participantSl
 import { selectGroupsByTournament } from "@/app/store/features/groups/groupsSelector";
 import { move } from "@dnd-kit/helpers";
 import { DragDropProvider } from "@dnd-kit/react";
-import { Column } from "../components/dnd/column";
-import { Item } from "../components/dnd/item";
+import { Column } from "../../components/dnd/column";
+import { Item } from "../../components/dnd/item";
 import TournamentParticipants from "./tournament-participants";
 import { getGroupLabel, shuffle } from "@/lib/utils";
 import GenerateGroupsForm from "./generate-groups-form";
 
 const nonPersistentGroup = "nonPersistent";
 
-type TournamentDetailProps = {
+type CreateGroupStagesProps = {
   tournament: Tournament;
 };
 
-export default function TournamentDetail({ tournament }: TournamentDetailProps) {
+export default function CreateGroupStages({ tournament }: CreateGroupStagesProps) {
   const dispatch = useAppDispatch();
 
   useEffect(() => {

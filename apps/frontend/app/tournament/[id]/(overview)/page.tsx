@@ -1,9 +1,9 @@
-import TournamentDetail from "@/app/ui/tournament/tournament-detail";
+import CreateGroupStages from "@/app/ui/tournament/create-group-stages/create-group-stages";
 import { fetchTournamentById } from "../../api";
 import { notFound } from "next/navigation";
 import { TournamentStatus } from "@/generated/api";
-import TournamentGroups from "@/app/ui/tournament/groupStages/tournamentGroups";
-import CompleteGroupStages from "@/app/ui/tournament/groupStages/completeGroupStages";
+import TournamentGroups from "@/app/ui/tournament/groupStages/tournament-groups";
+import CompleteGroupStages from "@/app/ui/tournament/groupStages/complete-group-stages";
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
@@ -23,6 +23,6 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
       return <CompleteGroupStages tournament={tournament} />;
 
     default:
-      return <TournamentDetail tournament={tournament} />;
+      return <CreateGroupStages tournament={tournament} />;
   }
 }

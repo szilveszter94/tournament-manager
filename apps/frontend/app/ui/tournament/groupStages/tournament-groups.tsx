@@ -1,13 +1,13 @@
 "use client";
 
 import { Tournament } from "@/generated/api";
-import UpdateMatchForm from "./updateMatchForm";
+import UpdateMatchForm from "./update-match-form";
 import { useMemo, useState } from "react";
 import { Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/16/solid";
 import clsx from "clsx";
 import { getGroupPhase } from "@/app/tournament/helper";
-import CompleteGroupStageForm from "./completeGroupStageForm";
+import CompleteGroupStageForm from "./complete-group-stage-form";
 
 type TournamentGroupsProps = {
   tournament: Tournament;

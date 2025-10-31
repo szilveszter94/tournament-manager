@@ -1,7 +1,7 @@
 import React from "react";
 import { useSortable } from "@dnd-kit/react/sortable";
 import { ParticipantTournament } from "@/generated/api";
-import { DeleteParticipant } from "../../tournament/delete-form";
+import { DeleteParticipant } from "../../tournament/create-group-stages/delete-form";
 import clsx from "clsx";
 
 type ItemProps = {

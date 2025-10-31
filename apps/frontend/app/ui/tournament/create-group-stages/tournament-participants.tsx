@@ -1,7 +1,7 @@
 import { ParticipantTournament } from "@/generated/api";
 import React from "react";
-import { Column } from "../components/dnd/column";
-import { Item } from "../components/dnd/item";
+import { Column } from "../../components/dnd/column";
+import { Item } from "../../components/dnd/item";
 
 type TournamentParticipantProps = {
   participants: Record<string, ParticipantTournament[]>;

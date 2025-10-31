@@ -3,7 +3,7 @@
 import { createTournament } from "@/app/tournament/actions";
 import { useActionState } from "react";
 import RadioGroup from "@/app/ui/components/radio-button/radio-group";
-import { radioButtonOptions } from "./constants";
+import { radioButtonOptions } from "../tournamentList/constants";
 import CustomButton from "@/app/ui/components/custom-button/custom-button";
 import { ArrowRightCircleIcon } from "@heroicons/react/16/solid";
 import { initialState } from "@/lib/custom-models/common";
@@ -15,9 +15,7 @@ export default function CreateTournamentForm() {
     <form action={formAction} className="space-y-6">
       {/* Tournament name */}
       <div>
-        <label className="block text-sm font-medium mb-1">
-          Tournament name
-        </label>
+        <label className="block text-sm font-medium mb-1">Tournament name</label>
         <input
           type="text"
           name="name"
@@ -37,11 +35,7 @@ export default function CreateTournamentForm() {
       <div className="mb-10">
         <label className="block text-sm font-medium mb-2">Participants</label>
         <div className="flex gap-2 mb-5">
-          <RadioGroup
-            name="participantType"
-            options={radioButtonOptions.participants}
-            required={true}
-          />
+          <RadioGroup name="participantType" options={radioButtonOptions.participants} required={true} />
         </div>
         {state.errors?.participantType && (
           <p id="name-error" className="mt-2 text-sm text-red-primary">
@@ -51,18 +45,10 @@ export default function CreateTournamentForm() {
       </div>
 
       {/* Submit */}
-      <CustomButton
-        type="submit"
-        variant="primary"
-        size="lg"
-        icon={<ArrowRightCircleIcon />}
-        iconSize={8}
-      >
+      <CustomButton type="submit" variant="primary" size="lg" icon={<ArrowRightCircleIcon />} iconSize={8}>
         Next
       </CustomButton>
-      {state.message && (
-        <p className="text-sm text-red-primary">{state.message}</p>
-      )}
+      {state.message && <p className="text-sm text-red-primary">{state.message}</p>}
     </form>
   );
 }

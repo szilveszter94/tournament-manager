@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { ForwardIcon } from "@heroicons/react/16/solid";
-import CustomButton from "../components/custom-button/custom-button";
+import CustomButton from "../../components/custom-button/custom-button";
 import { useActionState, useEffect, useState } from "react";
 import { generateGroupStages } from "@/app/tournament/actions";
 import { ParticipantTournament } from "@/generated/api";
