@@ -3,7 +3,8 @@ import { fetchTournamentById } from "../../api";
 import { notFound } from "next/navigation";
 import { TournamentStatus } from "@/generated/api";
 import TournamentGroups from "@/app/ui/tournament/groupStages/tournament-groups";
-import CompleteGroupStages from "@/app/ui/tournament/groupStages/complete-group-stages";
+import GroupStagesCreateNextPhase from "@/app/ui/tournament/groupStages/create-next-phase/group-stages-create-next-phase";
+import DoubleEliminations from "@/app/ui/tournament/doubleEliminations/double-eliminations";
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
@@ -20,7 +21,10 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
       return <TournamentGroups tournament={tournament} />;
 
     case TournamentStatus.GROUP_STAGE_COMPLETED:
-      return <CompleteGroupStages tournament={tournament} />;
+      return <GroupStagesCreateNextPhase tournament={tournament} />;
+
+    case TournamentStatus.DOUBLE_ELIMINATION:
+      return <DoubleEliminations tournament={tournament} />;
 
     default:
       return <CreateGroupStages tournament={tournament} />;

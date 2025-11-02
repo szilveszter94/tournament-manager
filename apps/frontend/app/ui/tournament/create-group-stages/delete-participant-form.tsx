@@ -15,10 +15,10 @@ export function DeleteParticipantForm({ participantId, tournamentId, className =
   const deleteParticipant = deleteParticipantFromTournament.bind(null, participantId, tournamentId);
   const [state, formAction] = useActionState(deleteParticipant, initialState);
   const formRef = useRef<HTMLFormElement | null>(null);
-  const modal = useModal();
+  const { showModal } = useModal();
 
   const onDeleteClick = async () => {
-    const ok = await modal({
+    const ok = await showModal({
       type: "confirm",
       title: "Remove participant?",
       message: "Are you sure you want to remove this participant from the tournament?",

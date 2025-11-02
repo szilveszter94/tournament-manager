@@ -6,16 +6,17 @@ import clsx from "clsx";
 import { useFormStatus } from "react-dom";
 
 type ButtonProps = {
-  children: ReactNode;
+  children?: ReactNode;
   type?: "button" | "submit" | "reset";
   onClick?: () => void;
   href?: string; // optional for navigation
-  variant?: "primary" | "secondary" | "green";
+  variant?: "primary" | "secondary" | "success" | "danger";
   size?: "sm" | "md" | "lg" | "xl";
   icon?: ReactNode;
   iconSize?: number;
   className?: string;
   disabled?: boolean;
+  isPending?: boolean;
 };
 
 export default function CustomButton({
@@ -29,6 +30,7 @@ export default function CustomButton({
   iconSize = 5,
   className,
   disabled = false,
+  isPending = false
 }: ButtonProps) {
   const { pending } = useFormStatus();
   const router = useRouter();
@@ -36,9 +38,10 @@ export default function CustomButton({
   const baseStyles =
     "flex items-center justify-center gap-2 font-bold rounded-lg transition text-primary-text-color flex-1";
   const variantStyles = {
-    primary: clsx("bg-primary ", !disabled && "hover:bg-on-primary"),
-    secondary: clsx("bg-secondary", !disabled && "hover:bg-on-secondary"),
-    green: clsx("bg-green-primary"),
+    primary: clsx(disabled && "bg-disabled", !disabled && "bg-primary hover:bg-on-primary"),
+    secondary: clsx(disabled && "bg-disabled", !disabled && "bg-secondary hover:bg-on-secondary"),
+    success: clsx(disabled && "bg-disabled", !disabled && "bg-green-primary hover:bg-green-secondary"),
+    danger: clsx(disabled && "bg-disabled", !disabled && "bg-red-primary hover:bg-red-secondary"),
   };
 
   const sizeStyles = {
@@ -49,7 +52,7 @@ export default function CustomButton({
   };
 
   function handleClick() {
-    if (disabled || pending) return;
+    if (disabled || pending || isPending) return;
     if (href) {
       router.push(href);
     } else if (onClick) {
@@ -59,21 +62,21 @@ export default function CustomButton({
 
   return (
     <button
-      disabled={disabled || pending}
+      disabled={disabled || pending || isPending}
       type={type}
       onClick={handleClick}
       className={clsx(
         baseStyles,
         variantStyles[variant],
         sizeStyles[size],
-        disabled ? "opacity-50 cursor-auto" : "cursor-pointer",
+        disabled ? "cursor-auto" : "cursor-pointer",
         className
       )}>
       {icon && <span className={clsx(formattedIconSize)}>{icon}</span>}
-      {pending ? (
+      {pending || isPending ? (
         <div className="h-4 w-4 rounded-full border-2 border-t-transparent border-secondary animate-spin"></div>
       ) : (
-        children
+        children && children
       )}
     </button>
   );

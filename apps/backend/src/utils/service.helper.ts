@@ -3,10 +3,14 @@ import {
   minTournamentNameLength,
 } from '../../custom-models/shared/common';
 import { MatchType } from '../../generated/client';
-import type { CreateGroupMatch } from '../../custom-models/api/match';
+import type {
+  CreateDoubleEliminationMatch,
+  CreateGroupMatch,
+} from '../../custom-models/api/match';
 import { GroupStagePhaseDataDto } from '../../custom-models/api/tournament-phase';
 import { Participant } from '../../generated/models/participant.entity';
 import { Match } from '../../generated/models/match.entity';
+import { Elimination } from '../../generated/models/elimination.entity';
 
 export const validateTournamentNameLength = (
   name: string | undefined,
@@ -39,6 +43,25 @@ export const generateRobinRounds = (
   });
 
   return matches;
+};
+
+export const generateDoubleEliminationMatches = (
+  pahseId: number,
+  participantIds: number[],
+  elimination: Elimination,
+): CreateDoubleEliminationMatch[] => {
+  let byePlayerId: number | undefined = undefined;
+  if (participantIds.length % 2 !== 0) {
+    byePlayerId = selectByePlayer(participantIds);
+  }
+  const filteredParticipantsIds = participantIds.filter(
+    (p) => p !== byePlayerId,
+  );
+  return createDoubleEliminationMatches(
+    filteredParticipantsIds,
+    pahseId,
+    elimination,
+  );
 };
 
 export const shuffle = <T>(array: T[]): T[] => {
@@ -144,4 +167,37 @@ const generateRobinRoundMatches = (
   }
 
   return generatedMatches;
+};
+
+const createDoubleEliminationMatches = (
+  participantIds: number[],
+  phaseId: number,
+  elimination: Elimination,
+): CreateDoubleEliminationMatch[] => {
+  const matches: CreateDoubleEliminationMatch[] = [];
+  const shuffledIds = shuffle(participantIds);
+  let matchSerial = 0;
+
+  for (let index = 0; index < shuffledIds.length; index += 2) {
+    matches.push({
+      serialNumber: matchSerial,
+      tournamentPhaseId: phaseId,
+      eliminationId: elimination.id,
+      participant1Id: shuffledIds[index],
+      participant2Id: shuffledIds[index + 1],
+      matchType: MatchType.DoubleElimination,
+      round: elimination.currentRound,
+    } as CreateDoubleEliminationMatch);
+    matchSerial++;
+  }
+
+  return matches;
+};
+
+const selectByePlayer = (participantIds: number[]) => {
+  if (!participantIds.length) {
+    return;
+  }
+  const shuffledIds = shuffle(participantIds);
+  return shuffledIds[0];
 };

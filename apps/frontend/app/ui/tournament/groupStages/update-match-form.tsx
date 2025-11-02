@@ -1,13 +1,15 @@
 "use client";
 
 import { initialState } from "@/lib/custom-models/common";
-import { useActionState, useRef } from "react";
+import { useActionState, useEffect, useRef } from "react";
 import { updateGroupStageMatch } from "@/app/tournament/actions";
 import { Match } from "@/generated/api";
 import CustomButton from "../../components/custom-button/custom-button";
 import clsx from "clsx";
 import { PencilIcon, PlusCircleIcon } from "@heroicons/react/16/solid";
 import { useModal } from "@/app/providers/modal-provider";
+import { useAppDispatch } from "@/app/store/hooks";
+import { showSnackbar } from "@/app/store/features/snackbar/snackbarSlice";
 
 type Props = {
   match: Match;
@@ -17,17 +19,29 @@ type Props = {
 
 export default function UpdateMatchForm({ tournamentId, groupName, match }: Props) {
   const formRef = useRef<HTMLFormElement>(null);
-  const modal = useModal();
+  const { showModal } = useModal();
+  const dispatch = useAppDispatch();
 
   const updateMatch = updateGroupStageMatch.bind(null, match.id, tournamentId);
-  const [state, formAction] = useActionState(updateMatch, initialState);
+  const [state, formAction, isPending] = useActionState(updateMatch, initialState);
 
-  const showModal = async () => {
+  useEffect(() => {
+    if (!isPending && state.message) {
+      dispatch(
+        showSnackbar({
+          message: state.message,
+          type: state.success ? "success" : "error",
+        })
+      );
+    }
+  }, [state, isPending, dispatch]);
+
+  const onSubmit = async () => {
     if (!match.participant1Id || !match.participant2Id) {
       return;
     }
 
-    const selected = await modal({
+    const selected = await showModal({
       type: "option",
       title: "Set Match Result",
       message: `Choose the winner for ${groupName} match: ${match.serialNumber}`,
@@ -83,10 +97,11 @@ export default function UpdateMatchForm({ tournamentId, groupName, match }: Prop
         {/* Set Result Button */}
         <div>
           <CustomButton
+            isPending={isPending}
             icon={match.isOver ? <PencilIcon /> : <PlusCircleIcon />}
             variant={match.isOver ? "secondary" : "primary"}
             size="sm"
-            onClick={() => showModal()}>
+            onClick={() => onSubmit()}>
             {match.isOver ? "Edit" : "Set"}
           </CustomButton>
         </div>
@@ -96,7 +111,6 @@ export default function UpdateMatchForm({ tournamentId, groupName, match }: Prop
       <form ref={formRef} action={formAction}>
         <input type="hidden" name="winnerId" />
         <input type="hidden" name="loserId" />
-        {state.message && <p className="text-xs text-red-primary mt-2 text-center">{state.message}</p>}
       </form>
     </div>
   );

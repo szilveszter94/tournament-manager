@@ -240,6 +240,7 @@ exports.EliminationType = exports.$Enums.EliminationType = {
 };
 
 exports.MatchType = exports.$Enums.MatchType = {
+  DoubleElimination: 'DoubleElimination',
   Group: 'Group',
   Knockout: 'Knockout',
   Bronze: 'Bronze',

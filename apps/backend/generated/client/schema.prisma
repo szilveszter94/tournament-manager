@@ -20,6 +20,7 @@ enum EliminationType {
 }
 
 enum MatchType {
+  DoubleElimination
   Group
   Knockout
   Bronze

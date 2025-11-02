@@ -91,9 +91,9 @@ export async function updateGroupStageMatch(
     }
 
     await apiClient.match.matchControllerUpdate(matchId.toString(), tournamentId.toString(), entity);
-  } catch {
+  } catch (err) {
     return {
-      message: "Failed to update match",
+      message: `${err}`,
       errors: {},
       success: false,
     };
@@ -101,7 +101,7 @@ export async function updateGroupStageMatch(
 
   revalidatePath(`/tournament/${tournamentId}`);
   return {
-    message: "",
+    message: "Match updated.",
     errors: {},
     success: true,
   };
@@ -130,6 +130,53 @@ export async function generateGroupStages(
     const result = await apiClient.tournamentPhase.tournamentPhaseControllerAddGrupStageToTournament(
       tournamentId.toString(),
       mappedData
+    );
+
+    if (!result.ok) {
+      return {
+        message: `${result.error}`,
+        errors: {},
+        success: false,
+      };
+    }
+  } catch {
+    return {
+      message: "Failed to generate groups",
+      errors: {},
+      success: false,
+    };
+  }
+
+  revalidatePath(`/tournament/${tournamentId}`);
+  return {
+    message: "Group stages generated successfully",
+    errors: {},
+    success: false,
+  };
+}
+
+export async function generateDoubleEliminations(data: ParticipantTournament[], tournamentId: number): Promise<State> {
+  try {
+    if (data.length <= 3) {
+      return {
+        message: "Minimum participants count is 4",
+        errors: {},
+        success: false,
+      };
+    }
+
+    const extractedIds = data.map((d) => d.participant?.id ?? null);
+    if (extractedIds.some((id) => id === null)) {
+      return {
+        message: "Some participant ids are invalid",
+        errors: {},
+        success: false,
+      };
+    }
+
+    const result = await apiClient.tournamentPhase.tournamentPhaseControllerAddDoubleEliminationToTournament(
+      tournamentId.toString(),
+      { participantIds: extractedIds.filter((id) => id !== null) }
     );
 
     if (!result.ok) {

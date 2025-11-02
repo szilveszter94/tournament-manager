@@ -38,6 +38,26 @@ export class MatchService {
         return { ok: false, error: `Match with id ${matchId} not found` };
       }
 
+      if (!match.participant1Id || !match.participant2Id) {
+        this.logger.warn("The match doesn't have participants");
+        return { ok: false, error: "The match doesn't have participants" };
+      }
+
+      const validIds = [match.participant1Id, match.participant2Id];
+
+      if (
+        !validIds.includes(entity.winnerId) ||
+        !validIds.includes(entity.loserId)
+      ) {
+        this.logger.warn(
+          'The match winner and loser is not provided correctly',
+        );
+        return {
+          ok: false,
+          error: 'The match winner and loser is not provided correctly',
+        };
+      }
+
       if (match.isOver && match.winnerId && match.loserId) {
         if (
           match.winnerId !== entity.loserId ||

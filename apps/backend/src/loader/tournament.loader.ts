@@ -5,7 +5,7 @@ import { TournamentRepository } from '../repository/tournament.repository';
 export class TournamentLoader {
   constructor(private readonly tournamentRepository: TournamentRepository) {}
 
-  async loadGroupStageStarted(id: number) {
+  async loadGroupStages(id: number) {
     const detailedTournament =
       await this.tournamentRepository.findGroupStageStarted(id);
 

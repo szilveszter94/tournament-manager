@@ -29,6 +29,14 @@ export class GroupStagePhaseDataDto {
   groups: ParticipantTournamentGroup[];
 }
 
+export class ParticipantIdsDataDto {
+  @ApiProperty({
+    type: [Number],
+    required: true,
+  })
+  participantIds: number[];
+}
+
 export const phaseOrders: Record<PhaseType, number> = {
   None: 0,
   GroupStage: 1,

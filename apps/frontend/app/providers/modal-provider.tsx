@@ -26,14 +26,31 @@ type ShowModalFn = {
   (opts: OptionModalOptions): Promise<number>;
 };
 
-const ModalContext = createContext<ShowModalFn | null>(null);
+type ModalContextType = {
+  showModal: ShowModalFn;
+  showModalWithClose: ShowModalFn;
+  closeModal: () => void;
+};
+
+const ModalContext = createContext<ModalContextType | null>(null);
 
 export function ModalProvider({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   const [opts, setOpts] = useState<ModalOptions | null>(null);
   const resolverRef = useRef<((value: number) => void) | null>(null);
+  const manualCloseRef = useRef(false);
 
   const showModal: ShowModalFn = (options: ModalOptions) => {
+    manualCloseRef.current = false;
+    setOpts(options);
+    setOpen(true);
+    return new Promise<number>((resolve) => {
+      resolverRef.current = resolve;
+    });
+  };
+
+  const showModalWithClose: ShowModalFn = (options: ModalOptions) => {
+    manualCloseRef.current = true;
     setOpts(options);
     setOpen(true);
     return new Promise<number>((resolve) => {
@@ -46,18 +63,27 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
     if (!opts) return;
     resolverRef.current?.(0);
     resolverRef.current = null;
+    manualCloseRef.current = false;
   };
 
   const handleSelect = (value: number) => {
     resolverRef.current?.(value);
-    setOpen(false);
-    resolverRef.current = null;
+    if (!manualCloseRef.current) {
+      setOpen(false);
+      resolverRef.current = null;
+    }
   };
 
-  if (!opts) return <ModalContext.Provider value={showModal}>{children}</ModalContext.Provider>;
+  const contextValue: ModalContextType = {
+    showModal,
+    showModalWithClose,
+    closeModal: handleClose,
+  };
+
+  if (!opts) return <ModalContext.Provider value={contextValue}>{children}</ModalContext.Provider>;
 
   return (
-    <ModalContext.Provider value={showModal}>
+    <ModalContext.Provider value={contextValue}>
       {children}
       {opts.type === "confirm" ? (
         <ConfirmModal
@@ -66,6 +92,7 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
           onConfirm={handleSelect}
           title={opts.title}
           message={opts.message}
+          autoClose={!manualCloseRef.current}
         />
       ) : (
         <TwoOptionModal
@@ -76,6 +103,7 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
           message={opts.message}
           option1={opts.option1}
           option2={opts.option2}
+          autoClose={!manualCloseRef.current}
         />
       )}
     </ModalContext.Provider>

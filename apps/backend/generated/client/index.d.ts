@@ -72,6 +72,7 @@ export type EliminationType = (typeof EliminationType)[keyof typeof EliminationT
 
 
 export const MatchType: {
+  DoubleElimination: 'DoubleElimination',
   Group: 'Group',
   Knockout: 'Knockout',
   Bronze: 'Bronze',

@@ -22,6 +22,7 @@ export { MatchType } from './models/MatchType';
 export type { PaginationData } from './models/PaginationData';
 export type { Participant } from './models/Participant';
 export type { ParticipantGroup } from './models/ParticipantGroup';
+export type { ParticipantIdsDataDto } from './models/ParticipantIdsDataDto';
 export type { ParticipantResponse } from './models/ParticipantResponse';
 export type { ParticipantsResponse } from './models/ParticipantsResponse';
 export type { ParticipantTournament } from './models/ParticipantTournament';

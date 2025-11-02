@@ -4,11 +4,22 @@ import {
   phaseOrders,
   GroupStagePhaseDataDto,
   UpdateTournamentAndPhaseDto,
+  ParticipantIdsDataDto,
 } from '../../custom-models/api/tournament-phase';
 import { BaseResponse } from '../../custom-models/api/base-response';
-import { PhaseType, TournamentStatus } from '../../generated/client';
-import { generateRobinRounds } from '../utils/service.helper';
-import { CreateGroupMatch } from '../../custom-models/api/match';
+import {
+  EliminationType,
+  PhaseType,
+  TournamentStatus,
+} from '../../generated/client';
+import {
+  generateDoubleEliminationMatches,
+  generateRobinRounds,
+} from '../utils/service.helper';
+import {
+  CreateDoubleEliminationMatch,
+  CreateGroupMatch,
+} from '../../custom-models/api/match';
 
 @Injectable()
 export class TournamentPhaseService {
@@ -50,7 +61,98 @@ export class TournamentPhaseService {
     }
   }
 
-  async createGroupStage(
+  async createDoubleEliminations(
+    entity: ParticipantIdsDataDto,
+    tournamentId: number,
+  ): Promise<BaseResponse> {
+    try {
+      if (!entity?.participantIds.length) {
+        return { ok: false, error: 'Participants not provided.' };
+      }
+
+      if (entity.participantIds.length <= 3) {
+        return { ok: false, error: 'Minimum participants is 4.' };
+      }
+
+      if (tournamentId <= 0) {
+        return {
+          ok: false,
+          error: `Invalid tournament ID: ${tournamentId}`,
+        };
+      }
+
+      await this.prisma.$transaction(async (tx) => {
+        // 1️⃣ Ensure the tournament exists
+        const tournament = await tx.tournament.findUnique({
+          where: { id: tournamentId },
+          include: { phases: true },
+        });
+        if (!tournament) throw new BadRequestException('Tournament not found');
+
+        await tx.tournament.update({
+          where: { id: tournamentId },
+          data: {
+            status: TournamentStatus.DoubleElimination,
+          },
+        });
+
+        const existingPhase = tournament.phases.find(
+          (p) => p.phaseType === PhaseType.DoubleElimination,
+        );
+        if (existingPhase) {
+          throw new BadRequestException(
+            'This tournament already has a Double Elimination phase',
+          );
+        }
+
+        // 2️⃣ Create the phase
+        const phase = await tx.tournamentPhase.create({
+          data: {
+            tournamentId,
+            phaseType: PhaseType.DoubleElimination,
+            order: phaseOrders[PhaseType.DoubleElimination],
+          },
+        });
+
+        if (!phase) {
+          throw new BadRequestException('Failed to create tournament phase');
+        }
+
+        // 2️⃣ Create the elimination round
+        const elimination = await tx.elimination.create({
+          data: {
+            tournamentPhaseId: phase.id,
+            type: EliminationType.Double,
+            currentRound: 1,
+          },
+        });
+
+        if (!elimination) {
+          throw new BadRequestException(
+            'Failed to create tournament elimination',
+          );
+        }
+
+        const matches: CreateDoubleEliminationMatch[] =
+          generateDoubleEliminationMatches(
+            phase.id,
+            entity.participantIds,
+            elimination,
+          );
+
+        if (matches.length > 0) {
+          await tx.match.createMany({ data: matches });
+        }
+      });
+
+      return { ok: true };
+    } catch (e) {
+      this.logger.error('Error creating double eliminations', e.stack);
+      return { ok: false, error: 'Unexpected server error occurred' };
+    }
+  }
+
+  async createGroupStages(
     entity: GroupStagePhaseDataDto,
     tournamentId: number,
   ): Promise<BaseResponse> {
@@ -149,6 +251,12 @@ export class TournamentPhaseService {
       return { ok: true };
     } catch (e) {
       this.logger.error('Error creating tournament phase', e.stack);
+
+      if (e instanceof BadRequestException) {
+        const message = e.message ?? 'Bad request';
+        return { ok: false, error: message };
+      }
+
       return { ok: false, error: 'Unexpected server error occurred' };
     }
   }

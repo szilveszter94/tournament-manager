@@ -33,8 +33,11 @@ export class TournamentService {
         return { ok: false, error: `Tournament ${id} not found` };
       }
 
-      if (tournament.status === TournamentStatus.GroupStage) {
-        return this.loader.loadGroupStageStarted(id);
+      if (
+        tournament.status === TournamentStatus.GroupStage ||
+        tournament.status === TournamentStatus.GroupStageCompleted
+      ) {
+        return this.loader.loadGroupStages(id);
       }
 
       return this.loader.loadDefault(id);

@@ -2,7 +2,7 @@
 CREATE TYPE "public"."EliminationType" AS ENUM ('Knockout', 'Double');
 
 -- CreateEnum
-CREATE TYPE "public"."MatchType" AS ENUM ('Group', 'Knockout', 'Bronze', 'Final');
+CREATE TYPE "public"."MatchType" AS ENUM ('DoubleElimination', 'Group', 'Knockout', 'Bronze', 'Final');
 
 -- CreateEnum
 CREATE TYPE "public"."PhaseType" AS ENUM ('None', 'GroupStage', 'SingleElimination', 'DoubleElimination', 'RoundRobin', 'Swiss');

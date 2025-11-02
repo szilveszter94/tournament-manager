@@ -88,7 +88,7 @@ export default function TournamentGroups({ tournament }: TournamentGroupsProps) 
       [groupId]: !prev[groupId],
     }));
   };
-
+  
   return (
     <main className="p-4 mx-auto">
       <div className="overflow-x-auto">

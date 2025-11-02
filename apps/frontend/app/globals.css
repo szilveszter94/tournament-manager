@@ -11,6 +11,7 @@
   --color-tertiary: var(--tertiary);
   --color-icon: var(--icon);
   --color-disabled: var(--disabled);
+  --color-disabled-dark: var(--disabled-dark);
   --color-gray-primary: var(--gray-primary);
   --color-gray-secondary: var(--gray-secondary);
 
@@ -34,6 +35,9 @@
   --color-red-primary: var(--red-primary);
   --color-yellow-primary: var(--yellow-primary);
   --color-blue-primary: var(--blue-primary);
+
+  --color-green-secondary: var(--green-secondary);
+  --color-red-secondary: var(--red-secondary);
 }
 
 /* Base styles */

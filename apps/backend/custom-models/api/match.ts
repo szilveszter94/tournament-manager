@@ -11,6 +11,17 @@ export type CreateGroupMatch = Pick<
   | 'serialNumber'
 >;
 
+export type CreateDoubleEliminationMatch = Pick<
+  Match,
+  | 'tournamentPhaseId'
+  | 'eliminationId'
+  | 'participant1Id'
+  | 'participant2Id'
+  | 'serialNumber'
+  | 'matchType'
+  | 'round'
+>;
+
 export class UpdateMatchWinnerDto extends PickType(Match, [
   'winnerId',
   'loserId',

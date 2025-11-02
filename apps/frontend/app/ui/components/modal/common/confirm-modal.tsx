@@ -10,6 +10,7 @@ type ConfirmModalProps = {
   message?: string;
   onClose: () => void;
   onConfirm: (result: number) => void;
+  autoClose?: boolean;
 };
 
 export default function ConfirmModal({
@@ -18,6 +19,7 @@ export default function ConfirmModal({
   message = "Do you want to continue?",
   onClose,
   onConfirm,
+  autoClose = false,
 }: ConfirmModalProps) {
   const [loading, setLoading] = useState(false);
 
@@ -25,7 +27,7 @@ export default function ConfirmModal({
     setLoading(true);
     onConfirm(result);
     setLoading(false);
-    onClose();
+    if (autoClose) onClose();
   };
 
   return (

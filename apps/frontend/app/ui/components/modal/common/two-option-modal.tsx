@@ -12,6 +12,7 @@ type TwoOptionModalProps<T> = {
   option2: { label: string; value: T };
   onClose: () => void;
   onSelect: (result: T) => void;
+  autoClose?: boolean;
 };
 
 export default function TwoOptionModal<T>({
@@ -22,6 +23,7 @@ export default function TwoOptionModal<T>({
   option2,
   onClose,
   onSelect,
+  autoClose = true,
 }: TwoOptionModalProps<T>) {
   const [loading, setLoading] = useState(false);
 
@@ -29,7 +31,7 @@ export default function TwoOptionModal<T>({
     setLoading(true);
     onSelect(value);
     setLoading(false);
-    onClose();
+    if (autoClose) onClose();
   };
 
   return (

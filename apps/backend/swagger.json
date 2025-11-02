@@ -717,6 +717,88 @@
         ]
       }
     },
+    "/tournamentPhase/doubleElimination/{tournamentId}": {
+      "post": {
+        "operationId": "TournamentPhaseController_addDoubleEliminationToTournament",
+        "parameters": [
+          {
+            "name": "tournamentId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ParticipantIdsDataDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Create double elimination phase for a tournament",
+        "tags": [
+          "tournamentPhase"
+        ]
+      }
+    },
+    "/tournamentPhase/groupStage/{tournamentId}": {
+      "post": {
+        "operationId": "TournamentPhaseController_addGrupStageToTournament",
+        "parameters": [
+          {
+            "name": "tournamentId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GroupStagePhaseDataDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Create group stage phase for a tournament",
+        "tags": [
+          "tournamentPhase"
+        ]
+      }
+    },
     "/tournamentPhase/{phaseId}/{tournamentId}": {
       "post": {
         "operationId": "TournamentPhaseController_updateTournamentPhase",
@@ -761,47 +843,6 @@
           }
         },
         "summary": "Update tournamnet phase",
-        "tags": [
-          "tournamentPhase"
-        ]
-      }
-    },
-    "/tournamentPhase/groupStage/{tournamentId}": {
-      "post": {
-        "operationId": "TournamentPhaseController_addGrupStageToTournament",
-        "parameters": [
-          {
-            "name": "tournamentId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GroupStagePhaseDataDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BaseResponse"
-                }
-              }
-            }
-          }
-        },
-        "summary": "Create group stage phase for a tournament",
         "tags": [
           "tournamentPhase"
         ]
@@ -912,6 +953,7 @@
       "MatchType": {
         "type": "string",
         "enum": [
+          "DoubleElimination",
           "Group",
           "Knockout",
           "Bronze",
@@ -1641,7 +1683,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-29T22:16:06.576Z"
+            "default": "2025-11-01T14:11:32.284Z"
           }
         },
         "required": [
@@ -1673,7 +1715,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-29T22:16:06.566Z"
+            "default": "2025-11-01T14:11:32.276Z"
           }
         }
       },
@@ -1762,7 +1804,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-29T22:16:06.974Z"
+            "default": "2025-11-01T14:11:32.736Z"
           }
         },
         "required": [
@@ -1801,7 +1843,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-10-29T22:16:06.984Z"
+            "default": "2025-11-01T14:11:32.742Z"
           }
         }
       },
@@ -1920,6 +1962,20 @@
         "required": [
           "tournamentEntity",
           "phaseEntity"
+        ]
+      },
+      "ParticipantIdsDataDto": {
+        "type": "object",
+        "properties": {
+          "participantIds": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "required": [
+          "participantIds"
         ]
       },
       "UpdateMatchWinnerDto": {

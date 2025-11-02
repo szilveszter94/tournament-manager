@@ -39,13 +39,13 @@ describe('TournamentPhaseService', () => {
   });
 
   it('should return error if no groups are provided', async () => {
-    const result = await service.createGroupStage({ groups: [] }, 1);
+    const result = await service.createGroupStages({ groups: [] }, 1);
     expect(result).toEqual({ ok: false, error: 'Groups not provided.' });
     console.log('✅ Error if no groups provided passed');
   });
 
   it('should return error if tournamentId is invalid', async () => {
-    const result = await service.createGroupStage(testData, 0);
+    const result = await service.createGroupStages(testData, 0);
     expect(result).toEqual({ ok: false, error: 'Invalid tournament ID: 0' });
     console.log('✅ Error if tournamentId is invalid passed');
   });
@@ -61,8 +61,12 @@ describe('TournamentPhaseService', () => {
         },
       );
 
-    const result = await service.createGroupStage(
-      { groups: [{ name: 'Group-1', serialNumber: 1, participantIds: [] }] },
+    const result = await service.createGroupStages(
+      {
+        groups: [
+          { name: 'Group-1', serialNumber: 1, participantIds: [1, 2, 3, 4, 5] },
+        ],
+      },
       5,
     );
 
@@ -115,7 +119,7 @@ describe('TournamentPhaseService', () => {
         },
       );
 
-    const result = await service.createGroupStage(testData, 1);
+    const result = await service.createGroupStages(testData, 1);
     expect(result).toEqual({ ok: true });
     console.log('✅ Create group stages correctly passed');
   });
