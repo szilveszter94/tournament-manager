@@ -1,7 +1,7 @@
 "use client";
 
 import { initialState } from "@/lib/custom-models/common";
-import { useActionState, useEffect, useRef } from "react";
+import { startTransition, useActionState, useEffect } from "react";
 import { updateGroupStageMatch } from "@/app/tournament/actions";
 import { Match } from "@/generated/api";
 import CustomButton from "../../components/custom-button/custom-button";
@@ -18,7 +18,6 @@ type Props = {
 };
 
 export default function UpdateMatchForm({ tournamentId, groupName, match }: Props) {
-  const formRef = useRef<HTMLFormElement>(null);
   const { showModal } = useModal();
   const dispatch = useAppDispatch();
 
@@ -37,9 +36,7 @@ export default function UpdateMatchForm({ tournamentId, groupName, match }: Prop
   }, [state, isPending, dispatch]);
 
   const onSubmit = async () => {
-    if (!match.participant1Id || !match.participant2Id) {
-      return;
-    }
+    if (!match.participant1Id || !match.participant2Id) return;
 
     const selected = await showModal({
       type: "option",
@@ -49,22 +46,17 @@ export default function UpdateMatchForm({ tournamentId, groupName, match }: Prop
       option2: { label: match.participant2?.name ?? "Unknown", value: match.participant2Id },
     });
 
-    if (selected > 0) {
-      if (!formRef.current || match.winnerId === selected) {
-        return;
-      }
-      const winnerId = selected;
-      const loserId = match.participant1Id === selected ? match.participant2Id : match.participant1Id;
-      const winnerInput = formRef.current.querySelector<HTMLInputElement>('input[name="winnerId"]');
-      const loserInput = formRef.current.querySelector<HTMLInputElement>('input[name="loserId"]');
+    if (selected <= 0 || match.winnerId === selected) return;
 
-      if (winnerInput && loserInput) {
-        winnerInput.value = winnerId?.toString() ?? "";
-        loserInput.value = loserId?.toString() ?? "";
+    const winnerId = selected;
+    const loserId = match.participant1Id === selected ? match.participant2Id : match.participant1Id;
 
-        formRef.current.requestSubmit();
-      }
-    }
+    const formData = new FormData();
+    formData.append("winnerId", winnerId.toString());
+    formData.append("loserId", loserId.toString());
+    startTransition(() => {
+      formAction(formData);
+    });
   };
 
   return (
@@ -106,12 +98,6 @@ export default function UpdateMatchForm({ tournamentId, groupName, match }: Prop
           </CustomButton>
         </div>
       </div>
-
-      {/* Form */}
-      <form ref={formRef} action={formAction}>
-        <input type="hidden" name="winnerId" />
-        <input type="hidden" name="loserId" />
-      </form>
     </div>
   );
 }

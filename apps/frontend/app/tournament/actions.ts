@@ -67,7 +67,8 @@ export async function updateGroupStageMatch(
 ): Promise<State> {
   const winnerId = Number(formData.get("winnerId"));
   const loserId = Number(formData.get("loserId"));
-
+  console.log("iniside form submit", winnerId, loserId, matchId, tournamentId);
+  
   try {
     if (winnerId <= 0 || loserId <= 0) {
       return {
