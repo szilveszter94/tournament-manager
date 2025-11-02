@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { apiClient } from "@/lib/client";
 import {
   GroupStagePhaseDataDto,
+  ParticipantGroup,
   ParticipantTournament,
   ParticipantType,
   TournamentStatus,
@@ -155,7 +156,7 @@ export async function generateGroupStages(
   };
 }
 
-export async function generateDoubleEliminations(data: ParticipantTournament[], tournamentId: number): Promise<State> {
+export async function generateDoubleEliminations(data: ParticipantGroup[], tournamentId: number): Promise<State> {
   try {
     if (data.length <= 3) {
       return {

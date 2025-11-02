@@ -10,7 +10,7 @@ import type {
 import { GroupStagePhaseDataDto } from '../../custom-models/api/tournament-phase';
 import { Participant } from '../../generated/models/participant.entity';
 import { Match } from '../../generated/models/match.entity';
-import { Elimination } from '../../generated/models/elimination.entity';
+import { TournamentDoubleElimination } from '../../generated/models/tournamentDoubleElimination.entity';
 
 export const validateTournamentNameLength = (
   name: string | undefined,
@@ -48,7 +48,7 @@ export const generateRobinRounds = (
 export const generateDoubleEliminationMatches = (
   pahseId: number,
   participantIds: number[],
-  elimination: Elimination,
+  elimination: TournamentDoubleElimination,
 ): CreateDoubleEliminationMatch[] => {
   let byePlayerId: number | undefined = undefined;
   if (participantIds.length % 2 !== 0) {
@@ -172,7 +172,7 @@ const generateRobinRoundMatches = (
 const createDoubleEliminationMatches = (
   participantIds: number[],
   phaseId: number,
-  elimination: Elimination,
+  elimination: TournamentDoubleElimination,
 ): CreateDoubleEliminationMatch[] => {
   const matches: CreateDoubleEliminationMatch[] = [];
   const shuffledIds = shuffle(participantIds);
@@ -182,11 +182,11 @@ const createDoubleEliminationMatches = (
     matches.push({
       serialNumber: matchSerial,
       tournamentPhaseId: phaseId,
-      eliminationId: elimination.id,
+      tournamentDoubleEliminationId: elimination.id,
       participant1Id: shuffledIds[index],
       participant2Id: shuffledIds[index + 1],
       matchType: MatchType.DoubleElimination,
-      round: elimination.currentRound,
+      doubleEliminationRound: 1,
     } as CreateDoubleEliminationMatch);
     matchSerial++;
   }

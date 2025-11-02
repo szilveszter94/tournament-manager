@@ -1,6 +1,7 @@
-enum EliminationType {
-  Knockout
-  Double
+enum DoubleEliminationBracket {
+  Winner
+  Loser
+  Eliminated
 }
 
 enum MatchType {

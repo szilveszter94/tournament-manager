@@ -10,6 +10,7 @@ model Participant {
 
   // Relations
   tournaments ParticipantTournament[]
+  doubleEliminations ParticipantDoubleElimination[]
   groups      ParticipantGroup[]
   matchesAsP1 Match[]                 @relation("MatchParticipant1")
   matchesAsP2 Match[]                 @relation("MatchParticipant2")

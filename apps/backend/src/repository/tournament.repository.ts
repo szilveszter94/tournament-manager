@@ -17,7 +17,25 @@ export class TournamentRepository {
     });
   }
 
-  async findGroupStageStarted(id: number) {
+  async findWithDoubleEliminations(id: number) {
+    return this.prisma.tournament.findUnique({
+      where: { id },
+      include: {
+        participants: { include: { participant: true } },
+        phases: {
+          where: { phaseType: PhaseType.DoubleElimination },
+          include: {
+            matches: {
+              include: { participant1: true, participant2: true },
+            },
+            doubleElimination: true,
+          },
+        },
+      },
+    });
+  }
+
+  async findGroupStages(id: number) {
     return this.prisma.tournament.findUnique({
       where: { id },
       include: {
@@ -28,6 +46,9 @@ export class TournamentRepository {
             groups: {
               include: {
                 participantGroups: { include: { participant: true } },
+                matches: {
+                  include: { participant1: true, participant2: true },
+                },
               },
             },
             matches: {

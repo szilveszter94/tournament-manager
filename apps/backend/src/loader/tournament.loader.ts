@@ -7,12 +7,21 @@ export class TournamentLoader {
 
   async loadGroupStages(id: number) {
     const detailedTournament =
-      await this.tournamentRepository.findGroupStageStarted(id);
+      await this.tournamentRepository.findGroupStages(id);
 
     if (!detailedTournament?.phases.length) {
       return { ok: false, error: `Tournament ${id} has no group stage phase` };
     }
 
+    return { ok: true, data: detailedTournament };
+  }
+
+  async loadDoubleEliminations(id: number) {
+    const detailedTournament =
+      await this.tournamentRepository.findWithDoubleEliminations(id);
+    if (!detailedTournament) {
+      return { ok: false, error: `Tournament ${id} not found` };
+    }
     return { ok: true, data: detailedTournament };
   }
 

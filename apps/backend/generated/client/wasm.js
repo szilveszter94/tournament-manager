@@ -120,27 +120,18 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.EliminationScalarFieldEnum = {
-  id: 'id',
-  tournamentPhaseId: 'tournamentPhaseId',
-  type: 'type',
-  currentRound: 'currentRound',
-  isOver: 'isOver',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
 exports.Prisma.MatchScalarFieldEnum = {
   id: 'id',
   tournamentPhaseId: 'tournamentPhaseId',
-  eliminationId: 'eliminationId',
+  knockoutId: 'knockoutId',
   tournamentGroupId: 'tournamentGroupId',
+  tournamentDoubleEliminationId: 'tournamentDoubleEliminationId',
+  doubleEliminationRound: 'doubleEliminationRound',
   participant1Id: 'participant1Id',
   participant2Id: 'participant2Id',
   winnerId: 'winnerId',
   loserId: 'loserId',
   nextMatchId: 'nextMatchId',
-  round: 'round',
   serialNumber: 'serialNumber',
   winnerElo: 'winnerElo',
   loserElo: 'loserElo',
@@ -163,13 +154,23 @@ exports.Prisma.ParticipantScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ParticipantDoubleEliminationScalarFieldEnum = {
+  id: 'id',
+  tournamentDoubleEliminationId: 'tournamentDoubleEliminationId',
+  participantId: 'participantId',
+  wins: 'wins',
+  losses: 'losses',
+  doubleEliminationBracket: 'doubleEliminationBracket',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.ParticipantGroupScalarFieldEnum = {
   id: 'id',
   tournamentGroupId: 'tournamentGroupId',
   participantId: 'participantId',
   wins: 'wins',
   losses: 'losses',
-  points: 'points',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -193,12 +194,29 @@ exports.Prisma.TournamentScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.TournamentDoubleEliminationScalarFieldEnum = {
+  id: 'id',
+  tournamentPhaseId: 'tournamentPhaseId',
+  roundNumber: 'roundNumber',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.TournamentGroupScalarFieldEnum = {
   id: 'id',
   name: 'name',
   tournamentPhaseId: 'tournamentPhaseId',
   groupNumber: 'groupNumber',
-  isGroupMatchesEnded: 'isGroupMatchesEnded',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TournamentKnockoutScalarFieldEnum = {
+  id: 'id',
+  tournamentPhaseId: 'tournamentPhaseId',
+  currentRound: 'currentRound',
+  isOver: 'isOver',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -234,11 +252,6 @@ exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 };
-exports.EliminationType = exports.$Enums.EliminationType = {
-  Knockout: 'Knockout',
-  Double: 'Double'
-};
-
 exports.MatchType = exports.$Enums.MatchType = {
   DoubleElimination: 'DoubleElimination',
   Group: 'Group',
@@ -250,6 +263,12 @@ exports.MatchType = exports.$Enums.MatchType = {
 exports.ParticipantType = exports.$Enums.ParticipantType = {
   Individual: 'Individual',
   Team: 'Team'
+};
+
+exports.DoubleEliminationBracket = exports.$Enums.DoubleEliminationBracket = {
+  Winner: 'Winner',
+  Loser: 'Loser',
+  Eliminated: 'Eliminated'
 };
 
 exports.TournamentStatus = exports.$Enums.TournamentStatus = {
@@ -277,13 +296,15 @@ exports.PhaseType = exports.$Enums.PhaseType = {
 };
 
 exports.Prisma.ModelName = {
-  Elimination: 'Elimination',
   Match: 'Match',
   Participant: 'Participant',
+  ParticipantDoubleElimination: 'ParticipantDoubleElimination',
   ParticipantGroup: 'ParticipantGroup',
   ParticipantTournament: 'ParticipantTournament',
   Tournament: 'Tournament',
+  TournamentDoubleElimination: 'TournamentDoubleElimination',
   TournamentGroup: 'TournamentGroup',
+  TournamentKnockout: 'TournamentKnockout',
   TournamentPhase: 'TournamentPhase',
   TournamentWinner: 'TournamentWinner'
 };

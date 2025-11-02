@@ -5,10 +5,10 @@ import { initialState } from "@/lib/custom-models/common";
 import { useDispatch } from "react-redux";
 import { showSnackbar } from "@/app/store/features/snackbar/snackbarSlice";
 import CustomButton from "@/app/ui/components/custom-button/custom-button";
-import { ParticipantTournament } from "@/generated/api";
+import { ParticipantGroup } from "@/generated/api";
 
 type GenerateGroupFormProps = {
-  data: ParticipantTournament[];
+  data: ParticipantGroup[];
   tournamentId: number;
 };
 

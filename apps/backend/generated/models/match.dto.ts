@@ -12,7 +12,7 @@ export class MatchDto {
     format: 'int32',
     nullable: true,
   })
-  round: number | null;
+  doubleEliminationRound: number | null;
   @ApiProperty({
     type: 'integer',
     format: 'int32',

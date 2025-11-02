@@ -13,12 +13,6 @@ export class UpdateTournamentGroupDto {
   })
   groupNumber?: number;
   @ApiProperty({
-    type: 'boolean',
-    default: false,
-    required: false,
-  })
-  isGroupMatchesEnded?: boolean;
-  @ApiProperty({
     type: 'string',
     format: 'date-time',
     default: new Date().toISOString(),

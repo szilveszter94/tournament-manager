@@ -8,7 +8,7 @@ export class CreateMatchDto {
     required: false,
     nullable: true,
   })
-  round?: number | null;
+  doubleEliminationRound?: number | null;
   @ApiProperty({
     type: 'integer',
     format: 'int32',

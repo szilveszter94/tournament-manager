@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ParticipantTournament } from "@/generated/api";
+import { ParticipantGroup } from "@/generated/api";
 
 interface DoubleEliminationParticipantsState {
-  participantsByTournament: Record<number, ParticipantTournament[]>;
+  participantsByTournament: Record<number, ParticipantGroup[]>;
 }
 
 const initialState: DoubleEliminationParticipantsState = {
@@ -15,14 +15,14 @@ export const doubleEliminationParticipantsSlice = createSlice({
   reducers: {
     setDoubleEliminationParticipants: (
       state,
-      action: PayloadAction<{ tournamentId: number; participants: ParticipantTournament[] }>
+      action: PayloadAction<{ tournamentId: number; participants: ParticipantGroup[] }>
     ) => {
       const { tournamentId, participants } = action.payload;
       state.participantsByTournament[tournamentId] = participants;
     },
     addParticipantToDoubleEliminations: (
       state,
-      action: PayloadAction<{ tournamentId: number; participant: ParticipantTournament }>
+      action: PayloadAction<{ tournamentId: number; participant: ParticipantGroup }>
     ) => {
       const { tournamentId, participant } = action.payload;
       const participantList = state.participantsByTournament;

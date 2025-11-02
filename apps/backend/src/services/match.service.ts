@@ -112,6 +112,7 @@ export class MatchService {
             tournamentId,
             winnerStats,
             winnerEloChange,
+            match,
           ),
           this.updateParticipantStats(
             tx,
@@ -119,6 +120,7 @@ export class MatchService {
             tournamentId,
             loserStats,
             -loserEloChange,
+            match,
           ),
           tx.match.update({
             where: { id: matchId },
@@ -152,6 +154,7 @@ export class MatchService {
     tournamentId: number,
     stats: { wins: number; losses: number },
     eloChange: number,
+    match: Match,
   ) {
     // 1️⃣ Update participant stats
     if (participantId) {
@@ -168,7 +171,7 @@ export class MatchService {
         );
       }
 
-      await Promise.all([
+      const updates: Promise<any>[] = [
         tx.participant.update({
           where: { id: participant.id },
           data: {
@@ -186,7 +189,27 @@ export class MatchService {
             updatedAt: new Date(),
           },
         }),
-      ]);
+      ];
+
+      if (match.tournamentGroupId && participant.id) {
+        updates.push(
+          tx.participantGroup.update({
+            where: {
+              tournamentGroupId_participantId: {
+                tournamentGroupId: match.tournamentGroupId,
+                participantId: participant.id,
+              },
+            },
+            data: {
+              wins: { increment: stats.wins },
+              losses: { increment: stats.losses },
+              updatedAt: new Date(),
+            },
+          }),
+        );
+      }
+
+      await Promise.all(updates);
     }
   }
 

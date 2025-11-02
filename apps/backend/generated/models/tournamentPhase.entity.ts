@@ -1,7 +1,8 @@
 import { PhaseType } from '../client';
 import { ApiProperty } from '@nestjs/swagger';
-import { Elimination } from './elimination.entity';
+import { TournamentKnockout } from './tournamentKnockout.entity';
 import { TournamentGroup } from './tournamentGroup.entity';
+import { TournamentDoubleElimination } from './tournamentDoubleElimination.entity';
 import { Match } from './match.entity';
 import { Tournament } from './tournament.entity';
 
@@ -31,17 +32,23 @@ export class TournamentPhase {
   })
   isCompleted: boolean;
   @ApiProperty({
-    type: () => Elimination,
+    type: () => TournamentKnockout,
     required: false,
     nullable: true,
   })
-  elimination?: Elimination | null;
+  knockout?: TournamentKnockout | null;
   @ApiProperty({
     type: () => TournamentGroup,
     isArray: true,
     required: false,
   })
   groups?: TournamentGroup[];
+  @ApiProperty({
+    type: () => TournamentDoubleElimination,
+    required: false,
+    nullable: true,
+  })
+  doubleElimination?: TournamentDoubleElimination | null;
   @ApiProperty({
     type: () => Match,
     isArray: true,

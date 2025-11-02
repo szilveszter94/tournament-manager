@@ -10,7 +10,6 @@ export type TournamentGroup = {
     name: string;
     tournamentPhaseId: number;
     groupNumber: number;
-    isGroupMatchesEnded: boolean;
     createdAt: string;
     updatedAt: string;
     tournamentPhase?: TournamentPhase;

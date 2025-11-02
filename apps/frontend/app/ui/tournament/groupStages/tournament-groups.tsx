@@ -1,6 +1,6 @@
 "use client";
 
-import { Tournament } from "@/generated/api";
+import { PhaseType, Tournament } from "@/generated/api";
 import UpdateMatchForm from "./update-match-form";
 import { useMemo, useState } from "react";
 import { Transition } from "@headlessui/react";
@@ -18,16 +18,13 @@ export default function TournamentGroups({ tournament }: TournamentGroupsProps) 
   const tournamentPhase = useMemo(() => {
     if (!tournament) return null;
 
-    const phase = getGroupPhase(tournament);
+    const phase = getGroupPhase(tournament, PhaseType.GROUP_STAGE);
     if (!phase) return null;
 
     const groups = phase?.groups
       ?.sort((a, b) => a.groupNumber - b.groupNumber)
       ?.map((group) => {
-        const groupParticipantIds = new Set(group.participantGroups?.map((g) => g.participant?.id));
-
-        const filteredParticipants = tournament.participants
-          ?.filter((p) => groupParticipantIds.has(p.participant?.id))
+        const participantGroups = group.participantGroups
           ?.sort((a, b) => {
             if (b.wins !== a.wins) {
               return b.wins - a.wins;
@@ -36,8 +33,7 @@ export default function TournamentGroups({ tournament }: TournamentGroupsProps) 
             }
           });
 
-        const matches = phase.matches
-          ?.filter((m) => m.tournamentGroupId === group.id)
+        const matches = group.matches
           ?.sort((a, b) => {
             if (a.isOver !== b.isOver) return a.isOver ? 1 : -1;
             if (a.serialNumber === null && b.serialNumber === null) return 0;
@@ -45,10 +41,9 @@ export default function TournamentGroups({ tournament }: TournamentGroupsProps) 
             if (b.serialNumber === null) return -1;
             return a.serialNumber - b.serialNumber;
           });
-
         return {
           ...group,
-          filteredParticipants,
+          participantGroups,
           matches,
         };
       });
@@ -115,7 +110,7 @@ export default function TournamentGroups({ tournament }: TournamentGroupsProps) 
                               </tr>
                             </thead>
                             <tbody>
-                              {group.filteredParticipants?.map((p, index) => (
+                              {group.participantGroups?.map((p, index) => (
                                 <tr className={clsx(index <= 1 ? "bg-primary" : "bg-tertiary")} key={p.id}>
                                   <td className="px-4 py-2 text-gray-secondary text-right">{index + 1}.</td>
                                   <td className="px-4 py-2 font-medium text-foreground">

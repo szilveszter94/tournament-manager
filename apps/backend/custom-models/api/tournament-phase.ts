@@ -3,7 +3,7 @@ import { PhaseType } from '../../generated/client';
 import { UpdateTournamentDto } from '../../generated/models/update-tournament.dto';
 import { UpdateTournamentPhaseDto } from '../../generated/models/update-tournamentPhase.dto';
 
-export class ParticipantTournamentGroup {
+export class ParticipantTournamentGroupDto {
   @ApiProperty({
     description: 'The name of the group (e.g., Group A, Group B)',
     example: 'Group A',
@@ -23,10 +23,10 @@ export class ParticipantTournamentGroup {
 
 export class GroupStagePhaseDataDto {
   @ApiProperty({
-    type: [ParticipantTournamentGroup],
+    type: [ParticipantTournamentGroupDto],
     required: true,
   })
-  groups: ParticipantTournamentGroup[];
+  groups: ParticipantTournamentGroupDto[];
 }
 
 export class ParticipantIdsDataDto {

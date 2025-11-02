@@ -943,13 +943,6 @@
           "Swiss"
         ]
       },
-      "EliminationType": {
-        "type": "string",
-        "enum": [
-          "Knockout",
-          "Double"
-        ]
-      },
       "MatchType": {
         "type": "string",
         "enum": [
@@ -1004,6 +997,121 @@
           "tournamentId",
           "wins",
           "losses",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "DoubleEliminationBracket": {
+        "type": "string",
+        "enum": [
+          "Winner",
+          "Loser",
+          "Eliminated"
+        ]
+      },
+      "TournamentDoubleElimination": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tournamentPhaseId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "roundNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "tournamentPhase": {
+            "$ref": "#/components/schemas/TournamentPhase"
+          },
+          "participantDoubleEliminations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ParticipantDoubleElimination"
+            }
+          },
+          "matches": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Match"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "tournamentPhaseId",
+          "roundNumber",
+          "isActive",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "ParticipantDoubleElimination": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tournamentDoubleEliminationId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "participantId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "wins": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "losses": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "doubleEliminationBracket": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DoubleEliminationBracket"
+              }
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "elimination": {
+            "$ref": "#/components/schemas/TournamentDoubleElimination"
+          },
+          "participant": {
+            "$ref": "#/components/schemas/Participant"
+          }
+        },
+        "required": [
+          "id",
+          "tournamentDoubleEliminationId",
+          "participantId",
+          "wins",
+          "losses",
+          "doubleEliminationBracket",
           "createdAt",
           "updatedAt"
         ]
@@ -1094,6 +1202,12 @@
               "$ref": "#/components/schemas/ParticipantTournament"
             }
           },
+          "doubleEliminations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ParticipantDoubleElimination"
+            }
+          },
           "groups": {
             "type": "array",
             "items": {
@@ -1165,10 +1279,6 @@
             "type": "integer",
             "format": "int32"
           },
-          "points": {
-            "type": "integer",
-            "format": "int32"
-          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -1190,7 +1300,6 @@
           "participantId",
           "wins",
           "losses",
-          "points",
           "createdAt",
           "updatedAt"
         ]
@@ -1212,9 +1321,6 @@
           "groupNumber": {
             "type": "integer",
             "format": "int32"
-          },
-          "isGroupMatchesEnded": {
-            "type": "boolean"
           },
           "createdAt": {
             "type": "string",
@@ -1245,7 +1351,6 @@
           "name",
           "tournamentPhaseId",
           "groupNumber",
-          "isGroupMatchesEnded",
           "createdAt",
           "updatedAt"
         ]
@@ -1261,12 +1366,22 @@
             "type": "integer",
             "format": "int32"
           },
-          "eliminationId": {
+          "knockoutId": {
             "type": "integer",
             "format": "int32",
             "nullable": true
           },
           "tournamentGroupId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "tournamentDoubleEliminationId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "doubleEliminationRound": {
             "type": "integer",
             "format": "int32",
             "nullable": true
@@ -1292,11 +1407,6 @@
             "nullable": true
           },
           "nextMatchId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "round": {
             "type": "integer",
             "format": "int32",
             "nullable": true
@@ -1347,11 +1457,11 @@
           "tournamentPhase": {
             "$ref": "#/components/schemas/TournamentPhase"
           },
-          "elimination": {
+          "knockout": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/Elimination"
+                "$ref": "#/components/schemas/TournamentKnockout"
               }
             ]
           },
@@ -1360,6 +1470,14 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/TournamentGroup"
+              }
+            ]
+          },
+          "doubleElimination": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TournamentDoubleElimination"
               }
             ]
           },
@@ -1413,14 +1531,15 @@
         "required": [
           "id",
           "tournamentPhaseId",
-          "eliminationId",
+          "knockoutId",
           "tournamentGroupId",
+          "tournamentDoubleEliminationId",
+          "doubleEliminationRound",
           "participant1Id",
           "participant2Id",
           "winnerId",
           "loserId",
           "nextMatchId",
-          "round",
           "serialNumber",
           "winnerElo",
           "loserElo",
@@ -1432,7 +1551,7 @@
           "updatedAt"
         ]
       },
-      "Elimination": {
+      "TournamentKnockout": {
         "type": "object",
         "properties": {
           "id": {
@@ -1442,13 +1561,6 @@
           "tournamentPhaseId": {
             "type": "integer",
             "format": "int32"
-          },
-          "type": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EliminationType"
-              }
-            ]
           },
           "currentRound": {
             "type": "integer",
@@ -1478,7 +1590,6 @@
         "required": [
           "id",
           "tournamentPhaseId",
-          "type",
           "currentRound",
           "isOver",
           "createdAt",
@@ -1510,11 +1621,11 @@
           "isCompleted": {
             "type": "boolean"
           },
-          "elimination": {
+          "knockout": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/Elimination"
+                "$ref": "#/components/schemas/TournamentKnockout"
               }
             ]
           },
@@ -1523,6 +1634,14 @@
             "items": {
               "$ref": "#/components/schemas/TournamentGroup"
             }
+          },
+          "doubleElimination": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TournamentDoubleElimination"
+              }
+            ]
           },
           "matches": {
             "type": "array",
@@ -1683,7 +1802,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-11-01T14:11:32.284Z"
+            "default": "2025-11-02T16:13:38.408Z"
           }
         },
         "required": [
@@ -1715,7 +1834,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-11-01T14:11:32.276Z"
+            "default": "2025-11-02T16:13:38.396Z"
           }
         }
       },
@@ -1804,7 +1923,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-11-01T14:11:32.736Z"
+            "default": "2025-11-02T16:13:38.820Z"
           }
         },
         "required": [
@@ -1843,7 +1962,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-11-01T14:11:32.742Z"
+            "default": "2025-11-02T16:13:38.826Z"
           }
         }
       },
@@ -1889,7 +2008,7 @@
           "type"
         ]
       },
-      "ParticipantTournamentGroup": {
+      "ParticipantTournamentGroupDto": {
         "type": "object",
         "properties": {
           "name": {
@@ -1921,7 +2040,7 @@
           "groups": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ParticipantTournamentGroup"
+              "$ref": "#/components/schemas/ParticipantTournamentGroupDto"
             }
           }
         },

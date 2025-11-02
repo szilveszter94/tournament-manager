@@ -1,22 +1,7 @@
-model Elimination {
-  id                Int             @id @default(autoincrement())
-  tournamentPhaseId Int             @unique
-  type              EliminationType @default(Knockout)
-  currentRound      Int             @default(1)
-  isOver            Boolean         @default(false)
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
-
-  // Relations
-  tournamentPhase TournamentPhase @relation(fields: [tournamentPhaseId], references: [id], onDelete: Cascade)
-  matches         Match[]
-
-  @@index([type, currentRound])
-}
-
-enum EliminationType {
-  Knockout
-  Double
+enum DoubleEliminationBracket {
+  Winner
+  Loser
+  Eliminated
 }
 
 enum MatchType {
@@ -57,30 +42,32 @@ enum TournamentStatus {
 }
 
 model Match {
-  id                Int       @id @default(autoincrement())
-  tournamentPhaseId Int
-  eliminationId     Int?
-  tournamentGroupId Int?
-  participant1Id    Int?
-  participant2Id    Int?
-  winnerId          Int?
-  loserId           Int?
-  nextMatchId       Int?
-  round             Int?
-  serialNumber      Int?
-  winnerElo         Int?
-  loserElo          Int?
-  eloWon            Int?
-  eloLost           Int?
-  isOver            Boolean   @default(false)
-  matchType         MatchType
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
+  id                            Int       @id @default(autoincrement())
+  tournamentPhaseId             Int
+  knockoutId                    Int?
+  tournamentGroupId             Int?
+  tournamentDoubleEliminationId Int?
+  doubleEliminationRound        Int?
+  participant1Id                Int?
+  participant2Id                Int?
+  winnerId                      Int?
+  loserId                       Int?
+  nextMatchId                   Int?
+  serialNumber                  Int?
+  winnerElo                     Int?
+  loserElo                      Int?
+  eloWon                        Int?
+  eloLost                       Int?
+  isOver                        Boolean   @default(false)
+  matchType                     MatchType
+  createdAt                     DateTime  @default(now())
+  updatedAt                     DateTime  @updatedAt
 
   // Relations
-  tournamentPhase TournamentPhase  @relation(fields: [tournamentPhaseId], references: [id], onDelete: Cascade)
-  elimination     Elimination?     @relation(fields: [eliminationId], references: [id], onDelete: SetNull)
-  group           TournamentGroup? @relation(fields: [tournamentGroupId], references: [id], onDelete: SetNull)
+  tournamentPhase   TournamentPhase              @relation(fields: [tournamentPhaseId], references: [id], onDelete: Cascade)
+  knockout          TournamentKnockout?          @relation(fields: [knockoutId], references: [id], onDelete: SetNull)
+  group             TournamentGroup?             @relation(fields: [tournamentGroupId], references: [id], onDelete: SetNull)
+  doubleElimination TournamentDoubleElimination? @relation(fields: [tournamentDoubleEliminationId], references: [id], onDelete: SetNull)
 
   participant1 Participant? @relation("MatchParticipant1", fields: [participant1Id], references: [id], onDelete: SetNull)
   participant2 Participant? @relation("MatchParticipant2", fields: [participant2Id], references: [id], onDelete: SetNull)
@@ -92,8 +79,8 @@ model Match {
   prevMatches Match[] @relation("NextMatch")
 
   @@unique([tournamentGroupId, serialNumber])
-  @@index([tournamentPhaseId, matchType, round])
-  @@index([eliminationId])
+  @@index([tournamentPhaseId, matchType])
+  @@index([knockoutId])
   @@index([tournamentGroupId])
   @@index([participant1Id])
   @@index([participant2Id])
@@ -111,15 +98,34 @@ model Participant {
   updatedAt DateTime        @updatedAt
 
   // Relations
-  tournaments ParticipantTournament[]
-  groups      ParticipantGroup[]
-  matchesAsP1 Match[]                 @relation("MatchParticipant1")
-  matchesAsP2 Match[]                 @relation("MatchParticipant2")
-  matchesWon  Match[]                 @relation("MatchWinner")
-  matchesLost Match[]                 @relation("MatchLoser")
-  podiums     TournamentWinner[]
+  tournaments        ParticipantTournament[]
+  doubleEliminations ParticipantDoubleElimination[]
+  groups             ParticipantGroup[]
+  matchesAsP1        Match[]                        @relation("MatchParticipant1")
+  matchesAsP2        Match[]                        @relation("MatchParticipant2")
+  matchesWon         Match[]                        @relation("MatchWinner")
+  matchesLost        Match[]                        @relation("MatchLoser")
+  podiums            TournamentWinner[]
 
   @@index([name])
+}
+
+model ParticipantDoubleElimination {
+  id                            Int                      @id @default(autoincrement())
+  tournamentDoubleEliminationId Int
+  participantId                 Int
+  wins                          Int                      @default(0)
+  losses                        Int                      @default(0)
+  doubleEliminationBracket      DoubleEliminationBracket @default(Winner)
+  createdAt                     DateTime                 @default(now())
+  updatedAt                     DateTime                 @updatedAt
+
+  // Relations
+  elimination TournamentDoubleElimination @relation(fields: [tournamentDoubleEliminationId], references: [id], onDelete: Cascade)
+  participant Participant                 @relation(fields: [participantId], references: [id], onDelete: Cascade)
+
+  @@unique([tournamentDoubleEliminationId, participantId])
+  @@index([participantId])
 }
 
 model ParticipantGroup {
@@ -128,7 +134,6 @@ model ParticipantGroup {
   participantId     Int
   wins              Int      @default(0)
   losses            Int      @default(0)
-  points            Int      @default(0)
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 
@@ -174,14 +179,30 @@ model Tournament {
   @@index([name])
 }
 
+model TournamentDoubleElimination {
+  id                Int      @id @default(autoincrement())
+  tournamentPhaseId Int      @unique
+  roundNumber       Int      @default(1)
+  isActive          Boolean
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relations
+  tournamentPhase               TournamentPhase                @relation(fields: [tournamentPhaseId], references: [id], onDelete: Cascade)
+  participantDoubleEliminations ParticipantDoubleElimination[]
+  matches                       Match[]
+
+  @@unique([tournamentPhaseId, roundNumber])
+  @@index([tournamentPhaseId])
+}
+
 model TournamentGroup {
-  id                  Int      @id @default(autoincrement())
-  name                String
-  tournamentPhaseId   Int
-  groupNumber         Int
-  isGroupMatchesEnded Boolean  @default(false)
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
+  id                Int      @id @default(autoincrement())
+  name              String
+  tournamentPhaseId Int
+  groupNumber       Int
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
   // Relations
   tournamentPhase   TournamentPhase    @relation(fields: [tournamentPhaseId], references: [id], onDelete: Cascade)
@@ -192,6 +213,21 @@ model TournamentGroup {
   @@index([tournamentPhaseId])
 }
 
+model TournamentKnockout {
+  id                Int      @id @default(autoincrement())
+  tournamentPhaseId Int      @unique
+  currentRound      Int      @default(1)
+  isOver            Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relations
+  tournamentPhase TournamentPhase @relation(fields: [tournamentPhaseId], references: [id], onDelete: Cascade)
+  matches         Match[]
+
+  @@index(currentRound)
+}
+
 model TournamentPhase {
   id           Int       @id @default(autoincrement())
   tournamentId Int
@@ -199,9 +235,10 @@ model TournamentPhase {
   order        Int
   isCompleted  Boolean   @default(false)
 
-  elimination Elimination?
-  groups      TournamentGroup[]
-  matches     Match[]
+  knockout          TournamentKnockout?
+  groups            TournamentGroup[]
+  doubleElimination TournamentDoubleElimination?
+  matches           Match[]
 
   tournament Tournament @relation(fields: [tournamentId], references: [id])
 }

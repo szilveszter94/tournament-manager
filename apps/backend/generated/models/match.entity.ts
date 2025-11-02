@@ -1,8 +1,9 @@
 import { MatchType } from '../client';
 import { ApiProperty } from '@nestjs/swagger';
 import { TournamentPhase } from './tournamentPhase.entity';
-import { Elimination } from './elimination.entity';
+import { TournamentKnockout } from './tournamentKnockout.entity';
 import { TournamentGroup } from './tournamentGroup.entity';
+import { TournamentDoubleElimination } from './tournamentDoubleElimination.entity';
 import { Participant } from './participant.entity';
 
 export class Match {
@@ -21,13 +22,25 @@ export class Match {
     format: 'int32',
     nullable: true,
   })
-  eliminationId: number | null;
+  knockoutId: number | null;
   @ApiProperty({
     type: 'integer',
     format: 'int32',
     nullable: true,
   })
   tournamentGroupId: number | null;
+  @ApiProperty({
+    type: 'integer',
+    format: 'int32',
+    nullable: true,
+  })
+  tournamentDoubleEliminationId: number | null;
+  @ApiProperty({
+    type: 'integer',
+    format: 'int32',
+    nullable: true,
+  })
+  doubleEliminationRound: number | null;
   @ApiProperty({
     type: 'integer',
     format: 'int32',
@@ -58,12 +71,6 @@ export class Match {
     nullable: true,
   })
   nextMatchId: number | null;
-  @ApiProperty({
-    type: 'integer',
-    format: 'int32',
-    nullable: true,
-  })
-  round: number | null;
   @ApiProperty({
     type: 'integer',
     format: 'int32',
@@ -119,17 +126,23 @@ export class Match {
   })
   tournamentPhase?: TournamentPhase;
   @ApiProperty({
-    type: () => Elimination,
+    type: () => TournamentKnockout,
     required: false,
     nullable: true,
   })
-  elimination?: Elimination | null;
+  knockout?: TournamentKnockout | null;
   @ApiProperty({
     type: () => TournamentGroup,
     required: false,
     nullable: true,
   })
   group?: TournamentGroup | null;
+  @ApiProperty({
+    type: () => TournamentDoubleElimination,
+    required: false,
+    nullable: true,
+  })
+  doubleElimination?: TournamentDoubleElimination | null;
   @ApiProperty({
     type: () => Participant,
     required: false,

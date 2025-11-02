@@ -8,7 +8,7 @@ import {
 } from '../../custom-models/api/tournament-phase';
 import { BaseResponse } from '../../custom-models/api/base-response';
 import {
-  EliminationType,
+  DoubleEliminationBracket,
   PhaseType,
   TournamentStatus,
 } from '../../generated/client';
@@ -20,6 +20,7 @@ import {
   CreateDoubleEliminationMatch,
   CreateGroupMatch,
 } from '../../custom-models/api/match';
+import { CreateDoubleEliminationParticipant } from '../../custom-models/api/participant';
 
 @Injectable()
 export class TournamentPhaseService {
@@ -118,12 +119,12 @@ export class TournamentPhaseService {
           throw new BadRequestException('Failed to create tournament phase');
         }
 
-        // 2️⃣ Create the elimination round
-        const elimination = await tx.elimination.create({
+        // 2️⃣ Create the double elimination round
+        const elimination = await tx.tournamentDoubleElimination.create({
           data: {
             tournamentPhaseId: phase.id,
-            type: EliminationType.Double,
-            currentRound: 1,
+            roundNumber: 1,
+            isActive: true,
           },
         });
 
@@ -133,6 +134,23 @@ export class TournamentPhaseService {
           );
         }
 
+        const participants: CreateDoubleEliminationParticipant[] =
+          entity.participantIds.map((id) => {
+            return {
+              participantId: id,
+              tournamentDoubleEliminationId: elimination.id,
+              doubleEliminationBracket: DoubleEliminationBracket.Winner,
+            };
+          });
+
+        if (participants.length <= 0) {
+          throw new BadRequestException('Participants not found.');
+        }
+
+        await tx.participantDoubleElimination.createMany({
+          data: participants,
+        });
+
         const matches: CreateDoubleEliminationMatch[] =
           generateDoubleEliminationMatches(
             phase.id,
@@ -140,14 +158,22 @@ export class TournamentPhaseService {
             elimination,
           );
 
-        if (matches.length > 0) {
-          await tx.match.createMany({ data: matches });
+        if (matches.length <= 0) {
+          throw new BadRequestException('Matches not found.');
         }
+
+        await tx.match.createMany({ data: matches });
       });
 
       return { ok: true };
     } catch (e) {
       this.logger.error('Error creating double eliminations', e.stack);
+
+      if (e instanceof BadRequestException) {
+        const message = e.message ?? 'Bad request';
+        return { ok: false, error: message };
+      }
+
       return { ok: false, error: 'Unexpected server error occurred' };
     }
   }

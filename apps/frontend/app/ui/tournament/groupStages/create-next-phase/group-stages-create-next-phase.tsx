@@ -1,6 +1,6 @@
 "use client";
 
-import { ParticipantTournament, Tournament } from "@/generated/api";
+import { ParticipantGroup, PhaseType, Tournament } from "@/generated/api";
 import { useMemo } from "react";
 import clsx from "clsx";
 import { getGroupPhase } from "@/app/tournament/helper";
@@ -28,16 +28,13 @@ export default function GroupStagesCreateNextPhase({ tournament }: GroupStagesCr
   const tournamentPhase = useMemo(() => {
     if (!tournament) return null;
 
-    const phase = getGroupPhase(tournament);
+    const phase = getGroupPhase(tournament, PhaseType.GROUP_STAGE);
     if (!phase) return null;
 
     const groups = phase?.groups
       ?.sort((a, b) => a.groupNumber - b.groupNumber)
       ?.map((group) => {
-        const groupParticipantIds = new Set(group.participantGroups?.map((g) => g.participant?.id));
-
-        const filteredParticipants = tournament.participants
-          ?.filter((p) => groupParticipantIds.has(p.participant?.id))
+        const participantGroups = group.participantGroups
           ?.sort((a, b) => {
             if (b.wins !== a.wins) {
               return b.wins - a.wins;
@@ -48,7 +45,7 @@ export default function GroupStagesCreateNextPhase({ tournament }: GroupStagesCr
 
         return {
           ...group,
-          filteredParticipants,
+          participantGroups,
         };
       });
 
@@ -58,9 +55,7 @@ export default function GroupStagesCreateNextPhase({ tournament }: GroupStagesCr
     };
   }, [tournament]);
 
-  const onAddParticipantToEliminations = (p: ParticipantTournament) => {
-    console.log("ok");
-
+  const onAddParticipantToEliminations = (p: ParticipantGroup) => {
     dispatch(addParticipantToDoubleEliminations({ tournamentId: tournament.id, participant: p }));
   };
 
@@ -94,7 +89,7 @@ export default function GroupStagesCreateNextPhase({ tournament }: GroupStagesCr
                           </tr>
                         </thead>
                         <tbody>
-                          {group.filteredParticipants?.map((p, index) => (
+                          {group.participantGroups?.map((p, index) => (
                             <tr
                               key={p.id}
                               className={clsx(

@@ -5,6 +5,7 @@ import { PaginationData } from './pagination';
 import { ParticipantType } from '../../generated/client';
 import { TournamentSortBy } from '../../custom-models/shared/tournament';
 import { SortOrder } from '../../custom-models/shared/common';
+import { ParticipantDoubleElimination } from '../../generated/models/participantDoubleElimination.entity';
 
 export class AutocompleteParticipantQueryDto {
   query: string;
@@ -58,3 +59,8 @@ export class AutocompleteParticipantDto {
   })
   participantId?: number;
 }
+
+export type CreateDoubleEliminationParticipant = Pick<
+  ParticipantDoubleElimination,
+  'participantId' | 'tournamentDoubleEliminationId' | 'doubleEliminationBracket'
+>;

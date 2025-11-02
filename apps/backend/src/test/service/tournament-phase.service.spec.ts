@@ -106,7 +106,6 @@ describe('TournamentPhaseService', () => {
                     name: data.name,
                     groupNumber: data.serialNumber,
                     tournamentPhaseId: data.tournamentPhaseId,
-                    isGroupMatchesEnded: false,
                     createdAt: new Date(),
                     updatedAt: new Date(),
                   },

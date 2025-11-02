@@ -40,6 +40,10 @@ export class TournamentService {
         return this.loader.loadGroupStages(id);
       }
 
+      if (tournament.status === TournamentStatus.DoubleElimination) {
+        return this.loader.loadDoubleEliminations(id);
+      }
+
       return this.loader.loadDefault(id);
     } catch (e) {
       this.logger.error(`Database error while finding tournament ${id}`, e);

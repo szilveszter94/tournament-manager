@@ -14,11 +14,6 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 
 
 /**
- * Model Elimination
- * 
- */
-export type Elimination = $Result.DefaultSelection<Prisma.$EliminationPayload>
-/**
  * Model Match
  * 
  */
@@ -28,6 +23,11 @@ export type Match = $Result.DefaultSelection<Prisma.$MatchPayload>
  * 
  */
 export type Participant = $Result.DefaultSelection<Prisma.$ParticipantPayload>
+/**
+ * Model ParticipantDoubleElimination
+ * 
+ */
+export type ParticipantDoubleElimination = $Result.DefaultSelection<Prisma.$ParticipantDoubleEliminationPayload>
 /**
  * Model ParticipantGroup
  * 
@@ -44,10 +44,20 @@ export type ParticipantTournament = $Result.DefaultSelection<Prisma.$Participant
  */
 export type Tournament = $Result.DefaultSelection<Prisma.$TournamentPayload>
 /**
+ * Model TournamentDoubleElimination
+ * 
+ */
+export type TournamentDoubleElimination = $Result.DefaultSelection<Prisma.$TournamentDoubleEliminationPayload>
+/**
  * Model TournamentGroup
  * 
  */
 export type TournamentGroup = $Result.DefaultSelection<Prisma.$TournamentGroupPayload>
+/**
+ * Model TournamentKnockout
+ * 
+ */
+export type TournamentKnockout = $Result.DefaultSelection<Prisma.$TournamentKnockoutPayload>
 /**
  * Model TournamentPhase
  * 
@@ -63,12 +73,13 @@ export type TournamentWinner = $Result.DefaultSelection<Prisma.$TournamentWinner
  * Enums
  */
 export namespace $Enums {
-  export const EliminationType: {
-  Knockout: 'Knockout',
-  Double: 'Double'
+  export const DoubleEliminationBracket: {
+  Winner: 'Winner',
+  Loser: 'Loser',
+  Eliminated: 'Eliminated'
 };
 
-export type EliminationType = (typeof EliminationType)[keyof typeof EliminationType]
+export type DoubleEliminationBracket = (typeof DoubleEliminationBracket)[keyof typeof DoubleEliminationBracket]
 
 
 export const MatchType: {
@@ -121,9 +132,9 @@ export type TournamentStatus = (typeof TournamentStatus)[keyof typeof Tournament
 
 }
 
-export type EliminationType = $Enums.EliminationType
+export type DoubleEliminationBracket = $Enums.DoubleEliminationBracket
 
-export const EliminationType: typeof $Enums.EliminationType
+export const DoubleEliminationBracket: typeof $Enums.DoubleEliminationBracket
 
 export type MatchType = $Enums.MatchType
 
@@ -148,8 +159,8 @@ export const TournamentStatus: typeof $Enums.TournamentStatus
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Eliminations
- * const eliminations = await prisma.elimination.findMany()
+ * // Fetch zero or more Matches
+ * const matches = await prisma.match.findMany()
  * ```
  *
  *
@@ -169,8 +180,8 @@ export class PrismaClient<
    * @example
    * ```
    * const prisma = new PrismaClient()
-   * // Fetch zero or more Eliminations
-   * const eliminations = await prisma.elimination.findMany()
+   * // Fetch zero or more Matches
+   * const matches = await prisma.match.findMany()
    * ```
    *
    *
@@ -260,16 +271,6 @@ export class PrismaClient<
   }>>
 
       /**
-   * `prisma.elimination`: Exposes CRUD operations for the **Elimination** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Eliminations
-    * const eliminations = await prisma.elimination.findMany()
-    * ```
-    */
-  get elimination(): Prisma.EliminationDelegate<ExtArgs, ClientOptions>;
-
-  /**
    * `prisma.match`: Exposes CRUD operations for the **Match** model.
     * Example usage:
     * ```ts
@@ -288,6 +289,16 @@ export class PrismaClient<
     * ```
     */
   get participant(): Prisma.ParticipantDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.participantDoubleElimination`: Exposes CRUD operations for the **ParticipantDoubleElimination** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ParticipantDoubleEliminations
+    * const participantDoubleEliminations = await prisma.participantDoubleElimination.findMany()
+    * ```
+    */
+  get participantDoubleElimination(): Prisma.ParticipantDoubleEliminationDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.participantGroup`: Exposes CRUD operations for the **ParticipantGroup** model.
@@ -320,6 +331,16 @@ export class PrismaClient<
   get tournament(): Prisma.TournamentDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.tournamentDoubleElimination`: Exposes CRUD operations for the **TournamentDoubleElimination** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TournamentDoubleEliminations
+    * const tournamentDoubleEliminations = await prisma.tournamentDoubleElimination.findMany()
+    * ```
+    */
+  get tournamentDoubleElimination(): Prisma.TournamentDoubleEliminationDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.tournamentGroup`: Exposes CRUD operations for the **TournamentGroup** model.
     * Example usage:
     * ```ts
@@ -328,6 +349,16 @@ export class PrismaClient<
     * ```
     */
   get tournamentGroup(): Prisma.TournamentGroupDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.tournamentKnockout`: Exposes CRUD operations for the **TournamentKnockout** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TournamentKnockouts
+    * const tournamentKnockouts = await prisma.tournamentKnockout.findMany()
+    * ```
+    */
+  get tournamentKnockout(): Prisma.TournamentKnockoutDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.tournamentPhase`: Exposes CRUD operations for the **TournamentPhase** model.
@@ -788,13 +819,15 @@ export namespace Prisma {
 
 
   export const ModelName: {
-    Elimination: 'Elimination',
     Match: 'Match',
     Participant: 'Participant',
+    ParticipantDoubleElimination: 'ParticipantDoubleElimination',
     ParticipantGroup: 'ParticipantGroup',
     ParticipantTournament: 'ParticipantTournament',
     Tournament: 'Tournament',
+    TournamentDoubleElimination: 'TournamentDoubleElimination',
     TournamentGroup: 'TournamentGroup',
+    TournamentKnockout: 'TournamentKnockout',
     TournamentPhase: 'TournamentPhase',
     TournamentWinner: 'TournamentWinner'
   };
@@ -815,84 +848,10 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "elimination" | "match" | "participant" | "participantGroup" | "participantTournament" | "tournament" | "tournamentGroup" | "tournamentPhase" | "tournamentWinner"
+      modelProps: "match" | "participant" | "participantDoubleElimination" | "participantGroup" | "participantTournament" | "tournament" | "tournamentDoubleElimination" | "tournamentGroup" | "tournamentKnockout" | "tournamentPhase" | "tournamentWinner"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
-      Elimination: {
-        payload: Prisma.$EliminationPayload<ExtArgs>
-        fields: Prisma.EliminationFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.EliminationFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$EliminationPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.EliminationFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$EliminationPayload>
-          }
-          findFirst: {
-            args: Prisma.EliminationFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$EliminationPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.EliminationFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$EliminationPayload>
-          }
-          findMany: {
-            args: Prisma.EliminationFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$EliminationPayload>[]
-          }
-          create: {
-            args: Prisma.EliminationCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$EliminationPayload>
-          }
-          createMany: {
-            args: Prisma.EliminationCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.EliminationCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$EliminationPayload>[]
-          }
-          delete: {
-            args: Prisma.EliminationDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$EliminationPayload>
-          }
-          update: {
-            args: Prisma.EliminationUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$EliminationPayload>
-          }
-          deleteMany: {
-            args: Prisma.EliminationDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.EliminationUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.EliminationUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$EliminationPayload>[]
-          }
-          upsert: {
-            args: Prisma.EliminationUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$EliminationPayload>
-          }
-          aggregate: {
-            args: Prisma.EliminationAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateElimination>
-          }
-          groupBy: {
-            args: Prisma.EliminationGroupByArgs<ExtArgs>
-            result: $Utils.Optional<EliminationGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.EliminationCountArgs<ExtArgs>
-            result: $Utils.Optional<EliminationCountAggregateOutputType> | number
-          }
-        }
-      }
       Match: {
         payload: Prisma.$MatchPayload<ExtArgs>
         fields: Prisma.MatchFieldRefs
@@ -1038,6 +997,80 @@ export namespace Prisma {
           count: {
             args: Prisma.ParticipantCountArgs<ExtArgs>
             result: $Utils.Optional<ParticipantCountAggregateOutputType> | number
+          }
+        }
+      }
+      ParticipantDoubleElimination: {
+        payload: Prisma.$ParticipantDoubleEliminationPayload<ExtArgs>
+        fields: Prisma.ParticipantDoubleEliminationFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ParticipantDoubleEliminationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ParticipantDoubleEliminationPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ParticipantDoubleEliminationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ParticipantDoubleEliminationPayload>
+          }
+          findFirst: {
+            args: Prisma.ParticipantDoubleEliminationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ParticipantDoubleEliminationPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ParticipantDoubleEliminationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ParticipantDoubleEliminationPayload>
+          }
+          findMany: {
+            args: Prisma.ParticipantDoubleEliminationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ParticipantDoubleEliminationPayload>[]
+          }
+          create: {
+            args: Prisma.ParticipantDoubleEliminationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ParticipantDoubleEliminationPayload>
+          }
+          createMany: {
+            args: Prisma.ParticipantDoubleEliminationCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ParticipantDoubleEliminationCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ParticipantDoubleEliminationPayload>[]
+          }
+          delete: {
+            args: Prisma.ParticipantDoubleEliminationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ParticipantDoubleEliminationPayload>
+          }
+          update: {
+            args: Prisma.ParticipantDoubleEliminationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ParticipantDoubleEliminationPayload>
+          }
+          deleteMany: {
+            args: Prisma.ParticipantDoubleEliminationDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ParticipantDoubleEliminationUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ParticipantDoubleEliminationUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ParticipantDoubleEliminationPayload>[]
+          }
+          upsert: {
+            args: Prisma.ParticipantDoubleEliminationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ParticipantDoubleEliminationPayload>
+          }
+          aggregate: {
+            args: Prisma.ParticipantDoubleEliminationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateParticipantDoubleElimination>
+          }
+          groupBy: {
+            args: Prisma.ParticipantDoubleEliminationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ParticipantDoubleEliminationGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ParticipantDoubleEliminationCountArgs<ExtArgs>
+            result: $Utils.Optional<ParticipantDoubleEliminationCountAggregateOutputType> | number
           }
         }
       }
@@ -1263,6 +1296,80 @@ export namespace Prisma {
           }
         }
       }
+      TournamentDoubleElimination: {
+        payload: Prisma.$TournamentDoubleEliminationPayload<ExtArgs>
+        fields: Prisma.TournamentDoubleEliminationFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TournamentDoubleEliminationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentDoubleEliminationPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TournamentDoubleEliminationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentDoubleEliminationPayload>
+          }
+          findFirst: {
+            args: Prisma.TournamentDoubleEliminationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentDoubleEliminationPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TournamentDoubleEliminationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentDoubleEliminationPayload>
+          }
+          findMany: {
+            args: Prisma.TournamentDoubleEliminationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentDoubleEliminationPayload>[]
+          }
+          create: {
+            args: Prisma.TournamentDoubleEliminationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentDoubleEliminationPayload>
+          }
+          createMany: {
+            args: Prisma.TournamentDoubleEliminationCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TournamentDoubleEliminationCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentDoubleEliminationPayload>[]
+          }
+          delete: {
+            args: Prisma.TournamentDoubleEliminationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentDoubleEliminationPayload>
+          }
+          update: {
+            args: Prisma.TournamentDoubleEliminationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentDoubleEliminationPayload>
+          }
+          deleteMany: {
+            args: Prisma.TournamentDoubleEliminationDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TournamentDoubleEliminationUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TournamentDoubleEliminationUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentDoubleEliminationPayload>[]
+          }
+          upsert: {
+            args: Prisma.TournamentDoubleEliminationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentDoubleEliminationPayload>
+          }
+          aggregate: {
+            args: Prisma.TournamentDoubleEliminationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTournamentDoubleElimination>
+          }
+          groupBy: {
+            args: Prisma.TournamentDoubleEliminationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TournamentDoubleEliminationGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TournamentDoubleEliminationCountArgs<ExtArgs>
+            result: $Utils.Optional<TournamentDoubleEliminationCountAggregateOutputType> | number
+          }
+        }
+      }
       TournamentGroup: {
         payload: Prisma.$TournamentGroupPayload<ExtArgs>
         fields: Prisma.TournamentGroupFieldRefs
@@ -1334,6 +1441,80 @@ export namespace Prisma {
           count: {
             args: Prisma.TournamentGroupCountArgs<ExtArgs>
             result: $Utils.Optional<TournamentGroupCountAggregateOutputType> | number
+          }
+        }
+      }
+      TournamentKnockout: {
+        payload: Prisma.$TournamentKnockoutPayload<ExtArgs>
+        fields: Prisma.TournamentKnockoutFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TournamentKnockoutFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentKnockoutPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TournamentKnockoutFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentKnockoutPayload>
+          }
+          findFirst: {
+            args: Prisma.TournamentKnockoutFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentKnockoutPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TournamentKnockoutFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentKnockoutPayload>
+          }
+          findMany: {
+            args: Prisma.TournamentKnockoutFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentKnockoutPayload>[]
+          }
+          create: {
+            args: Prisma.TournamentKnockoutCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentKnockoutPayload>
+          }
+          createMany: {
+            args: Prisma.TournamentKnockoutCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TournamentKnockoutCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentKnockoutPayload>[]
+          }
+          delete: {
+            args: Prisma.TournamentKnockoutDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentKnockoutPayload>
+          }
+          update: {
+            args: Prisma.TournamentKnockoutUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentKnockoutPayload>
+          }
+          deleteMany: {
+            args: Prisma.TournamentKnockoutDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TournamentKnockoutUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TournamentKnockoutUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentKnockoutPayload>[]
+          }
+          upsert: {
+            args: Prisma.TournamentKnockoutUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentKnockoutPayload>
+          }
+          aggregate: {
+            args: Prisma.TournamentKnockoutAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTournamentKnockout>
+          }
+          groupBy: {
+            args: Prisma.TournamentKnockoutGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TournamentKnockoutGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TournamentKnockoutCountArgs<ExtArgs>
+            result: $Utils.Optional<TournamentKnockoutCountAggregateOutputType> | number
           }
         }
       }
@@ -1577,13 +1758,15 @@ export namespace Prisma {
     omit?: Prisma.GlobalOmitConfig
   }
   export type GlobalOmitConfig = {
-    elimination?: EliminationOmit
     match?: MatchOmit
     participant?: ParticipantOmit
+    participantDoubleElimination?: ParticipantDoubleEliminationOmit
     participantGroup?: ParticipantGroupOmit
     participantTournament?: ParticipantTournamentOmit
     tournament?: TournamentOmit
+    tournamentDoubleElimination?: TournamentDoubleEliminationOmit
     tournamentGroup?: TournamentGroupOmit
+    tournamentKnockout?: TournamentKnockoutOmit
     tournamentPhase?: TournamentPhaseOmit
     tournamentWinner?: TournamentWinnerOmit
   }
@@ -1662,37 +1845,6 @@ export namespace Prisma {
 
 
   /**
-   * Count Type EliminationCountOutputType
-   */
-
-  export type EliminationCountOutputType = {
-    matches: number
-  }
-
-  export type EliminationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    matches?: boolean | EliminationCountOutputTypeCountMatchesArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * EliminationCountOutputType without action
-   */
-  export type EliminationCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the EliminationCountOutputType
-     */
-    select?: EliminationCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * EliminationCountOutputType without action
-   */
-  export type EliminationCountOutputTypeCountMatchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: MatchWhereInput
-  }
-
-
-  /**
    * Count Type MatchCountOutputType
    */
 
@@ -1729,6 +1881,7 @@ export namespace Prisma {
 
   export type ParticipantCountOutputType = {
     tournaments: number
+    doubleEliminations: number
     groups: number
     matchesAsP1: number
     matchesAsP2: number
@@ -1739,6 +1892,7 @@ export namespace Prisma {
 
   export type ParticipantCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tournaments?: boolean | ParticipantCountOutputTypeCountTournamentsArgs
+    doubleEliminations?: boolean | ParticipantCountOutputTypeCountDoubleEliminationsArgs
     groups?: boolean | ParticipantCountOutputTypeCountGroupsArgs
     matchesAsP1?: boolean | ParticipantCountOutputTypeCountMatchesAsP1Args
     matchesAsP2?: boolean | ParticipantCountOutputTypeCountMatchesAsP2Args
@@ -1763,6 +1917,13 @@ export namespace Prisma {
    */
   export type ParticipantCountOutputTypeCountTournamentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ParticipantTournamentWhereInput
+  }
+
+  /**
+   * ParticipantCountOutputType without action
+   */
+  export type ParticipantCountOutputTypeCountDoubleEliminationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ParticipantDoubleEliminationWhereInput
   }
 
   /**
@@ -1858,6 +2019,46 @@ export namespace Prisma {
 
 
   /**
+   * Count Type TournamentDoubleEliminationCountOutputType
+   */
+
+  export type TournamentDoubleEliminationCountOutputType = {
+    participantDoubleEliminations: number
+    matches: number
+  }
+
+  export type TournamentDoubleEliminationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    participantDoubleEliminations?: boolean | TournamentDoubleEliminationCountOutputTypeCountParticipantDoubleEliminationsArgs
+    matches?: boolean | TournamentDoubleEliminationCountOutputTypeCountMatchesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * TournamentDoubleEliminationCountOutputType without action
+   */
+  export type TournamentDoubleEliminationCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentDoubleEliminationCountOutputType
+     */
+    select?: TournamentDoubleEliminationCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * TournamentDoubleEliminationCountOutputType without action
+   */
+  export type TournamentDoubleEliminationCountOutputTypeCountParticipantDoubleEliminationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ParticipantDoubleEliminationWhereInput
+  }
+
+  /**
+   * TournamentDoubleEliminationCountOutputType without action
+   */
+  export type TournamentDoubleEliminationCountOutputTypeCountMatchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MatchWhereInput
+  }
+
+
+  /**
    * Count Type TournamentGroupCountOutputType
    */
 
@@ -1893,6 +2094,37 @@ export namespace Prisma {
    * TournamentGroupCountOutputType without action
    */
   export type TournamentGroupCountOutputTypeCountMatchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MatchWhereInput
+  }
+
+
+  /**
+   * Count Type TournamentKnockoutCountOutputType
+   */
+
+  export type TournamentKnockoutCountOutputType = {
+    matches: number
+  }
+
+  export type TournamentKnockoutCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    matches?: boolean | TournamentKnockoutCountOutputTypeCountMatchesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * TournamentKnockoutCountOutputType without action
+   */
+  export type TournamentKnockoutCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentKnockoutCountOutputType
+     */
+    select?: TournamentKnockoutCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * TournamentKnockoutCountOutputType without action
+   */
+  export type TournamentKnockoutCountOutputTypeCountMatchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MatchWhereInput
   }
 
@@ -1942,1162 +2174,6 @@ export namespace Prisma {
    */
 
   /**
-   * Model Elimination
-   */
-
-  export type AggregateElimination = {
-    _count: EliminationCountAggregateOutputType | null
-    _avg: EliminationAvgAggregateOutputType | null
-    _sum: EliminationSumAggregateOutputType | null
-    _min: EliminationMinAggregateOutputType | null
-    _max: EliminationMaxAggregateOutputType | null
-  }
-
-  export type EliminationAvgAggregateOutputType = {
-    id: number | null
-    tournamentPhaseId: number | null
-    currentRound: number | null
-  }
-
-  export type EliminationSumAggregateOutputType = {
-    id: number | null
-    tournamentPhaseId: number | null
-    currentRound: number | null
-  }
-
-  export type EliminationMinAggregateOutputType = {
-    id: number | null
-    tournamentPhaseId: number | null
-    type: $Enums.EliminationType | null
-    currentRound: number | null
-    isOver: boolean | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type EliminationMaxAggregateOutputType = {
-    id: number | null
-    tournamentPhaseId: number | null
-    type: $Enums.EliminationType | null
-    currentRound: number | null
-    isOver: boolean | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type EliminationCountAggregateOutputType = {
-    id: number
-    tournamentPhaseId: number
-    type: number
-    currentRound: number
-    isOver: number
-    createdAt: number
-    updatedAt: number
-    _all: number
-  }
-
-
-  export type EliminationAvgAggregateInputType = {
-    id?: true
-    tournamentPhaseId?: true
-    currentRound?: true
-  }
-
-  export type EliminationSumAggregateInputType = {
-    id?: true
-    tournamentPhaseId?: true
-    currentRound?: true
-  }
-
-  export type EliminationMinAggregateInputType = {
-    id?: true
-    tournamentPhaseId?: true
-    type?: true
-    currentRound?: true
-    isOver?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type EliminationMaxAggregateInputType = {
-    id?: true
-    tournamentPhaseId?: true
-    type?: true
-    currentRound?: true
-    isOver?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type EliminationCountAggregateInputType = {
-    id?: true
-    tournamentPhaseId?: true
-    type?: true
-    currentRound?: true
-    isOver?: true
-    createdAt?: true
-    updatedAt?: true
-    _all?: true
-  }
-
-  export type EliminationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Elimination to aggregate.
-     */
-    where?: EliminationWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Eliminations to fetch.
-     */
-    orderBy?: EliminationOrderByWithRelationInput | EliminationOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: EliminationWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Eliminations from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Eliminations.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned Eliminations
-    **/
-    _count?: true | EliminationCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: EliminationAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: EliminationSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: EliminationMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: EliminationMaxAggregateInputType
-  }
-
-  export type GetEliminationAggregateType<T extends EliminationAggregateArgs> = {
-        [P in keyof T & keyof AggregateElimination]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateElimination[P]>
-      : GetScalarType<T[P], AggregateElimination[P]>
-  }
-
-
-
-
-  export type EliminationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: EliminationWhereInput
-    orderBy?: EliminationOrderByWithAggregationInput | EliminationOrderByWithAggregationInput[]
-    by: EliminationScalarFieldEnum[] | EliminationScalarFieldEnum
-    having?: EliminationScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: EliminationCountAggregateInputType | true
-    _avg?: EliminationAvgAggregateInputType
-    _sum?: EliminationSumAggregateInputType
-    _min?: EliminationMinAggregateInputType
-    _max?: EliminationMaxAggregateInputType
-  }
-
-  export type EliminationGroupByOutputType = {
-    id: number
-    tournamentPhaseId: number
-    type: $Enums.EliminationType
-    currentRound: number
-    isOver: boolean
-    createdAt: Date
-    updatedAt: Date
-    _count: EliminationCountAggregateOutputType | null
-    _avg: EliminationAvgAggregateOutputType | null
-    _sum: EliminationSumAggregateOutputType | null
-    _min: EliminationMinAggregateOutputType | null
-    _max: EliminationMaxAggregateOutputType | null
-  }
-
-  type GetEliminationGroupByPayload<T extends EliminationGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<EliminationGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof EliminationGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], EliminationGroupByOutputType[P]>
-            : GetScalarType<T[P], EliminationGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type EliminationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    tournamentPhaseId?: boolean
-    type?: boolean
-    currentRound?: boolean
-    isOver?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
-    matches?: boolean | Elimination$matchesArgs<ExtArgs>
-    _count?: boolean | EliminationCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["elimination"]>
-
-  export type EliminationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    tournamentPhaseId?: boolean
-    type?: boolean
-    currentRound?: boolean
-    isOver?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["elimination"]>
-
-  export type EliminationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    tournamentPhaseId?: boolean
-    type?: boolean
-    currentRound?: boolean
-    isOver?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["elimination"]>
-
-  export type EliminationSelectScalar = {
-    id?: boolean
-    tournamentPhaseId?: boolean
-    type?: boolean
-    currentRound?: boolean
-    isOver?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }
-
-  export type EliminationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tournamentPhaseId" | "type" | "currentRound" | "isOver" | "createdAt" | "updatedAt", ExtArgs["result"]["elimination"]>
-  export type EliminationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
-    matches?: boolean | Elimination$matchesArgs<ExtArgs>
-    _count?: boolean | EliminationCountOutputTypeDefaultArgs<ExtArgs>
-  }
-  export type EliminationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
-  }
-  export type EliminationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
-  }
-
-  export type $EliminationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Elimination"
-    objects: {
-      tournamentPhase: Prisma.$TournamentPhasePayload<ExtArgs>
-      matches: Prisma.$MatchPayload<ExtArgs>[]
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: number
-      tournamentPhaseId: number
-      type: $Enums.EliminationType
-      currentRound: number
-      isOver: boolean
-      createdAt: Date
-      updatedAt: Date
-    }, ExtArgs["result"]["elimination"]>
-    composites: {}
-  }
-
-  type EliminationGetPayload<S extends boolean | null | undefined | EliminationDefaultArgs> = $Result.GetResult<Prisma.$EliminationPayload, S>
-
-  type EliminationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<EliminationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: EliminationCountAggregateInputType | true
-    }
-
-  export interface EliminationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Elimination'], meta: { name: 'Elimination' } }
-    /**
-     * Find zero or one Elimination that matches the filter.
-     * @param {EliminationFindUniqueArgs} args - Arguments to find a Elimination
-     * @example
-     * // Get one Elimination
-     * const elimination = await prisma.elimination.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends EliminationFindUniqueArgs>(args: SelectSubset<T, EliminationFindUniqueArgs<ExtArgs>>): Prisma__EliminationClient<$Result.GetResult<Prisma.$EliminationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Elimination that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {EliminationFindUniqueOrThrowArgs} args - Arguments to find a Elimination
-     * @example
-     * // Get one Elimination
-     * const elimination = await prisma.elimination.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends EliminationFindUniqueOrThrowArgs>(args: SelectSubset<T, EliminationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EliminationClient<$Result.GetResult<Prisma.$EliminationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Elimination that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {EliminationFindFirstArgs} args - Arguments to find a Elimination
-     * @example
-     * // Get one Elimination
-     * const elimination = await prisma.elimination.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends EliminationFindFirstArgs>(args?: SelectSubset<T, EliminationFindFirstArgs<ExtArgs>>): Prisma__EliminationClient<$Result.GetResult<Prisma.$EliminationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Elimination that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {EliminationFindFirstOrThrowArgs} args - Arguments to find a Elimination
-     * @example
-     * // Get one Elimination
-     * const elimination = await prisma.elimination.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends EliminationFindFirstOrThrowArgs>(args?: SelectSubset<T, EliminationFindFirstOrThrowArgs<ExtArgs>>): Prisma__EliminationClient<$Result.GetResult<Prisma.$EliminationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Eliminations that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {EliminationFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Eliminations
-     * const eliminations = await prisma.elimination.findMany()
-     * 
-     * // Get first 10 Eliminations
-     * const eliminations = await prisma.elimination.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const eliminationWithIdOnly = await prisma.elimination.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends EliminationFindManyArgs>(args?: SelectSubset<T, EliminationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EliminationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Elimination.
-     * @param {EliminationCreateArgs} args - Arguments to create a Elimination.
-     * @example
-     * // Create one Elimination
-     * const Elimination = await prisma.elimination.create({
-     *   data: {
-     *     // ... data to create a Elimination
-     *   }
-     * })
-     * 
-     */
-    create<T extends EliminationCreateArgs>(args: SelectSubset<T, EliminationCreateArgs<ExtArgs>>): Prisma__EliminationClient<$Result.GetResult<Prisma.$EliminationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Eliminations.
-     * @param {EliminationCreateManyArgs} args - Arguments to create many Eliminations.
-     * @example
-     * // Create many Eliminations
-     * const elimination = await prisma.elimination.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends EliminationCreateManyArgs>(args?: SelectSubset<T, EliminationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many Eliminations and returns the data saved in the database.
-     * @param {EliminationCreateManyAndReturnArgs} args - Arguments to create many Eliminations.
-     * @example
-     * // Create many Eliminations
-     * const elimination = await prisma.elimination.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many Eliminations and only return the `id`
-     * const eliminationWithIdOnly = await prisma.elimination.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends EliminationCreateManyAndReturnArgs>(args?: SelectSubset<T, EliminationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EliminationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a Elimination.
-     * @param {EliminationDeleteArgs} args - Arguments to delete one Elimination.
-     * @example
-     * // Delete one Elimination
-     * const Elimination = await prisma.elimination.delete({
-     *   where: {
-     *     // ... filter to delete one Elimination
-     *   }
-     * })
-     * 
-     */
-    delete<T extends EliminationDeleteArgs>(args: SelectSubset<T, EliminationDeleteArgs<ExtArgs>>): Prisma__EliminationClient<$Result.GetResult<Prisma.$EliminationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Elimination.
-     * @param {EliminationUpdateArgs} args - Arguments to update one Elimination.
-     * @example
-     * // Update one Elimination
-     * const elimination = await prisma.elimination.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends EliminationUpdateArgs>(args: SelectSubset<T, EliminationUpdateArgs<ExtArgs>>): Prisma__EliminationClient<$Result.GetResult<Prisma.$EliminationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Eliminations.
-     * @param {EliminationDeleteManyArgs} args - Arguments to filter Eliminations to delete.
-     * @example
-     * // Delete a few Eliminations
-     * const { count } = await prisma.elimination.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends EliminationDeleteManyArgs>(args?: SelectSubset<T, EliminationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Eliminations.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {EliminationUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Eliminations
-     * const elimination = await prisma.elimination.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends EliminationUpdateManyArgs>(args: SelectSubset<T, EliminationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Eliminations and returns the data updated in the database.
-     * @param {EliminationUpdateManyAndReturnArgs} args - Arguments to update many Eliminations.
-     * @example
-     * // Update many Eliminations
-     * const elimination = await prisma.elimination.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more Eliminations and only return the `id`
-     * const eliminationWithIdOnly = await prisma.elimination.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends EliminationUpdateManyAndReturnArgs>(args: SelectSubset<T, EliminationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EliminationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one Elimination.
-     * @param {EliminationUpsertArgs} args - Arguments to update or create a Elimination.
-     * @example
-     * // Update or create a Elimination
-     * const elimination = await prisma.elimination.upsert({
-     *   create: {
-     *     // ... data to create a Elimination
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Elimination we want to update
-     *   }
-     * })
-     */
-    upsert<T extends EliminationUpsertArgs>(args: SelectSubset<T, EliminationUpsertArgs<ExtArgs>>): Prisma__EliminationClient<$Result.GetResult<Prisma.$EliminationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Eliminations.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {EliminationCountArgs} args - Arguments to filter Eliminations to count.
-     * @example
-     * // Count the number of Eliminations
-     * const count = await prisma.elimination.count({
-     *   where: {
-     *     // ... the filter for the Eliminations we want to count
-     *   }
-     * })
-    **/
-    count<T extends EliminationCountArgs>(
-      args?: Subset<T, EliminationCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], EliminationCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Elimination.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {EliminationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends EliminationAggregateArgs>(args: Subset<T, EliminationAggregateArgs>): Prisma.PrismaPromise<GetEliminationAggregateType<T>>
-
-    /**
-     * Group by Elimination.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {EliminationGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends EliminationGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: EliminationGroupByArgs['orderBy'] }
-        : { orderBy?: EliminationGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, EliminationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEliminationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the Elimination model
-   */
-  readonly fields: EliminationFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for Elimination.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__EliminationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    tournamentPhase<T extends TournamentPhaseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TournamentPhaseDefaultArgs<ExtArgs>>): Prisma__TournamentPhaseClient<$Result.GetResult<Prisma.$TournamentPhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    matches<T extends Elimination$matchesArgs<ExtArgs> = {}>(args?: Subset<T, Elimination$matchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the Elimination model
-   */
-  interface EliminationFieldRefs {
-    readonly id: FieldRef<"Elimination", 'Int'>
-    readonly tournamentPhaseId: FieldRef<"Elimination", 'Int'>
-    readonly type: FieldRef<"Elimination", 'EliminationType'>
-    readonly currentRound: FieldRef<"Elimination", 'Int'>
-    readonly isOver: FieldRef<"Elimination", 'Boolean'>
-    readonly createdAt: FieldRef<"Elimination", 'DateTime'>
-    readonly updatedAt: FieldRef<"Elimination", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * Elimination findUnique
-   */
-  export type EliminationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Elimination
-     */
-    select?: EliminationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Elimination
-     */
-    omit?: EliminationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EliminationInclude<ExtArgs> | null
-    /**
-     * Filter, which Elimination to fetch.
-     */
-    where: EliminationWhereUniqueInput
-  }
-
-  /**
-   * Elimination findUniqueOrThrow
-   */
-  export type EliminationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Elimination
-     */
-    select?: EliminationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Elimination
-     */
-    omit?: EliminationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EliminationInclude<ExtArgs> | null
-    /**
-     * Filter, which Elimination to fetch.
-     */
-    where: EliminationWhereUniqueInput
-  }
-
-  /**
-   * Elimination findFirst
-   */
-  export type EliminationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Elimination
-     */
-    select?: EliminationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Elimination
-     */
-    omit?: EliminationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EliminationInclude<ExtArgs> | null
-    /**
-     * Filter, which Elimination to fetch.
-     */
-    where?: EliminationWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Eliminations to fetch.
-     */
-    orderBy?: EliminationOrderByWithRelationInput | EliminationOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Eliminations.
-     */
-    cursor?: EliminationWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Eliminations from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Eliminations.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Eliminations.
-     */
-    distinct?: EliminationScalarFieldEnum | EliminationScalarFieldEnum[]
-  }
-
-  /**
-   * Elimination findFirstOrThrow
-   */
-  export type EliminationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Elimination
-     */
-    select?: EliminationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Elimination
-     */
-    omit?: EliminationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EliminationInclude<ExtArgs> | null
-    /**
-     * Filter, which Elimination to fetch.
-     */
-    where?: EliminationWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Eliminations to fetch.
-     */
-    orderBy?: EliminationOrderByWithRelationInput | EliminationOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Eliminations.
-     */
-    cursor?: EliminationWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Eliminations from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Eliminations.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Eliminations.
-     */
-    distinct?: EliminationScalarFieldEnum | EliminationScalarFieldEnum[]
-  }
-
-  /**
-   * Elimination findMany
-   */
-  export type EliminationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Elimination
-     */
-    select?: EliminationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Elimination
-     */
-    omit?: EliminationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EliminationInclude<ExtArgs> | null
-    /**
-     * Filter, which Eliminations to fetch.
-     */
-    where?: EliminationWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Eliminations to fetch.
-     */
-    orderBy?: EliminationOrderByWithRelationInput | EliminationOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing Eliminations.
-     */
-    cursor?: EliminationWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Eliminations from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Eliminations.
-     */
-    skip?: number
-    distinct?: EliminationScalarFieldEnum | EliminationScalarFieldEnum[]
-  }
-
-  /**
-   * Elimination create
-   */
-  export type EliminationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Elimination
-     */
-    select?: EliminationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Elimination
-     */
-    omit?: EliminationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EliminationInclude<ExtArgs> | null
-    /**
-     * The data needed to create a Elimination.
-     */
-    data: XOR<EliminationCreateInput, EliminationUncheckedCreateInput>
-  }
-
-  /**
-   * Elimination createMany
-   */
-  export type EliminationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many Eliminations.
-     */
-    data: EliminationCreateManyInput | EliminationCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * Elimination createManyAndReturn
-   */
-  export type EliminationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Elimination
-     */
-    select?: EliminationSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Elimination
-     */
-    omit?: EliminationOmit<ExtArgs> | null
-    /**
-     * The data used to create many Eliminations.
-     */
-    data: EliminationCreateManyInput | EliminationCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EliminationIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * Elimination update
-   */
-  export type EliminationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Elimination
-     */
-    select?: EliminationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Elimination
-     */
-    omit?: EliminationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EliminationInclude<ExtArgs> | null
-    /**
-     * The data needed to update a Elimination.
-     */
-    data: XOR<EliminationUpdateInput, EliminationUncheckedUpdateInput>
-    /**
-     * Choose, which Elimination to update.
-     */
-    where: EliminationWhereUniqueInput
-  }
-
-  /**
-   * Elimination updateMany
-   */
-  export type EliminationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update Eliminations.
-     */
-    data: XOR<EliminationUpdateManyMutationInput, EliminationUncheckedUpdateManyInput>
-    /**
-     * Filter which Eliminations to update
-     */
-    where?: EliminationWhereInput
-    /**
-     * Limit how many Eliminations to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Elimination updateManyAndReturn
-   */
-  export type EliminationUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Elimination
-     */
-    select?: EliminationSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Elimination
-     */
-    omit?: EliminationOmit<ExtArgs> | null
-    /**
-     * The data used to update Eliminations.
-     */
-    data: XOR<EliminationUpdateManyMutationInput, EliminationUncheckedUpdateManyInput>
-    /**
-     * Filter which Eliminations to update
-     */
-    where?: EliminationWhereInput
-    /**
-     * Limit how many Eliminations to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EliminationIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * Elimination upsert
-   */
-  export type EliminationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Elimination
-     */
-    select?: EliminationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Elimination
-     */
-    omit?: EliminationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EliminationInclude<ExtArgs> | null
-    /**
-     * The filter to search for the Elimination to update in case it exists.
-     */
-    where: EliminationWhereUniqueInput
-    /**
-     * In case the Elimination found by the `where` argument doesn't exist, create a new Elimination with this data.
-     */
-    create: XOR<EliminationCreateInput, EliminationUncheckedCreateInput>
-    /**
-     * In case the Elimination was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<EliminationUpdateInput, EliminationUncheckedUpdateInput>
-  }
-
-  /**
-   * Elimination delete
-   */
-  export type EliminationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Elimination
-     */
-    select?: EliminationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Elimination
-     */
-    omit?: EliminationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EliminationInclude<ExtArgs> | null
-    /**
-     * Filter which Elimination to delete.
-     */
-    where: EliminationWhereUniqueInput
-  }
-
-  /**
-   * Elimination deleteMany
-   */
-  export type EliminationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Eliminations to delete
-     */
-    where?: EliminationWhereInput
-    /**
-     * Limit how many Eliminations to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * Elimination.matches
-   */
-  export type Elimination$matchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Match
-     */
-    select?: MatchSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Match
-     */
-    omit?: MatchOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MatchInclude<ExtArgs> | null
-    where?: MatchWhereInput
-    orderBy?: MatchOrderByWithRelationInput | MatchOrderByWithRelationInput[]
-    cursor?: MatchWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: MatchScalarFieldEnum | MatchScalarFieldEnum[]
-  }
-
-  /**
-   * Elimination without action
-   */
-  export type EliminationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Elimination
-     */
-    select?: EliminationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Elimination
-     */
-    omit?: EliminationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EliminationInclude<ExtArgs> | null
-  }
-
-
-  /**
    * Model Match
    */
 
@@ -3112,14 +2188,15 @@ export namespace Prisma {
   export type MatchAvgAggregateOutputType = {
     id: number | null
     tournamentPhaseId: number | null
-    eliminationId: number | null
+    knockoutId: number | null
     tournamentGroupId: number | null
+    tournamentDoubleEliminationId: number | null
+    doubleEliminationRound: number | null
     participant1Id: number | null
     participant2Id: number | null
     winnerId: number | null
     loserId: number | null
     nextMatchId: number | null
-    round: number | null
     serialNumber: number | null
     winnerElo: number | null
     loserElo: number | null
@@ -3130,14 +2207,15 @@ export namespace Prisma {
   export type MatchSumAggregateOutputType = {
     id: number | null
     tournamentPhaseId: number | null
-    eliminationId: number | null
+    knockoutId: number | null
     tournamentGroupId: number | null
+    tournamentDoubleEliminationId: number | null
+    doubleEliminationRound: number | null
     participant1Id: number | null
     participant2Id: number | null
     winnerId: number | null
     loserId: number | null
     nextMatchId: number | null
-    round: number | null
     serialNumber: number | null
     winnerElo: number | null
     loserElo: number | null
@@ -3148,14 +2226,15 @@ export namespace Prisma {
   export type MatchMinAggregateOutputType = {
     id: number | null
     tournamentPhaseId: number | null
-    eliminationId: number | null
+    knockoutId: number | null
     tournamentGroupId: number | null
+    tournamentDoubleEliminationId: number | null
+    doubleEliminationRound: number | null
     participant1Id: number | null
     participant2Id: number | null
     winnerId: number | null
     loserId: number | null
     nextMatchId: number | null
-    round: number | null
     serialNumber: number | null
     winnerElo: number | null
     loserElo: number | null
@@ -3170,14 +2249,15 @@ export namespace Prisma {
   export type MatchMaxAggregateOutputType = {
     id: number | null
     tournamentPhaseId: number | null
-    eliminationId: number | null
+    knockoutId: number | null
     tournamentGroupId: number | null
+    tournamentDoubleEliminationId: number | null
+    doubleEliminationRound: number | null
     participant1Id: number | null
     participant2Id: number | null
     winnerId: number | null
     loserId: number | null
     nextMatchId: number | null
-    round: number | null
     serialNumber: number | null
     winnerElo: number | null
     loserElo: number | null
@@ -3192,14 +2272,15 @@ export namespace Prisma {
   export type MatchCountAggregateOutputType = {
     id: number
     tournamentPhaseId: number
-    eliminationId: number
+    knockoutId: number
     tournamentGroupId: number
+    tournamentDoubleEliminationId: number
+    doubleEliminationRound: number
     participant1Id: number
     participant2Id: number
     winnerId: number
     loserId: number
     nextMatchId: number
-    round: number
     serialNumber: number
     winnerElo: number
     loserElo: number
@@ -3216,14 +2297,15 @@ export namespace Prisma {
   export type MatchAvgAggregateInputType = {
     id?: true
     tournamentPhaseId?: true
-    eliminationId?: true
+    knockoutId?: true
     tournamentGroupId?: true
+    tournamentDoubleEliminationId?: true
+    doubleEliminationRound?: true
     participant1Id?: true
     participant2Id?: true
     winnerId?: true
     loserId?: true
     nextMatchId?: true
-    round?: true
     serialNumber?: true
     winnerElo?: true
     loserElo?: true
@@ -3234,14 +2316,15 @@ export namespace Prisma {
   export type MatchSumAggregateInputType = {
     id?: true
     tournamentPhaseId?: true
-    eliminationId?: true
+    knockoutId?: true
     tournamentGroupId?: true
+    tournamentDoubleEliminationId?: true
+    doubleEliminationRound?: true
     participant1Id?: true
     participant2Id?: true
     winnerId?: true
     loserId?: true
     nextMatchId?: true
-    round?: true
     serialNumber?: true
     winnerElo?: true
     loserElo?: true
@@ -3252,14 +2335,15 @@ export namespace Prisma {
   export type MatchMinAggregateInputType = {
     id?: true
     tournamentPhaseId?: true
-    eliminationId?: true
+    knockoutId?: true
     tournamentGroupId?: true
+    tournamentDoubleEliminationId?: true
+    doubleEliminationRound?: true
     participant1Id?: true
     participant2Id?: true
     winnerId?: true
     loserId?: true
     nextMatchId?: true
-    round?: true
     serialNumber?: true
     winnerElo?: true
     loserElo?: true
@@ -3274,14 +2358,15 @@ export namespace Prisma {
   export type MatchMaxAggregateInputType = {
     id?: true
     tournamentPhaseId?: true
-    eliminationId?: true
+    knockoutId?: true
     tournamentGroupId?: true
+    tournamentDoubleEliminationId?: true
+    doubleEliminationRound?: true
     participant1Id?: true
     participant2Id?: true
     winnerId?: true
     loserId?: true
     nextMatchId?: true
-    round?: true
     serialNumber?: true
     winnerElo?: true
     loserElo?: true
@@ -3296,14 +2381,15 @@ export namespace Prisma {
   export type MatchCountAggregateInputType = {
     id?: true
     tournamentPhaseId?: true
-    eliminationId?: true
+    knockoutId?: true
     tournamentGroupId?: true
+    tournamentDoubleEliminationId?: true
+    doubleEliminationRound?: true
     participant1Id?: true
     participant2Id?: true
     winnerId?: true
     loserId?: true
     nextMatchId?: true
-    round?: true
     serialNumber?: true
     winnerElo?: true
     loserElo?: true
@@ -3405,14 +2491,15 @@ export namespace Prisma {
   export type MatchGroupByOutputType = {
     id: number
     tournamentPhaseId: number
-    eliminationId: number | null
+    knockoutId: number | null
     tournamentGroupId: number | null
+    tournamentDoubleEliminationId: number | null
+    doubleEliminationRound: number | null
     participant1Id: number | null
     participant2Id: number | null
     winnerId: number | null
     loserId: number | null
     nextMatchId: number | null
-    round: number | null
     serialNumber: number | null
     winnerElo: number | null
     loserElo: number | null
@@ -3446,14 +2533,15 @@ export namespace Prisma {
   export type MatchSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     tournamentPhaseId?: boolean
-    eliminationId?: boolean
+    knockoutId?: boolean
     tournamentGroupId?: boolean
+    tournamentDoubleEliminationId?: boolean
+    doubleEliminationRound?: boolean
     participant1Id?: boolean
     participant2Id?: boolean
     winnerId?: boolean
     loserId?: boolean
     nextMatchId?: boolean
-    round?: boolean
     serialNumber?: boolean
     winnerElo?: boolean
     loserElo?: boolean
@@ -3464,8 +2552,9 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
-    elimination?: boolean | Match$eliminationArgs<ExtArgs>
+    knockout?: boolean | Match$knockoutArgs<ExtArgs>
     group?: boolean | Match$groupArgs<ExtArgs>
+    doubleElimination?: boolean | Match$doubleEliminationArgs<ExtArgs>
     participant1?: boolean | Match$participant1Args<ExtArgs>
     participant2?: boolean | Match$participant2Args<ExtArgs>
     winner?: boolean | Match$winnerArgs<ExtArgs>
@@ -3478,14 +2567,15 @@ export namespace Prisma {
   export type MatchSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     tournamentPhaseId?: boolean
-    eliminationId?: boolean
+    knockoutId?: boolean
     tournamentGroupId?: boolean
+    tournamentDoubleEliminationId?: boolean
+    doubleEliminationRound?: boolean
     participant1Id?: boolean
     participant2Id?: boolean
     winnerId?: boolean
     loserId?: boolean
     nextMatchId?: boolean
-    round?: boolean
     serialNumber?: boolean
     winnerElo?: boolean
     loserElo?: boolean
@@ -3496,8 +2586,9 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
-    elimination?: boolean | Match$eliminationArgs<ExtArgs>
+    knockout?: boolean | Match$knockoutArgs<ExtArgs>
     group?: boolean | Match$groupArgs<ExtArgs>
+    doubleElimination?: boolean | Match$doubleEliminationArgs<ExtArgs>
     participant1?: boolean | Match$participant1Args<ExtArgs>
     participant2?: boolean | Match$participant2Args<ExtArgs>
     winner?: boolean | Match$winnerArgs<ExtArgs>
@@ -3508,14 +2599,15 @@ export namespace Prisma {
   export type MatchSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     tournamentPhaseId?: boolean
-    eliminationId?: boolean
+    knockoutId?: boolean
     tournamentGroupId?: boolean
+    tournamentDoubleEliminationId?: boolean
+    doubleEliminationRound?: boolean
     participant1Id?: boolean
     participant2Id?: boolean
     winnerId?: boolean
     loserId?: boolean
     nextMatchId?: boolean
-    round?: boolean
     serialNumber?: boolean
     winnerElo?: boolean
     loserElo?: boolean
@@ -3526,8 +2618,9 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
-    elimination?: boolean | Match$eliminationArgs<ExtArgs>
+    knockout?: boolean | Match$knockoutArgs<ExtArgs>
     group?: boolean | Match$groupArgs<ExtArgs>
+    doubleElimination?: boolean | Match$doubleEliminationArgs<ExtArgs>
     participant1?: boolean | Match$participant1Args<ExtArgs>
     participant2?: boolean | Match$participant2Args<ExtArgs>
     winner?: boolean | Match$winnerArgs<ExtArgs>
@@ -3538,14 +2631,15 @@ export namespace Prisma {
   export type MatchSelectScalar = {
     id?: boolean
     tournamentPhaseId?: boolean
-    eliminationId?: boolean
+    knockoutId?: boolean
     tournamentGroupId?: boolean
+    tournamentDoubleEliminationId?: boolean
+    doubleEliminationRound?: boolean
     participant1Id?: boolean
     participant2Id?: boolean
     winnerId?: boolean
     loserId?: boolean
     nextMatchId?: boolean
-    round?: boolean
     serialNumber?: boolean
     winnerElo?: boolean
     loserElo?: boolean
@@ -3557,11 +2651,12 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type MatchOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tournamentPhaseId" | "eliminationId" | "tournamentGroupId" | "participant1Id" | "participant2Id" | "winnerId" | "loserId" | "nextMatchId" | "round" | "serialNumber" | "winnerElo" | "loserElo" | "eloWon" | "eloLost" | "isOver" | "matchType" | "createdAt" | "updatedAt", ExtArgs["result"]["match"]>
+  export type MatchOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tournamentPhaseId" | "knockoutId" | "tournamentGroupId" | "tournamentDoubleEliminationId" | "doubleEliminationRound" | "participant1Id" | "participant2Id" | "winnerId" | "loserId" | "nextMatchId" | "serialNumber" | "winnerElo" | "loserElo" | "eloWon" | "eloLost" | "isOver" | "matchType" | "createdAt" | "updatedAt", ExtArgs["result"]["match"]>
   export type MatchInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
-    elimination?: boolean | Match$eliminationArgs<ExtArgs>
+    knockout?: boolean | Match$knockoutArgs<ExtArgs>
     group?: boolean | Match$groupArgs<ExtArgs>
+    doubleElimination?: boolean | Match$doubleEliminationArgs<ExtArgs>
     participant1?: boolean | Match$participant1Args<ExtArgs>
     participant2?: boolean | Match$participant2Args<ExtArgs>
     winner?: boolean | Match$winnerArgs<ExtArgs>
@@ -3572,8 +2667,9 @@ export namespace Prisma {
   }
   export type MatchIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
-    elimination?: boolean | Match$eliminationArgs<ExtArgs>
+    knockout?: boolean | Match$knockoutArgs<ExtArgs>
     group?: boolean | Match$groupArgs<ExtArgs>
+    doubleElimination?: boolean | Match$doubleEliminationArgs<ExtArgs>
     participant1?: boolean | Match$participant1Args<ExtArgs>
     participant2?: boolean | Match$participant2Args<ExtArgs>
     winner?: boolean | Match$winnerArgs<ExtArgs>
@@ -3582,8 +2678,9 @@ export namespace Prisma {
   }
   export type MatchIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
-    elimination?: boolean | Match$eliminationArgs<ExtArgs>
+    knockout?: boolean | Match$knockoutArgs<ExtArgs>
     group?: boolean | Match$groupArgs<ExtArgs>
+    doubleElimination?: boolean | Match$doubleEliminationArgs<ExtArgs>
     participant1?: boolean | Match$participant1Args<ExtArgs>
     participant2?: boolean | Match$participant2Args<ExtArgs>
     winner?: boolean | Match$winnerArgs<ExtArgs>
@@ -3595,8 +2692,9 @@ export namespace Prisma {
     name: "Match"
     objects: {
       tournamentPhase: Prisma.$TournamentPhasePayload<ExtArgs>
-      elimination: Prisma.$EliminationPayload<ExtArgs> | null
+      knockout: Prisma.$TournamentKnockoutPayload<ExtArgs> | null
       group: Prisma.$TournamentGroupPayload<ExtArgs> | null
+      doubleElimination: Prisma.$TournamentDoubleEliminationPayload<ExtArgs> | null
       participant1: Prisma.$ParticipantPayload<ExtArgs> | null
       participant2: Prisma.$ParticipantPayload<ExtArgs> | null
       winner: Prisma.$ParticipantPayload<ExtArgs> | null
@@ -3607,14 +2705,15 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: number
       tournamentPhaseId: number
-      eliminationId: number | null
+      knockoutId: number | null
       tournamentGroupId: number | null
+      tournamentDoubleEliminationId: number | null
+      doubleEliminationRound: number | null
       participant1Id: number | null
       participant2Id: number | null
       winnerId: number | null
       loserId: number | null
       nextMatchId: number | null
-      round: number | null
       serialNumber: number | null
       winnerElo: number | null
       loserElo: number | null
@@ -4019,8 +3118,9 @@ export namespace Prisma {
   export interface Prisma__MatchClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     tournamentPhase<T extends TournamentPhaseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TournamentPhaseDefaultArgs<ExtArgs>>): Prisma__TournamentPhaseClient<$Result.GetResult<Prisma.$TournamentPhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    elimination<T extends Match$eliminationArgs<ExtArgs> = {}>(args?: Subset<T, Match$eliminationArgs<ExtArgs>>): Prisma__EliminationClient<$Result.GetResult<Prisma.$EliminationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    knockout<T extends Match$knockoutArgs<ExtArgs> = {}>(args?: Subset<T, Match$knockoutArgs<ExtArgs>>): Prisma__TournamentKnockoutClient<$Result.GetResult<Prisma.$TournamentKnockoutPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     group<T extends Match$groupArgs<ExtArgs> = {}>(args?: Subset<T, Match$groupArgs<ExtArgs>>): Prisma__TournamentGroupClient<$Result.GetResult<Prisma.$TournamentGroupPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    doubleElimination<T extends Match$doubleEliminationArgs<ExtArgs> = {}>(args?: Subset<T, Match$doubleEliminationArgs<ExtArgs>>): Prisma__TournamentDoubleEliminationClient<$Result.GetResult<Prisma.$TournamentDoubleEliminationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     participant1<T extends Match$participant1Args<ExtArgs> = {}>(args?: Subset<T, Match$participant1Args<ExtArgs>>): Prisma__ParticipantClient<$Result.GetResult<Prisma.$ParticipantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     participant2<T extends Match$participant2Args<ExtArgs> = {}>(args?: Subset<T, Match$participant2Args<ExtArgs>>): Prisma__ParticipantClient<$Result.GetResult<Prisma.$ParticipantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     winner<T extends Match$winnerArgs<ExtArgs> = {}>(args?: Subset<T, Match$winnerArgs<ExtArgs>>): Prisma__ParticipantClient<$Result.GetResult<Prisma.$ParticipantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -4058,14 +3158,15 @@ export namespace Prisma {
   interface MatchFieldRefs {
     readonly id: FieldRef<"Match", 'Int'>
     readonly tournamentPhaseId: FieldRef<"Match", 'Int'>
-    readonly eliminationId: FieldRef<"Match", 'Int'>
+    readonly knockoutId: FieldRef<"Match", 'Int'>
     readonly tournamentGroupId: FieldRef<"Match", 'Int'>
+    readonly tournamentDoubleEliminationId: FieldRef<"Match", 'Int'>
+    readonly doubleEliminationRound: FieldRef<"Match", 'Int'>
     readonly participant1Id: FieldRef<"Match", 'Int'>
     readonly participant2Id: FieldRef<"Match", 'Int'>
     readonly winnerId: FieldRef<"Match", 'Int'>
     readonly loserId: FieldRef<"Match", 'Int'>
     readonly nextMatchId: FieldRef<"Match", 'Int'>
-    readonly round: FieldRef<"Match", 'Int'>
     readonly serialNumber: FieldRef<"Match", 'Int'>
     readonly winnerElo: FieldRef<"Match", 'Int'>
     readonly loserElo: FieldRef<"Match", 'Int'>
@@ -4471,22 +3572,22 @@ export namespace Prisma {
   }
 
   /**
-   * Match.elimination
+   * Match.knockout
    */
-  export type Match$eliminationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Match$knockoutArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Elimination
+     * Select specific fields to fetch from the TournamentKnockout
      */
-    select?: EliminationSelect<ExtArgs> | null
+    select?: TournamentKnockoutSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Elimination
+     * Omit specific fields from the TournamentKnockout
      */
-    omit?: EliminationOmit<ExtArgs> | null
+    omit?: TournamentKnockoutOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: EliminationInclude<ExtArgs> | null
-    where?: EliminationWhereInput
+    include?: TournamentKnockoutInclude<ExtArgs> | null
+    where?: TournamentKnockoutWhereInput
   }
 
   /**
@@ -4506,6 +3607,25 @@ export namespace Prisma {
      */
     include?: TournamentGroupInclude<ExtArgs> | null
     where?: TournamentGroupWhereInput
+  }
+
+  /**
+   * Match.doubleElimination
+   */
+  export type Match$doubleEliminationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentDoubleElimination
+     */
+    select?: TournamentDoubleEliminationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentDoubleElimination
+     */
+    omit?: TournamentDoubleEliminationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentDoubleEliminationInclude<ExtArgs> | null
+    where?: TournamentDoubleEliminationWhereInput
   }
 
   /**
@@ -4881,6 +4001,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     tournaments?: boolean | Participant$tournamentsArgs<ExtArgs>
+    doubleEliminations?: boolean | Participant$doubleEliminationsArgs<ExtArgs>
     groups?: boolean | Participant$groupsArgs<ExtArgs>
     matchesAsP1?: boolean | Participant$matchesAsP1Args<ExtArgs>
     matchesAsP2?: boolean | Participant$matchesAsP2Args<ExtArgs>
@@ -4926,6 +4047,7 @@ export namespace Prisma {
   export type ParticipantOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "type" | "elo" | "wins" | "losses" | "createdAt" | "updatedAt", ExtArgs["result"]["participant"]>
   export type ParticipantInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tournaments?: boolean | Participant$tournamentsArgs<ExtArgs>
+    doubleEliminations?: boolean | Participant$doubleEliminationsArgs<ExtArgs>
     groups?: boolean | Participant$groupsArgs<ExtArgs>
     matchesAsP1?: boolean | Participant$matchesAsP1Args<ExtArgs>
     matchesAsP2?: boolean | Participant$matchesAsP2Args<ExtArgs>
@@ -4941,6 +4063,7 @@ export namespace Prisma {
     name: "Participant"
     objects: {
       tournaments: Prisma.$ParticipantTournamentPayload<ExtArgs>[]
+      doubleEliminations: Prisma.$ParticipantDoubleEliminationPayload<ExtArgs>[]
       groups: Prisma.$ParticipantGroupPayload<ExtArgs>[]
       matchesAsP1: Prisma.$MatchPayload<ExtArgs>[]
       matchesAsP2: Prisma.$MatchPayload<ExtArgs>[]
@@ -5352,6 +4475,7 @@ export namespace Prisma {
   export interface Prisma__ParticipantClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     tournaments<T extends Participant$tournamentsArgs<ExtArgs> = {}>(args?: Subset<T, Participant$tournamentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ParticipantTournamentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    doubleEliminations<T extends Participant$doubleEliminationsArgs<ExtArgs> = {}>(args?: Subset<T, Participant$doubleEliminationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ParticipantDoubleEliminationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     groups<T extends Participant$groupsArgs<ExtArgs> = {}>(args?: Subset<T, Participant$groupsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ParticipantGroupPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     matchesAsP1<T extends Participant$matchesAsP1Args<ExtArgs> = {}>(args?: Subset<T, Participant$matchesAsP1Args<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     matchesAsP2<T extends Participant$matchesAsP2Args<ExtArgs> = {}>(args?: Subset<T, Participant$matchesAsP2Args<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -5807,6 +4931,30 @@ export namespace Prisma {
   }
 
   /**
+   * Participant.doubleEliminations
+   */
+  export type Participant$doubleEliminationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ParticipantDoubleElimination
+     */
+    select?: ParticipantDoubleEliminationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ParticipantDoubleElimination
+     */
+    omit?: ParticipantDoubleEliminationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ParticipantDoubleEliminationInclude<ExtArgs> | null
+    where?: ParticipantDoubleEliminationWhereInput
+    orderBy?: ParticipantDoubleEliminationOrderByWithRelationInput | ParticipantDoubleEliminationOrderByWithRelationInput[]
+    cursor?: ParticipantDoubleEliminationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ParticipantDoubleEliminationScalarFieldEnum | ParticipantDoubleEliminationScalarFieldEnum[]
+  }
+
+  /**
    * Participant.groups
    */
   export type Participant$groupsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5970,6 +5118,1161 @@ export namespace Prisma {
 
 
   /**
+   * Model ParticipantDoubleElimination
+   */
+
+  export type AggregateParticipantDoubleElimination = {
+    _count: ParticipantDoubleEliminationCountAggregateOutputType | null
+    _avg: ParticipantDoubleEliminationAvgAggregateOutputType | null
+    _sum: ParticipantDoubleEliminationSumAggregateOutputType | null
+    _min: ParticipantDoubleEliminationMinAggregateOutputType | null
+    _max: ParticipantDoubleEliminationMaxAggregateOutputType | null
+  }
+
+  export type ParticipantDoubleEliminationAvgAggregateOutputType = {
+    id: number | null
+    tournamentDoubleEliminationId: number | null
+    participantId: number | null
+    wins: number | null
+    losses: number | null
+  }
+
+  export type ParticipantDoubleEliminationSumAggregateOutputType = {
+    id: number | null
+    tournamentDoubleEliminationId: number | null
+    participantId: number | null
+    wins: number | null
+    losses: number | null
+  }
+
+  export type ParticipantDoubleEliminationMinAggregateOutputType = {
+    id: number | null
+    tournamentDoubleEliminationId: number | null
+    participantId: number | null
+    wins: number | null
+    losses: number | null
+    doubleEliminationBracket: $Enums.DoubleEliminationBracket | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ParticipantDoubleEliminationMaxAggregateOutputType = {
+    id: number | null
+    tournamentDoubleEliminationId: number | null
+    participantId: number | null
+    wins: number | null
+    losses: number | null
+    doubleEliminationBracket: $Enums.DoubleEliminationBracket | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ParticipantDoubleEliminationCountAggregateOutputType = {
+    id: number
+    tournamentDoubleEliminationId: number
+    participantId: number
+    wins: number
+    losses: number
+    doubleEliminationBracket: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ParticipantDoubleEliminationAvgAggregateInputType = {
+    id?: true
+    tournamentDoubleEliminationId?: true
+    participantId?: true
+    wins?: true
+    losses?: true
+  }
+
+  export type ParticipantDoubleEliminationSumAggregateInputType = {
+    id?: true
+    tournamentDoubleEliminationId?: true
+    participantId?: true
+    wins?: true
+    losses?: true
+  }
+
+  export type ParticipantDoubleEliminationMinAggregateInputType = {
+    id?: true
+    tournamentDoubleEliminationId?: true
+    participantId?: true
+    wins?: true
+    losses?: true
+    doubleEliminationBracket?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ParticipantDoubleEliminationMaxAggregateInputType = {
+    id?: true
+    tournamentDoubleEliminationId?: true
+    participantId?: true
+    wins?: true
+    losses?: true
+    doubleEliminationBracket?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ParticipantDoubleEliminationCountAggregateInputType = {
+    id?: true
+    tournamentDoubleEliminationId?: true
+    participantId?: true
+    wins?: true
+    losses?: true
+    doubleEliminationBracket?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ParticipantDoubleEliminationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ParticipantDoubleElimination to aggregate.
+     */
+    where?: ParticipantDoubleEliminationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ParticipantDoubleEliminations to fetch.
+     */
+    orderBy?: ParticipantDoubleEliminationOrderByWithRelationInput | ParticipantDoubleEliminationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ParticipantDoubleEliminationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ParticipantDoubleEliminations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ParticipantDoubleEliminations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ParticipantDoubleEliminations
+    **/
+    _count?: true | ParticipantDoubleEliminationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ParticipantDoubleEliminationAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ParticipantDoubleEliminationSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ParticipantDoubleEliminationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ParticipantDoubleEliminationMaxAggregateInputType
+  }
+
+  export type GetParticipantDoubleEliminationAggregateType<T extends ParticipantDoubleEliminationAggregateArgs> = {
+        [P in keyof T & keyof AggregateParticipantDoubleElimination]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateParticipantDoubleElimination[P]>
+      : GetScalarType<T[P], AggregateParticipantDoubleElimination[P]>
+  }
+
+
+
+
+  export type ParticipantDoubleEliminationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ParticipantDoubleEliminationWhereInput
+    orderBy?: ParticipantDoubleEliminationOrderByWithAggregationInput | ParticipantDoubleEliminationOrderByWithAggregationInput[]
+    by: ParticipantDoubleEliminationScalarFieldEnum[] | ParticipantDoubleEliminationScalarFieldEnum
+    having?: ParticipantDoubleEliminationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ParticipantDoubleEliminationCountAggregateInputType | true
+    _avg?: ParticipantDoubleEliminationAvgAggregateInputType
+    _sum?: ParticipantDoubleEliminationSumAggregateInputType
+    _min?: ParticipantDoubleEliminationMinAggregateInputType
+    _max?: ParticipantDoubleEliminationMaxAggregateInputType
+  }
+
+  export type ParticipantDoubleEliminationGroupByOutputType = {
+    id: number
+    tournamentDoubleEliminationId: number
+    participantId: number
+    wins: number
+    losses: number
+    doubleEliminationBracket: $Enums.DoubleEliminationBracket
+    createdAt: Date
+    updatedAt: Date
+    _count: ParticipantDoubleEliminationCountAggregateOutputType | null
+    _avg: ParticipantDoubleEliminationAvgAggregateOutputType | null
+    _sum: ParticipantDoubleEliminationSumAggregateOutputType | null
+    _min: ParticipantDoubleEliminationMinAggregateOutputType | null
+    _max: ParticipantDoubleEliminationMaxAggregateOutputType | null
+  }
+
+  type GetParticipantDoubleEliminationGroupByPayload<T extends ParticipantDoubleEliminationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ParticipantDoubleEliminationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ParticipantDoubleEliminationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ParticipantDoubleEliminationGroupByOutputType[P]>
+            : GetScalarType<T[P], ParticipantDoubleEliminationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ParticipantDoubleEliminationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tournamentDoubleEliminationId?: boolean
+    participantId?: boolean
+    wins?: boolean
+    losses?: boolean
+    doubleEliminationBracket?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    elimination?: boolean | TournamentDoubleEliminationDefaultArgs<ExtArgs>
+    participant?: boolean | ParticipantDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["participantDoubleElimination"]>
+
+  export type ParticipantDoubleEliminationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tournamentDoubleEliminationId?: boolean
+    participantId?: boolean
+    wins?: boolean
+    losses?: boolean
+    doubleEliminationBracket?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    elimination?: boolean | TournamentDoubleEliminationDefaultArgs<ExtArgs>
+    participant?: boolean | ParticipantDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["participantDoubleElimination"]>
+
+  export type ParticipantDoubleEliminationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tournamentDoubleEliminationId?: boolean
+    participantId?: boolean
+    wins?: boolean
+    losses?: boolean
+    doubleEliminationBracket?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    elimination?: boolean | TournamentDoubleEliminationDefaultArgs<ExtArgs>
+    participant?: boolean | ParticipantDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["participantDoubleElimination"]>
+
+  export type ParticipantDoubleEliminationSelectScalar = {
+    id?: boolean
+    tournamentDoubleEliminationId?: boolean
+    participantId?: boolean
+    wins?: boolean
+    losses?: boolean
+    doubleEliminationBracket?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ParticipantDoubleEliminationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tournamentDoubleEliminationId" | "participantId" | "wins" | "losses" | "doubleEliminationBracket" | "createdAt" | "updatedAt", ExtArgs["result"]["participantDoubleElimination"]>
+  export type ParticipantDoubleEliminationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    elimination?: boolean | TournamentDoubleEliminationDefaultArgs<ExtArgs>
+    participant?: boolean | ParticipantDefaultArgs<ExtArgs>
+  }
+  export type ParticipantDoubleEliminationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    elimination?: boolean | TournamentDoubleEliminationDefaultArgs<ExtArgs>
+    participant?: boolean | ParticipantDefaultArgs<ExtArgs>
+  }
+  export type ParticipantDoubleEliminationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    elimination?: boolean | TournamentDoubleEliminationDefaultArgs<ExtArgs>
+    participant?: boolean | ParticipantDefaultArgs<ExtArgs>
+  }
+
+  export type $ParticipantDoubleEliminationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ParticipantDoubleElimination"
+    objects: {
+      elimination: Prisma.$TournamentDoubleEliminationPayload<ExtArgs>
+      participant: Prisma.$ParticipantPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      tournamentDoubleEliminationId: number
+      participantId: number
+      wins: number
+      losses: number
+      doubleEliminationBracket: $Enums.DoubleEliminationBracket
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["participantDoubleElimination"]>
+    composites: {}
+  }
+
+  type ParticipantDoubleEliminationGetPayload<S extends boolean | null | undefined | ParticipantDoubleEliminationDefaultArgs> = $Result.GetResult<Prisma.$ParticipantDoubleEliminationPayload, S>
+
+  type ParticipantDoubleEliminationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ParticipantDoubleEliminationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ParticipantDoubleEliminationCountAggregateInputType | true
+    }
+
+  export interface ParticipantDoubleEliminationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ParticipantDoubleElimination'], meta: { name: 'ParticipantDoubleElimination' } }
+    /**
+     * Find zero or one ParticipantDoubleElimination that matches the filter.
+     * @param {ParticipantDoubleEliminationFindUniqueArgs} args - Arguments to find a ParticipantDoubleElimination
+     * @example
+     * // Get one ParticipantDoubleElimination
+     * const participantDoubleElimination = await prisma.participantDoubleElimination.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ParticipantDoubleEliminationFindUniqueArgs>(args: SelectSubset<T, ParticipantDoubleEliminationFindUniqueArgs<ExtArgs>>): Prisma__ParticipantDoubleEliminationClient<$Result.GetResult<Prisma.$ParticipantDoubleEliminationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ParticipantDoubleElimination that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ParticipantDoubleEliminationFindUniqueOrThrowArgs} args - Arguments to find a ParticipantDoubleElimination
+     * @example
+     * // Get one ParticipantDoubleElimination
+     * const participantDoubleElimination = await prisma.participantDoubleElimination.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ParticipantDoubleEliminationFindUniqueOrThrowArgs>(args: SelectSubset<T, ParticipantDoubleEliminationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ParticipantDoubleEliminationClient<$Result.GetResult<Prisma.$ParticipantDoubleEliminationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ParticipantDoubleElimination that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ParticipantDoubleEliminationFindFirstArgs} args - Arguments to find a ParticipantDoubleElimination
+     * @example
+     * // Get one ParticipantDoubleElimination
+     * const participantDoubleElimination = await prisma.participantDoubleElimination.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ParticipantDoubleEliminationFindFirstArgs>(args?: SelectSubset<T, ParticipantDoubleEliminationFindFirstArgs<ExtArgs>>): Prisma__ParticipantDoubleEliminationClient<$Result.GetResult<Prisma.$ParticipantDoubleEliminationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ParticipantDoubleElimination that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ParticipantDoubleEliminationFindFirstOrThrowArgs} args - Arguments to find a ParticipantDoubleElimination
+     * @example
+     * // Get one ParticipantDoubleElimination
+     * const participantDoubleElimination = await prisma.participantDoubleElimination.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ParticipantDoubleEliminationFindFirstOrThrowArgs>(args?: SelectSubset<T, ParticipantDoubleEliminationFindFirstOrThrowArgs<ExtArgs>>): Prisma__ParticipantDoubleEliminationClient<$Result.GetResult<Prisma.$ParticipantDoubleEliminationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ParticipantDoubleEliminations that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ParticipantDoubleEliminationFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ParticipantDoubleEliminations
+     * const participantDoubleEliminations = await prisma.participantDoubleElimination.findMany()
+     * 
+     * // Get first 10 ParticipantDoubleEliminations
+     * const participantDoubleEliminations = await prisma.participantDoubleElimination.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const participantDoubleEliminationWithIdOnly = await prisma.participantDoubleElimination.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ParticipantDoubleEliminationFindManyArgs>(args?: SelectSubset<T, ParticipantDoubleEliminationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ParticipantDoubleEliminationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ParticipantDoubleElimination.
+     * @param {ParticipantDoubleEliminationCreateArgs} args - Arguments to create a ParticipantDoubleElimination.
+     * @example
+     * // Create one ParticipantDoubleElimination
+     * const ParticipantDoubleElimination = await prisma.participantDoubleElimination.create({
+     *   data: {
+     *     // ... data to create a ParticipantDoubleElimination
+     *   }
+     * })
+     * 
+     */
+    create<T extends ParticipantDoubleEliminationCreateArgs>(args: SelectSubset<T, ParticipantDoubleEliminationCreateArgs<ExtArgs>>): Prisma__ParticipantDoubleEliminationClient<$Result.GetResult<Prisma.$ParticipantDoubleEliminationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ParticipantDoubleEliminations.
+     * @param {ParticipantDoubleEliminationCreateManyArgs} args - Arguments to create many ParticipantDoubleEliminations.
+     * @example
+     * // Create many ParticipantDoubleEliminations
+     * const participantDoubleElimination = await prisma.participantDoubleElimination.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ParticipantDoubleEliminationCreateManyArgs>(args?: SelectSubset<T, ParticipantDoubleEliminationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ParticipantDoubleEliminations and returns the data saved in the database.
+     * @param {ParticipantDoubleEliminationCreateManyAndReturnArgs} args - Arguments to create many ParticipantDoubleEliminations.
+     * @example
+     * // Create many ParticipantDoubleEliminations
+     * const participantDoubleElimination = await prisma.participantDoubleElimination.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ParticipantDoubleEliminations and only return the `id`
+     * const participantDoubleEliminationWithIdOnly = await prisma.participantDoubleElimination.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ParticipantDoubleEliminationCreateManyAndReturnArgs>(args?: SelectSubset<T, ParticipantDoubleEliminationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ParticipantDoubleEliminationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ParticipantDoubleElimination.
+     * @param {ParticipantDoubleEliminationDeleteArgs} args - Arguments to delete one ParticipantDoubleElimination.
+     * @example
+     * // Delete one ParticipantDoubleElimination
+     * const ParticipantDoubleElimination = await prisma.participantDoubleElimination.delete({
+     *   where: {
+     *     // ... filter to delete one ParticipantDoubleElimination
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ParticipantDoubleEliminationDeleteArgs>(args: SelectSubset<T, ParticipantDoubleEliminationDeleteArgs<ExtArgs>>): Prisma__ParticipantDoubleEliminationClient<$Result.GetResult<Prisma.$ParticipantDoubleEliminationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ParticipantDoubleElimination.
+     * @param {ParticipantDoubleEliminationUpdateArgs} args - Arguments to update one ParticipantDoubleElimination.
+     * @example
+     * // Update one ParticipantDoubleElimination
+     * const participantDoubleElimination = await prisma.participantDoubleElimination.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ParticipantDoubleEliminationUpdateArgs>(args: SelectSubset<T, ParticipantDoubleEliminationUpdateArgs<ExtArgs>>): Prisma__ParticipantDoubleEliminationClient<$Result.GetResult<Prisma.$ParticipantDoubleEliminationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ParticipantDoubleEliminations.
+     * @param {ParticipantDoubleEliminationDeleteManyArgs} args - Arguments to filter ParticipantDoubleEliminations to delete.
+     * @example
+     * // Delete a few ParticipantDoubleEliminations
+     * const { count } = await prisma.participantDoubleElimination.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ParticipantDoubleEliminationDeleteManyArgs>(args?: SelectSubset<T, ParticipantDoubleEliminationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ParticipantDoubleEliminations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ParticipantDoubleEliminationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ParticipantDoubleEliminations
+     * const participantDoubleElimination = await prisma.participantDoubleElimination.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ParticipantDoubleEliminationUpdateManyArgs>(args: SelectSubset<T, ParticipantDoubleEliminationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ParticipantDoubleEliminations and returns the data updated in the database.
+     * @param {ParticipantDoubleEliminationUpdateManyAndReturnArgs} args - Arguments to update many ParticipantDoubleEliminations.
+     * @example
+     * // Update many ParticipantDoubleEliminations
+     * const participantDoubleElimination = await prisma.participantDoubleElimination.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ParticipantDoubleEliminations and only return the `id`
+     * const participantDoubleEliminationWithIdOnly = await prisma.participantDoubleElimination.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ParticipantDoubleEliminationUpdateManyAndReturnArgs>(args: SelectSubset<T, ParticipantDoubleEliminationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ParticipantDoubleEliminationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ParticipantDoubleElimination.
+     * @param {ParticipantDoubleEliminationUpsertArgs} args - Arguments to update or create a ParticipantDoubleElimination.
+     * @example
+     * // Update or create a ParticipantDoubleElimination
+     * const participantDoubleElimination = await prisma.participantDoubleElimination.upsert({
+     *   create: {
+     *     // ... data to create a ParticipantDoubleElimination
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ParticipantDoubleElimination we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ParticipantDoubleEliminationUpsertArgs>(args: SelectSubset<T, ParticipantDoubleEliminationUpsertArgs<ExtArgs>>): Prisma__ParticipantDoubleEliminationClient<$Result.GetResult<Prisma.$ParticipantDoubleEliminationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ParticipantDoubleEliminations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ParticipantDoubleEliminationCountArgs} args - Arguments to filter ParticipantDoubleEliminations to count.
+     * @example
+     * // Count the number of ParticipantDoubleEliminations
+     * const count = await prisma.participantDoubleElimination.count({
+     *   where: {
+     *     // ... the filter for the ParticipantDoubleEliminations we want to count
+     *   }
+     * })
+    **/
+    count<T extends ParticipantDoubleEliminationCountArgs>(
+      args?: Subset<T, ParticipantDoubleEliminationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ParticipantDoubleEliminationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ParticipantDoubleElimination.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ParticipantDoubleEliminationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ParticipantDoubleEliminationAggregateArgs>(args: Subset<T, ParticipantDoubleEliminationAggregateArgs>): Prisma.PrismaPromise<GetParticipantDoubleEliminationAggregateType<T>>
+
+    /**
+     * Group by ParticipantDoubleElimination.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ParticipantDoubleEliminationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ParticipantDoubleEliminationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ParticipantDoubleEliminationGroupByArgs['orderBy'] }
+        : { orderBy?: ParticipantDoubleEliminationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ParticipantDoubleEliminationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetParticipantDoubleEliminationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ParticipantDoubleElimination model
+   */
+  readonly fields: ParticipantDoubleEliminationFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ParticipantDoubleElimination.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ParticipantDoubleEliminationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    elimination<T extends TournamentDoubleEliminationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TournamentDoubleEliminationDefaultArgs<ExtArgs>>): Prisma__TournamentDoubleEliminationClient<$Result.GetResult<Prisma.$TournamentDoubleEliminationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    participant<T extends ParticipantDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ParticipantDefaultArgs<ExtArgs>>): Prisma__ParticipantClient<$Result.GetResult<Prisma.$ParticipantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ParticipantDoubleElimination model
+   */
+  interface ParticipantDoubleEliminationFieldRefs {
+    readonly id: FieldRef<"ParticipantDoubleElimination", 'Int'>
+    readonly tournamentDoubleEliminationId: FieldRef<"ParticipantDoubleElimination", 'Int'>
+    readonly participantId: FieldRef<"ParticipantDoubleElimination", 'Int'>
+    readonly wins: FieldRef<"ParticipantDoubleElimination", 'Int'>
+    readonly losses: FieldRef<"ParticipantDoubleElimination", 'Int'>
+    readonly doubleEliminationBracket: FieldRef<"ParticipantDoubleElimination", 'DoubleEliminationBracket'>
+    readonly createdAt: FieldRef<"ParticipantDoubleElimination", 'DateTime'>
+    readonly updatedAt: FieldRef<"ParticipantDoubleElimination", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ParticipantDoubleElimination findUnique
+   */
+  export type ParticipantDoubleEliminationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ParticipantDoubleElimination
+     */
+    select?: ParticipantDoubleEliminationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ParticipantDoubleElimination
+     */
+    omit?: ParticipantDoubleEliminationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ParticipantDoubleEliminationInclude<ExtArgs> | null
+    /**
+     * Filter, which ParticipantDoubleElimination to fetch.
+     */
+    where: ParticipantDoubleEliminationWhereUniqueInput
+  }
+
+  /**
+   * ParticipantDoubleElimination findUniqueOrThrow
+   */
+  export type ParticipantDoubleEliminationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ParticipantDoubleElimination
+     */
+    select?: ParticipantDoubleEliminationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ParticipantDoubleElimination
+     */
+    omit?: ParticipantDoubleEliminationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ParticipantDoubleEliminationInclude<ExtArgs> | null
+    /**
+     * Filter, which ParticipantDoubleElimination to fetch.
+     */
+    where: ParticipantDoubleEliminationWhereUniqueInput
+  }
+
+  /**
+   * ParticipantDoubleElimination findFirst
+   */
+  export type ParticipantDoubleEliminationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ParticipantDoubleElimination
+     */
+    select?: ParticipantDoubleEliminationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ParticipantDoubleElimination
+     */
+    omit?: ParticipantDoubleEliminationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ParticipantDoubleEliminationInclude<ExtArgs> | null
+    /**
+     * Filter, which ParticipantDoubleElimination to fetch.
+     */
+    where?: ParticipantDoubleEliminationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ParticipantDoubleEliminations to fetch.
+     */
+    orderBy?: ParticipantDoubleEliminationOrderByWithRelationInput | ParticipantDoubleEliminationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ParticipantDoubleEliminations.
+     */
+    cursor?: ParticipantDoubleEliminationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ParticipantDoubleEliminations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ParticipantDoubleEliminations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ParticipantDoubleEliminations.
+     */
+    distinct?: ParticipantDoubleEliminationScalarFieldEnum | ParticipantDoubleEliminationScalarFieldEnum[]
+  }
+
+  /**
+   * ParticipantDoubleElimination findFirstOrThrow
+   */
+  export type ParticipantDoubleEliminationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ParticipantDoubleElimination
+     */
+    select?: ParticipantDoubleEliminationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ParticipantDoubleElimination
+     */
+    omit?: ParticipantDoubleEliminationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ParticipantDoubleEliminationInclude<ExtArgs> | null
+    /**
+     * Filter, which ParticipantDoubleElimination to fetch.
+     */
+    where?: ParticipantDoubleEliminationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ParticipantDoubleEliminations to fetch.
+     */
+    orderBy?: ParticipantDoubleEliminationOrderByWithRelationInput | ParticipantDoubleEliminationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ParticipantDoubleEliminations.
+     */
+    cursor?: ParticipantDoubleEliminationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ParticipantDoubleEliminations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ParticipantDoubleEliminations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ParticipantDoubleEliminations.
+     */
+    distinct?: ParticipantDoubleEliminationScalarFieldEnum | ParticipantDoubleEliminationScalarFieldEnum[]
+  }
+
+  /**
+   * ParticipantDoubleElimination findMany
+   */
+  export type ParticipantDoubleEliminationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ParticipantDoubleElimination
+     */
+    select?: ParticipantDoubleEliminationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ParticipantDoubleElimination
+     */
+    omit?: ParticipantDoubleEliminationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ParticipantDoubleEliminationInclude<ExtArgs> | null
+    /**
+     * Filter, which ParticipantDoubleEliminations to fetch.
+     */
+    where?: ParticipantDoubleEliminationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ParticipantDoubleEliminations to fetch.
+     */
+    orderBy?: ParticipantDoubleEliminationOrderByWithRelationInput | ParticipantDoubleEliminationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ParticipantDoubleEliminations.
+     */
+    cursor?: ParticipantDoubleEliminationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ParticipantDoubleEliminations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ParticipantDoubleEliminations.
+     */
+    skip?: number
+    distinct?: ParticipantDoubleEliminationScalarFieldEnum | ParticipantDoubleEliminationScalarFieldEnum[]
+  }
+
+  /**
+   * ParticipantDoubleElimination create
+   */
+  export type ParticipantDoubleEliminationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ParticipantDoubleElimination
+     */
+    select?: ParticipantDoubleEliminationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ParticipantDoubleElimination
+     */
+    omit?: ParticipantDoubleEliminationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ParticipantDoubleEliminationInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ParticipantDoubleElimination.
+     */
+    data: XOR<ParticipantDoubleEliminationCreateInput, ParticipantDoubleEliminationUncheckedCreateInput>
+  }
+
+  /**
+   * ParticipantDoubleElimination createMany
+   */
+  export type ParticipantDoubleEliminationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ParticipantDoubleEliminations.
+     */
+    data: ParticipantDoubleEliminationCreateManyInput | ParticipantDoubleEliminationCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ParticipantDoubleElimination createManyAndReturn
+   */
+  export type ParticipantDoubleEliminationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ParticipantDoubleElimination
+     */
+    select?: ParticipantDoubleEliminationSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ParticipantDoubleElimination
+     */
+    omit?: ParticipantDoubleEliminationOmit<ExtArgs> | null
+    /**
+     * The data used to create many ParticipantDoubleEliminations.
+     */
+    data: ParticipantDoubleEliminationCreateManyInput | ParticipantDoubleEliminationCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ParticipantDoubleEliminationIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ParticipantDoubleElimination update
+   */
+  export type ParticipantDoubleEliminationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ParticipantDoubleElimination
+     */
+    select?: ParticipantDoubleEliminationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ParticipantDoubleElimination
+     */
+    omit?: ParticipantDoubleEliminationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ParticipantDoubleEliminationInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ParticipantDoubleElimination.
+     */
+    data: XOR<ParticipantDoubleEliminationUpdateInput, ParticipantDoubleEliminationUncheckedUpdateInput>
+    /**
+     * Choose, which ParticipantDoubleElimination to update.
+     */
+    where: ParticipantDoubleEliminationWhereUniqueInput
+  }
+
+  /**
+   * ParticipantDoubleElimination updateMany
+   */
+  export type ParticipantDoubleEliminationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ParticipantDoubleEliminations.
+     */
+    data: XOR<ParticipantDoubleEliminationUpdateManyMutationInput, ParticipantDoubleEliminationUncheckedUpdateManyInput>
+    /**
+     * Filter which ParticipantDoubleEliminations to update
+     */
+    where?: ParticipantDoubleEliminationWhereInput
+    /**
+     * Limit how many ParticipantDoubleEliminations to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ParticipantDoubleElimination updateManyAndReturn
+   */
+  export type ParticipantDoubleEliminationUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ParticipantDoubleElimination
+     */
+    select?: ParticipantDoubleEliminationSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ParticipantDoubleElimination
+     */
+    omit?: ParticipantDoubleEliminationOmit<ExtArgs> | null
+    /**
+     * The data used to update ParticipantDoubleEliminations.
+     */
+    data: XOR<ParticipantDoubleEliminationUpdateManyMutationInput, ParticipantDoubleEliminationUncheckedUpdateManyInput>
+    /**
+     * Filter which ParticipantDoubleEliminations to update
+     */
+    where?: ParticipantDoubleEliminationWhereInput
+    /**
+     * Limit how many ParticipantDoubleEliminations to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ParticipantDoubleEliminationIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ParticipantDoubleElimination upsert
+   */
+  export type ParticipantDoubleEliminationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ParticipantDoubleElimination
+     */
+    select?: ParticipantDoubleEliminationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ParticipantDoubleElimination
+     */
+    omit?: ParticipantDoubleEliminationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ParticipantDoubleEliminationInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ParticipantDoubleElimination to update in case it exists.
+     */
+    where: ParticipantDoubleEliminationWhereUniqueInput
+    /**
+     * In case the ParticipantDoubleElimination found by the `where` argument doesn't exist, create a new ParticipantDoubleElimination with this data.
+     */
+    create: XOR<ParticipantDoubleEliminationCreateInput, ParticipantDoubleEliminationUncheckedCreateInput>
+    /**
+     * In case the ParticipantDoubleElimination was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ParticipantDoubleEliminationUpdateInput, ParticipantDoubleEliminationUncheckedUpdateInput>
+  }
+
+  /**
+   * ParticipantDoubleElimination delete
+   */
+  export type ParticipantDoubleEliminationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ParticipantDoubleElimination
+     */
+    select?: ParticipantDoubleEliminationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ParticipantDoubleElimination
+     */
+    omit?: ParticipantDoubleEliminationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ParticipantDoubleEliminationInclude<ExtArgs> | null
+    /**
+     * Filter which ParticipantDoubleElimination to delete.
+     */
+    where: ParticipantDoubleEliminationWhereUniqueInput
+  }
+
+  /**
+   * ParticipantDoubleElimination deleteMany
+   */
+  export type ParticipantDoubleEliminationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ParticipantDoubleEliminations to delete
+     */
+    where?: ParticipantDoubleEliminationWhereInput
+    /**
+     * Limit how many ParticipantDoubleEliminations to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ParticipantDoubleElimination without action
+   */
+  export type ParticipantDoubleEliminationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ParticipantDoubleElimination
+     */
+    select?: ParticipantDoubleEliminationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ParticipantDoubleElimination
+     */
+    omit?: ParticipantDoubleEliminationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ParticipantDoubleEliminationInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model ParticipantGroup
    */
 
@@ -5987,7 +6290,6 @@ export namespace Prisma {
     participantId: number | null
     wins: number | null
     losses: number | null
-    points: number | null
   }
 
   export type ParticipantGroupSumAggregateOutputType = {
@@ -5996,7 +6298,6 @@ export namespace Prisma {
     participantId: number | null
     wins: number | null
     losses: number | null
-    points: number | null
   }
 
   export type ParticipantGroupMinAggregateOutputType = {
@@ -6005,7 +6306,6 @@ export namespace Prisma {
     participantId: number | null
     wins: number | null
     losses: number | null
-    points: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -6016,7 +6316,6 @@ export namespace Prisma {
     participantId: number | null
     wins: number | null
     losses: number | null
-    points: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -6027,7 +6326,6 @@ export namespace Prisma {
     participantId: number
     wins: number
     losses: number
-    points: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -6040,7 +6338,6 @@ export namespace Prisma {
     participantId?: true
     wins?: true
     losses?: true
-    points?: true
   }
 
   export type ParticipantGroupSumAggregateInputType = {
@@ -6049,7 +6346,6 @@ export namespace Prisma {
     participantId?: true
     wins?: true
     losses?: true
-    points?: true
   }
 
   export type ParticipantGroupMinAggregateInputType = {
@@ -6058,7 +6354,6 @@ export namespace Prisma {
     participantId?: true
     wins?: true
     losses?: true
-    points?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -6069,7 +6364,6 @@ export namespace Prisma {
     participantId?: true
     wins?: true
     losses?: true
-    points?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -6080,7 +6374,6 @@ export namespace Prisma {
     participantId?: true
     wins?: true
     losses?: true
-    points?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -6178,7 +6471,6 @@ export namespace Prisma {
     participantId: number
     wins: number
     losses: number
-    points: number
     createdAt: Date
     updatedAt: Date
     _count: ParticipantGroupCountAggregateOutputType | null
@@ -6208,7 +6500,6 @@ export namespace Prisma {
     participantId?: boolean
     wins?: boolean
     losses?: boolean
-    points?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     group?: boolean | TournamentGroupDefaultArgs<ExtArgs>
@@ -6221,7 +6512,6 @@ export namespace Prisma {
     participantId?: boolean
     wins?: boolean
     losses?: boolean
-    points?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     group?: boolean | TournamentGroupDefaultArgs<ExtArgs>
@@ -6234,7 +6524,6 @@ export namespace Prisma {
     participantId?: boolean
     wins?: boolean
     losses?: boolean
-    points?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     group?: boolean | TournamentGroupDefaultArgs<ExtArgs>
@@ -6247,12 +6536,11 @@ export namespace Prisma {
     participantId?: boolean
     wins?: boolean
     losses?: boolean
-    points?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ParticipantGroupOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tournamentGroupId" | "participantId" | "wins" | "losses" | "points" | "createdAt" | "updatedAt", ExtArgs["result"]["participantGroup"]>
+  export type ParticipantGroupOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tournamentGroupId" | "participantId" | "wins" | "losses" | "createdAt" | "updatedAt", ExtArgs["result"]["participantGroup"]>
   export type ParticipantGroupInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     group?: boolean | TournamentGroupDefaultArgs<ExtArgs>
     participant?: boolean | ParticipantDefaultArgs<ExtArgs>
@@ -6278,7 +6566,6 @@ export namespace Prisma {
       participantId: number
       wins: number
       losses: number
-      points: number
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["participantGroup"]>
@@ -6711,7 +6998,6 @@ export namespace Prisma {
     readonly participantId: FieldRef<"ParticipantGroup", 'Int'>
     readonly wins: FieldRef<"ParticipantGroup", 'Int'>
     readonly losses: FieldRef<"ParticipantGroup", 'Int'>
-    readonly points: FieldRef<"ParticipantGroup", 'Int'>
     readonly createdAt: FieldRef<"ParticipantGroup", 'DateTime'>
     readonly updatedAt: FieldRef<"ParticipantGroup", 'DateTime'>
   }
@@ -9444,6 +9730,1177 @@ export namespace Prisma {
 
 
   /**
+   * Model TournamentDoubleElimination
+   */
+
+  export type AggregateTournamentDoubleElimination = {
+    _count: TournamentDoubleEliminationCountAggregateOutputType | null
+    _avg: TournamentDoubleEliminationAvgAggregateOutputType | null
+    _sum: TournamentDoubleEliminationSumAggregateOutputType | null
+    _min: TournamentDoubleEliminationMinAggregateOutputType | null
+    _max: TournamentDoubleEliminationMaxAggregateOutputType | null
+  }
+
+  export type TournamentDoubleEliminationAvgAggregateOutputType = {
+    id: number | null
+    tournamentPhaseId: number | null
+    roundNumber: number | null
+  }
+
+  export type TournamentDoubleEliminationSumAggregateOutputType = {
+    id: number | null
+    tournamentPhaseId: number | null
+    roundNumber: number | null
+  }
+
+  export type TournamentDoubleEliminationMinAggregateOutputType = {
+    id: number | null
+    tournamentPhaseId: number | null
+    roundNumber: number | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TournamentDoubleEliminationMaxAggregateOutputType = {
+    id: number | null
+    tournamentPhaseId: number | null
+    roundNumber: number | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TournamentDoubleEliminationCountAggregateOutputType = {
+    id: number
+    tournamentPhaseId: number
+    roundNumber: number
+    isActive: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type TournamentDoubleEliminationAvgAggregateInputType = {
+    id?: true
+    tournamentPhaseId?: true
+    roundNumber?: true
+  }
+
+  export type TournamentDoubleEliminationSumAggregateInputType = {
+    id?: true
+    tournamentPhaseId?: true
+    roundNumber?: true
+  }
+
+  export type TournamentDoubleEliminationMinAggregateInputType = {
+    id?: true
+    tournamentPhaseId?: true
+    roundNumber?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TournamentDoubleEliminationMaxAggregateInputType = {
+    id?: true
+    tournamentPhaseId?: true
+    roundNumber?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TournamentDoubleEliminationCountAggregateInputType = {
+    id?: true
+    tournamentPhaseId?: true
+    roundNumber?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type TournamentDoubleEliminationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TournamentDoubleElimination to aggregate.
+     */
+    where?: TournamentDoubleEliminationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TournamentDoubleEliminations to fetch.
+     */
+    orderBy?: TournamentDoubleEliminationOrderByWithRelationInput | TournamentDoubleEliminationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TournamentDoubleEliminationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TournamentDoubleEliminations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TournamentDoubleEliminations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TournamentDoubleEliminations
+    **/
+    _count?: true | TournamentDoubleEliminationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TournamentDoubleEliminationAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TournamentDoubleEliminationSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TournamentDoubleEliminationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TournamentDoubleEliminationMaxAggregateInputType
+  }
+
+  export type GetTournamentDoubleEliminationAggregateType<T extends TournamentDoubleEliminationAggregateArgs> = {
+        [P in keyof T & keyof AggregateTournamentDoubleElimination]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTournamentDoubleElimination[P]>
+      : GetScalarType<T[P], AggregateTournamentDoubleElimination[P]>
+  }
+
+
+
+
+  export type TournamentDoubleEliminationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TournamentDoubleEliminationWhereInput
+    orderBy?: TournamentDoubleEliminationOrderByWithAggregationInput | TournamentDoubleEliminationOrderByWithAggregationInput[]
+    by: TournamentDoubleEliminationScalarFieldEnum[] | TournamentDoubleEliminationScalarFieldEnum
+    having?: TournamentDoubleEliminationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TournamentDoubleEliminationCountAggregateInputType | true
+    _avg?: TournamentDoubleEliminationAvgAggregateInputType
+    _sum?: TournamentDoubleEliminationSumAggregateInputType
+    _min?: TournamentDoubleEliminationMinAggregateInputType
+    _max?: TournamentDoubleEliminationMaxAggregateInputType
+  }
+
+  export type TournamentDoubleEliminationGroupByOutputType = {
+    id: number
+    tournamentPhaseId: number
+    roundNumber: number
+    isActive: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: TournamentDoubleEliminationCountAggregateOutputType | null
+    _avg: TournamentDoubleEliminationAvgAggregateOutputType | null
+    _sum: TournamentDoubleEliminationSumAggregateOutputType | null
+    _min: TournamentDoubleEliminationMinAggregateOutputType | null
+    _max: TournamentDoubleEliminationMaxAggregateOutputType | null
+  }
+
+  type GetTournamentDoubleEliminationGroupByPayload<T extends TournamentDoubleEliminationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TournamentDoubleEliminationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TournamentDoubleEliminationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TournamentDoubleEliminationGroupByOutputType[P]>
+            : GetScalarType<T[P], TournamentDoubleEliminationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TournamentDoubleEliminationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tournamentPhaseId?: boolean
+    roundNumber?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
+    participantDoubleEliminations?: boolean | TournamentDoubleElimination$participantDoubleEliminationsArgs<ExtArgs>
+    matches?: boolean | TournamentDoubleElimination$matchesArgs<ExtArgs>
+    _count?: boolean | TournamentDoubleEliminationCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["tournamentDoubleElimination"]>
+
+  export type TournamentDoubleEliminationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tournamentPhaseId?: boolean
+    roundNumber?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["tournamentDoubleElimination"]>
+
+  export type TournamentDoubleEliminationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tournamentPhaseId?: boolean
+    roundNumber?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["tournamentDoubleElimination"]>
+
+  export type TournamentDoubleEliminationSelectScalar = {
+    id?: boolean
+    tournamentPhaseId?: boolean
+    roundNumber?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type TournamentDoubleEliminationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tournamentPhaseId" | "roundNumber" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["tournamentDoubleElimination"]>
+  export type TournamentDoubleEliminationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
+    participantDoubleEliminations?: boolean | TournamentDoubleElimination$participantDoubleEliminationsArgs<ExtArgs>
+    matches?: boolean | TournamentDoubleElimination$matchesArgs<ExtArgs>
+    _count?: boolean | TournamentDoubleEliminationCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type TournamentDoubleEliminationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
+  }
+  export type TournamentDoubleEliminationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
+  }
+
+  export type $TournamentDoubleEliminationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TournamentDoubleElimination"
+    objects: {
+      tournamentPhase: Prisma.$TournamentPhasePayload<ExtArgs>
+      participantDoubleEliminations: Prisma.$ParticipantDoubleEliminationPayload<ExtArgs>[]
+      matches: Prisma.$MatchPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      tournamentPhaseId: number
+      roundNumber: number
+      isActive: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["tournamentDoubleElimination"]>
+    composites: {}
+  }
+
+  type TournamentDoubleEliminationGetPayload<S extends boolean | null | undefined | TournamentDoubleEliminationDefaultArgs> = $Result.GetResult<Prisma.$TournamentDoubleEliminationPayload, S>
+
+  type TournamentDoubleEliminationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TournamentDoubleEliminationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TournamentDoubleEliminationCountAggregateInputType | true
+    }
+
+  export interface TournamentDoubleEliminationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TournamentDoubleElimination'], meta: { name: 'TournamentDoubleElimination' } }
+    /**
+     * Find zero or one TournamentDoubleElimination that matches the filter.
+     * @param {TournamentDoubleEliminationFindUniqueArgs} args - Arguments to find a TournamentDoubleElimination
+     * @example
+     * // Get one TournamentDoubleElimination
+     * const tournamentDoubleElimination = await prisma.tournamentDoubleElimination.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TournamentDoubleEliminationFindUniqueArgs>(args: SelectSubset<T, TournamentDoubleEliminationFindUniqueArgs<ExtArgs>>): Prisma__TournamentDoubleEliminationClient<$Result.GetResult<Prisma.$TournamentDoubleEliminationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TournamentDoubleElimination that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TournamentDoubleEliminationFindUniqueOrThrowArgs} args - Arguments to find a TournamentDoubleElimination
+     * @example
+     * // Get one TournamentDoubleElimination
+     * const tournamentDoubleElimination = await prisma.tournamentDoubleElimination.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TournamentDoubleEliminationFindUniqueOrThrowArgs>(args: SelectSubset<T, TournamentDoubleEliminationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TournamentDoubleEliminationClient<$Result.GetResult<Prisma.$TournamentDoubleEliminationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TournamentDoubleElimination that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentDoubleEliminationFindFirstArgs} args - Arguments to find a TournamentDoubleElimination
+     * @example
+     * // Get one TournamentDoubleElimination
+     * const tournamentDoubleElimination = await prisma.tournamentDoubleElimination.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TournamentDoubleEliminationFindFirstArgs>(args?: SelectSubset<T, TournamentDoubleEliminationFindFirstArgs<ExtArgs>>): Prisma__TournamentDoubleEliminationClient<$Result.GetResult<Prisma.$TournamentDoubleEliminationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TournamentDoubleElimination that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentDoubleEliminationFindFirstOrThrowArgs} args - Arguments to find a TournamentDoubleElimination
+     * @example
+     * // Get one TournamentDoubleElimination
+     * const tournamentDoubleElimination = await prisma.tournamentDoubleElimination.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TournamentDoubleEliminationFindFirstOrThrowArgs>(args?: SelectSubset<T, TournamentDoubleEliminationFindFirstOrThrowArgs<ExtArgs>>): Prisma__TournamentDoubleEliminationClient<$Result.GetResult<Prisma.$TournamentDoubleEliminationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TournamentDoubleEliminations that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentDoubleEliminationFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TournamentDoubleEliminations
+     * const tournamentDoubleEliminations = await prisma.tournamentDoubleElimination.findMany()
+     * 
+     * // Get first 10 TournamentDoubleEliminations
+     * const tournamentDoubleEliminations = await prisma.tournamentDoubleElimination.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const tournamentDoubleEliminationWithIdOnly = await prisma.tournamentDoubleElimination.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TournamentDoubleEliminationFindManyArgs>(args?: SelectSubset<T, TournamentDoubleEliminationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentDoubleEliminationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TournamentDoubleElimination.
+     * @param {TournamentDoubleEliminationCreateArgs} args - Arguments to create a TournamentDoubleElimination.
+     * @example
+     * // Create one TournamentDoubleElimination
+     * const TournamentDoubleElimination = await prisma.tournamentDoubleElimination.create({
+     *   data: {
+     *     // ... data to create a TournamentDoubleElimination
+     *   }
+     * })
+     * 
+     */
+    create<T extends TournamentDoubleEliminationCreateArgs>(args: SelectSubset<T, TournamentDoubleEliminationCreateArgs<ExtArgs>>): Prisma__TournamentDoubleEliminationClient<$Result.GetResult<Prisma.$TournamentDoubleEliminationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TournamentDoubleEliminations.
+     * @param {TournamentDoubleEliminationCreateManyArgs} args - Arguments to create many TournamentDoubleEliminations.
+     * @example
+     * // Create many TournamentDoubleEliminations
+     * const tournamentDoubleElimination = await prisma.tournamentDoubleElimination.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TournamentDoubleEliminationCreateManyArgs>(args?: SelectSubset<T, TournamentDoubleEliminationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TournamentDoubleEliminations and returns the data saved in the database.
+     * @param {TournamentDoubleEliminationCreateManyAndReturnArgs} args - Arguments to create many TournamentDoubleEliminations.
+     * @example
+     * // Create many TournamentDoubleEliminations
+     * const tournamentDoubleElimination = await prisma.tournamentDoubleElimination.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TournamentDoubleEliminations and only return the `id`
+     * const tournamentDoubleEliminationWithIdOnly = await prisma.tournamentDoubleElimination.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TournamentDoubleEliminationCreateManyAndReturnArgs>(args?: SelectSubset<T, TournamentDoubleEliminationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentDoubleEliminationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a TournamentDoubleElimination.
+     * @param {TournamentDoubleEliminationDeleteArgs} args - Arguments to delete one TournamentDoubleElimination.
+     * @example
+     * // Delete one TournamentDoubleElimination
+     * const TournamentDoubleElimination = await prisma.tournamentDoubleElimination.delete({
+     *   where: {
+     *     // ... filter to delete one TournamentDoubleElimination
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TournamentDoubleEliminationDeleteArgs>(args: SelectSubset<T, TournamentDoubleEliminationDeleteArgs<ExtArgs>>): Prisma__TournamentDoubleEliminationClient<$Result.GetResult<Prisma.$TournamentDoubleEliminationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TournamentDoubleElimination.
+     * @param {TournamentDoubleEliminationUpdateArgs} args - Arguments to update one TournamentDoubleElimination.
+     * @example
+     * // Update one TournamentDoubleElimination
+     * const tournamentDoubleElimination = await prisma.tournamentDoubleElimination.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TournamentDoubleEliminationUpdateArgs>(args: SelectSubset<T, TournamentDoubleEliminationUpdateArgs<ExtArgs>>): Prisma__TournamentDoubleEliminationClient<$Result.GetResult<Prisma.$TournamentDoubleEliminationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TournamentDoubleEliminations.
+     * @param {TournamentDoubleEliminationDeleteManyArgs} args - Arguments to filter TournamentDoubleEliminations to delete.
+     * @example
+     * // Delete a few TournamentDoubleEliminations
+     * const { count } = await prisma.tournamentDoubleElimination.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TournamentDoubleEliminationDeleteManyArgs>(args?: SelectSubset<T, TournamentDoubleEliminationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TournamentDoubleEliminations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentDoubleEliminationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TournamentDoubleEliminations
+     * const tournamentDoubleElimination = await prisma.tournamentDoubleElimination.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TournamentDoubleEliminationUpdateManyArgs>(args: SelectSubset<T, TournamentDoubleEliminationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TournamentDoubleEliminations and returns the data updated in the database.
+     * @param {TournamentDoubleEliminationUpdateManyAndReturnArgs} args - Arguments to update many TournamentDoubleEliminations.
+     * @example
+     * // Update many TournamentDoubleEliminations
+     * const tournamentDoubleElimination = await prisma.tournamentDoubleElimination.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more TournamentDoubleEliminations and only return the `id`
+     * const tournamentDoubleEliminationWithIdOnly = await prisma.tournamentDoubleElimination.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TournamentDoubleEliminationUpdateManyAndReturnArgs>(args: SelectSubset<T, TournamentDoubleEliminationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentDoubleEliminationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one TournamentDoubleElimination.
+     * @param {TournamentDoubleEliminationUpsertArgs} args - Arguments to update or create a TournamentDoubleElimination.
+     * @example
+     * // Update or create a TournamentDoubleElimination
+     * const tournamentDoubleElimination = await prisma.tournamentDoubleElimination.upsert({
+     *   create: {
+     *     // ... data to create a TournamentDoubleElimination
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TournamentDoubleElimination we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TournamentDoubleEliminationUpsertArgs>(args: SelectSubset<T, TournamentDoubleEliminationUpsertArgs<ExtArgs>>): Prisma__TournamentDoubleEliminationClient<$Result.GetResult<Prisma.$TournamentDoubleEliminationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TournamentDoubleEliminations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentDoubleEliminationCountArgs} args - Arguments to filter TournamentDoubleEliminations to count.
+     * @example
+     * // Count the number of TournamentDoubleEliminations
+     * const count = await prisma.tournamentDoubleElimination.count({
+     *   where: {
+     *     // ... the filter for the TournamentDoubleEliminations we want to count
+     *   }
+     * })
+    **/
+    count<T extends TournamentDoubleEliminationCountArgs>(
+      args?: Subset<T, TournamentDoubleEliminationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TournamentDoubleEliminationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TournamentDoubleElimination.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentDoubleEliminationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TournamentDoubleEliminationAggregateArgs>(args: Subset<T, TournamentDoubleEliminationAggregateArgs>): Prisma.PrismaPromise<GetTournamentDoubleEliminationAggregateType<T>>
+
+    /**
+     * Group by TournamentDoubleElimination.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentDoubleEliminationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TournamentDoubleEliminationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TournamentDoubleEliminationGroupByArgs['orderBy'] }
+        : { orderBy?: TournamentDoubleEliminationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TournamentDoubleEliminationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTournamentDoubleEliminationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TournamentDoubleElimination model
+   */
+  readonly fields: TournamentDoubleEliminationFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TournamentDoubleElimination.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TournamentDoubleEliminationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    tournamentPhase<T extends TournamentPhaseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TournamentPhaseDefaultArgs<ExtArgs>>): Prisma__TournamentPhaseClient<$Result.GetResult<Prisma.$TournamentPhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    participantDoubleEliminations<T extends TournamentDoubleElimination$participantDoubleEliminationsArgs<ExtArgs> = {}>(args?: Subset<T, TournamentDoubleElimination$participantDoubleEliminationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ParticipantDoubleEliminationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    matches<T extends TournamentDoubleElimination$matchesArgs<ExtArgs> = {}>(args?: Subset<T, TournamentDoubleElimination$matchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TournamentDoubleElimination model
+   */
+  interface TournamentDoubleEliminationFieldRefs {
+    readonly id: FieldRef<"TournamentDoubleElimination", 'Int'>
+    readonly tournamentPhaseId: FieldRef<"TournamentDoubleElimination", 'Int'>
+    readonly roundNumber: FieldRef<"TournamentDoubleElimination", 'Int'>
+    readonly isActive: FieldRef<"TournamentDoubleElimination", 'Boolean'>
+    readonly createdAt: FieldRef<"TournamentDoubleElimination", 'DateTime'>
+    readonly updatedAt: FieldRef<"TournamentDoubleElimination", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TournamentDoubleElimination findUnique
+   */
+  export type TournamentDoubleEliminationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentDoubleElimination
+     */
+    select?: TournamentDoubleEliminationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentDoubleElimination
+     */
+    omit?: TournamentDoubleEliminationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentDoubleEliminationInclude<ExtArgs> | null
+    /**
+     * Filter, which TournamentDoubleElimination to fetch.
+     */
+    where: TournamentDoubleEliminationWhereUniqueInput
+  }
+
+  /**
+   * TournamentDoubleElimination findUniqueOrThrow
+   */
+  export type TournamentDoubleEliminationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentDoubleElimination
+     */
+    select?: TournamentDoubleEliminationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentDoubleElimination
+     */
+    omit?: TournamentDoubleEliminationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentDoubleEliminationInclude<ExtArgs> | null
+    /**
+     * Filter, which TournamentDoubleElimination to fetch.
+     */
+    where: TournamentDoubleEliminationWhereUniqueInput
+  }
+
+  /**
+   * TournamentDoubleElimination findFirst
+   */
+  export type TournamentDoubleEliminationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentDoubleElimination
+     */
+    select?: TournamentDoubleEliminationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentDoubleElimination
+     */
+    omit?: TournamentDoubleEliminationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentDoubleEliminationInclude<ExtArgs> | null
+    /**
+     * Filter, which TournamentDoubleElimination to fetch.
+     */
+    where?: TournamentDoubleEliminationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TournamentDoubleEliminations to fetch.
+     */
+    orderBy?: TournamentDoubleEliminationOrderByWithRelationInput | TournamentDoubleEliminationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TournamentDoubleEliminations.
+     */
+    cursor?: TournamentDoubleEliminationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TournamentDoubleEliminations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TournamentDoubleEliminations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TournamentDoubleEliminations.
+     */
+    distinct?: TournamentDoubleEliminationScalarFieldEnum | TournamentDoubleEliminationScalarFieldEnum[]
+  }
+
+  /**
+   * TournamentDoubleElimination findFirstOrThrow
+   */
+  export type TournamentDoubleEliminationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentDoubleElimination
+     */
+    select?: TournamentDoubleEliminationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentDoubleElimination
+     */
+    omit?: TournamentDoubleEliminationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentDoubleEliminationInclude<ExtArgs> | null
+    /**
+     * Filter, which TournamentDoubleElimination to fetch.
+     */
+    where?: TournamentDoubleEliminationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TournamentDoubleEliminations to fetch.
+     */
+    orderBy?: TournamentDoubleEliminationOrderByWithRelationInput | TournamentDoubleEliminationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TournamentDoubleEliminations.
+     */
+    cursor?: TournamentDoubleEliminationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TournamentDoubleEliminations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TournamentDoubleEliminations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TournamentDoubleEliminations.
+     */
+    distinct?: TournamentDoubleEliminationScalarFieldEnum | TournamentDoubleEliminationScalarFieldEnum[]
+  }
+
+  /**
+   * TournamentDoubleElimination findMany
+   */
+  export type TournamentDoubleEliminationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentDoubleElimination
+     */
+    select?: TournamentDoubleEliminationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentDoubleElimination
+     */
+    omit?: TournamentDoubleEliminationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentDoubleEliminationInclude<ExtArgs> | null
+    /**
+     * Filter, which TournamentDoubleEliminations to fetch.
+     */
+    where?: TournamentDoubleEliminationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TournamentDoubleEliminations to fetch.
+     */
+    orderBy?: TournamentDoubleEliminationOrderByWithRelationInput | TournamentDoubleEliminationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TournamentDoubleEliminations.
+     */
+    cursor?: TournamentDoubleEliminationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TournamentDoubleEliminations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TournamentDoubleEliminations.
+     */
+    skip?: number
+    distinct?: TournamentDoubleEliminationScalarFieldEnum | TournamentDoubleEliminationScalarFieldEnum[]
+  }
+
+  /**
+   * TournamentDoubleElimination create
+   */
+  export type TournamentDoubleEliminationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentDoubleElimination
+     */
+    select?: TournamentDoubleEliminationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentDoubleElimination
+     */
+    omit?: TournamentDoubleEliminationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentDoubleEliminationInclude<ExtArgs> | null
+    /**
+     * The data needed to create a TournamentDoubleElimination.
+     */
+    data: XOR<TournamentDoubleEliminationCreateInput, TournamentDoubleEliminationUncheckedCreateInput>
+  }
+
+  /**
+   * TournamentDoubleElimination createMany
+   */
+  export type TournamentDoubleEliminationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TournamentDoubleEliminations.
+     */
+    data: TournamentDoubleEliminationCreateManyInput | TournamentDoubleEliminationCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TournamentDoubleElimination createManyAndReturn
+   */
+  export type TournamentDoubleEliminationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentDoubleElimination
+     */
+    select?: TournamentDoubleEliminationSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentDoubleElimination
+     */
+    omit?: TournamentDoubleEliminationOmit<ExtArgs> | null
+    /**
+     * The data used to create many TournamentDoubleEliminations.
+     */
+    data: TournamentDoubleEliminationCreateManyInput | TournamentDoubleEliminationCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentDoubleEliminationIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TournamentDoubleElimination update
+   */
+  export type TournamentDoubleEliminationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentDoubleElimination
+     */
+    select?: TournamentDoubleEliminationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentDoubleElimination
+     */
+    omit?: TournamentDoubleEliminationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentDoubleEliminationInclude<ExtArgs> | null
+    /**
+     * The data needed to update a TournamentDoubleElimination.
+     */
+    data: XOR<TournamentDoubleEliminationUpdateInput, TournamentDoubleEliminationUncheckedUpdateInput>
+    /**
+     * Choose, which TournamentDoubleElimination to update.
+     */
+    where: TournamentDoubleEliminationWhereUniqueInput
+  }
+
+  /**
+   * TournamentDoubleElimination updateMany
+   */
+  export type TournamentDoubleEliminationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TournamentDoubleEliminations.
+     */
+    data: XOR<TournamentDoubleEliminationUpdateManyMutationInput, TournamentDoubleEliminationUncheckedUpdateManyInput>
+    /**
+     * Filter which TournamentDoubleEliminations to update
+     */
+    where?: TournamentDoubleEliminationWhereInput
+    /**
+     * Limit how many TournamentDoubleEliminations to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TournamentDoubleElimination updateManyAndReturn
+   */
+  export type TournamentDoubleEliminationUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentDoubleElimination
+     */
+    select?: TournamentDoubleEliminationSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentDoubleElimination
+     */
+    omit?: TournamentDoubleEliminationOmit<ExtArgs> | null
+    /**
+     * The data used to update TournamentDoubleEliminations.
+     */
+    data: XOR<TournamentDoubleEliminationUpdateManyMutationInput, TournamentDoubleEliminationUncheckedUpdateManyInput>
+    /**
+     * Filter which TournamentDoubleEliminations to update
+     */
+    where?: TournamentDoubleEliminationWhereInput
+    /**
+     * Limit how many TournamentDoubleEliminations to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentDoubleEliminationIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TournamentDoubleElimination upsert
+   */
+  export type TournamentDoubleEliminationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentDoubleElimination
+     */
+    select?: TournamentDoubleEliminationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentDoubleElimination
+     */
+    omit?: TournamentDoubleEliminationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentDoubleEliminationInclude<ExtArgs> | null
+    /**
+     * The filter to search for the TournamentDoubleElimination to update in case it exists.
+     */
+    where: TournamentDoubleEliminationWhereUniqueInput
+    /**
+     * In case the TournamentDoubleElimination found by the `where` argument doesn't exist, create a new TournamentDoubleElimination with this data.
+     */
+    create: XOR<TournamentDoubleEliminationCreateInput, TournamentDoubleEliminationUncheckedCreateInput>
+    /**
+     * In case the TournamentDoubleElimination was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TournamentDoubleEliminationUpdateInput, TournamentDoubleEliminationUncheckedUpdateInput>
+  }
+
+  /**
+   * TournamentDoubleElimination delete
+   */
+  export type TournamentDoubleEliminationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentDoubleElimination
+     */
+    select?: TournamentDoubleEliminationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentDoubleElimination
+     */
+    omit?: TournamentDoubleEliminationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentDoubleEliminationInclude<ExtArgs> | null
+    /**
+     * Filter which TournamentDoubleElimination to delete.
+     */
+    where: TournamentDoubleEliminationWhereUniqueInput
+  }
+
+  /**
+   * TournamentDoubleElimination deleteMany
+   */
+  export type TournamentDoubleEliminationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TournamentDoubleEliminations to delete
+     */
+    where?: TournamentDoubleEliminationWhereInput
+    /**
+     * Limit how many TournamentDoubleEliminations to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TournamentDoubleElimination.participantDoubleEliminations
+   */
+  export type TournamentDoubleElimination$participantDoubleEliminationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ParticipantDoubleElimination
+     */
+    select?: ParticipantDoubleEliminationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ParticipantDoubleElimination
+     */
+    omit?: ParticipantDoubleEliminationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ParticipantDoubleEliminationInclude<ExtArgs> | null
+    where?: ParticipantDoubleEliminationWhereInput
+    orderBy?: ParticipantDoubleEliminationOrderByWithRelationInput | ParticipantDoubleEliminationOrderByWithRelationInput[]
+    cursor?: ParticipantDoubleEliminationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ParticipantDoubleEliminationScalarFieldEnum | ParticipantDoubleEliminationScalarFieldEnum[]
+  }
+
+  /**
+   * TournamentDoubleElimination.matches
+   */
+  export type TournamentDoubleElimination$matchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Match
+     */
+    select?: MatchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Match
+     */
+    omit?: MatchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MatchInclude<ExtArgs> | null
+    where?: MatchWhereInput
+    orderBy?: MatchOrderByWithRelationInput | MatchOrderByWithRelationInput[]
+    cursor?: MatchWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MatchScalarFieldEnum | MatchScalarFieldEnum[]
+  }
+
+  /**
+   * TournamentDoubleElimination without action
+   */
+  export type TournamentDoubleEliminationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentDoubleElimination
+     */
+    select?: TournamentDoubleEliminationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentDoubleElimination
+     */
+    omit?: TournamentDoubleEliminationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentDoubleEliminationInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model TournamentGroup
    */
 
@@ -9472,7 +10929,6 @@ export namespace Prisma {
     name: string | null
     tournamentPhaseId: number | null
     groupNumber: number | null
-    isGroupMatchesEnded: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -9482,7 +10938,6 @@ export namespace Prisma {
     name: string | null
     tournamentPhaseId: number | null
     groupNumber: number | null
-    isGroupMatchesEnded: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -9492,7 +10947,6 @@ export namespace Prisma {
     name: number
     tournamentPhaseId: number
     groupNumber: number
-    isGroupMatchesEnded: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -9516,7 +10970,6 @@ export namespace Prisma {
     name?: true
     tournamentPhaseId?: true
     groupNumber?: true
-    isGroupMatchesEnded?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -9526,7 +10979,6 @@ export namespace Prisma {
     name?: true
     tournamentPhaseId?: true
     groupNumber?: true
-    isGroupMatchesEnded?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -9536,7 +10988,6 @@ export namespace Prisma {
     name?: true
     tournamentPhaseId?: true
     groupNumber?: true
-    isGroupMatchesEnded?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -9633,7 +11084,6 @@ export namespace Prisma {
     name: string
     tournamentPhaseId: number
     groupNumber: number
-    isGroupMatchesEnded: boolean
     createdAt: Date
     updatedAt: Date
     _count: TournamentGroupCountAggregateOutputType | null
@@ -9662,7 +11112,6 @@ export namespace Prisma {
     name?: boolean
     tournamentPhaseId?: boolean
     groupNumber?: boolean
-    isGroupMatchesEnded?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
@@ -9676,7 +11125,6 @@ export namespace Prisma {
     name?: boolean
     tournamentPhaseId?: boolean
     groupNumber?: boolean
-    isGroupMatchesEnded?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
@@ -9687,7 +11135,6 @@ export namespace Prisma {
     name?: boolean
     tournamentPhaseId?: boolean
     groupNumber?: boolean
-    isGroupMatchesEnded?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
@@ -9698,12 +11145,11 @@ export namespace Prisma {
     name?: boolean
     tournamentPhaseId?: boolean
     groupNumber?: boolean
-    isGroupMatchesEnded?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type TournamentGroupOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "tournamentPhaseId" | "groupNumber" | "isGroupMatchesEnded" | "createdAt" | "updatedAt", ExtArgs["result"]["tournamentGroup"]>
+  export type TournamentGroupOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "tournamentPhaseId" | "groupNumber" | "createdAt" | "updatedAt", ExtArgs["result"]["tournamentGroup"]>
   export type TournamentGroupInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
     participantGroups?: boolean | TournamentGroup$participantGroupsArgs<ExtArgs>
@@ -9729,7 +11175,6 @@ export namespace Prisma {
       name: string
       tournamentPhaseId: number
       groupNumber: number
-      isGroupMatchesEnded: boolean
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["tournamentGroup"]>
@@ -10162,7 +11607,6 @@ export namespace Prisma {
     readonly name: FieldRef<"TournamentGroup", 'String'>
     readonly tournamentPhaseId: FieldRef<"TournamentGroup", 'Int'>
     readonly groupNumber: FieldRef<"TournamentGroup", 'Int'>
-    readonly isGroupMatchesEnded: FieldRef<"TournamentGroup", 'Boolean'>
     readonly createdAt: FieldRef<"TournamentGroup", 'DateTime'>
     readonly updatedAt: FieldRef<"TournamentGroup", 'DateTime'>
   }
@@ -10628,6 +12072,1149 @@ export namespace Prisma {
 
 
   /**
+   * Model TournamentKnockout
+   */
+
+  export type AggregateTournamentKnockout = {
+    _count: TournamentKnockoutCountAggregateOutputType | null
+    _avg: TournamentKnockoutAvgAggregateOutputType | null
+    _sum: TournamentKnockoutSumAggregateOutputType | null
+    _min: TournamentKnockoutMinAggregateOutputType | null
+    _max: TournamentKnockoutMaxAggregateOutputType | null
+  }
+
+  export type TournamentKnockoutAvgAggregateOutputType = {
+    id: number | null
+    tournamentPhaseId: number | null
+    currentRound: number | null
+  }
+
+  export type TournamentKnockoutSumAggregateOutputType = {
+    id: number | null
+    tournamentPhaseId: number | null
+    currentRound: number | null
+  }
+
+  export type TournamentKnockoutMinAggregateOutputType = {
+    id: number | null
+    tournamentPhaseId: number | null
+    currentRound: number | null
+    isOver: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TournamentKnockoutMaxAggregateOutputType = {
+    id: number | null
+    tournamentPhaseId: number | null
+    currentRound: number | null
+    isOver: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TournamentKnockoutCountAggregateOutputType = {
+    id: number
+    tournamentPhaseId: number
+    currentRound: number
+    isOver: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type TournamentKnockoutAvgAggregateInputType = {
+    id?: true
+    tournamentPhaseId?: true
+    currentRound?: true
+  }
+
+  export type TournamentKnockoutSumAggregateInputType = {
+    id?: true
+    tournamentPhaseId?: true
+    currentRound?: true
+  }
+
+  export type TournamentKnockoutMinAggregateInputType = {
+    id?: true
+    tournamentPhaseId?: true
+    currentRound?: true
+    isOver?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TournamentKnockoutMaxAggregateInputType = {
+    id?: true
+    tournamentPhaseId?: true
+    currentRound?: true
+    isOver?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TournamentKnockoutCountAggregateInputType = {
+    id?: true
+    tournamentPhaseId?: true
+    currentRound?: true
+    isOver?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type TournamentKnockoutAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TournamentKnockout to aggregate.
+     */
+    where?: TournamentKnockoutWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TournamentKnockouts to fetch.
+     */
+    orderBy?: TournamentKnockoutOrderByWithRelationInput | TournamentKnockoutOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TournamentKnockoutWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TournamentKnockouts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TournamentKnockouts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TournamentKnockouts
+    **/
+    _count?: true | TournamentKnockoutCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TournamentKnockoutAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TournamentKnockoutSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TournamentKnockoutMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TournamentKnockoutMaxAggregateInputType
+  }
+
+  export type GetTournamentKnockoutAggregateType<T extends TournamentKnockoutAggregateArgs> = {
+        [P in keyof T & keyof AggregateTournamentKnockout]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTournamentKnockout[P]>
+      : GetScalarType<T[P], AggregateTournamentKnockout[P]>
+  }
+
+
+
+
+  export type TournamentKnockoutGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TournamentKnockoutWhereInput
+    orderBy?: TournamentKnockoutOrderByWithAggregationInput | TournamentKnockoutOrderByWithAggregationInput[]
+    by: TournamentKnockoutScalarFieldEnum[] | TournamentKnockoutScalarFieldEnum
+    having?: TournamentKnockoutScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TournamentKnockoutCountAggregateInputType | true
+    _avg?: TournamentKnockoutAvgAggregateInputType
+    _sum?: TournamentKnockoutSumAggregateInputType
+    _min?: TournamentKnockoutMinAggregateInputType
+    _max?: TournamentKnockoutMaxAggregateInputType
+  }
+
+  export type TournamentKnockoutGroupByOutputType = {
+    id: number
+    tournamentPhaseId: number
+    currentRound: number
+    isOver: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: TournamentKnockoutCountAggregateOutputType | null
+    _avg: TournamentKnockoutAvgAggregateOutputType | null
+    _sum: TournamentKnockoutSumAggregateOutputType | null
+    _min: TournamentKnockoutMinAggregateOutputType | null
+    _max: TournamentKnockoutMaxAggregateOutputType | null
+  }
+
+  type GetTournamentKnockoutGroupByPayload<T extends TournamentKnockoutGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TournamentKnockoutGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TournamentKnockoutGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TournamentKnockoutGroupByOutputType[P]>
+            : GetScalarType<T[P], TournamentKnockoutGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TournamentKnockoutSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tournamentPhaseId?: boolean
+    currentRound?: boolean
+    isOver?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
+    matches?: boolean | TournamentKnockout$matchesArgs<ExtArgs>
+    _count?: boolean | TournamentKnockoutCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["tournamentKnockout"]>
+
+  export type TournamentKnockoutSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tournamentPhaseId?: boolean
+    currentRound?: boolean
+    isOver?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["tournamentKnockout"]>
+
+  export type TournamentKnockoutSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tournamentPhaseId?: boolean
+    currentRound?: boolean
+    isOver?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["tournamentKnockout"]>
+
+  export type TournamentKnockoutSelectScalar = {
+    id?: boolean
+    tournamentPhaseId?: boolean
+    currentRound?: boolean
+    isOver?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type TournamentKnockoutOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tournamentPhaseId" | "currentRound" | "isOver" | "createdAt" | "updatedAt", ExtArgs["result"]["tournamentKnockout"]>
+  export type TournamentKnockoutInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
+    matches?: boolean | TournamentKnockout$matchesArgs<ExtArgs>
+    _count?: boolean | TournamentKnockoutCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type TournamentKnockoutIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
+  }
+  export type TournamentKnockoutIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
+  }
+
+  export type $TournamentKnockoutPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TournamentKnockout"
+    objects: {
+      tournamentPhase: Prisma.$TournamentPhasePayload<ExtArgs>
+      matches: Prisma.$MatchPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      tournamentPhaseId: number
+      currentRound: number
+      isOver: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["tournamentKnockout"]>
+    composites: {}
+  }
+
+  type TournamentKnockoutGetPayload<S extends boolean | null | undefined | TournamentKnockoutDefaultArgs> = $Result.GetResult<Prisma.$TournamentKnockoutPayload, S>
+
+  type TournamentKnockoutCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TournamentKnockoutFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TournamentKnockoutCountAggregateInputType | true
+    }
+
+  export interface TournamentKnockoutDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TournamentKnockout'], meta: { name: 'TournamentKnockout' } }
+    /**
+     * Find zero or one TournamentKnockout that matches the filter.
+     * @param {TournamentKnockoutFindUniqueArgs} args - Arguments to find a TournamentKnockout
+     * @example
+     * // Get one TournamentKnockout
+     * const tournamentKnockout = await prisma.tournamentKnockout.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TournamentKnockoutFindUniqueArgs>(args: SelectSubset<T, TournamentKnockoutFindUniqueArgs<ExtArgs>>): Prisma__TournamentKnockoutClient<$Result.GetResult<Prisma.$TournamentKnockoutPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TournamentKnockout that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TournamentKnockoutFindUniqueOrThrowArgs} args - Arguments to find a TournamentKnockout
+     * @example
+     * // Get one TournamentKnockout
+     * const tournamentKnockout = await prisma.tournamentKnockout.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TournamentKnockoutFindUniqueOrThrowArgs>(args: SelectSubset<T, TournamentKnockoutFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TournamentKnockoutClient<$Result.GetResult<Prisma.$TournamentKnockoutPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TournamentKnockout that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentKnockoutFindFirstArgs} args - Arguments to find a TournamentKnockout
+     * @example
+     * // Get one TournamentKnockout
+     * const tournamentKnockout = await prisma.tournamentKnockout.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TournamentKnockoutFindFirstArgs>(args?: SelectSubset<T, TournamentKnockoutFindFirstArgs<ExtArgs>>): Prisma__TournamentKnockoutClient<$Result.GetResult<Prisma.$TournamentKnockoutPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TournamentKnockout that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentKnockoutFindFirstOrThrowArgs} args - Arguments to find a TournamentKnockout
+     * @example
+     * // Get one TournamentKnockout
+     * const tournamentKnockout = await prisma.tournamentKnockout.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TournamentKnockoutFindFirstOrThrowArgs>(args?: SelectSubset<T, TournamentKnockoutFindFirstOrThrowArgs<ExtArgs>>): Prisma__TournamentKnockoutClient<$Result.GetResult<Prisma.$TournamentKnockoutPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TournamentKnockouts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentKnockoutFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TournamentKnockouts
+     * const tournamentKnockouts = await prisma.tournamentKnockout.findMany()
+     * 
+     * // Get first 10 TournamentKnockouts
+     * const tournamentKnockouts = await prisma.tournamentKnockout.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const tournamentKnockoutWithIdOnly = await prisma.tournamentKnockout.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TournamentKnockoutFindManyArgs>(args?: SelectSubset<T, TournamentKnockoutFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentKnockoutPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TournamentKnockout.
+     * @param {TournamentKnockoutCreateArgs} args - Arguments to create a TournamentKnockout.
+     * @example
+     * // Create one TournamentKnockout
+     * const TournamentKnockout = await prisma.tournamentKnockout.create({
+     *   data: {
+     *     // ... data to create a TournamentKnockout
+     *   }
+     * })
+     * 
+     */
+    create<T extends TournamentKnockoutCreateArgs>(args: SelectSubset<T, TournamentKnockoutCreateArgs<ExtArgs>>): Prisma__TournamentKnockoutClient<$Result.GetResult<Prisma.$TournamentKnockoutPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TournamentKnockouts.
+     * @param {TournamentKnockoutCreateManyArgs} args - Arguments to create many TournamentKnockouts.
+     * @example
+     * // Create many TournamentKnockouts
+     * const tournamentKnockout = await prisma.tournamentKnockout.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TournamentKnockoutCreateManyArgs>(args?: SelectSubset<T, TournamentKnockoutCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TournamentKnockouts and returns the data saved in the database.
+     * @param {TournamentKnockoutCreateManyAndReturnArgs} args - Arguments to create many TournamentKnockouts.
+     * @example
+     * // Create many TournamentKnockouts
+     * const tournamentKnockout = await prisma.tournamentKnockout.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TournamentKnockouts and only return the `id`
+     * const tournamentKnockoutWithIdOnly = await prisma.tournamentKnockout.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TournamentKnockoutCreateManyAndReturnArgs>(args?: SelectSubset<T, TournamentKnockoutCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentKnockoutPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a TournamentKnockout.
+     * @param {TournamentKnockoutDeleteArgs} args - Arguments to delete one TournamentKnockout.
+     * @example
+     * // Delete one TournamentKnockout
+     * const TournamentKnockout = await prisma.tournamentKnockout.delete({
+     *   where: {
+     *     // ... filter to delete one TournamentKnockout
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TournamentKnockoutDeleteArgs>(args: SelectSubset<T, TournamentKnockoutDeleteArgs<ExtArgs>>): Prisma__TournamentKnockoutClient<$Result.GetResult<Prisma.$TournamentKnockoutPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TournamentKnockout.
+     * @param {TournamentKnockoutUpdateArgs} args - Arguments to update one TournamentKnockout.
+     * @example
+     * // Update one TournamentKnockout
+     * const tournamentKnockout = await prisma.tournamentKnockout.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TournamentKnockoutUpdateArgs>(args: SelectSubset<T, TournamentKnockoutUpdateArgs<ExtArgs>>): Prisma__TournamentKnockoutClient<$Result.GetResult<Prisma.$TournamentKnockoutPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TournamentKnockouts.
+     * @param {TournamentKnockoutDeleteManyArgs} args - Arguments to filter TournamentKnockouts to delete.
+     * @example
+     * // Delete a few TournamentKnockouts
+     * const { count } = await prisma.tournamentKnockout.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TournamentKnockoutDeleteManyArgs>(args?: SelectSubset<T, TournamentKnockoutDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TournamentKnockouts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentKnockoutUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TournamentKnockouts
+     * const tournamentKnockout = await prisma.tournamentKnockout.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TournamentKnockoutUpdateManyArgs>(args: SelectSubset<T, TournamentKnockoutUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TournamentKnockouts and returns the data updated in the database.
+     * @param {TournamentKnockoutUpdateManyAndReturnArgs} args - Arguments to update many TournamentKnockouts.
+     * @example
+     * // Update many TournamentKnockouts
+     * const tournamentKnockout = await prisma.tournamentKnockout.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more TournamentKnockouts and only return the `id`
+     * const tournamentKnockoutWithIdOnly = await prisma.tournamentKnockout.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TournamentKnockoutUpdateManyAndReturnArgs>(args: SelectSubset<T, TournamentKnockoutUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentKnockoutPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one TournamentKnockout.
+     * @param {TournamentKnockoutUpsertArgs} args - Arguments to update or create a TournamentKnockout.
+     * @example
+     * // Update or create a TournamentKnockout
+     * const tournamentKnockout = await prisma.tournamentKnockout.upsert({
+     *   create: {
+     *     // ... data to create a TournamentKnockout
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TournamentKnockout we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TournamentKnockoutUpsertArgs>(args: SelectSubset<T, TournamentKnockoutUpsertArgs<ExtArgs>>): Prisma__TournamentKnockoutClient<$Result.GetResult<Prisma.$TournamentKnockoutPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TournamentKnockouts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentKnockoutCountArgs} args - Arguments to filter TournamentKnockouts to count.
+     * @example
+     * // Count the number of TournamentKnockouts
+     * const count = await prisma.tournamentKnockout.count({
+     *   where: {
+     *     // ... the filter for the TournamentKnockouts we want to count
+     *   }
+     * })
+    **/
+    count<T extends TournamentKnockoutCountArgs>(
+      args?: Subset<T, TournamentKnockoutCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TournamentKnockoutCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TournamentKnockout.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentKnockoutAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TournamentKnockoutAggregateArgs>(args: Subset<T, TournamentKnockoutAggregateArgs>): Prisma.PrismaPromise<GetTournamentKnockoutAggregateType<T>>
+
+    /**
+     * Group by TournamentKnockout.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentKnockoutGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TournamentKnockoutGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TournamentKnockoutGroupByArgs['orderBy'] }
+        : { orderBy?: TournamentKnockoutGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TournamentKnockoutGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTournamentKnockoutGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TournamentKnockout model
+   */
+  readonly fields: TournamentKnockoutFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TournamentKnockout.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TournamentKnockoutClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    tournamentPhase<T extends TournamentPhaseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TournamentPhaseDefaultArgs<ExtArgs>>): Prisma__TournamentPhaseClient<$Result.GetResult<Prisma.$TournamentPhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    matches<T extends TournamentKnockout$matchesArgs<ExtArgs> = {}>(args?: Subset<T, TournamentKnockout$matchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TournamentKnockout model
+   */
+  interface TournamentKnockoutFieldRefs {
+    readonly id: FieldRef<"TournamentKnockout", 'Int'>
+    readonly tournamentPhaseId: FieldRef<"TournamentKnockout", 'Int'>
+    readonly currentRound: FieldRef<"TournamentKnockout", 'Int'>
+    readonly isOver: FieldRef<"TournamentKnockout", 'Boolean'>
+    readonly createdAt: FieldRef<"TournamentKnockout", 'DateTime'>
+    readonly updatedAt: FieldRef<"TournamentKnockout", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TournamentKnockout findUnique
+   */
+  export type TournamentKnockoutFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentKnockout
+     */
+    select?: TournamentKnockoutSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentKnockout
+     */
+    omit?: TournamentKnockoutOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentKnockoutInclude<ExtArgs> | null
+    /**
+     * Filter, which TournamentKnockout to fetch.
+     */
+    where: TournamentKnockoutWhereUniqueInput
+  }
+
+  /**
+   * TournamentKnockout findUniqueOrThrow
+   */
+  export type TournamentKnockoutFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentKnockout
+     */
+    select?: TournamentKnockoutSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentKnockout
+     */
+    omit?: TournamentKnockoutOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentKnockoutInclude<ExtArgs> | null
+    /**
+     * Filter, which TournamentKnockout to fetch.
+     */
+    where: TournamentKnockoutWhereUniqueInput
+  }
+
+  /**
+   * TournamentKnockout findFirst
+   */
+  export type TournamentKnockoutFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentKnockout
+     */
+    select?: TournamentKnockoutSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentKnockout
+     */
+    omit?: TournamentKnockoutOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentKnockoutInclude<ExtArgs> | null
+    /**
+     * Filter, which TournamentKnockout to fetch.
+     */
+    where?: TournamentKnockoutWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TournamentKnockouts to fetch.
+     */
+    orderBy?: TournamentKnockoutOrderByWithRelationInput | TournamentKnockoutOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TournamentKnockouts.
+     */
+    cursor?: TournamentKnockoutWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TournamentKnockouts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TournamentKnockouts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TournamentKnockouts.
+     */
+    distinct?: TournamentKnockoutScalarFieldEnum | TournamentKnockoutScalarFieldEnum[]
+  }
+
+  /**
+   * TournamentKnockout findFirstOrThrow
+   */
+  export type TournamentKnockoutFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentKnockout
+     */
+    select?: TournamentKnockoutSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentKnockout
+     */
+    omit?: TournamentKnockoutOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentKnockoutInclude<ExtArgs> | null
+    /**
+     * Filter, which TournamentKnockout to fetch.
+     */
+    where?: TournamentKnockoutWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TournamentKnockouts to fetch.
+     */
+    orderBy?: TournamentKnockoutOrderByWithRelationInput | TournamentKnockoutOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TournamentKnockouts.
+     */
+    cursor?: TournamentKnockoutWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TournamentKnockouts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TournamentKnockouts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TournamentKnockouts.
+     */
+    distinct?: TournamentKnockoutScalarFieldEnum | TournamentKnockoutScalarFieldEnum[]
+  }
+
+  /**
+   * TournamentKnockout findMany
+   */
+  export type TournamentKnockoutFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentKnockout
+     */
+    select?: TournamentKnockoutSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentKnockout
+     */
+    omit?: TournamentKnockoutOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentKnockoutInclude<ExtArgs> | null
+    /**
+     * Filter, which TournamentKnockouts to fetch.
+     */
+    where?: TournamentKnockoutWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TournamentKnockouts to fetch.
+     */
+    orderBy?: TournamentKnockoutOrderByWithRelationInput | TournamentKnockoutOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TournamentKnockouts.
+     */
+    cursor?: TournamentKnockoutWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TournamentKnockouts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TournamentKnockouts.
+     */
+    skip?: number
+    distinct?: TournamentKnockoutScalarFieldEnum | TournamentKnockoutScalarFieldEnum[]
+  }
+
+  /**
+   * TournamentKnockout create
+   */
+  export type TournamentKnockoutCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentKnockout
+     */
+    select?: TournamentKnockoutSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentKnockout
+     */
+    omit?: TournamentKnockoutOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentKnockoutInclude<ExtArgs> | null
+    /**
+     * The data needed to create a TournamentKnockout.
+     */
+    data: XOR<TournamentKnockoutCreateInput, TournamentKnockoutUncheckedCreateInput>
+  }
+
+  /**
+   * TournamentKnockout createMany
+   */
+  export type TournamentKnockoutCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TournamentKnockouts.
+     */
+    data: TournamentKnockoutCreateManyInput | TournamentKnockoutCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TournamentKnockout createManyAndReturn
+   */
+  export type TournamentKnockoutCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentKnockout
+     */
+    select?: TournamentKnockoutSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentKnockout
+     */
+    omit?: TournamentKnockoutOmit<ExtArgs> | null
+    /**
+     * The data used to create many TournamentKnockouts.
+     */
+    data: TournamentKnockoutCreateManyInput | TournamentKnockoutCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentKnockoutIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TournamentKnockout update
+   */
+  export type TournamentKnockoutUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentKnockout
+     */
+    select?: TournamentKnockoutSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentKnockout
+     */
+    omit?: TournamentKnockoutOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentKnockoutInclude<ExtArgs> | null
+    /**
+     * The data needed to update a TournamentKnockout.
+     */
+    data: XOR<TournamentKnockoutUpdateInput, TournamentKnockoutUncheckedUpdateInput>
+    /**
+     * Choose, which TournamentKnockout to update.
+     */
+    where: TournamentKnockoutWhereUniqueInput
+  }
+
+  /**
+   * TournamentKnockout updateMany
+   */
+  export type TournamentKnockoutUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TournamentKnockouts.
+     */
+    data: XOR<TournamentKnockoutUpdateManyMutationInput, TournamentKnockoutUncheckedUpdateManyInput>
+    /**
+     * Filter which TournamentKnockouts to update
+     */
+    where?: TournamentKnockoutWhereInput
+    /**
+     * Limit how many TournamentKnockouts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TournamentKnockout updateManyAndReturn
+   */
+  export type TournamentKnockoutUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentKnockout
+     */
+    select?: TournamentKnockoutSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentKnockout
+     */
+    omit?: TournamentKnockoutOmit<ExtArgs> | null
+    /**
+     * The data used to update TournamentKnockouts.
+     */
+    data: XOR<TournamentKnockoutUpdateManyMutationInput, TournamentKnockoutUncheckedUpdateManyInput>
+    /**
+     * Filter which TournamentKnockouts to update
+     */
+    where?: TournamentKnockoutWhereInput
+    /**
+     * Limit how many TournamentKnockouts to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentKnockoutIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TournamentKnockout upsert
+   */
+  export type TournamentKnockoutUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentKnockout
+     */
+    select?: TournamentKnockoutSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentKnockout
+     */
+    omit?: TournamentKnockoutOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentKnockoutInclude<ExtArgs> | null
+    /**
+     * The filter to search for the TournamentKnockout to update in case it exists.
+     */
+    where: TournamentKnockoutWhereUniqueInput
+    /**
+     * In case the TournamentKnockout found by the `where` argument doesn't exist, create a new TournamentKnockout with this data.
+     */
+    create: XOR<TournamentKnockoutCreateInput, TournamentKnockoutUncheckedCreateInput>
+    /**
+     * In case the TournamentKnockout was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TournamentKnockoutUpdateInput, TournamentKnockoutUncheckedUpdateInput>
+  }
+
+  /**
+   * TournamentKnockout delete
+   */
+  export type TournamentKnockoutDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentKnockout
+     */
+    select?: TournamentKnockoutSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentKnockout
+     */
+    omit?: TournamentKnockoutOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentKnockoutInclude<ExtArgs> | null
+    /**
+     * Filter which TournamentKnockout to delete.
+     */
+    where: TournamentKnockoutWhereUniqueInput
+  }
+
+  /**
+   * TournamentKnockout deleteMany
+   */
+  export type TournamentKnockoutDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TournamentKnockouts to delete
+     */
+    where?: TournamentKnockoutWhereInput
+    /**
+     * Limit how many TournamentKnockouts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TournamentKnockout.matches
+   */
+  export type TournamentKnockout$matchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Match
+     */
+    select?: MatchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Match
+     */
+    omit?: MatchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MatchInclude<ExtArgs> | null
+    where?: MatchWhereInput
+    orderBy?: MatchOrderByWithRelationInput | MatchOrderByWithRelationInput[]
+    cursor?: MatchWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MatchScalarFieldEnum | MatchScalarFieldEnum[]
+  }
+
+  /**
+   * TournamentKnockout without action
+   */
+  export type TournamentKnockoutDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentKnockout
+     */
+    select?: TournamentKnockoutSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentKnockout
+     */
+    omit?: TournamentKnockoutOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentKnockoutInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model TournamentPhase
    */
 
@@ -10833,8 +13420,9 @@ export namespace Prisma {
     phaseType?: boolean
     order?: boolean
     isCompleted?: boolean
-    elimination?: boolean | TournamentPhase$eliminationArgs<ExtArgs>
+    knockout?: boolean | TournamentPhase$knockoutArgs<ExtArgs>
     groups?: boolean | TournamentPhase$groupsArgs<ExtArgs>
+    doubleElimination?: boolean | TournamentPhase$doubleEliminationArgs<ExtArgs>
     matches?: boolean | TournamentPhase$matchesArgs<ExtArgs>
     tournament?: boolean | TournamentDefaultArgs<ExtArgs>
     _count?: boolean | TournamentPhaseCountOutputTypeDefaultArgs<ExtArgs>
@@ -10868,8 +13456,9 @@ export namespace Prisma {
 
   export type TournamentPhaseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tournamentId" | "phaseType" | "order" | "isCompleted", ExtArgs["result"]["tournamentPhase"]>
   export type TournamentPhaseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    elimination?: boolean | TournamentPhase$eliminationArgs<ExtArgs>
+    knockout?: boolean | TournamentPhase$knockoutArgs<ExtArgs>
     groups?: boolean | TournamentPhase$groupsArgs<ExtArgs>
+    doubleElimination?: boolean | TournamentPhase$doubleEliminationArgs<ExtArgs>
     matches?: boolean | TournamentPhase$matchesArgs<ExtArgs>
     tournament?: boolean | TournamentDefaultArgs<ExtArgs>
     _count?: boolean | TournamentPhaseCountOutputTypeDefaultArgs<ExtArgs>
@@ -10884,8 +13473,9 @@ export namespace Prisma {
   export type $TournamentPhasePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "TournamentPhase"
     objects: {
-      elimination: Prisma.$EliminationPayload<ExtArgs> | null
+      knockout: Prisma.$TournamentKnockoutPayload<ExtArgs> | null
       groups: Prisma.$TournamentGroupPayload<ExtArgs>[]
+      doubleElimination: Prisma.$TournamentDoubleEliminationPayload<ExtArgs> | null
       matches: Prisma.$MatchPayload<ExtArgs>[]
       tournament: Prisma.$TournamentPayload<ExtArgs>
     }
@@ -11289,8 +13879,9 @@ export namespace Prisma {
    */
   export interface Prisma__TournamentPhaseClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    elimination<T extends TournamentPhase$eliminationArgs<ExtArgs> = {}>(args?: Subset<T, TournamentPhase$eliminationArgs<ExtArgs>>): Prisma__EliminationClient<$Result.GetResult<Prisma.$EliminationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    knockout<T extends TournamentPhase$knockoutArgs<ExtArgs> = {}>(args?: Subset<T, TournamentPhase$knockoutArgs<ExtArgs>>): Prisma__TournamentKnockoutClient<$Result.GetResult<Prisma.$TournamentKnockoutPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     groups<T extends TournamentPhase$groupsArgs<ExtArgs> = {}>(args?: Subset<T, TournamentPhase$groupsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentGroupPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    doubleElimination<T extends TournamentPhase$doubleEliminationArgs<ExtArgs> = {}>(args?: Subset<T, TournamentPhase$doubleEliminationArgs<ExtArgs>>): Prisma__TournamentDoubleEliminationClient<$Result.GetResult<Prisma.$TournamentDoubleEliminationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     matches<T extends TournamentPhase$matchesArgs<ExtArgs> = {}>(args?: Subset<T, TournamentPhase$matchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     tournament<T extends TournamentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TournamentDefaultArgs<ExtArgs>>): Prisma__TournamentClient<$Result.GetResult<Prisma.$TournamentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
@@ -11723,22 +14314,22 @@ export namespace Prisma {
   }
 
   /**
-   * TournamentPhase.elimination
+   * TournamentPhase.knockout
    */
-  export type TournamentPhase$eliminationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TournamentPhase$knockoutArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Elimination
+     * Select specific fields to fetch from the TournamentKnockout
      */
-    select?: EliminationSelect<ExtArgs> | null
+    select?: TournamentKnockoutSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Elimination
+     * Omit specific fields from the TournamentKnockout
      */
-    omit?: EliminationOmit<ExtArgs> | null
+    omit?: TournamentKnockoutOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: EliminationInclude<ExtArgs> | null
-    where?: EliminationWhereInput
+    include?: TournamentKnockoutInclude<ExtArgs> | null
+    where?: TournamentKnockoutWhereInput
   }
 
   /**
@@ -11763,6 +14354,25 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: TournamentGroupScalarFieldEnum | TournamentGroupScalarFieldEnum[]
+  }
+
+  /**
+   * TournamentPhase.doubleElimination
+   */
+  export type TournamentPhase$doubleEliminationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentDoubleElimination
+     */
+    select?: TournamentDoubleEliminationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentDoubleElimination
+     */
+    omit?: TournamentDoubleEliminationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentDoubleEliminationInclude<ExtArgs> | null
+    where?: TournamentDoubleEliminationWhereInput
   }
 
   /**
@@ -12947,30 +15557,18 @@ export namespace Prisma {
   export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-  export const EliminationScalarFieldEnum: {
-    id: 'id',
-    tournamentPhaseId: 'tournamentPhaseId',
-    type: 'type',
-    currentRound: 'currentRound',
-    isOver: 'isOver',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-  };
-
-  export type EliminationScalarFieldEnum = (typeof EliminationScalarFieldEnum)[keyof typeof EliminationScalarFieldEnum]
-
-
   export const MatchScalarFieldEnum: {
     id: 'id',
     tournamentPhaseId: 'tournamentPhaseId',
-    eliminationId: 'eliminationId',
+    knockoutId: 'knockoutId',
     tournamentGroupId: 'tournamentGroupId',
+    tournamentDoubleEliminationId: 'tournamentDoubleEliminationId',
+    doubleEliminationRound: 'doubleEliminationRound',
     participant1Id: 'participant1Id',
     participant2Id: 'participant2Id',
     winnerId: 'winnerId',
     loserId: 'loserId',
     nextMatchId: 'nextMatchId',
-    round: 'round',
     serialNumber: 'serialNumber',
     winnerElo: 'winnerElo',
     loserElo: 'loserElo',
@@ -12999,13 +15597,26 @@ export namespace Prisma {
   export type ParticipantScalarFieldEnum = (typeof ParticipantScalarFieldEnum)[keyof typeof ParticipantScalarFieldEnum]
 
 
+  export const ParticipantDoubleEliminationScalarFieldEnum: {
+    id: 'id',
+    tournamentDoubleEliminationId: 'tournamentDoubleEliminationId',
+    participantId: 'participantId',
+    wins: 'wins',
+    losses: 'losses',
+    doubleEliminationBracket: 'doubleEliminationBracket',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ParticipantDoubleEliminationScalarFieldEnum = (typeof ParticipantDoubleEliminationScalarFieldEnum)[keyof typeof ParticipantDoubleEliminationScalarFieldEnum]
+
+
   export const ParticipantGroupScalarFieldEnum: {
     id: 'id',
     tournamentGroupId: 'tournamentGroupId',
     participantId: 'participantId',
     wins: 'wins',
     losses: 'losses',
-    points: 'points',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -13038,17 +15649,40 @@ export namespace Prisma {
   export type TournamentScalarFieldEnum = (typeof TournamentScalarFieldEnum)[keyof typeof TournamentScalarFieldEnum]
 
 
+  export const TournamentDoubleEliminationScalarFieldEnum: {
+    id: 'id',
+    tournamentPhaseId: 'tournamentPhaseId',
+    roundNumber: 'roundNumber',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type TournamentDoubleEliminationScalarFieldEnum = (typeof TournamentDoubleEliminationScalarFieldEnum)[keyof typeof TournamentDoubleEliminationScalarFieldEnum]
+
+
   export const TournamentGroupScalarFieldEnum: {
     id: 'id',
     name: 'name',
     tournamentPhaseId: 'tournamentPhaseId',
     groupNumber: 'groupNumber',
-    isGroupMatchesEnded: 'isGroupMatchesEnded',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
   export type TournamentGroupScalarFieldEnum = (typeof TournamentGroupScalarFieldEnum)[keyof typeof TournamentGroupScalarFieldEnum]
+
+
+  export const TournamentKnockoutScalarFieldEnum: {
+    id: 'id',
+    tournamentPhaseId: 'tournamentPhaseId',
+    currentRound: 'currentRound',
+    isOver: 'isOver',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type TournamentKnockoutScalarFieldEnum = (typeof TournamentKnockoutScalarFieldEnum)[keyof typeof TournamentKnockoutScalarFieldEnum]
 
 
   export const TournamentPhaseScalarFieldEnum: {
@@ -13118,37 +15752,9 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'EliminationType'
-   */
-  export type EnumEliminationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EliminationType'>
-    
-
-
-  /**
-   * Reference to a field of type 'EliminationType[]'
-   */
-  export type ListEnumEliminationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EliminationType[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Boolean'
    */
   export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
-    
-
-
-  /**
-   * Reference to a field of type 'DateTime'
-   */
-  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
-    
-
-
-  /**
-   * Reference to a field of type 'DateTime[]'
-   */
-  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
     
 
 
@@ -13163,6 +15769,20 @@ export namespace Prisma {
    * Reference to a field of type 'MatchType[]'
    */
   export type ListEnumMatchTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MatchType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'DateTime'
+   */
+  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+  /**
+   * Reference to a field of type 'DateTime[]'
+   */
+  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
     
 
 
@@ -13191,6 +15811,20 @@ export namespace Prisma {
    * Reference to a field of type 'ParticipantType[]'
    */
   export type ListEnumParticipantTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ParticipantType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'DoubleEliminationBracket'
+   */
+  export type EnumDoubleEliminationBracketFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DoubleEliminationBracket'>
+    
+
+
+  /**
+   * Reference to a field of type 'DoubleEliminationBracket[]'
+   */
+  export type ListEnumDoubleEliminationBracketFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DoubleEliminationBracket[]'>
     
 
 
@@ -13239,90 +15873,21 @@ export namespace Prisma {
    */
 
 
-  export type EliminationWhereInput = {
-    AND?: EliminationWhereInput | EliminationWhereInput[]
-    OR?: EliminationWhereInput[]
-    NOT?: EliminationWhereInput | EliminationWhereInput[]
-    id?: IntFilter<"Elimination"> | number
-    tournamentPhaseId?: IntFilter<"Elimination"> | number
-    type?: EnumEliminationTypeFilter<"Elimination"> | $Enums.EliminationType
-    currentRound?: IntFilter<"Elimination"> | number
-    isOver?: BoolFilter<"Elimination"> | boolean
-    createdAt?: DateTimeFilter<"Elimination"> | Date | string
-    updatedAt?: DateTimeFilter<"Elimination"> | Date | string
-    tournamentPhase?: XOR<TournamentPhaseScalarRelationFilter, TournamentPhaseWhereInput>
-    matches?: MatchListRelationFilter
-  }
-
-  export type EliminationOrderByWithRelationInput = {
-    id?: SortOrder
-    tournamentPhaseId?: SortOrder
-    type?: SortOrder
-    currentRound?: SortOrder
-    isOver?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    tournamentPhase?: TournamentPhaseOrderByWithRelationInput
-    matches?: MatchOrderByRelationAggregateInput
-  }
-
-  export type EliminationWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
-    tournamentPhaseId?: number
-    AND?: EliminationWhereInput | EliminationWhereInput[]
-    OR?: EliminationWhereInput[]
-    NOT?: EliminationWhereInput | EliminationWhereInput[]
-    type?: EnumEliminationTypeFilter<"Elimination"> | $Enums.EliminationType
-    currentRound?: IntFilter<"Elimination"> | number
-    isOver?: BoolFilter<"Elimination"> | boolean
-    createdAt?: DateTimeFilter<"Elimination"> | Date | string
-    updatedAt?: DateTimeFilter<"Elimination"> | Date | string
-    tournamentPhase?: XOR<TournamentPhaseScalarRelationFilter, TournamentPhaseWhereInput>
-    matches?: MatchListRelationFilter
-  }, "id" | "tournamentPhaseId">
-
-  export type EliminationOrderByWithAggregationInput = {
-    id?: SortOrder
-    tournamentPhaseId?: SortOrder
-    type?: SortOrder
-    currentRound?: SortOrder
-    isOver?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: EliminationCountOrderByAggregateInput
-    _avg?: EliminationAvgOrderByAggregateInput
-    _max?: EliminationMaxOrderByAggregateInput
-    _min?: EliminationMinOrderByAggregateInput
-    _sum?: EliminationSumOrderByAggregateInput
-  }
-
-  export type EliminationScalarWhereWithAggregatesInput = {
-    AND?: EliminationScalarWhereWithAggregatesInput | EliminationScalarWhereWithAggregatesInput[]
-    OR?: EliminationScalarWhereWithAggregatesInput[]
-    NOT?: EliminationScalarWhereWithAggregatesInput | EliminationScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"Elimination"> | number
-    tournamentPhaseId?: IntWithAggregatesFilter<"Elimination"> | number
-    type?: EnumEliminationTypeWithAggregatesFilter<"Elimination"> | $Enums.EliminationType
-    currentRound?: IntWithAggregatesFilter<"Elimination"> | number
-    isOver?: BoolWithAggregatesFilter<"Elimination"> | boolean
-    createdAt?: DateTimeWithAggregatesFilter<"Elimination"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"Elimination"> | Date | string
-  }
-
   export type MatchWhereInput = {
     AND?: MatchWhereInput | MatchWhereInput[]
     OR?: MatchWhereInput[]
     NOT?: MatchWhereInput | MatchWhereInput[]
     id?: IntFilter<"Match"> | number
     tournamentPhaseId?: IntFilter<"Match"> | number
-    eliminationId?: IntNullableFilter<"Match"> | number | null
+    knockoutId?: IntNullableFilter<"Match"> | number | null
     tournamentGroupId?: IntNullableFilter<"Match"> | number | null
+    tournamentDoubleEliminationId?: IntNullableFilter<"Match"> | number | null
+    doubleEliminationRound?: IntNullableFilter<"Match"> | number | null
     participant1Id?: IntNullableFilter<"Match"> | number | null
     participant2Id?: IntNullableFilter<"Match"> | number | null
     winnerId?: IntNullableFilter<"Match"> | number | null
     loserId?: IntNullableFilter<"Match"> | number | null
     nextMatchId?: IntNullableFilter<"Match"> | number | null
-    round?: IntNullableFilter<"Match"> | number | null
     serialNumber?: IntNullableFilter<"Match"> | number | null
     winnerElo?: IntNullableFilter<"Match"> | number | null
     loserElo?: IntNullableFilter<"Match"> | number | null
@@ -13333,8 +15898,9 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Match"> | Date | string
     updatedAt?: DateTimeFilter<"Match"> | Date | string
     tournamentPhase?: XOR<TournamentPhaseScalarRelationFilter, TournamentPhaseWhereInput>
-    elimination?: XOR<EliminationNullableScalarRelationFilter, EliminationWhereInput> | null
+    knockout?: XOR<TournamentKnockoutNullableScalarRelationFilter, TournamentKnockoutWhereInput> | null
     group?: XOR<TournamentGroupNullableScalarRelationFilter, TournamentGroupWhereInput> | null
+    doubleElimination?: XOR<TournamentDoubleEliminationNullableScalarRelationFilter, TournamentDoubleEliminationWhereInput> | null
     participant1?: XOR<ParticipantNullableScalarRelationFilter, ParticipantWhereInput> | null
     participant2?: XOR<ParticipantNullableScalarRelationFilter, ParticipantWhereInput> | null
     winner?: XOR<ParticipantNullableScalarRelationFilter, ParticipantWhereInput> | null
@@ -13346,14 +15912,15 @@ export namespace Prisma {
   export type MatchOrderByWithRelationInput = {
     id?: SortOrder
     tournamentPhaseId?: SortOrder
-    eliminationId?: SortOrderInput | SortOrder
+    knockoutId?: SortOrderInput | SortOrder
     tournamentGroupId?: SortOrderInput | SortOrder
+    tournamentDoubleEliminationId?: SortOrderInput | SortOrder
+    doubleEliminationRound?: SortOrderInput | SortOrder
     participant1Id?: SortOrderInput | SortOrder
     participant2Id?: SortOrderInput | SortOrder
     winnerId?: SortOrderInput | SortOrder
     loserId?: SortOrderInput | SortOrder
     nextMatchId?: SortOrderInput | SortOrder
-    round?: SortOrderInput | SortOrder
     serialNumber?: SortOrderInput | SortOrder
     winnerElo?: SortOrderInput | SortOrder
     loserElo?: SortOrderInput | SortOrder
@@ -13364,8 +15931,9 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     tournamentPhase?: TournamentPhaseOrderByWithRelationInput
-    elimination?: EliminationOrderByWithRelationInput
+    knockout?: TournamentKnockoutOrderByWithRelationInput
     group?: TournamentGroupOrderByWithRelationInput
+    doubleElimination?: TournamentDoubleEliminationOrderByWithRelationInput
     participant1?: ParticipantOrderByWithRelationInput
     participant2?: ParticipantOrderByWithRelationInput
     winner?: ParticipantOrderByWithRelationInput
@@ -13381,14 +15949,15 @@ export namespace Prisma {
     OR?: MatchWhereInput[]
     NOT?: MatchWhereInput | MatchWhereInput[]
     tournamentPhaseId?: IntFilter<"Match"> | number
-    eliminationId?: IntNullableFilter<"Match"> | number | null
+    knockoutId?: IntNullableFilter<"Match"> | number | null
     tournamentGroupId?: IntNullableFilter<"Match"> | number | null
+    tournamentDoubleEliminationId?: IntNullableFilter<"Match"> | number | null
+    doubleEliminationRound?: IntNullableFilter<"Match"> | number | null
     participant1Id?: IntNullableFilter<"Match"> | number | null
     participant2Id?: IntNullableFilter<"Match"> | number | null
     winnerId?: IntNullableFilter<"Match"> | number | null
     loserId?: IntNullableFilter<"Match"> | number | null
     nextMatchId?: IntNullableFilter<"Match"> | number | null
-    round?: IntNullableFilter<"Match"> | number | null
     serialNumber?: IntNullableFilter<"Match"> | number | null
     winnerElo?: IntNullableFilter<"Match"> | number | null
     loserElo?: IntNullableFilter<"Match"> | number | null
@@ -13399,8 +15968,9 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Match"> | Date | string
     updatedAt?: DateTimeFilter<"Match"> | Date | string
     tournamentPhase?: XOR<TournamentPhaseScalarRelationFilter, TournamentPhaseWhereInput>
-    elimination?: XOR<EliminationNullableScalarRelationFilter, EliminationWhereInput> | null
+    knockout?: XOR<TournamentKnockoutNullableScalarRelationFilter, TournamentKnockoutWhereInput> | null
     group?: XOR<TournamentGroupNullableScalarRelationFilter, TournamentGroupWhereInput> | null
+    doubleElimination?: XOR<TournamentDoubleEliminationNullableScalarRelationFilter, TournamentDoubleEliminationWhereInput> | null
     participant1?: XOR<ParticipantNullableScalarRelationFilter, ParticipantWhereInput> | null
     participant2?: XOR<ParticipantNullableScalarRelationFilter, ParticipantWhereInput> | null
     winner?: XOR<ParticipantNullableScalarRelationFilter, ParticipantWhereInput> | null
@@ -13412,14 +15982,15 @@ export namespace Prisma {
   export type MatchOrderByWithAggregationInput = {
     id?: SortOrder
     tournamentPhaseId?: SortOrder
-    eliminationId?: SortOrderInput | SortOrder
+    knockoutId?: SortOrderInput | SortOrder
     tournamentGroupId?: SortOrderInput | SortOrder
+    tournamentDoubleEliminationId?: SortOrderInput | SortOrder
+    doubleEliminationRound?: SortOrderInput | SortOrder
     participant1Id?: SortOrderInput | SortOrder
     participant2Id?: SortOrderInput | SortOrder
     winnerId?: SortOrderInput | SortOrder
     loserId?: SortOrderInput | SortOrder
     nextMatchId?: SortOrderInput | SortOrder
-    round?: SortOrderInput | SortOrder
     serialNumber?: SortOrderInput | SortOrder
     winnerElo?: SortOrderInput | SortOrder
     loserElo?: SortOrderInput | SortOrder
@@ -13442,14 +16013,15 @@ export namespace Prisma {
     NOT?: MatchScalarWhereWithAggregatesInput | MatchScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Match"> | number
     tournamentPhaseId?: IntWithAggregatesFilter<"Match"> | number
-    eliminationId?: IntNullableWithAggregatesFilter<"Match"> | number | null
+    knockoutId?: IntNullableWithAggregatesFilter<"Match"> | number | null
     tournamentGroupId?: IntNullableWithAggregatesFilter<"Match"> | number | null
+    tournamentDoubleEliminationId?: IntNullableWithAggregatesFilter<"Match"> | number | null
+    doubleEliminationRound?: IntNullableWithAggregatesFilter<"Match"> | number | null
     participant1Id?: IntNullableWithAggregatesFilter<"Match"> | number | null
     participant2Id?: IntNullableWithAggregatesFilter<"Match"> | number | null
     winnerId?: IntNullableWithAggregatesFilter<"Match"> | number | null
     loserId?: IntNullableWithAggregatesFilter<"Match"> | number | null
     nextMatchId?: IntNullableWithAggregatesFilter<"Match"> | number | null
-    round?: IntNullableWithAggregatesFilter<"Match"> | number | null
     serialNumber?: IntNullableWithAggregatesFilter<"Match"> | number | null
     winnerElo?: IntNullableWithAggregatesFilter<"Match"> | number | null
     loserElo?: IntNullableWithAggregatesFilter<"Match"> | number | null
@@ -13474,6 +16046,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Participant"> | Date | string
     updatedAt?: DateTimeFilter<"Participant"> | Date | string
     tournaments?: ParticipantTournamentListRelationFilter
+    doubleEliminations?: ParticipantDoubleEliminationListRelationFilter
     groups?: ParticipantGroupListRelationFilter
     matchesAsP1?: MatchListRelationFilter
     matchesAsP2?: MatchListRelationFilter
@@ -13492,6 +16065,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     tournaments?: ParticipantTournamentOrderByRelationAggregateInput
+    doubleEliminations?: ParticipantDoubleEliminationOrderByRelationAggregateInput
     groups?: ParticipantGroupOrderByRelationAggregateInput
     matchesAsP1?: MatchOrderByRelationAggregateInput
     matchesAsP2?: MatchOrderByRelationAggregateInput
@@ -13513,6 +16087,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Participant"> | Date | string
     updatedAt?: DateTimeFilter<"Participant"> | Date | string
     tournaments?: ParticipantTournamentListRelationFilter
+    doubleEliminations?: ParticipantDoubleEliminationListRelationFilter
     groups?: ParticipantGroupListRelationFilter
     matchesAsP1?: MatchListRelationFilter
     matchesAsP2?: MatchListRelationFilter
@@ -13551,6 +16126,82 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Participant"> | Date | string
   }
 
+  export type ParticipantDoubleEliminationWhereInput = {
+    AND?: ParticipantDoubleEliminationWhereInput | ParticipantDoubleEliminationWhereInput[]
+    OR?: ParticipantDoubleEliminationWhereInput[]
+    NOT?: ParticipantDoubleEliminationWhereInput | ParticipantDoubleEliminationWhereInput[]
+    id?: IntFilter<"ParticipantDoubleElimination"> | number
+    tournamentDoubleEliminationId?: IntFilter<"ParticipantDoubleElimination"> | number
+    participantId?: IntFilter<"ParticipantDoubleElimination"> | number
+    wins?: IntFilter<"ParticipantDoubleElimination"> | number
+    losses?: IntFilter<"ParticipantDoubleElimination"> | number
+    doubleEliminationBracket?: EnumDoubleEliminationBracketFilter<"ParticipantDoubleElimination"> | $Enums.DoubleEliminationBracket
+    createdAt?: DateTimeFilter<"ParticipantDoubleElimination"> | Date | string
+    updatedAt?: DateTimeFilter<"ParticipantDoubleElimination"> | Date | string
+    elimination?: XOR<TournamentDoubleEliminationScalarRelationFilter, TournamentDoubleEliminationWhereInput>
+    participant?: XOR<ParticipantScalarRelationFilter, ParticipantWhereInput>
+  }
+
+  export type ParticipantDoubleEliminationOrderByWithRelationInput = {
+    id?: SortOrder
+    tournamentDoubleEliminationId?: SortOrder
+    participantId?: SortOrder
+    wins?: SortOrder
+    losses?: SortOrder
+    doubleEliminationBracket?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    elimination?: TournamentDoubleEliminationOrderByWithRelationInput
+    participant?: ParticipantOrderByWithRelationInput
+  }
+
+  export type ParticipantDoubleEliminationWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    tournamentDoubleEliminationId_participantId?: ParticipantDoubleEliminationTournamentDoubleEliminationIdParticipantIdCompoundUniqueInput
+    AND?: ParticipantDoubleEliminationWhereInput | ParticipantDoubleEliminationWhereInput[]
+    OR?: ParticipantDoubleEliminationWhereInput[]
+    NOT?: ParticipantDoubleEliminationWhereInput | ParticipantDoubleEliminationWhereInput[]
+    tournamentDoubleEliminationId?: IntFilter<"ParticipantDoubleElimination"> | number
+    participantId?: IntFilter<"ParticipantDoubleElimination"> | number
+    wins?: IntFilter<"ParticipantDoubleElimination"> | number
+    losses?: IntFilter<"ParticipantDoubleElimination"> | number
+    doubleEliminationBracket?: EnumDoubleEliminationBracketFilter<"ParticipantDoubleElimination"> | $Enums.DoubleEliminationBracket
+    createdAt?: DateTimeFilter<"ParticipantDoubleElimination"> | Date | string
+    updatedAt?: DateTimeFilter<"ParticipantDoubleElimination"> | Date | string
+    elimination?: XOR<TournamentDoubleEliminationScalarRelationFilter, TournamentDoubleEliminationWhereInput>
+    participant?: XOR<ParticipantScalarRelationFilter, ParticipantWhereInput>
+  }, "id" | "tournamentDoubleEliminationId_participantId">
+
+  export type ParticipantDoubleEliminationOrderByWithAggregationInput = {
+    id?: SortOrder
+    tournamentDoubleEliminationId?: SortOrder
+    participantId?: SortOrder
+    wins?: SortOrder
+    losses?: SortOrder
+    doubleEliminationBracket?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ParticipantDoubleEliminationCountOrderByAggregateInput
+    _avg?: ParticipantDoubleEliminationAvgOrderByAggregateInput
+    _max?: ParticipantDoubleEliminationMaxOrderByAggregateInput
+    _min?: ParticipantDoubleEliminationMinOrderByAggregateInput
+    _sum?: ParticipantDoubleEliminationSumOrderByAggregateInput
+  }
+
+  export type ParticipantDoubleEliminationScalarWhereWithAggregatesInput = {
+    AND?: ParticipantDoubleEliminationScalarWhereWithAggregatesInput | ParticipantDoubleEliminationScalarWhereWithAggregatesInput[]
+    OR?: ParticipantDoubleEliminationScalarWhereWithAggregatesInput[]
+    NOT?: ParticipantDoubleEliminationScalarWhereWithAggregatesInput | ParticipantDoubleEliminationScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"ParticipantDoubleElimination"> | number
+    tournamentDoubleEliminationId?: IntWithAggregatesFilter<"ParticipantDoubleElimination"> | number
+    participantId?: IntWithAggregatesFilter<"ParticipantDoubleElimination"> | number
+    wins?: IntWithAggregatesFilter<"ParticipantDoubleElimination"> | number
+    losses?: IntWithAggregatesFilter<"ParticipantDoubleElimination"> | number
+    doubleEliminationBracket?: EnumDoubleEliminationBracketWithAggregatesFilter<"ParticipantDoubleElimination"> | $Enums.DoubleEliminationBracket
+    createdAt?: DateTimeWithAggregatesFilter<"ParticipantDoubleElimination"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ParticipantDoubleElimination"> | Date | string
+  }
+
   export type ParticipantGroupWhereInput = {
     AND?: ParticipantGroupWhereInput | ParticipantGroupWhereInput[]
     OR?: ParticipantGroupWhereInput[]
@@ -13560,7 +16211,6 @@ export namespace Prisma {
     participantId?: IntFilter<"ParticipantGroup"> | number
     wins?: IntFilter<"ParticipantGroup"> | number
     losses?: IntFilter<"ParticipantGroup"> | number
-    points?: IntFilter<"ParticipantGroup"> | number
     createdAt?: DateTimeFilter<"ParticipantGroup"> | Date | string
     updatedAt?: DateTimeFilter<"ParticipantGroup"> | Date | string
     group?: XOR<TournamentGroupScalarRelationFilter, TournamentGroupWhereInput>
@@ -13573,7 +16223,6 @@ export namespace Prisma {
     participantId?: SortOrder
     wins?: SortOrder
     losses?: SortOrder
-    points?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     group?: TournamentGroupOrderByWithRelationInput
@@ -13590,7 +16239,6 @@ export namespace Prisma {
     participantId?: IntFilter<"ParticipantGroup"> | number
     wins?: IntFilter<"ParticipantGroup"> | number
     losses?: IntFilter<"ParticipantGroup"> | number
-    points?: IntFilter<"ParticipantGroup"> | number
     createdAt?: DateTimeFilter<"ParticipantGroup"> | Date | string
     updatedAt?: DateTimeFilter<"ParticipantGroup"> | Date | string
     group?: XOR<TournamentGroupScalarRelationFilter, TournamentGroupWhereInput>
@@ -13603,7 +16251,6 @@ export namespace Prisma {
     participantId?: SortOrder
     wins?: SortOrder
     losses?: SortOrder
-    points?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: ParticipantGroupCountOrderByAggregateInput
@@ -13622,7 +16269,6 @@ export namespace Prisma {
     participantId?: IntWithAggregatesFilter<"ParticipantGroup"> | number
     wins?: IntWithAggregatesFilter<"ParticipantGroup"> | number
     losses?: IntWithAggregatesFilter<"ParticipantGroup"> | number
-    points?: IntWithAggregatesFilter<"ParticipantGroup"> | number
     createdAt?: DateTimeWithAggregatesFilter<"ParticipantGroup"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ParticipantGroup"> | Date | string
   }
@@ -13766,6 +16412,75 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Tournament"> | Date | string
   }
 
+  export type TournamentDoubleEliminationWhereInput = {
+    AND?: TournamentDoubleEliminationWhereInput | TournamentDoubleEliminationWhereInput[]
+    OR?: TournamentDoubleEliminationWhereInput[]
+    NOT?: TournamentDoubleEliminationWhereInput | TournamentDoubleEliminationWhereInput[]
+    id?: IntFilter<"TournamentDoubleElimination"> | number
+    tournamentPhaseId?: IntFilter<"TournamentDoubleElimination"> | number
+    roundNumber?: IntFilter<"TournamentDoubleElimination"> | number
+    isActive?: BoolFilter<"TournamentDoubleElimination"> | boolean
+    createdAt?: DateTimeFilter<"TournamentDoubleElimination"> | Date | string
+    updatedAt?: DateTimeFilter<"TournamentDoubleElimination"> | Date | string
+    tournamentPhase?: XOR<TournamentPhaseScalarRelationFilter, TournamentPhaseWhereInput>
+    participantDoubleEliminations?: ParticipantDoubleEliminationListRelationFilter
+    matches?: MatchListRelationFilter
+  }
+
+  export type TournamentDoubleEliminationOrderByWithRelationInput = {
+    id?: SortOrder
+    tournamentPhaseId?: SortOrder
+    roundNumber?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    tournamentPhase?: TournamentPhaseOrderByWithRelationInput
+    participantDoubleEliminations?: ParticipantDoubleEliminationOrderByRelationAggregateInput
+    matches?: MatchOrderByRelationAggregateInput
+  }
+
+  export type TournamentDoubleEliminationWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    tournamentPhaseId?: number
+    tournamentPhaseId_roundNumber?: TournamentDoubleEliminationTournamentPhaseIdRoundNumberCompoundUniqueInput
+    AND?: TournamentDoubleEliminationWhereInput | TournamentDoubleEliminationWhereInput[]
+    OR?: TournamentDoubleEliminationWhereInput[]
+    NOT?: TournamentDoubleEliminationWhereInput | TournamentDoubleEliminationWhereInput[]
+    roundNumber?: IntFilter<"TournamentDoubleElimination"> | number
+    isActive?: BoolFilter<"TournamentDoubleElimination"> | boolean
+    createdAt?: DateTimeFilter<"TournamentDoubleElimination"> | Date | string
+    updatedAt?: DateTimeFilter<"TournamentDoubleElimination"> | Date | string
+    tournamentPhase?: XOR<TournamentPhaseScalarRelationFilter, TournamentPhaseWhereInput>
+    participantDoubleEliminations?: ParticipantDoubleEliminationListRelationFilter
+    matches?: MatchListRelationFilter
+  }, "id" | "tournamentPhaseId" | "tournamentPhaseId_roundNumber">
+
+  export type TournamentDoubleEliminationOrderByWithAggregationInput = {
+    id?: SortOrder
+    tournamentPhaseId?: SortOrder
+    roundNumber?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: TournamentDoubleEliminationCountOrderByAggregateInput
+    _avg?: TournamentDoubleEliminationAvgOrderByAggregateInput
+    _max?: TournamentDoubleEliminationMaxOrderByAggregateInput
+    _min?: TournamentDoubleEliminationMinOrderByAggregateInput
+    _sum?: TournamentDoubleEliminationSumOrderByAggregateInput
+  }
+
+  export type TournamentDoubleEliminationScalarWhereWithAggregatesInput = {
+    AND?: TournamentDoubleEliminationScalarWhereWithAggregatesInput | TournamentDoubleEliminationScalarWhereWithAggregatesInput[]
+    OR?: TournamentDoubleEliminationScalarWhereWithAggregatesInput[]
+    NOT?: TournamentDoubleEliminationScalarWhereWithAggregatesInput | TournamentDoubleEliminationScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"TournamentDoubleElimination"> | number
+    tournamentPhaseId?: IntWithAggregatesFilter<"TournamentDoubleElimination"> | number
+    roundNumber?: IntWithAggregatesFilter<"TournamentDoubleElimination"> | number
+    isActive?: BoolWithAggregatesFilter<"TournamentDoubleElimination"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"TournamentDoubleElimination"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"TournamentDoubleElimination"> | Date | string
+  }
+
   export type TournamentGroupWhereInput = {
     AND?: TournamentGroupWhereInput | TournamentGroupWhereInput[]
     OR?: TournamentGroupWhereInput[]
@@ -13774,7 +16489,6 @@ export namespace Prisma {
     name?: StringFilter<"TournamentGroup"> | string
     tournamentPhaseId?: IntFilter<"TournamentGroup"> | number
     groupNumber?: IntFilter<"TournamentGroup"> | number
-    isGroupMatchesEnded?: BoolFilter<"TournamentGroup"> | boolean
     createdAt?: DateTimeFilter<"TournamentGroup"> | Date | string
     updatedAt?: DateTimeFilter<"TournamentGroup"> | Date | string
     tournamentPhase?: XOR<TournamentPhaseScalarRelationFilter, TournamentPhaseWhereInput>
@@ -13787,7 +16501,6 @@ export namespace Prisma {
     name?: SortOrder
     tournamentPhaseId?: SortOrder
     groupNumber?: SortOrder
-    isGroupMatchesEnded?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     tournamentPhase?: TournamentPhaseOrderByWithRelationInput
@@ -13804,7 +16517,6 @@ export namespace Prisma {
     name?: StringFilter<"TournamentGroup"> | string
     tournamentPhaseId?: IntFilter<"TournamentGroup"> | number
     groupNumber?: IntFilter<"TournamentGroup"> | number
-    isGroupMatchesEnded?: BoolFilter<"TournamentGroup"> | boolean
     createdAt?: DateTimeFilter<"TournamentGroup"> | Date | string
     updatedAt?: DateTimeFilter<"TournamentGroup"> | Date | string
     tournamentPhase?: XOR<TournamentPhaseScalarRelationFilter, TournamentPhaseWhereInput>
@@ -13817,7 +16529,6 @@ export namespace Prisma {
     name?: SortOrder
     tournamentPhaseId?: SortOrder
     groupNumber?: SortOrder
-    isGroupMatchesEnded?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: TournamentGroupCountOrderByAggregateInput
@@ -13835,9 +16546,73 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"TournamentGroup"> | string
     tournamentPhaseId?: IntWithAggregatesFilter<"TournamentGroup"> | number
     groupNumber?: IntWithAggregatesFilter<"TournamentGroup"> | number
-    isGroupMatchesEnded?: BoolWithAggregatesFilter<"TournamentGroup"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"TournamentGroup"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"TournamentGroup"> | Date | string
+  }
+
+  export type TournamentKnockoutWhereInput = {
+    AND?: TournamentKnockoutWhereInput | TournamentKnockoutWhereInput[]
+    OR?: TournamentKnockoutWhereInput[]
+    NOT?: TournamentKnockoutWhereInput | TournamentKnockoutWhereInput[]
+    id?: IntFilter<"TournamentKnockout"> | number
+    tournamentPhaseId?: IntFilter<"TournamentKnockout"> | number
+    currentRound?: IntFilter<"TournamentKnockout"> | number
+    isOver?: BoolFilter<"TournamentKnockout"> | boolean
+    createdAt?: DateTimeFilter<"TournamentKnockout"> | Date | string
+    updatedAt?: DateTimeFilter<"TournamentKnockout"> | Date | string
+    tournamentPhase?: XOR<TournamentPhaseScalarRelationFilter, TournamentPhaseWhereInput>
+    matches?: MatchListRelationFilter
+  }
+
+  export type TournamentKnockoutOrderByWithRelationInput = {
+    id?: SortOrder
+    tournamentPhaseId?: SortOrder
+    currentRound?: SortOrder
+    isOver?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    tournamentPhase?: TournamentPhaseOrderByWithRelationInput
+    matches?: MatchOrderByRelationAggregateInput
+  }
+
+  export type TournamentKnockoutWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    tournamentPhaseId?: number
+    AND?: TournamentKnockoutWhereInput | TournamentKnockoutWhereInput[]
+    OR?: TournamentKnockoutWhereInput[]
+    NOT?: TournamentKnockoutWhereInput | TournamentKnockoutWhereInput[]
+    currentRound?: IntFilter<"TournamentKnockout"> | number
+    isOver?: BoolFilter<"TournamentKnockout"> | boolean
+    createdAt?: DateTimeFilter<"TournamentKnockout"> | Date | string
+    updatedAt?: DateTimeFilter<"TournamentKnockout"> | Date | string
+    tournamentPhase?: XOR<TournamentPhaseScalarRelationFilter, TournamentPhaseWhereInput>
+    matches?: MatchListRelationFilter
+  }, "id" | "tournamentPhaseId">
+
+  export type TournamentKnockoutOrderByWithAggregationInput = {
+    id?: SortOrder
+    tournamentPhaseId?: SortOrder
+    currentRound?: SortOrder
+    isOver?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: TournamentKnockoutCountOrderByAggregateInput
+    _avg?: TournamentKnockoutAvgOrderByAggregateInput
+    _max?: TournamentKnockoutMaxOrderByAggregateInput
+    _min?: TournamentKnockoutMinOrderByAggregateInput
+    _sum?: TournamentKnockoutSumOrderByAggregateInput
+  }
+
+  export type TournamentKnockoutScalarWhereWithAggregatesInput = {
+    AND?: TournamentKnockoutScalarWhereWithAggregatesInput | TournamentKnockoutScalarWhereWithAggregatesInput[]
+    OR?: TournamentKnockoutScalarWhereWithAggregatesInput[]
+    NOT?: TournamentKnockoutScalarWhereWithAggregatesInput | TournamentKnockoutScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"TournamentKnockout"> | number
+    tournamentPhaseId?: IntWithAggregatesFilter<"TournamentKnockout"> | number
+    currentRound?: IntWithAggregatesFilter<"TournamentKnockout"> | number
+    isOver?: BoolWithAggregatesFilter<"TournamentKnockout"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"TournamentKnockout"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"TournamentKnockout"> | Date | string
   }
 
   export type TournamentPhaseWhereInput = {
@@ -13849,8 +16624,9 @@ export namespace Prisma {
     phaseType?: EnumPhaseTypeFilter<"TournamentPhase"> | $Enums.PhaseType
     order?: IntFilter<"TournamentPhase"> | number
     isCompleted?: BoolFilter<"TournamentPhase"> | boolean
-    elimination?: XOR<EliminationNullableScalarRelationFilter, EliminationWhereInput> | null
+    knockout?: XOR<TournamentKnockoutNullableScalarRelationFilter, TournamentKnockoutWhereInput> | null
     groups?: TournamentGroupListRelationFilter
+    doubleElimination?: XOR<TournamentDoubleEliminationNullableScalarRelationFilter, TournamentDoubleEliminationWhereInput> | null
     matches?: MatchListRelationFilter
     tournament?: XOR<TournamentScalarRelationFilter, TournamentWhereInput>
   }
@@ -13861,8 +16637,9 @@ export namespace Prisma {
     phaseType?: SortOrder
     order?: SortOrder
     isCompleted?: SortOrder
-    elimination?: EliminationOrderByWithRelationInput
+    knockout?: TournamentKnockoutOrderByWithRelationInput
     groups?: TournamentGroupOrderByRelationAggregateInput
+    doubleElimination?: TournamentDoubleEliminationOrderByWithRelationInput
     matches?: MatchOrderByRelationAggregateInput
     tournament?: TournamentOrderByWithRelationInput
   }
@@ -13876,8 +16653,9 @@ export namespace Prisma {
     phaseType?: EnumPhaseTypeFilter<"TournamentPhase"> | $Enums.PhaseType
     order?: IntFilter<"TournamentPhase"> | number
     isCompleted?: BoolFilter<"TournamentPhase"> | boolean
-    elimination?: XOR<EliminationNullableScalarRelationFilter, EliminationWhereInput> | null
+    knockout?: XOR<TournamentKnockoutNullableScalarRelationFilter, TournamentKnockoutWhereInput> | null
     groups?: TournamentGroupListRelationFilter
+    doubleElimination?: XOR<TournamentDoubleEliminationNullableScalarRelationFilter, TournamentDoubleEliminationWhereInput> | null
     matches?: MatchListRelationFilter
     tournament?: XOR<TournamentScalarRelationFilter, TournamentWhereInput>
   }, "id">
@@ -13972,78 +16750,8 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"TournamentWinner"> | Date | string
   }
 
-  export type EliminationCreateInput = {
-    type?: $Enums.EliminationType
-    currentRound?: number
-    isOver?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    tournamentPhase: TournamentPhaseCreateNestedOneWithoutEliminationInput
-    matches?: MatchCreateNestedManyWithoutEliminationInput
-  }
-
-  export type EliminationUncheckedCreateInput = {
-    id?: number
-    tournamentPhaseId: number
-    type?: $Enums.EliminationType
-    currentRound?: number
-    isOver?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    matches?: MatchUncheckedCreateNestedManyWithoutEliminationInput
-  }
-
-  export type EliminationUpdateInput = {
-    type?: EnumEliminationTypeFieldUpdateOperationsInput | $Enums.EliminationType
-    currentRound?: IntFieldUpdateOperationsInput | number
-    isOver?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    tournamentPhase?: TournamentPhaseUpdateOneRequiredWithoutEliminationNestedInput
-    matches?: MatchUpdateManyWithoutEliminationNestedInput
-  }
-
-  export type EliminationUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    tournamentPhaseId?: IntFieldUpdateOperationsInput | number
-    type?: EnumEliminationTypeFieldUpdateOperationsInput | $Enums.EliminationType
-    currentRound?: IntFieldUpdateOperationsInput | number
-    isOver?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    matches?: MatchUncheckedUpdateManyWithoutEliminationNestedInput
-  }
-
-  export type EliminationCreateManyInput = {
-    id?: number
-    tournamentPhaseId: number
-    type?: $Enums.EliminationType
-    currentRound?: number
-    isOver?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type EliminationUpdateManyMutationInput = {
-    type?: EnumEliminationTypeFieldUpdateOperationsInput | $Enums.EliminationType
-    currentRound?: IntFieldUpdateOperationsInput | number
-    isOver?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type EliminationUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    tournamentPhaseId?: IntFieldUpdateOperationsInput | number
-    type?: EnumEliminationTypeFieldUpdateOperationsInput | $Enums.EliminationType
-    currentRound?: IntFieldUpdateOperationsInput | number
-    isOver?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type MatchCreateInput = {
-    round?: number | null
+    doubleEliminationRound?: number | null
     serialNumber?: number | null
     winnerElo?: number | null
     loserElo?: number | null
@@ -14054,8 +16762,9 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     tournamentPhase: TournamentPhaseCreateNestedOneWithoutMatchesInput
-    elimination?: EliminationCreateNestedOneWithoutMatchesInput
+    knockout?: TournamentKnockoutCreateNestedOneWithoutMatchesInput
     group?: TournamentGroupCreateNestedOneWithoutMatchesInput
+    doubleElimination?: TournamentDoubleEliminationCreateNestedOneWithoutMatchesInput
     participant1?: ParticipantCreateNestedOneWithoutMatchesAsP1Input
     participant2?: ParticipantCreateNestedOneWithoutMatchesAsP2Input
     winner?: ParticipantCreateNestedOneWithoutMatchesWonInput
@@ -14067,14 +16776,15 @@ export namespace Prisma {
   export type MatchUncheckedCreateInput = {
     id?: number
     tournamentPhaseId: number
-    eliminationId?: number | null
+    knockoutId?: number | null
     tournamentGroupId?: number | null
+    tournamentDoubleEliminationId?: number | null
+    doubleEliminationRound?: number | null
     participant1Id?: number | null
     participant2Id?: number | null
     winnerId?: number | null
     loserId?: number | null
     nextMatchId?: number | null
-    round?: number | null
     serialNumber?: number | null
     winnerElo?: number | null
     loserElo?: number | null
@@ -14088,7 +16798,7 @@ export namespace Prisma {
   }
 
   export type MatchUpdateInput = {
-    round?: NullableIntFieldUpdateOperationsInput | number | null
+    doubleEliminationRound?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
     winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
     loserElo?: NullableIntFieldUpdateOperationsInput | number | null
@@ -14099,8 +16809,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tournamentPhase?: TournamentPhaseUpdateOneRequiredWithoutMatchesNestedInput
-    elimination?: EliminationUpdateOneWithoutMatchesNestedInput
+    knockout?: TournamentKnockoutUpdateOneWithoutMatchesNestedInput
     group?: TournamentGroupUpdateOneWithoutMatchesNestedInput
+    doubleElimination?: TournamentDoubleEliminationUpdateOneWithoutMatchesNestedInput
     participant1?: ParticipantUpdateOneWithoutMatchesAsP1NestedInput
     participant2?: ParticipantUpdateOneWithoutMatchesAsP2NestedInput
     winner?: ParticipantUpdateOneWithoutMatchesWonNestedInput
@@ -14112,14 +16823,15 @@ export namespace Prisma {
   export type MatchUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     tournamentPhaseId?: IntFieldUpdateOperationsInput | number
-    eliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    knockoutId?: NullableIntFieldUpdateOperationsInput | number | null
     tournamentGroupId?: NullableIntFieldUpdateOperationsInput | number | null
+    tournamentDoubleEliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    doubleEliminationRound?: NullableIntFieldUpdateOperationsInput | number | null
     participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
     participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
     winnerId?: NullableIntFieldUpdateOperationsInput | number | null
     loserId?: NullableIntFieldUpdateOperationsInput | number | null
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
-    round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
     winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
     loserElo?: NullableIntFieldUpdateOperationsInput | number | null
@@ -14135,14 +16847,15 @@ export namespace Prisma {
   export type MatchCreateManyInput = {
     id?: number
     tournamentPhaseId: number
-    eliminationId?: number | null
+    knockoutId?: number | null
     tournamentGroupId?: number | null
+    tournamentDoubleEliminationId?: number | null
+    doubleEliminationRound?: number | null
     participant1Id?: number | null
     participant2Id?: number | null
     winnerId?: number | null
     loserId?: number | null
     nextMatchId?: number | null
-    round?: number | null
     serialNumber?: number | null
     winnerElo?: number | null
     loserElo?: number | null
@@ -14155,7 +16868,7 @@ export namespace Prisma {
   }
 
   export type MatchUpdateManyMutationInput = {
-    round?: NullableIntFieldUpdateOperationsInput | number | null
+    doubleEliminationRound?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
     winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
     loserElo?: NullableIntFieldUpdateOperationsInput | number | null
@@ -14170,14 +16883,15 @@ export namespace Prisma {
   export type MatchUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     tournamentPhaseId?: IntFieldUpdateOperationsInput | number
-    eliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    knockoutId?: NullableIntFieldUpdateOperationsInput | number | null
     tournamentGroupId?: NullableIntFieldUpdateOperationsInput | number | null
+    tournamentDoubleEliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    doubleEliminationRound?: NullableIntFieldUpdateOperationsInput | number | null
     participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
     participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
     winnerId?: NullableIntFieldUpdateOperationsInput | number | null
     loserId?: NullableIntFieldUpdateOperationsInput | number | null
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
-    round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
     winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
     loserElo?: NullableIntFieldUpdateOperationsInput | number | null
@@ -14198,6 +16912,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     tournaments?: ParticipantTournamentCreateNestedManyWithoutParticipantInput
+    doubleEliminations?: ParticipantDoubleEliminationCreateNestedManyWithoutParticipantInput
     groups?: ParticipantGroupCreateNestedManyWithoutParticipantInput
     matchesAsP1?: MatchCreateNestedManyWithoutParticipant1Input
     matchesAsP2?: MatchCreateNestedManyWithoutParticipant2Input
@@ -14216,6 +16931,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     tournaments?: ParticipantTournamentUncheckedCreateNestedManyWithoutParticipantInput
+    doubleEliminations?: ParticipantDoubleEliminationUncheckedCreateNestedManyWithoutParticipantInput
     groups?: ParticipantGroupUncheckedCreateNestedManyWithoutParticipantInput
     matchesAsP1?: MatchUncheckedCreateNestedManyWithoutParticipant1Input
     matchesAsP2?: MatchUncheckedCreateNestedManyWithoutParticipant2Input
@@ -14233,6 +16949,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tournaments?: ParticipantTournamentUpdateManyWithoutParticipantNestedInput
+    doubleEliminations?: ParticipantDoubleEliminationUpdateManyWithoutParticipantNestedInput
     groups?: ParticipantGroupUpdateManyWithoutParticipantNestedInput
     matchesAsP1?: MatchUpdateManyWithoutParticipant1NestedInput
     matchesAsP2?: MatchUpdateManyWithoutParticipant2NestedInput
@@ -14251,6 +16968,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tournaments?: ParticipantTournamentUncheckedUpdateManyWithoutParticipantNestedInput
+    doubleEliminations?: ParticipantDoubleEliminationUncheckedUpdateManyWithoutParticipantNestedInput
     groups?: ParticipantGroupUncheckedUpdateManyWithoutParticipantNestedInput
     matchesAsP1?: MatchUncheckedUpdateManyWithoutParticipant1NestedInput
     matchesAsP2?: MatchUncheckedUpdateManyWithoutParticipant2NestedInput
@@ -14291,10 +17009,81 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ParticipantDoubleEliminationCreateInput = {
+    wins?: number
+    losses?: number
+    doubleEliminationBracket?: $Enums.DoubleEliminationBracket
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    elimination: TournamentDoubleEliminationCreateNestedOneWithoutParticipantDoubleEliminationsInput
+    participant: ParticipantCreateNestedOneWithoutDoubleEliminationsInput
+  }
+
+  export type ParticipantDoubleEliminationUncheckedCreateInput = {
+    id?: number
+    tournamentDoubleEliminationId: number
+    participantId: number
+    wins?: number
+    losses?: number
+    doubleEliminationBracket?: $Enums.DoubleEliminationBracket
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ParticipantDoubleEliminationUpdateInput = {
+    wins?: IntFieldUpdateOperationsInput | number
+    losses?: IntFieldUpdateOperationsInput | number
+    doubleEliminationBracket?: EnumDoubleEliminationBracketFieldUpdateOperationsInput | $Enums.DoubleEliminationBracket
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    elimination?: TournamentDoubleEliminationUpdateOneRequiredWithoutParticipantDoubleEliminationsNestedInput
+    participant?: ParticipantUpdateOneRequiredWithoutDoubleEliminationsNestedInput
+  }
+
+  export type ParticipantDoubleEliminationUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    tournamentDoubleEliminationId?: IntFieldUpdateOperationsInput | number
+    participantId?: IntFieldUpdateOperationsInput | number
+    wins?: IntFieldUpdateOperationsInput | number
+    losses?: IntFieldUpdateOperationsInput | number
+    doubleEliminationBracket?: EnumDoubleEliminationBracketFieldUpdateOperationsInput | $Enums.DoubleEliminationBracket
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ParticipantDoubleEliminationCreateManyInput = {
+    id?: number
+    tournamentDoubleEliminationId: number
+    participantId: number
+    wins?: number
+    losses?: number
+    doubleEliminationBracket?: $Enums.DoubleEliminationBracket
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ParticipantDoubleEliminationUpdateManyMutationInput = {
+    wins?: IntFieldUpdateOperationsInput | number
+    losses?: IntFieldUpdateOperationsInput | number
+    doubleEliminationBracket?: EnumDoubleEliminationBracketFieldUpdateOperationsInput | $Enums.DoubleEliminationBracket
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ParticipantDoubleEliminationUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    tournamentDoubleEliminationId?: IntFieldUpdateOperationsInput | number
+    participantId?: IntFieldUpdateOperationsInput | number
+    wins?: IntFieldUpdateOperationsInput | number
+    losses?: IntFieldUpdateOperationsInput | number
+    doubleEliminationBracket?: EnumDoubleEliminationBracketFieldUpdateOperationsInput | $Enums.DoubleEliminationBracket
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ParticipantGroupCreateInput = {
     wins?: number
     losses?: number
-    points?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     group: TournamentGroupCreateNestedOneWithoutParticipantGroupsInput
@@ -14307,7 +17096,6 @@ export namespace Prisma {
     participantId: number
     wins?: number
     losses?: number
-    points?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -14315,7 +17103,6 @@ export namespace Prisma {
   export type ParticipantGroupUpdateInput = {
     wins?: IntFieldUpdateOperationsInput | number
     losses?: IntFieldUpdateOperationsInput | number
-    points?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     group?: TournamentGroupUpdateOneRequiredWithoutParticipantGroupsNestedInput
@@ -14328,7 +17115,6 @@ export namespace Prisma {
     participantId?: IntFieldUpdateOperationsInput | number
     wins?: IntFieldUpdateOperationsInput | number
     losses?: IntFieldUpdateOperationsInput | number
-    points?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -14339,7 +17125,6 @@ export namespace Prisma {
     participantId: number
     wins?: number
     losses?: number
-    points?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -14347,7 +17132,6 @@ export namespace Prisma {
   export type ParticipantGroupUpdateManyMutationInput = {
     wins?: IntFieldUpdateOperationsInput | number
     losses?: IntFieldUpdateOperationsInput | number
-    points?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -14358,7 +17142,6 @@ export namespace Prisma {
     participantId?: IntFieldUpdateOperationsInput | number
     wins?: IntFieldUpdateOperationsInput | number
     losses?: IntFieldUpdateOperationsInput | number
-    points?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -14500,10 +17283,76 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type TournamentDoubleEliminationCreateInput = {
+    roundNumber?: number
+    isActive: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tournamentPhase: TournamentPhaseCreateNestedOneWithoutDoubleEliminationInput
+    participantDoubleEliminations?: ParticipantDoubleEliminationCreateNestedManyWithoutEliminationInput
+    matches?: MatchCreateNestedManyWithoutDoubleEliminationInput
+  }
+
+  export type TournamentDoubleEliminationUncheckedCreateInput = {
+    id?: number
+    tournamentPhaseId: number
+    roundNumber?: number
+    isActive: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    participantDoubleEliminations?: ParticipantDoubleEliminationUncheckedCreateNestedManyWithoutEliminationInput
+    matches?: MatchUncheckedCreateNestedManyWithoutDoubleEliminationInput
+  }
+
+  export type TournamentDoubleEliminationUpdateInput = {
+    roundNumber?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tournamentPhase?: TournamentPhaseUpdateOneRequiredWithoutDoubleEliminationNestedInput
+    participantDoubleEliminations?: ParticipantDoubleEliminationUpdateManyWithoutEliminationNestedInput
+    matches?: MatchUpdateManyWithoutDoubleEliminationNestedInput
+  }
+
+  export type TournamentDoubleEliminationUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    tournamentPhaseId?: IntFieldUpdateOperationsInput | number
+    roundNumber?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    participantDoubleEliminations?: ParticipantDoubleEliminationUncheckedUpdateManyWithoutEliminationNestedInput
+    matches?: MatchUncheckedUpdateManyWithoutDoubleEliminationNestedInput
+  }
+
+  export type TournamentDoubleEliminationCreateManyInput = {
+    id?: number
+    tournamentPhaseId: number
+    roundNumber?: number
+    isActive: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TournamentDoubleEliminationUpdateManyMutationInput = {
+    roundNumber?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TournamentDoubleEliminationUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    tournamentPhaseId?: IntFieldUpdateOperationsInput | number
+    roundNumber?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type TournamentGroupCreateInput = {
     name: string
     groupNumber: number
-    isGroupMatchesEnded?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     tournamentPhase: TournamentPhaseCreateNestedOneWithoutGroupsInput
@@ -14516,7 +17365,6 @@ export namespace Prisma {
     name: string
     tournamentPhaseId: number
     groupNumber: number
-    isGroupMatchesEnded?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     participantGroups?: ParticipantGroupUncheckedCreateNestedManyWithoutGroupInput
@@ -14526,7 +17374,6 @@ export namespace Prisma {
   export type TournamentGroupUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
     groupNumber?: IntFieldUpdateOperationsInput | number
-    isGroupMatchesEnded?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tournamentPhase?: TournamentPhaseUpdateOneRequiredWithoutGroupsNestedInput
@@ -14539,7 +17386,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     tournamentPhaseId?: IntFieldUpdateOperationsInput | number
     groupNumber?: IntFieldUpdateOperationsInput | number
-    isGroupMatchesEnded?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     participantGroups?: ParticipantGroupUncheckedUpdateManyWithoutGroupNestedInput
@@ -14551,7 +17397,6 @@ export namespace Prisma {
     name: string
     tournamentPhaseId: number
     groupNumber: number
-    isGroupMatchesEnded?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -14559,7 +17404,6 @@ export namespace Prisma {
   export type TournamentGroupUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
     groupNumber?: IntFieldUpdateOperationsInput | number
-    isGroupMatchesEnded?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -14569,7 +17413,69 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     tournamentPhaseId?: IntFieldUpdateOperationsInput | number
     groupNumber?: IntFieldUpdateOperationsInput | number
-    isGroupMatchesEnded?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TournamentKnockoutCreateInput = {
+    currentRound?: number
+    isOver?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tournamentPhase: TournamentPhaseCreateNestedOneWithoutKnockoutInput
+    matches?: MatchCreateNestedManyWithoutKnockoutInput
+  }
+
+  export type TournamentKnockoutUncheckedCreateInput = {
+    id?: number
+    tournamentPhaseId: number
+    currentRound?: number
+    isOver?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    matches?: MatchUncheckedCreateNestedManyWithoutKnockoutInput
+  }
+
+  export type TournamentKnockoutUpdateInput = {
+    currentRound?: IntFieldUpdateOperationsInput | number
+    isOver?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tournamentPhase?: TournamentPhaseUpdateOneRequiredWithoutKnockoutNestedInput
+    matches?: MatchUpdateManyWithoutKnockoutNestedInput
+  }
+
+  export type TournamentKnockoutUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    tournamentPhaseId?: IntFieldUpdateOperationsInput | number
+    currentRound?: IntFieldUpdateOperationsInput | number
+    isOver?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    matches?: MatchUncheckedUpdateManyWithoutKnockoutNestedInput
+  }
+
+  export type TournamentKnockoutCreateManyInput = {
+    id?: number
+    tournamentPhaseId: number
+    currentRound?: number
+    isOver?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TournamentKnockoutUpdateManyMutationInput = {
+    currentRound?: IntFieldUpdateOperationsInput | number
+    isOver?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TournamentKnockoutUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    tournamentPhaseId?: IntFieldUpdateOperationsInput | number
+    currentRound?: IntFieldUpdateOperationsInput | number
+    isOver?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -14578,8 +17484,9 @@ export namespace Prisma {
     phaseType: $Enums.PhaseType
     order: number
     isCompleted?: boolean
-    elimination?: EliminationCreateNestedOneWithoutTournamentPhaseInput
+    knockout?: TournamentKnockoutCreateNestedOneWithoutTournamentPhaseInput
     groups?: TournamentGroupCreateNestedManyWithoutTournamentPhaseInput
+    doubleElimination?: TournamentDoubleEliminationCreateNestedOneWithoutTournamentPhaseInput
     matches?: MatchCreateNestedManyWithoutTournamentPhaseInput
     tournament: TournamentCreateNestedOneWithoutPhasesInput
   }
@@ -14590,8 +17497,9 @@ export namespace Prisma {
     phaseType: $Enums.PhaseType
     order: number
     isCompleted?: boolean
-    elimination?: EliminationUncheckedCreateNestedOneWithoutTournamentPhaseInput
+    knockout?: TournamentKnockoutUncheckedCreateNestedOneWithoutTournamentPhaseInput
     groups?: TournamentGroupUncheckedCreateNestedManyWithoutTournamentPhaseInput
+    doubleElimination?: TournamentDoubleEliminationUncheckedCreateNestedOneWithoutTournamentPhaseInput
     matches?: MatchUncheckedCreateNestedManyWithoutTournamentPhaseInput
   }
 
@@ -14599,8 +17507,9 @@ export namespace Prisma {
     phaseType?: EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
     order?: IntFieldUpdateOperationsInput | number
     isCompleted?: BoolFieldUpdateOperationsInput | boolean
-    elimination?: EliminationUpdateOneWithoutTournamentPhaseNestedInput
+    knockout?: TournamentKnockoutUpdateOneWithoutTournamentPhaseNestedInput
     groups?: TournamentGroupUpdateManyWithoutTournamentPhaseNestedInput
+    doubleElimination?: TournamentDoubleEliminationUpdateOneWithoutTournamentPhaseNestedInput
     matches?: MatchUpdateManyWithoutTournamentPhaseNestedInput
     tournament?: TournamentUpdateOneRequiredWithoutPhasesNestedInput
   }
@@ -14611,8 +17520,9 @@ export namespace Prisma {
     phaseType?: EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
     order?: IntFieldUpdateOperationsInput | number
     isCompleted?: BoolFieldUpdateOperationsInput | boolean
-    elimination?: EliminationUncheckedUpdateOneWithoutTournamentPhaseNestedInput
+    knockout?: TournamentKnockoutUncheckedUpdateOneWithoutTournamentPhaseNestedInput
     groups?: TournamentGroupUncheckedUpdateManyWithoutTournamentPhaseNestedInput
+    doubleElimination?: TournamentDoubleEliminationUncheckedUpdateOneWithoutTournamentPhaseNestedInput
     matches?: MatchUncheckedUpdateManyWithoutTournamentPhaseNestedInput
   }
 
@@ -14707,16 +17617,27 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
-  export type EnumEliminationTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.EliminationType | EnumEliminationTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.EliminationType[] | ListEnumEliminationTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.EliminationType[] | ListEnumEliminationTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumEliminationTypeFilter<$PrismaModel> | $Enums.EliminationType
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
   export type BoolFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type EnumMatchTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.MatchType | EnumMatchTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.MatchType[] | ListEnumMatchTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MatchType[] | ListEnumMatchTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumMatchTypeFilter<$PrismaModel> | $Enums.MatchType
   }
 
   export type DateTimeFilter<$PrismaModel = never> = {
@@ -14735,56 +17656,156 @@ export namespace Prisma {
     isNot?: TournamentPhaseWhereInput
   }
 
+  export type TournamentKnockoutNullableScalarRelationFilter = {
+    is?: TournamentKnockoutWhereInput | null
+    isNot?: TournamentKnockoutWhereInput | null
+  }
+
+  export type TournamentGroupNullableScalarRelationFilter = {
+    is?: TournamentGroupWhereInput | null
+    isNot?: TournamentGroupWhereInput | null
+  }
+
+  export type TournamentDoubleEliminationNullableScalarRelationFilter = {
+    is?: TournamentDoubleEliminationWhereInput | null
+    isNot?: TournamentDoubleEliminationWhereInput | null
+  }
+
+  export type ParticipantNullableScalarRelationFilter = {
+    is?: ParticipantWhereInput | null
+    isNot?: ParticipantWhereInput | null
+  }
+
+  export type MatchNullableScalarRelationFilter = {
+    is?: MatchWhereInput | null
+    isNot?: MatchWhereInput | null
+  }
+
   export type MatchListRelationFilter = {
     every?: MatchWhereInput
     some?: MatchWhereInput
     none?: MatchWhereInput
   }
 
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
+  }
+
   export type MatchOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
-  export type EliminationCountOrderByAggregateInput = {
+  export type MatchTournamentGroupIdSerialNumberCompoundUniqueInput = {
+    tournamentGroupId: number
+    serialNumber: number
+  }
+
+  export type MatchCountOrderByAggregateInput = {
     id?: SortOrder
     tournamentPhaseId?: SortOrder
-    type?: SortOrder
-    currentRound?: SortOrder
+    knockoutId?: SortOrder
+    tournamentGroupId?: SortOrder
+    tournamentDoubleEliminationId?: SortOrder
+    doubleEliminationRound?: SortOrder
+    participant1Id?: SortOrder
+    participant2Id?: SortOrder
+    winnerId?: SortOrder
+    loserId?: SortOrder
+    nextMatchId?: SortOrder
+    serialNumber?: SortOrder
+    winnerElo?: SortOrder
+    loserElo?: SortOrder
+    eloWon?: SortOrder
+    eloLost?: SortOrder
     isOver?: SortOrder
+    matchType?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type EliminationAvgOrderByAggregateInput = {
+  export type MatchAvgOrderByAggregateInput = {
     id?: SortOrder
     tournamentPhaseId?: SortOrder
-    currentRound?: SortOrder
+    knockoutId?: SortOrder
+    tournamentGroupId?: SortOrder
+    tournamentDoubleEliminationId?: SortOrder
+    doubleEliminationRound?: SortOrder
+    participant1Id?: SortOrder
+    participant2Id?: SortOrder
+    winnerId?: SortOrder
+    loserId?: SortOrder
+    nextMatchId?: SortOrder
+    serialNumber?: SortOrder
+    winnerElo?: SortOrder
+    loserElo?: SortOrder
+    eloWon?: SortOrder
+    eloLost?: SortOrder
   }
 
-  export type EliminationMaxOrderByAggregateInput = {
+  export type MatchMaxOrderByAggregateInput = {
     id?: SortOrder
     tournamentPhaseId?: SortOrder
-    type?: SortOrder
-    currentRound?: SortOrder
+    knockoutId?: SortOrder
+    tournamentGroupId?: SortOrder
+    tournamentDoubleEliminationId?: SortOrder
+    doubleEliminationRound?: SortOrder
+    participant1Id?: SortOrder
+    participant2Id?: SortOrder
+    winnerId?: SortOrder
+    loserId?: SortOrder
+    nextMatchId?: SortOrder
+    serialNumber?: SortOrder
+    winnerElo?: SortOrder
+    loserElo?: SortOrder
+    eloWon?: SortOrder
+    eloLost?: SortOrder
     isOver?: SortOrder
+    matchType?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type EliminationMinOrderByAggregateInput = {
+  export type MatchMinOrderByAggregateInput = {
     id?: SortOrder
     tournamentPhaseId?: SortOrder
-    type?: SortOrder
-    currentRound?: SortOrder
+    knockoutId?: SortOrder
+    tournamentGroupId?: SortOrder
+    tournamentDoubleEliminationId?: SortOrder
+    doubleEliminationRound?: SortOrder
+    participant1Id?: SortOrder
+    participant2Id?: SortOrder
+    winnerId?: SortOrder
+    loserId?: SortOrder
+    nextMatchId?: SortOrder
+    serialNumber?: SortOrder
+    winnerElo?: SortOrder
+    loserElo?: SortOrder
+    eloWon?: SortOrder
+    eloLost?: SortOrder
     isOver?: SortOrder
+    matchType?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type EliminationSumOrderByAggregateInput = {
+  export type MatchSumOrderByAggregateInput = {
     id?: SortOrder
     tournamentPhaseId?: SortOrder
-    currentRound?: SortOrder
+    knockoutId?: SortOrder
+    tournamentGroupId?: SortOrder
+    tournamentDoubleEliminationId?: SortOrder
+    doubleEliminationRound?: SortOrder
+    participant1Id?: SortOrder
+    participant2Id?: SortOrder
+    winnerId?: SortOrder
+    loserId?: SortOrder
+    nextMatchId?: SortOrder
+    serialNumber?: SortOrder
+    winnerElo?: SortOrder
+    loserElo?: SortOrder
+    eloWon?: SortOrder
+    eloLost?: SortOrder
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -14803,188 +17824,6 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
-  export type EnumEliminationTypeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.EliminationType | EnumEliminationTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.EliminationType[] | ListEnumEliminationTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.EliminationType[] | ListEnumEliminationTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumEliminationTypeWithAggregatesFilter<$PrismaModel> | $Enums.EliminationType
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumEliminationTypeFilter<$PrismaModel>
-    _max?: NestedEnumEliminationTypeFilter<$PrismaModel>
-  }
-
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
-  }
-
-  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
-  }
-
-  export type IntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type EnumMatchTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.MatchType | EnumMatchTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.MatchType[] | ListEnumMatchTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.MatchType[] | ListEnumMatchTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumMatchTypeFilter<$PrismaModel> | $Enums.MatchType
-  }
-
-  export type EliminationNullableScalarRelationFilter = {
-    is?: EliminationWhereInput | null
-    isNot?: EliminationWhereInput | null
-  }
-
-  export type TournamentGroupNullableScalarRelationFilter = {
-    is?: TournamentGroupWhereInput | null
-    isNot?: TournamentGroupWhereInput | null
-  }
-
-  export type ParticipantNullableScalarRelationFilter = {
-    is?: ParticipantWhereInput | null
-    isNot?: ParticipantWhereInput | null
-  }
-
-  export type MatchNullableScalarRelationFilter = {
-    is?: MatchWhereInput | null
-    isNot?: MatchWhereInput | null
-  }
-
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
-  }
-
-  export type MatchTournamentGroupIdSerialNumberCompoundUniqueInput = {
-    tournamentGroupId: number
-    serialNumber: number
-  }
-
-  export type MatchCountOrderByAggregateInput = {
-    id?: SortOrder
-    tournamentPhaseId?: SortOrder
-    eliminationId?: SortOrder
-    tournamentGroupId?: SortOrder
-    participant1Id?: SortOrder
-    participant2Id?: SortOrder
-    winnerId?: SortOrder
-    loserId?: SortOrder
-    nextMatchId?: SortOrder
-    round?: SortOrder
-    serialNumber?: SortOrder
-    winnerElo?: SortOrder
-    loserElo?: SortOrder
-    eloWon?: SortOrder
-    eloLost?: SortOrder
-    isOver?: SortOrder
-    matchType?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type MatchAvgOrderByAggregateInput = {
-    id?: SortOrder
-    tournamentPhaseId?: SortOrder
-    eliminationId?: SortOrder
-    tournamentGroupId?: SortOrder
-    participant1Id?: SortOrder
-    participant2Id?: SortOrder
-    winnerId?: SortOrder
-    loserId?: SortOrder
-    nextMatchId?: SortOrder
-    round?: SortOrder
-    serialNumber?: SortOrder
-    winnerElo?: SortOrder
-    loserElo?: SortOrder
-    eloWon?: SortOrder
-    eloLost?: SortOrder
-  }
-
-  export type MatchMaxOrderByAggregateInput = {
-    id?: SortOrder
-    tournamentPhaseId?: SortOrder
-    eliminationId?: SortOrder
-    tournamentGroupId?: SortOrder
-    participant1Id?: SortOrder
-    participant2Id?: SortOrder
-    winnerId?: SortOrder
-    loserId?: SortOrder
-    nextMatchId?: SortOrder
-    round?: SortOrder
-    serialNumber?: SortOrder
-    winnerElo?: SortOrder
-    loserElo?: SortOrder
-    eloWon?: SortOrder
-    eloLost?: SortOrder
-    isOver?: SortOrder
-    matchType?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type MatchMinOrderByAggregateInput = {
-    id?: SortOrder
-    tournamentPhaseId?: SortOrder
-    eliminationId?: SortOrder
-    tournamentGroupId?: SortOrder
-    participant1Id?: SortOrder
-    participant2Id?: SortOrder
-    winnerId?: SortOrder
-    loserId?: SortOrder
-    nextMatchId?: SortOrder
-    round?: SortOrder
-    serialNumber?: SortOrder
-    winnerElo?: SortOrder
-    loserElo?: SortOrder
-    eloWon?: SortOrder
-    eloLost?: SortOrder
-    isOver?: SortOrder
-    matchType?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type MatchSumOrderByAggregateInput = {
-    id?: SortOrder
-    tournamentPhaseId?: SortOrder
-    eliminationId?: SortOrder
-    tournamentGroupId?: SortOrder
-    participant1Id?: SortOrder
-    participant2Id?: SortOrder
-    winnerId?: SortOrder
-    loserId?: SortOrder
-    nextMatchId?: SortOrder
-    round?: SortOrder
-    serialNumber?: SortOrder
-    winnerElo?: SortOrder
-    loserElo?: SortOrder
-    eloWon?: SortOrder
-    eloLost?: SortOrder
-  }
-
   export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -15001,6 +17840,14 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type EnumMatchTypeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.MatchType | EnumMatchTypeFieldRefInput<$PrismaModel>
     in?: $Enums.MatchType[] | ListEnumMatchTypeFieldRefInput<$PrismaModel>
@@ -15009,6 +17856,20 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumMatchTypeFilter<$PrismaModel>
     _max?: NestedEnumMatchTypeFilter<$PrismaModel>
+  }
+
+  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -15039,6 +17900,12 @@ export namespace Prisma {
     none?: ParticipantTournamentWhereInput
   }
 
+  export type ParticipantDoubleEliminationListRelationFilter = {
+    every?: ParticipantDoubleEliminationWhereInput
+    some?: ParticipantDoubleEliminationWhereInput
+    none?: ParticipantDoubleEliminationWhereInput
+  }
+
   export type ParticipantGroupListRelationFilter = {
     every?: ParticipantGroupWhereInput
     some?: ParticipantGroupWhereInput
@@ -15052,6 +17919,10 @@ export namespace Prisma {
   }
 
   export type ParticipantTournamentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ParticipantDoubleEliminationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -15138,14 +18009,90 @@ export namespace Prisma {
     _max?: NestedEnumParticipantTypeFilter<$PrismaModel>
   }
 
-  export type TournamentGroupScalarRelationFilter = {
-    is?: TournamentGroupWhereInput
-    isNot?: TournamentGroupWhereInput
+  export type EnumDoubleEliminationBracketFilter<$PrismaModel = never> = {
+    equals?: $Enums.DoubleEliminationBracket | EnumDoubleEliminationBracketFieldRefInput<$PrismaModel>
+    in?: $Enums.DoubleEliminationBracket[] | ListEnumDoubleEliminationBracketFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DoubleEliminationBracket[] | ListEnumDoubleEliminationBracketFieldRefInput<$PrismaModel>
+    not?: NestedEnumDoubleEliminationBracketFilter<$PrismaModel> | $Enums.DoubleEliminationBracket
+  }
+
+  export type TournamentDoubleEliminationScalarRelationFilter = {
+    is?: TournamentDoubleEliminationWhereInput
+    isNot?: TournamentDoubleEliminationWhereInput
   }
 
   export type ParticipantScalarRelationFilter = {
     is?: ParticipantWhereInput
     isNot?: ParticipantWhereInput
+  }
+
+  export type ParticipantDoubleEliminationTournamentDoubleEliminationIdParticipantIdCompoundUniqueInput = {
+    tournamentDoubleEliminationId: number
+    participantId: number
+  }
+
+  export type ParticipantDoubleEliminationCountOrderByAggregateInput = {
+    id?: SortOrder
+    tournamentDoubleEliminationId?: SortOrder
+    participantId?: SortOrder
+    wins?: SortOrder
+    losses?: SortOrder
+    doubleEliminationBracket?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ParticipantDoubleEliminationAvgOrderByAggregateInput = {
+    id?: SortOrder
+    tournamentDoubleEliminationId?: SortOrder
+    participantId?: SortOrder
+    wins?: SortOrder
+    losses?: SortOrder
+  }
+
+  export type ParticipantDoubleEliminationMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tournamentDoubleEliminationId?: SortOrder
+    participantId?: SortOrder
+    wins?: SortOrder
+    losses?: SortOrder
+    doubleEliminationBracket?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ParticipantDoubleEliminationMinOrderByAggregateInput = {
+    id?: SortOrder
+    tournamentDoubleEliminationId?: SortOrder
+    participantId?: SortOrder
+    wins?: SortOrder
+    losses?: SortOrder
+    doubleEliminationBracket?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ParticipantDoubleEliminationSumOrderByAggregateInput = {
+    id?: SortOrder
+    tournamentDoubleEliminationId?: SortOrder
+    participantId?: SortOrder
+    wins?: SortOrder
+    losses?: SortOrder
+  }
+
+  export type EnumDoubleEliminationBracketWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DoubleEliminationBracket | EnumDoubleEliminationBracketFieldRefInput<$PrismaModel>
+    in?: $Enums.DoubleEliminationBracket[] | ListEnumDoubleEliminationBracketFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DoubleEliminationBracket[] | ListEnumDoubleEliminationBracketFieldRefInput<$PrismaModel>
+    not?: NestedEnumDoubleEliminationBracketWithAggregatesFilter<$PrismaModel> | $Enums.DoubleEliminationBracket
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDoubleEliminationBracketFilter<$PrismaModel>
+    _max?: NestedEnumDoubleEliminationBracketFilter<$PrismaModel>
+  }
+
+  export type TournamentGroupScalarRelationFilter = {
+    is?: TournamentGroupWhereInput
+    isNot?: TournamentGroupWhereInput
   }
 
   export type ParticipantGroupTournamentGroupIdParticipantIdCompoundUniqueInput = {
@@ -15159,7 +18106,6 @@ export namespace Prisma {
     participantId?: SortOrder
     wins?: SortOrder
     losses?: SortOrder
-    points?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -15170,7 +18116,6 @@ export namespace Prisma {
     participantId?: SortOrder
     wins?: SortOrder
     losses?: SortOrder
-    points?: SortOrder
   }
 
   export type ParticipantGroupMaxOrderByAggregateInput = {
@@ -15179,7 +18124,6 @@ export namespace Prisma {
     participantId?: SortOrder
     wins?: SortOrder
     losses?: SortOrder
-    points?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -15190,7 +18134,6 @@ export namespace Prisma {
     participantId?: SortOrder
     wins?: SortOrder
     losses?: SortOrder
-    points?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -15201,7 +18144,6 @@ export namespace Prisma {
     participantId?: SortOrder
     wins?: SortOrder
     losses?: SortOrder
-    points?: SortOrder
   }
 
   export type TournamentScalarRelationFilter = {
@@ -15322,6 +18264,50 @@ export namespace Prisma {
     _max?: NestedEnumTournamentStatusFilter<$PrismaModel>
   }
 
+  export type TournamentDoubleEliminationTournamentPhaseIdRoundNumberCompoundUniqueInput = {
+    tournamentPhaseId: number
+    roundNumber: number
+  }
+
+  export type TournamentDoubleEliminationCountOrderByAggregateInput = {
+    id?: SortOrder
+    tournamentPhaseId?: SortOrder
+    roundNumber?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TournamentDoubleEliminationAvgOrderByAggregateInput = {
+    id?: SortOrder
+    tournamentPhaseId?: SortOrder
+    roundNumber?: SortOrder
+  }
+
+  export type TournamentDoubleEliminationMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tournamentPhaseId?: SortOrder
+    roundNumber?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TournamentDoubleEliminationMinOrderByAggregateInput = {
+    id?: SortOrder
+    tournamentPhaseId?: SortOrder
+    roundNumber?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TournamentDoubleEliminationSumOrderByAggregateInput = {
+    id?: SortOrder
+    tournamentPhaseId?: SortOrder
+    roundNumber?: SortOrder
+  }
+
   export type TournamentGroupTournamentPhaseIdGroupNumberCompoundUniqueInput = {
     tournamentPhaseId: number
     groupNumber: number
@@ -15332,7 +18318,6 @@ export namespace Prisma {
     name?: SortOrder
     tournamentPhaseId?: SortOrder
     groupNumber?: SortOrder
-    isGroupMatchesEnded?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -15348,7 +18333,6 @@ export namespace Prisma {
     name?: SortOrder
     tournamentPhaseId?: SortOrder
     groupNumber?: SortOrder
-    isGroupMatchesEnded?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -15358,7 +18342,6 @@ export namespace Prisma {
     name?: SortOrder
     tournamentPhaseId?: SortOrder
     groupNumber?: SortOrder
-    isGroupMatchesEnded?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -15367,6 +18350,45 @@ export namespace Prisma {
     id?: SortOrder
     tournamentPhaseId?: SortOrder
     groupNumber?: SortOrder
+  }
+
+  export type TournamentKnockoutCountOrderByAggregateInput = {
+    id?: SortOrder
+    tournamentPhaseId?: SortOrder
+    currentRound?: SortOrder
+    isOver?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TournamentKnockoutAvgOrderByAggregateInput = {
+    id?: SortOrder
+    tournamentPhaseId?: SortOrder
+    currentRound?: SortOrder
+  }
+
+  export type TournamentKnockoutMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tournamentPhaseId?: SortOrder
+    currentRound?: SortOrder
+    isOver?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TournamentKnockoutMinOrderByAggregateInput = {
+    id?: SortOrder
+    tournamentPhaseId?: SortOrder
+    currentRound?: SortOrder
+    isOver?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TournamentKnockoutSumOrderByAggregateInput = {
+    id?: SortOrder
+    tournamentPhaseId?: SortOrder
+    currentRound?: SortOrder
   }
 
   export type EnumPhaseTypeFilter<$PrismaModel = never> = {
@@ -15478,98 +18500,28 @@ export namespace Prisma {
     place?: SortOrder
   }
 
-  export type TournamentPhaseCreateNestedOneWithoutEliminationInput = {
-    create?: XOR<TournamentPhaseCreateWithoutEliminationInput, TournamentPhaseUncheckedCreateWithoutEliminationInput>
-    connectOrCreate?: TournamentPhaseCreateOrConnectWithoutEliminationInput
-    connect?: TournamentPhaseWhereUniqueInput
-  }
-
-  export type MatchCreateNestedManyWithoutEliminationInput = {
-    create?: XOR<MatchCreateWithoutEliminationInput, MatchUncheckedCreateWithoutEliminationInput> | MatchCreateWithoutEliminationInput[] | MatchUncheckedCreateWithoutEliminationInput[]
-    connectOrCreate?: MatchCreateOrConnectWithoutEliminationInput | MatchCreateOrConnectWithoutEliminationInput[]
-    createMany?: MatchCreateManyEliminationInputEnvelope
-    connect?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
-  }
-
-  export type MatchUncheckedCreateNestedManyWithoutEliminationInput = {
-    create?: XOR<MatchCreateWithoutEliminationInput, MatchUncheckedCreateWithoutEliminationInput> | MatchCreateWithoutEliminationInput[] | MatchUncheckedCreateWithoutEliminationInput[]
-    connectOrCreate?: MatchCreateOrConnectWithoutEliminationInput | MatchCreateOrConnectWithoutEliminationInput[]
-    createMany?: MatchCreateManyEliminationInputEnvelope
-    connect?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
-  }
-
-  export type EnumEliminationTypeFieldUpdateOperationsInput = {
-    set?: $Enums.EliminationType
-  }
-
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
-  }
-
-  export type DateTimeFieldUpdateOperationsInput = {
-    set?: Date | string
-  }
-
-  export type TournamentPhaseUpdateOneRequiredWithoutEliminationNestedInput = {
-    create?: XOR<TournamentPhaseCreateWithoutEliminationInput, TournamentPhaseUncheckedCreateWithoutEliminationInput>
-    connectOrCreate?: TournamentPhaseCreateOrConnectWithoutEliminationInput
-    upsert?: TournamentPhaseUpsertWithoutEliminationInput
-    connect?: TournamentPhaseWhereUniqueInput
-    update?: XOR<XOR<TournamentPhaseUpdateToOneWithWhereWithoutEliminationInput, TournamentPhaseUpdateWithoutEliminationInput>, TournamentPhaseUncheckedUpdateWithoutEliminationInput>
-  }
-
-  export type MatchUpdateManyWithoutEliminationNestedInput = {
-    create?: XOR<MatchCreateWithoutEliminationInput, MatchUncheckedCreateWithoutEliminationInput> | MatchCreateWithoutEliminationInput[] | MatchUncheckedCreateWithoutEliminationInput[]
-    connectOrCreate?: MatchCreateOrConnectWithoutEliminationInput | MatchCreateOrConnectWithoutEliminationInput[]
-    upsert?: MatchUpsertWithWhereUniqueWithoutEliminationInput | MatchUpsertWithWhereUniqueWithoutEliminationInput[]
-    createMany?: MatchCreateManyEliminationInputEnvelope
-    set?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
-    disconnect?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
-    delete?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
-    connect?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
-    update?: MatchUpdateWithWhereUniqueWithoutEliminationInput | MatchUpdateWithWhereUniqueWithoutEliminationInput[]
-    updateMany?: MatchUpdateManyWithWhereWithoutEliminationInput | MatchUpdateManyWithWhereWithoutEliminationInput[]
-    deleteMany?: MatchScalarWhereInput | MatchScalarWhereInput[]
-  }
-
-  export type MatchUncheckedUpdateManyWithoutEliminationNestedInput = {
-    create?: XOR<MatchCreateWithoutEliminationInput, MatchUncheckedCreateWithoutEliminationInput> | MatchCreateWithoutEliminationInput[] | MatchUncheckedCreateWithoutEliminationInput[]
-    connectOrCreate?: MatchCreateOrConnectWithoutEliminationInput | MatchCreateOrConnectWithoutEliminationInput[]
-    upsert?: MatchUpsertWithWhereUniqueWithoutEliminationInput | MatchUpsertWithWhereUniqueWithoutEliminationInput[]
-    createMany?: MatchCreateManyEliminationInputEnvelope
-    set?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
-    disconnect?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
-    delete?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
-    connect?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
-    update?: MatchUpdateWithWhereUniqueWithoutEliminationInput | MatchUpdateWithWhereUniqueWithoutEliminationInput[]
-    updateMany?: MatchUpdateManyWithWhereWithoutEliminationInput | MatchUpdateManyWithWhereWithoutEliminationInput[]
-    deleteMany?: MatchScalarWhereInput | MatchScalarWhereInput[]
-  }
-
   export type TournamentPhaseCreateNestedOneWithoutMatchesInput = {
     create?: XOR<TournamentPhaseCreateWithoutMatchesInput, TournamentPhaseUncheckedCreateWithoutMatchesInput>
     connectOrCreate?: TournamentPhaseCreateOrConnectWithoutMatchesInput
     connect?: TournamentPhaseWhereUniqueInput
   }
 
-  export type EliminationCreateNestedOneWithoutMatchesInput = {
-    create?: XOR<EliminationCreateWithoutMatchesInput, EliminationUncheckedCreateWithoutMatchesInput>
-    connectOrCreate?: EliminationCreateOrConnectWithoutMatchesInput
-    connect?: EliminationWhereUniqueInput
+  export type TournamentKnockoutCreateNestedOneWithoutMatchesInput = {
+    create?: XOR<TournamentKnockoutCreateWithoutMatchesInput, TournamentKnockoutUncheckedCreateWithoutMatchesInput>
+    connectOrCreate?: TournamentKnockoutCreateOrConnectWithoutMatchesInput
+    connect?: TournamentKnockoutWhereUniqueInput
   }
 
   export type TournamentGroupCreateNestedOneWithoutMatchesInput = {
     create?: XOR<TournamentGroupCreateWithoutMatchesInput, TournamentGroupUncheckedCreateWithoutMatchesInput>
     connectOrCreate?: TournamentGroupCreateOrConnectWithoutMatchesInput
     connect?: TournamentGroupWhereUniqueInput
+  }
+
+  export type TournamentDoubleEliminationCreateNestedOneWithoutMatchesInput = {
+    create?: XOR<TournamentDoubleEliminationCreateWithoutMatchesInput, TournamentDoubleEliminationUncheckedCreateWithoutMatchesInput>
+    connectOrCreate?: TournamentDoubleEliminationCreateOrConnectWithoutMatchesInput
+    connect?: TournamentDoubleEliminationWhereUniqueInput
   }
 
   export type ParticipantCreateNestedOneWithoutMatchesAsP1Input = {
@@ -15624,8 +18576,16 @@ export namespace Prisma {
     divide?: number
   }
 
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
   export type EnumMatchTypeFieldUpdateOperationsInput = {
     set?: $Enums.MatchType
+  }
+
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
   }
 
   export type TournamentPhaseUpdateOneRequiredWithoutMatchesNestedInput = {
@@ -15636,14 +18596,14 @@ export namespace Prisma {
     update?: XOR<XOR<TournamentPhaseUpdateToOneWithWhereWithoutMatchesInput, TournamentPhaseUpdateWithoutMatchesInput>, TournamentPhaseUncheckedUpdateWithoutMatchesInput>
   }
 
-  export type EliminationUpdateOneWithoutMatchesNestedInput = {
-    create?: XOR<EliminationCreateWithoutMatchesInput, EliminationUncheckedCreateWithoutMatchesInput>
-    connectOrCreate?: EliminationCreateOrConnectWithoutMatchesInput
-    upsert?: EliminationUpsertWithoutMatchesInput
-    disconnect?: EliminationWhereInput | boolean
-    delete?: EliminationWhereInput | boolean
-    connect?: EliminationWhereUniqueInput
-    update?: XOR<XOR<EliminationUpdateToOneWithWhereWithoutMatchesInput, EliminationUpdateWithoutMatchesInput>, EliminationUncheckedUpdateWithoutMatchesInput>
+  export type TournamentKnockoutUpdateOneWithoutMatchesNestedInput = {
+    create?: XOR<TournamentKnockoutCreateWithoutMatchesInput, TournamentKnockoutUncheckedCreateWithoutMatchesInput>
+    connectOrCreate?: TournamentKnockoutCreateOrConnectWithoutMatchesInput
+    upsert?: TournamentKnockoutUpsertWithoutMatchesInput
+    disconnect?: TournamentKnockoutWhereInput | boolean
+    delete?: TournamentKnockoutWhereInput | boolean
+    connect?: TournamentKnockoutWhereUniqueInput
+    update?: XOR<XOR<TournamentKnockoutUpdateToOneWithWhereWithoutMatchesInput, TournamentKnockoutUpdateWithoutMatchesInput>, TournamentKnockoutUncheckedUpdateWithoutMatchesInput>
   }
 
   export type TournamentGroupUpdateOneWithoutMatchesNestedInput = {
@@ -15654,6 +18614,16 @@ export namespace Prisma {
     delete?: TournamentGroupWhereInput | boolean
     connect?: TournamentGroupWhereUniqueInput
     update?: XOR<XOR<TournamentGroupUpdateToOneWithWhereWithoutMatchesInput, TournamentGroupUpdateWithoutMatchesInput>, TournamentGroupUncheckedUpdateWithoutMatchesInput>
+  }
+
+  export type TournamentDoubleEliminationUpdateOneWithoutMatchesNestedInput = {
+    create?: XOR<TournamentDoubleEliminationCreateWithoutMatchesInput, TournamentDoubleEliminationUncheckedCreateWithoutMatchesInput>
+    connectOrCreate?: TournamentDoubleEliminationCreateOrConnectWithoutMatchesInput
+    upsert?: TournamentDoubleEliminationUpsertWithoutMatchesInput
+    disconnect?: TournamentDoubleEliminationWhereInput | boolean
+    delete?: TournamentDoubleEliminationWhereInput | boolean
+    connect?: TournamentDoubleEliminationWhereUniqueInput
+    update?: XOR<XOR<TournamentDoubleEliminationUpdateToOneWithWhereWithoutMatchesInput, TournamentDoubleEliminationUpdateWithoutMatchesInput>, TournamentDoubleEliminationUncheckedUpdateWithoutMatchesInput>
   }
 
   export type ParticipantUpdateOneWithoutMatchesAsP1NestedInput = {
@@ -15720,6 +18690,14 @@ export namespace Prisma {
     deleteMany?: MatchScalarWhereInput | MatchScalarWhereInput[]
   }
 
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type MatchUncheckedUpdateManyWithoutNextMatchNestedInput = {
     create?: XOR<MatchCreateWithoutNextMatchInput, MatchUncheckedCreateWithoutNextMatchInput> | MatchCreateWithoutNextMatchInput[] | MatchUncheckedCreateWithoutNextMatchInput[]
     connectOrCreate?: MatchCreateOrConnectWithoutNextMatchInput | MatchCreateOrConnectWithoutNextMatchInput[]
@@ -15739,6 +18717,13 @@ export namespace Prisma {
     connectOrCreate?: ParticipantTournamentCreateOrConnectWithoutParticipantInput | ParticipantTournamentCreateOrConnectWithoutParticipantInput[]
     createMany?: ParticipantTournamentCreateManyParticipantInputEnvelope
     connect?: ParticipantTournamentWhereUniqueInput | ParticipantTournamentWhereUniqueInput[]
+  }
+
+  export type ParticipantDoubleEliminationCreateNestedManyWithoutParticipantInput = {
+    create?: XOR<ParticipantDoubleEliminationCreateWithoutParticipantInput, ParticipantDoubleEliminationUncheckedCreateWithoutParticipantInput> | ParticipantDoubleEliminationCreateWithoutParticipantInput[] | ParticipantDoubleEliminationUncheckedCreateWithoutParticipantInput[]
+    connectOrCreate?: ParticipantDoubleEliminationCreateOrConnectWithoutParticipantInput | ParticipantDoubleEliminationCreateOrConnectWithoutParticipantInput[]
+    createMany?: ParticipantDoubleEliminationCreateManyParticipantInputEnvelope
+    connect?: ParticipantDoubleEliminationWhereUniqueInput | ParticipantDoubleEliminationWhereUniqueInput[]
   }
 
   export type ParticipantGroupCreateNestedManyWithoutParticipantInput = {
@@ -15788,6 +18773,13 @@ export namespace Prisma {
     connectOrCreate?: ParticipantTournamentCreateOrConnectWithoutParticipantInput | ParticipantTournamentCreateOrConnectWithoutParticipantInput[]
     createMany?: ParticipantTournamentCreateManyParticipantInputEnvelope
     connect?: ParticipantTournamentWhereUniqueInput | ParticipantTournamentWhereUniqueInput[]
+  }
+
+  export type ParticipantDoubleEliminationUncheckedCreateNestedManyWithoutParticipantInput = {
+    create?: XOR<ParticipantDoubleEliminationCreateWithoutParticipantInput, ParticipantDoubleEliminationUncheckedCreateWithoutParticipantInput> | ParticipantDoubleEliminationCreateWithoutParticipantInput[] | ParticipantDoubleEliminationUncheckedCreateWithoutParticipantInput[]
+    connectOrCreate?: ParticipantDoubleEliminationCreateOrConnectWithoutParticipantInput | ParticipantDoubleEliminationCreateOrConnectWithoutParticipantInput[]
+    createMany?: ParticipantDoubleEliminationCreateManyParticipantInputEnvelope
+    connect?: ParticipantDoubleEliminationWhereUniqueInput | ParticipantDoubleEliminationWhereUniqueInput[]
   }
 
   export type ParticipantGroupUncheckedCreateNestedManyWithoutParticipantInput = {
@@ -15852,6 +18844,20 @@ export namespace Prisma {
     update?: ParticipantTournamentUpdateWithWhereUniqueWithoutParticipantInput | ParticipantTournamentUpdateWithWhereUniqueWithoutParticipantInput[]
     updateMany?: ParticipantTournamentUpdateManyWithWhereWithoutParticipantInput | ParticipantTournamentUpdateManyWithWhereWithoutParticipantInput[]
     deleteMany?: ParticipantTournamentScalarWhereInput | ParticipantTournamentScalarWhereInput[]
+  }
+
+  export type ParticipantDoubleEliminationUpdateManyWithoutParticipantNestedInput = {
+    create?: XOR<ParticipantDoubleEliminationCreateWithoutParticipantInput, ParticipantDoubleEliminationUncheckedCreateWithoutParticipantInput> | ParticipantDoubleEliminationCreateWithoutParticipantInput[] | ParticipantDoubleEliminationUncheckedCreateWithoutParticipantInput[]
+    connectOrCreate?: ParticipantDoubleEliminationCreateOrConnectWithoutParticipantInput | ParticipantDoubleEliminationCreateOrConnectWithoutParticipantInput[]
+    upsert?: ParticipantDoubleEliminationUpsertWithWhereUniqueWithoutParticipantInput | ParticipantDoubleEliminationUpsertWithWhereUniqueWithoutParticipantInput[]
+    createMany?: ParticipantDoubleEliminationCreateManyParticipantInputEnvelope
+    set?: ParticipantDoubleEliminationWhereUniqueInput | ParticipantDoubleEliminationWhereUniqueInput[]
+    disconnect?: ParticipantDoubleEliminationWhereUniqueInput | ParticipantDoubleEliminationWhereUniqueInput[]
+    delete?: ParticipantDoubleEliminationWhereUniqueInput | ParticipantDoubleEliminationWhereUniqueInput[]
+    connect?: ParticipantDoubleEliminationWhereUniqueInput | ParticipantDoubleEliminationWhereUniqueInput[]
+    update?: ParticipantDoubleEliminationUpdateWithWhereUniqueWithoutParticipantInput | ParticipantDoubleEliminationUpdateWithWhereUniqueWithoutParticipantInput[]
+    updateMany?: ParticipantDoubleEliminationUpdateManyWithWhereWithoutParticipantInput | ParticipantDoubleEliminationUpdateManyWithWhereWithoutParticipantInput[]
+    deleteMany?: ParticipantDoubleEliminationScalarWhereInput | ParticipantDoubleEliminationScalarWhereInput[]
   }
 
   export type ParticipantGroupUpdateManyWithoutParticipantNestedInput = {
@@ -15952,6 +18958,20 @@ export namespace Prisma {
     deleteMany?: ParticipantTournamentScalarWhereInput | ParticipantTournamentScalarWhereInput[]
   }
 
+  export type ParticipantDoubleEliminationUncheckedUpdateManyWithoutParticipantNestedInput = {
+    create?: XOR<ParticipantDoubleEliminationCreateWithoutParticipantInput, ParticipantDoubleEliminationUncheckedCreateWithoutParticipantInput> | ParticipantDoubleEliminationCreateWithoutParticipantInput[] | ParticipantDoubleEliminationUncheckedCreateWithoutParticipantInput[]
+    connectOrCreate?: ParticipantDoubleEliminationCreateOrConnectWithoutParticipantInput | ParticipantDoubleEliminationCreateOrConnectWithoutParticipantInput[]
+    upsert?: ParticipantDoubleEliminationUpsertWithWhereUniqueWithoutParticipantInput | ParticipantDoubleEliminationUpsertWithWhereUniqueWithoutParticipantInput[]
+    createMany?: ParticipantDoubleEliminationCreateManyParticipantInputEnvelope
+    set?: ParticipantDoubleEliminationWhereUniqueInput | ParticipantDoubleEliminationWhereUniqueInput[]
+    disconnect?: ParticipantDoubleEliminationWhereUniqueInput | ParticipantDoubleEliminationWhereUniqueInput[]
+    delete?: ParticipantDoubleEliminationWhereUniqueInput | ParticipantDoubleEliminationWhereUniqueInput[]
+    connect?: ParticipantDoubleEliminationWhereUniqueInput | ParticipantDoubleEliminationWhereUniqueInput[]
+    update?: ParticipantDoubleEliminationUpdateWithWhereUniqueWithoutParticipantInput | ParticipantDoubleEliminationUpdateWithWhereUniqueWithoutParticipantInput[]
+    updateMany?: ParticipantDoubleEliminationUpdateManyWithWhereWithoutParticipantInput | ParticipantDoubleEliminationUpdateManyWithWhereWithoutParticipantInput[]
+    deleteMany?: ParticipantDoubleEliminationScalarWhereInput | ParticipantDoubleEliminationScalarWhereInput[]
+  }
+
   export type ParticipantGroupUncheckedUpdateManyWithoutParticipantNestedInput = {
     create?: XOR<ParticipantGroupCreateWithoutParticipantInput, ParticipantGroupUncheckedCreateWithoutParticipantInput> | ParticipantGroupCreateWithoutParticipantInput[] | ParticipantGroupUncheckedCreateWithoutParticipantInput[]
     connectOrCreate?: ParticipantGroupCreateOrConnectWithoutParticipantInput | ParticipantGroupCreateOrConnectWithoutParticipantInput[]
@@ -16034,6 +19054,38 @@ export namespace Prisma {
     update?: TournamentWinnerUpdateWithWhereUniqueWithoutParticipantInput | TournamentWinnerUpdateWithWhereUniqueWithoutParticipantInput[]
     updateMany?: TournamentWinnerUpdateManyWithWhereWithoutParticipantInput | TournamentWinnerUpdateManyWithWhereWithoutParticipantInput[]
     deleteMany?: TournamentWinnerScalarWhereInput | TournamentWinnerScalarWhereInput[]
+  }
+
+  export type TournamentDoubleEliminationCreateNestedOneWithoutParticipantDoubleEliminationsInput = {
+    create?: XOR<TournamentDoubleEliminationCreateWithoutParticipantDoubleEliminationsInput, TournamentDoubleEliminationUncheckedCreateWithoutParticipantDoubleEliminationsInput>
+    connectOrCreate?: TournamentDoubleEliminationCreateOrConnectWithoutParticipantDoubleEliminationsInput
+    connect?: TournamentDoubleEliminationWhereUniqueInput
+  }
+
+  export type ParticipantCreateNestedOneWithoutDoubleEliminationsInput = {
+    create?: XOR<ParticipantCreateWithoutDoubleEliminationsInput, ParticipantUncheckedCreateWithoutDoubleEliminationsInput>
+    connectOrCreate?: ParticipantCreateOrConnectWithoutDoubleEliminationsInput
+    connect?: ParticipantWhereUniqueInput
+  }
+
+  export type EnumDoubleEliminationBracketFieldUpdateOperationsInput = {
+    set?: $Enums.DoubleEliminationBracket
+  }
+
+  export type TournamentDoubleEliminationUpdateOneRequiredWithoutParticipantDoubleEliminationsNestedInput = {
+    create?: XOR<TournamentDoubleEliminationCreateWithoutParticipantDoubleEliminationsInput, TournamentDoubleEliminationUncheckedCreateWithoutParticipantDoubleEliminationsInput>
+    connectOrCreate?: TournamentDoubleEliminationCreateOrConnectWithoutParticipantDoubleEliminationsInput
+    upsert?: TournamentDoubleEliminationUpsertWithoutParticipantDoubleEliminationsInput
+    connect?: TournamentDoubleEliminationWhereUniqueInput
+    update?: XOR<XOR<TournamentDoubleEliminationUpdateToOneWithWhereWithoutParticipantDoubleEliminationsInput, TournamentDoubleEliminationUpdateWithoutParticipantDoubleEliminationsInput>, TournamentDoubleEliminationUncheckedUpdateWithoutParticipantDoubleEliminationsInput>
+  }
+
+  export type ParticipantUpdateOneRequiredWithoutDoubleEliminationsNestedInput = {
+    create?: XOR<ParticipantCreateWithoutDoubleEliminationsInput, ParticipantUncheckedCreateWithoutDoubleEliminationsInput>
+    connectOrCreate?: ParticipantCreateOrConnectWithoutDoubleEliminationsInput
+    upsert?: ParticipantUpsertWithoutDoubleEliminationsInput
+    connect?: ParticipantWhereUniqueInput
+    update?: XOR<XOR<ParticipantUpdateToOneWithWhereWithoutDoubleEliminationsInput, ParticipantUpdateWithoutDoubleEliminationsInput>, ParticipantUncheckedUpdateWithoutDoubleEliminationsInput>
   }
 
   export type TournamentGroupCreateNestedOneWithoutParticipantGroupsInput = {
@@ -16222,6 +19274,104 @@ export namespace Prisma {
     deleteMany?: TournamentWinnerScalarWhereInput | TournamentWinnerScalarWhereInput[]
   }
 
+  export type TournamentPhaseCreateNestedOneWithoutDoubleEliminationInput = {
+    create?: XOR<TournamentPhaseCreateWithoutDoubleEliminationInput, TournamentPhaseUncheckedCreateWithoutDoubleEliminationInput>
+    connectOrCreate?: TournamentPhaseCreateOrConnectWithoutDoubleEliminationInput
+    connect?: TournamentPhaseWhereUniqueInput
+  }
+
+  export type ParticipantDoubleEliminationCreateNestedManyWithoutEliminationInput = {
+    create?: XOR<ParticipantDoubleEliminationCreateWithoutEliminationInput, ParticipantDoubleEliminationUncheckedCreateWithoutEliminationInput> | ParticipantDoubleEliminationCreateWithoutEliminationInput[] | ParticipantDoubleEliminationUncheckedCreateWithoutEliminationInput[]
+    connectOrCreate?: ParticipantDoubleEliminationCreateOrConnectWithoutEliminationInput | ParticipantDoubleEliminationCreateOrConnectWithoutEliminationInput[]
+    createMany?: ParticipantDoubleEliminationCreateManyEliminationInputEnvelope
+    connect?: ParticipantDoubleEliminationWhereUniqueInput | ParticipantDoubleEliminationWhereUniqueInput[]
+  }
+
+  export type MatchCreateNestedManyWithoutDoubleEliminationInput = {
+    create?: XOR<MatchCreateWithoutDoubleEliminationInput, MatchUncheckedCreateWithoutDoubleEliminationInput> | MatchCreateWithoutDoubleEliminationInput[] | MatchUncheckedCreateWithoutDoubleEliminationInput[]
+    connectOrCreate?: MatchCreateOrConnectWithoutDoubleEliminationInput | MatchCreateOrConnectWithoutDoubleEliminationInput[]
+    createMany?: MatchCreateManyDoubleEliminationInputEnvelope
+    connect?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+  }
+
+  export type ParticipantDoubleEliminationUncheckedCreateNestedManyWithoutEliminationInput = {
+    create?: XOR<ParticipantDoubleEliminationCreateWithoutEliminationInput, ParticipantDoubleEliminationUncheckedCreateWithoutEliminationInput> | ParticipantDoubleEliminationCreateWithoutEliminationInput[] | ParticipantDoubleEliminationUncheckedCreateWithoutEliminationInput[]
+    connectOrCreate?: ParticipantDoubleEliminationCreateOrConnectWithoutEliminationInput | ParticipantDoubleEliminationCreateOrConnectWithoutEliminationInput[]
+    createMany?: ParticipantDoubleEliminationCreateManyEliminationInputEnvelope
+    connect?: ParticipantDoubleEliminationWhereUniqueInput | ParticipantDoubleEliminationWhereUniqueInput[]
+  }
+
+  export type MatchUncheckedCreateNestedManyWithoutDoubleEliminationInput = {
+    create?: XOR<MatchCreateWithoutDoubleEliminationInput, MatchUncheckedCreateWithoutDoubleEliminationInput> | MatchCreateWithoutDoubleEliminationInput[] | MatchUncheckedCreateWithoutDoubleEliminationInput[]
+    connectOrCreate?: MatchCreateOrConnectWithoutDoubleEliminationInput | MatchCreateOrConnectWithoutDoubleEliminationInput[]
+    createMany?: MatchCreateManyDoubleEliminationInputEnvelope
+    connect?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+  }
+
+  export type TournamentPhaseUpdateOneRequiredWithoutDoubleEliminationNestedInput = {
+    create?: XOR<TournamentPhaseCreateWithoutDoubleEliminationInput, TournamentPhaseUncheckedCreateWithoutDoubleEliminationInput>
+    connectOrCreate?: TournamentPhaseCreateOrConnectWithoutDoubleEliminationInput
+    upsert?: TournamentPhaseUpsertWithoutDoubleEliminationInput
+    connect?: TournamentPhaseWhereUniqueInput
+    update?: XOR<XOR<TournamentPhaseUpdateToOneWithWhereWithoutDoubleEliminationInput, TournamentPhaseUpdateWithoutDoubleEliminationInput>, TournamentPhaseUncheckedUpdateWithoutDoubleEliminationInput>
+  }
+
+  export type ParticipantDoubleEliminationUpdateManyWithoutEliminationNestedInput = {
+    create?: XOR<ParticipantDoubleEliminationCreateWithoutEliminationInput, ParticipantDoubleEliminationUncheckedCreateWithoutEliminationInput> | ParticipantDoubleEliminationCreateWithoutEliminationInput[] | ParticipantDoubleEliminationUncheckedCreateWithoutEliminationInput[]
+    connectOrCreate?: ParticipantDoubleEliminationCreateOrConnectWithoutEliminationInput | ParticipantDoubleEliminationCreateOrConnectWithoutEliminationInput[]
+    upsert?: ParticipantDoubleEliminationUpsertWithWhereUniqueWithoutEliminationInput | ParticipantDoubleEliminationUpsertWithWhereUniqueWithoutEliminationInput[]
+    createMany?: ParticipantDoubleEliminationCreateManyEliminationInputEnvelope
+    set?: ParticipantDoubleEliminationWhereUniqueInput | ParticipantDoubleEliminationWhereUniqueInput[]
+    disconnect?: ParticipantDoubleEliminationWhereUniqueInput | ParticipantDoubleEliminationWhereUniqueInput[]
+    delete?: ParticipantDoubleEliminationWhereUniqueInput | ParticipantDoubleEliminationWhereUniqueInput[]
+    connect?: ParticipantDoubleEliminationWhereUniqueInput | ParticipantDoubleEliminationWhereUniqueInput[]
+    update?: ParticipantDoubleEliminationUpdateWithWhereUniqueWithoutEliminationInput | ParticipantDoubleEliminationUpdateWithWhereUniqueWithoutEliminationInput[]
+    updateMany?: ParticipantDoubleEliminationUpdateManyWithWhereWithoutEliminationInput | ParticipantDoubleEliminationUpdateManyWithWhereWithoutEliminationInput[]
+    deleteMany?: ParticipantDoubleEliminationScalarWhereInput | ParticipantDoubleEliminationScalarWhereInput[]
+  }
+
+  export type MatchUpdateManyWithoutDoubleEliminationNestedInput = {
+    create?: XOR<MatchCreateWithoutDoubleEliminationInput, MatchUncheckedCreateWithoutDoubleEliminationInput> | MatchCreateWithoutDoubleEliminationInput[] | MatchUncheckedCreateWithoutDoubleEliminationInput[]
+    connectOrCreate?: MatchCreateOrConnectWithoutDoubleEliminationInput | MatchCreateOrConnectWithoutDoubleEliminationInput[]
+    upsert?: MatchUpsertWithWhereUniqueWithoutDoubleEliminationInput | MatchUpsertWithWhereUniqueWithoutDoubleEliminationInput[]
+    createMany?: MatchCreateManyDoubleEliminationInputEnvelope
+    set?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+    disconnect?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+    delete?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+    connect?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+    update?: MatchUpdateWithWhereUniqueWithoutDoubleEliminationInput | MatchUpdateWithWhereUniqueWithoutDoubleEliminationInput[]
+    updateMany?: MatchUpdateManyWithWhereWithoutDoubleEliminationInput | MatchUpdateManyWithWhereWithoutDoubleEliminationInput[]
+    deleteMany?: MatchScalarWhereInput | MatchScalarWhereInput[]
+  }
+
+  export type ParticipantDoubleEliminationUncheckedUpdateManyWithoutEliminationNestedInput = {
+    create?: XOR<ParticipantDoubleEliminationCreateWithoutEliminationInput, ParticipantDoubleEliminationUncheckedCreateWithoutEliminationInput> | ParticipantDoubleEliminationCreateWithoutEliminationInput[] | ParticipantDoubleEliminationUncheckedCreateWithoutEliminationInput[]
+    connectOrCreate?: ParticipantDoubleEliminationCreateOrConnectWithoutEliminationInput | ParticipantDoubleEliminationCreateOrConnectWithoutEliminationInput[]
+    upsert?: ParticipantDoubleEliminationUpsertWithWhereUniqueWithoutEliminationInput | ParticipantDoubleEliminationUpsertWithWhereUniqueWithoutEliminationInput[]
+    createMany?: ParticipantDoubleEliminationCreateManyEliminationInputEnvelope
+    set?: ParticipantDoubleEliminationWhereUniqueInput | ParticipantDoubleEliminationWhereUniqueInput[]
+    disconnect?: ParticipantDoubleEliminationWhereUniqueInput | ParticipantDoubleEliminationWhereUniqueInput[]
+    delete?: ParticipantDoubleEliminationWhereUniqueInput | ParticipantDoubleEliminationWhereUniqueInput[]
+    connect?: ParticipantDoubleEliminationWhereUniqueInput | ParticipantDoubleEliminationWhereUniqueInput[]
+    update?: ParticipantDoubleEliminationUpdateWithWhereUniqueWithoutEliminationInput | ParticipantDoubleEliminationUpdateWithWhereUniqueWithoutEliminationInput[]
+    updateMany?: ParticipantDoubleEliminationUpdateManyWithWhereWithoutEliminationInput | ParticipantDoubleEliminationUpdateManyWithWhereWithoutEliminationInput[]
+    deleteMany?: ParticipantDoubleEliminationScalarWhereInput | ParticipantDoubleEliminationScalarWhereInput[]
+  }
+
+  export type MatchUncheckedUpdateManyWithoutDoubleEliminationNestedInput = {
+    create?: XOR<MatchCreateWithoutDoubleEliminationInput, MatchUncheckedCreateWithoutDoubleEliminationInput> | MatchCreateWithoutDoubleEliminationInput[] | MatchUncheckedCreateWithoutDoubleEliminationInput[]
+    connectOrCreate?: MatchCreateOrConnectWithoutDoubleEliminationInput | MatchCreateOrConnectWithoutDoubleEliminationInput[]
+    upsert?: MatchUpsertWithWhereUniqueWithoutDoubleEliminationInput | MatchUpsertWithWhereUniqueWithoutDoubleEliminationInput[]
+    createMany?: MatchCreateManyDoubleEliminationInputEnvelope
+    set?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+    disconnect?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+    delete?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+    connect?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+    update?: MatchUpdateWithWhereUniqueWithoutDoubleEliminationInput | MatchUpdateWithWhereUniqueWithoutDoubleEliminationInput[]
+    updateMany?: MatchUpdateManyWithWhereWithoutDoubleEliminationInput | MatchUpdateManyWithWhereWithoutDoubleEliminationInput[]
+    deleteMany?: MatchScalarWhereInput | MatchScalarWhereInput[]
+  }
+
   export type TournamentPhaseCreateNestedOneWithoutGroupsInput = {
     create?: XOR<TournamentPhaseCreateWithoutGroupsInput, TournamentPhaseUncheckedCreateWithoutGroupsInput>
     connectOrCreate?: TournamentPhaseCreateOrConnectWithoutGroupsInput
@@ -16320,10 +19470,66 @@ export namespace Prisma {
     deleteMany?: MatchScalarWhereInput | MatchScalarWhereInput[]
   }
 
-  export type EliminationCreateNestedOneWithoutTournamentPhaseInput = {
-    create?: XOR<EliminationCreateWithoutTournamentPhaseInput, EliminationUncheckedCreateWithoutTournamentPhaseInput>
-    connectOrCreate?: EliminationCreateOrConnectWithoutTournamentPhaseInput
-    connect?: EliminationWhereUniqueInput
+  export type TournamentPhaseCreateNestedOneWithoutKnockoutInput = {
+    create?: XOR<TournamentPhaseCreateWithoutKnockoutInput, TournamentPhaseUncheckedCreateWithoutKnockoutInput>
+    connectOrCreate?: TournamentPhaseCreateOrConnectWithoutKnockoutInput
+    connect?: TournamentPhaseWhereUniqueInput
+  }
+
+  export type MatchCreateNestedManyWithoutKnockoutInput = {
+    create?: XOR<MatchCreateWithoutKnockoutInput, MatchUncheckedCreateWithoutKnockoutInput> | MatchCreateWithoutKnockoutInput[] | MatchUncheckedCreateWithoutKnockoutInput[]
+    connectOrCreate?: MatchCreateOrConnectWithoutKnockoutInput | MatchCreateOrConnectWithoutKnockoutInput[]
+    createMany?: MatchCreateManyKnockoutInputEnvelope
+    connect?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+  }
+
+  export type MatchUncheckedCreateNestedManyWithoutKnockoutInput = {
+    create?: XOR<MatchCreateWithoutKnockoutInput, MatchUncheckedCreateWithoutKnockoutInput> | MatchCreateWithoutKnockoutInput[] | MatchUncheckedCreateWithoutKnockoutInput[]
+    connectOrCreate?: MatchCreateOrConnectWithoutKnockoutInput | MatchCreateOrConnectWithoutKnockoutInput[]
+    createMany?: MatchCreateManyKnockoutInputEnvelope
+    connect?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+  }
+
+  export type TournamentPhaseUpdateOneRequiredWithoutKnockoutNestedInput = {
+    create?: XOR<TournamentPhaseCreateWithoutKnockoutInput, TournamentPhaseUncheckedCreateWithoutKnockoutInput>
+    connectOrCreate?: TournamentPhaseCreateOrConnectWithoutKnockoutInput
+    upsert?: TournamentPhaseUpsertWithoutKnockoutInput
+    connect?: TournamentPhaseWhereUniqueInput
+    update?: XOR<XOR<TournamentPhaseUpdateToOneWithWhereWithoutKnockoutInput, TournamentPhaseUpdateWithoutKnockoutInput>, TournamentPhaseUncheckedUpdateWithoutKnockoutInput>
+  }
+
+  export type MatchUpdateManyWithoutKnockoutNestedInput = {
+    create?: XOR<MatchCreateWithoutKnockoutInput, MatchUncheckedCreateWithoutKnockoutInput> | MatchCreateWithoutKnockoutInput[] | MatchUncheckedCreateWithoutKnockoutInput[]
+    connectOrCreate?: MatchCreateOrConnectWithoutKnockoutInput | MatchCreateOrConnectWithoutKnockoutInput[]
+    upsert?: MatchUpsertWithWhereUniqueWithoutKnockoutInput | MatchUpsertWithWhereUniqueWithoutKnockoutInput[]
+    createMany?: MatchCreateManyKnockoutInputEnvelope
+    set?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+    disconnect?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+    delete?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+    connect?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+    update?: MatchUpdateWithWhereUniqueWithoutKnockoutInput | MatchUpdateWithWhereUniqueWithoutKnockoutInput[]
+    updateMany?: MatchUpdateManyWithWhereWithoutKnockoutInput | MatchUpdateManyWithWhereWithoutKnockoutInput[]
+    deleteMany?: MatchScalarWhereInput | MatchScalarWhereInput[]
+  }
+
+  export type MatchUncheckedUpdateManyWithoutKnockoutNestedInput = {
+    create?: XOR<MatchCreateWithoutKnockoutInput, MatchUncheckedCreateWithoutKnockoutInput> | MatchCreateWithoutKnockoutInput[] | MatchUncheckedCreateWithoutKnockoutInput[]
+    connectOrCreate?: MatchCreateOrConnectWithoutKnockoutInput | MatchCreateOrConnectWithoutKnockoutInput[]
+    upsert?: MatchUpsertWithWhereUniqueWithoutKnockoutInput | MatchUpsertWithWhereUniqueWithoutKnockoutInput[]
+    createMany?: MatchCreateManyKnockoutInputEnvelope
+    set?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+    disconnect?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+    delete?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+    connect?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+    update?: MatchUpdateWithWhereUniqueWithoutKnockoutInput | MatchUpdateWithWhereUniqueWithoutKnockoutInput[]
+    updateMany?: MatchUpdateManyWithWhereWithoutKnockoutInput | MatchUpdateManyWithWhereWithoutKnockoutInput[]
+    deleteMany?: MatchScalarWhereInput | MatchScalarWhereInput[]
+  }
+
+  export type TournamentKnockoutCreateNestedOneWithoutTournamentPhaseInput = {
+    create?: XOR<TournamentKnockoutCreateWithoutTournamentPhaseInput, TournamentKnockoutUncheckedCreateWithoutTournamentPhaseInput>
+    connectOrCreate?: TournamentKnockoutCreateOrConnectWithoutTournamentPhaseInput
+    connect?: TournamentKnockoutWhereUniqueInput
   }
 
   export type TournamentGroupCreateNestedManyWithoutTournamentPhaseInput = {
@@ -16331,6 +19537,12 @@ export namespace Prisma {
     connectOrCreate?: TournamentGroupCreateOrConnectWithoutTournamentPhaseInput | TournamentGroupCreateOrConnectWithoutTournamentPhaseInput[]
     createMany?: TournamentGroupCreateManyTournamentPhaseInputEnvelope
     connect?: TournamentGroupWhereUniqueInput | TournamentGroupWhereUniqueInput[]
+  }
+
+  export type TournamentDoubleEliminationCreateNestedOneWithoutTournamentPhaseInput = {
+    create?: XOR<TournamentDoubleEliminationCreateWithoutTournamentPhaseInput, TournamentDoubleEliminationUncheckedCreateWithoutTournamentPhaseInput>
+    connectOrCreate?: TournamentDoubleEliminationCreateOrConnectWithoutTournamentPhaseInput
+    connect?: TournamentDoubleEliminationWhereUniqueInput
   }
 
   export type MatchCreateNestedManyWithoutTournamentPhaseInput = {
@@ -16346,10 +19558,10 @@ export namespace Prisma {
     connect?: TournamentWhereUniqueInput
   }
 
-  export type EliminationUncheckedCreateNestedOneWithoutTournamentPhaseInput = {
-    create?: XOR<EliminationCreateWithoutTournamentPhaseInput, EliminationUncheckedCreateWithoutTournamentPhaseInput>
-    connectOrCreate?: EliminationCreateOrConnectWithoutTournamentPhaseInput
-    connect?: EliminationWhereUniqueInput
+  export type TournamentKnockoutUncheckedCreateNestedOneWithoutTournamentPhaseInput = {
+    create?: XOR<TournamentKnockoutCreateWithoutTournamentPhaseInput, TournamentKnockoutUncheckedCreateWithoutTournamentPhaseInput>
+    connectOrCreate?: TournamentKnockoutCreateOrConnectWithoutTournamentPhaseInput
+    connect?: TournamentKnockoutWhereUniqueInput
   }
 
   export type TournamentGroupUncheckedCreateNestedManyWithoutTournamentPhaseInput = {
@@ -16357,6 +19569,12 @@ export namespace Prisma {
     connectOrCreate?: TournamentGroupCreateOrConnectWithoutTournamentPhaseInput | TournamentGroupCreateOrConnectWithoutTournamentPhaseInput[]
     createMany?: TournamentGroupCreateManyTournamentPhaseInputEnvelope
     connect?: TournamentGroupWhereUniqueInput | TournamentGroupWhereUniqueInput[]
+  }
+
+  export type TournamentDoubleEliminationUncheckedCreateNestedOneWithoutTournamentPhaseInput = {
+    create?: XOR<TournamentDoubleEliminationCreateWithoutTournamentPhaseInput, TournamentDoubleEliminationUncheckedCreateWithoutTournamentPhaseInput>
+    connectOrCreate?: TournamentDoubleEliminationCreateOrConnectWithoutTournamentPhaseInput
+    connect?: TournamentDoubleEliminationWhereUniqueInput
   }
 
   export type MatchUncheckedCreateNestedManyWithoutTournamentPhaseInput = {
@@ -16370,14 +19588,14 @@ export namespace Prisma {
     set?: $Enums.PhaseType
   }
 
-  export type EliminationUpdateOneWithoutTournamentPhaseNestedInput = {
-    create?: XOR<EliminationCreateWithoutTournamentPhaseInput, EliminationUncheckedCreateWithoutTournamentPhaseInput>
-    connectOrCreate?: EliminationCreateOrConnectWithoutTournamentPhaseInput
-    upsert?: EliminationUpsertWithoutTournamentPhaseInput
-    disconnect?: EliminationWhereInput | boolean
-    delete?: EliminationWhereInput | boolean
-    connect?: EliminationWhereUniqueInput
-    update?: XOR<XOR<EliminationUpdateToOneWithWhereWithoutTournamentPhaseInput, EliminationUpdateWithoutTournamentPhaseInput>, EliminationUncheckedUpdateWithoutTournamentPhaseInput>
+  export type TournamentKnockoutUpdateOneWithoutTournamentPhaseNestedInput = {
+    create?: XOR<TournamentKnockoutCreateWithoutTournamentPhaseInput, TournamentKnockoutUncheckedCreateWithoutTournamentPhaseInput>
+    connectOrCreate?: TournamentKnockoutCreateOrConnectWithoutTournamentPhaseInput
+    upsert?: TournamentKnockoutUpsertWithoutTournamentPhaseInput
+    disconnect?: TournamentKnockoutWhereInput | boolean
+    delete?: TournamentKnockoutWhereInput | boolean
+    connect?: TournamentKnockoutWhereUniqueInput
+    update?: XOR<XOR<TournamentKnockoutUpdateToOneWithWhereWithoutTournamentPhaseInput, TournamentKnockoutUpdateWithoutTournamentPhaseInput>, TournamentKnockoutUncheckedUpdateWithoutTournamentPhaseInput>
   }
 
   export type TournamentGroupUpdateManyWithoutTournamentPhaseNestedInput = {
@@ -16392,6 +19610,16 @@ export namespace Prisma {
     update?: TournamentGroupUpdateWithWhereUniqueWithoutTournamentPhaseInput | TournamentGroupUpdateWithWhereUniqueWithoutTournamentPhaseInput[]
     updateMany?: TournamentGroupUpdateManyWithWhereWithoutTournamentPhaseInput | TournamentGroupUpdateManyWithWhereWithoutTournamentPhaseInput[]
     deleteMany?: TournamentGroupScalarWhereInput | TournamentGroupScalarWhereInput[]
+  }
+
+  export type TournamentDoubleEliminationUpdateOneWithoutTournamentPhaseNestedInput = {
+    create?: XOR<TournamentDoubleEliminationCreateWithoutTournamentPhaseInput, TournamentDoubleEliminationUncheckedCreateWithoutTournamentPhaseInput>
+    connectOrCreate?: TournamentDoubleEliminationCreateOrConnectWithoutTournamentPhaseInput
+    upsert?: TournamentDoubleEliminationUpsertWithoutTournamentPhaseInput
+    disconnect?: TournamentDoubleEliminationWhereInput | boolean
+    delete?: TournamentDoubleEliminationWhereInput | boolean
+    connect?: TournamentDoubleEliminationWhereUniqueInput
+    update?: XOR<XOR<TournamentDoubleEliminationUpdateToOneWithWhereWithoutTournamentPhaseInput, TournamentDoubleEliminationUpdateWithoutTournamentPhaseInput>, TournamentDoubleEliminationUncheckedUpdateWithoutTournamentPhaseInput>
   }
 
   export type MatchUpdateManyWithoutTournamentPhaseNestedInput = {
@@ -16416,14 +19644,14 @@ export namespace Prisma {
     update?: XOR<XOR<TournamentUpdateToOneWithWhereWithoutPhasesInput, TournamentUpdateWithoutPhasesInput>, TournamentUncheckedUpdateWithoutPhasesInput>
   }
 
-  export type EliminationUncheckedUpdateOneWithoutTournamentPhaseNestedInput = {
-    create?: XOR<EliminationCreateWithoutTournamentPhaseInput, EliminationUncheckedCreateWithoutTournamentPhaseInput>
-    connectOrCreate?: EliminationCreateOrConnectWithoutTournamentPhaseInput
-    upsert?: EliminationUpsertWithoutTournamentPhaseInput
-    disconnect?: EliminationWhereInput | boolean
-    delete?: EliminationWhereInput | boolean
-    connect?: EliminationWhereUniqueInput
-    update?: XOR<XOR<EliminationUpdateToOneWithWhereWithoutTournamentPhaseInput, EliminationUpdateWithoutTournamentPhaseInput>, EliminationUncheckedUpdateWithoutTournamentPhaseInput>
+  export type TournamentKnockoutUncheckedUpdateOneWithoutTournamentPhaseNestedInput = {
+    create?: XOR<TournamentKnockoutCreateWithoutTournamentPhaseInput, TournamentKnockoutUncheckedCreateWithoutTournamentPhaseInput>
+    connectOrCreate?: TournamentKnockoutCreateOrConnectWithoutTournamentPhaseInput
+    upsert?: TournamentKnockoutUpsertWithoutTournamentPhaseInput
+    disconnect?: TournamentKnockoutWhereInput | boolean
+    delete?: TournamentKnockoutWhereInput | boolean
+    connect?: TournamentKnockoutWhereUniqueInput
+    update?: XOR<XOR<TournamentKnockoutUpdateToOneWithWhereWithoutTournamentPhaseInput, TournamentKnockoutUpdateWithoutTournamentPhaseInput>, TournamentKnockoutUncheckedUpdateWithoutTournamentPhaseInput>
   }
 
   export type TournamentGroupUncheckedUpdateManyWithoutTournamentPhaseNestedInput = {
@@ -16438,6 +19666,16 @@ export namespace Prisma {
     update?: TournamentGroupUpdateWithWhereUniqueWithoutTournamentPhaseInput | TournamentGroupUpdateWithWhereUniqueWithoutTournamentPhaseInput[]
     updateMany?: TournamentGroupUpdateManyWithWhereWithoutTournamentPhaseInput | TournamentGroupUpdateManyWithWhereWithoutTournamentPhaseInput[]
     deleteMany?: TournamentGroupScalarWhereInput | TournamentGroupScalarWhereInput[]
+  }
+
+  export type TournamentDoubleEliminationUncheckedUpdateOneWithoutTournamentPhaseNestedInput = {
+    create?: XOR<TournamentDoubleEliminationCreateWithoutTournamentPhaseInput, TournamentDoubleEliminationUncheckedCreateWithoutTournamentPhaseInput>
+    connectOrCreate?: TournamentDoubleEliminationCreateOrConnectWithoutTournamentPhaseInput
+    upsert?: TournamentDoubleEliminationUpsertWithoutTournamentPhaseInput
+    disconnect?: TournamentDoubleEliminationWhereInput | boolean
+    delete?: TournamentDoubleEliminationWhereInput | boolean
+    connect?: TournamentDoubleEliminationWhereUniqueInput
+    update?: XOR<XOR<TournamentDoubleEliminationUpdateToOneWithWhereWithoutTournamentPhaseInput, TournamentDoubleEliminationUpdateWithoutTournamentPhaseInput>, TournamentDoubleEliminationUncheckedUpdateWithoutTournamentPhaseInput>
   }
 
   export type MatchUncheckedUpdateManyWithoutTournamentPhaseNestedInput = {
@@ -16493,16 +19731,27 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
-  export type NestedEnumEliminationTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.EliminationType | EnumEliminationTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.EliminationType[] | ListEnumEliminationTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.EliminationType[] | ListEnumEliminationTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumEliminationTypeFilter<$PrismaModel> | $Enums.EliminationType
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedBoolFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedEnumMatchTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.MatchType | EnumMatchTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.MatchType[] | ListEnumMatchTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MatchType[] | ListEnumMatchTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumMatchTypeFilter<$PrismaModel> | $Enums.MatchType
   }
 
   export type NestedDateTimeFilter<$PrismaModel = never> = {
@@ -16543,56 +19792,6 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
-  export type NestedEnumEliminationTypeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.EliminationType | EnumEliminationTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.EliminationType[] | ListEnumEliminationTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.EliminationType[] | ListEnumEliminationTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumEliminationTypeWithAggregatesFilter<$PrismaModel> | $Enums.EliminationType
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumEliminationTypeFilter<$PrismaModel>
-    _max?: NestedEnumEliminationTypeFilter<$PrismaModel>
-  }
-
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
-  }
-
-  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
-  }
-
-  export type NestedIntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type NestedEnumMatchTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.MatchType | EnumMatchTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.MatchType[] | ListEnumMatchTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.MatchType[] | ListEnumMatchTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumMatchTypeFilter<$PrismaModel> | $Enums.MatchType
-  }
-
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -16620,6 +19819,14 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type NestedEnumMatchTypeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.MatchType | EnumMatchTypeFieldRefInput<$PrismaModel>
     in?: $Enums.MatchType[] | ListEnumMatchTypeFieldRefInput<$PrismaModel>
@@ -16628,6 +19835,20 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumMatchTypeFilter<$PrismaModel>
     _max?: NestedEnumMatchTypeFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -16678,6 +19899,23 @@ export namespace Prisma {
     _max?: NestedEnumParticipantTypeFilter<$PrismaModel>
   }
 
+  export type NestedEnumDoubleEliminationBracketFilter<$PrismaModel = never> = {
+    equals?: $Enums.DoubleEliminationBracket | EnumDoubleEliminationBracketFieldRefInput<$PrismaModel>
+    in?: $Enums.DoubleEliminationBracket[] | ListEnumDoubleEliminationBracketFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DoubleEliminationBracket[] | ListEnumDoubleEliminationBracketFieldRefInput<$PrismaModel>
+    not?: NestedEnumDoubleEliminationBracketFilter<$PrismaModel> | $Enums.DoubleEliminationBracket
+  }
+
+  export type NestedEnumDoubleEliminationBracketWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DoubleEliminationBracket | EnumDoubleEliminationBracketFieldRefInput<$PrismaModel>
+    in?: $Enums.DoubleEliminationBracket[] | ListEnumDoubleEliminationBracketFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DoubleEliminationBracket[] | ListEnumDoubleEliminationBracketFieldRefInput<$PrismaModel>
+    not?: NestedEnumDoubleEliminationBracketWithAggregatesFilter<$PrismaModel> | $Enums.DoubleEliminationBracket
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDoubleEliminationBracketFilter<$PrismaModel>
+    _max?: NestedEnumDoubleEliminationBracketFilter<$PrismaModel>
+  }
+
   export type NestedEnumTournamentStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.TournamentStatus | EnumTournamentStatusFieldRefInput<$PrismaModel>
     in?: $Enums.TournamentStatus[] | ListEnumTournamentStatusFieldRefInput<$PrismaModel>
@@ -16712,160 +19950,13 @@ export namespace Prisma {
     _max?: NestedEnumPhaseTypeFilter<$PrismaModel>
   }
 
-  export type TournamentPhaseCreateWithoutEliminationInput = {
-    phaseType: $Enums.PhaseType
-    order: number
-    isCompleted?: boolean
-    groups?: TournamentGroupCreateNestedManyWithoutTournamentPhaseInput
-    matches?: MatchCreateNestedManyWithoutTournamentPhaseInput
-    tournament: TournamentCreateNestedOneWithoutPhasesInput
-  }
-
-  export type TournamentPhaseUncheckedCreateWithoutEliminationInput = {
-    id?: number
-    tournamentId: number
-    phaseType: $Enums.PhaseType
-    order: number
-    isCompleted?: boolean
-    groups?: TournamentGroupUncheckedCreateNestedManyWithoutTournamentPhaseInput
-    matches?: MatchUncheckedCreateNestedManyWithoutTournamentPhaseInput
-  }
-
-  export type TournamentPhaseCreateOrConnectWithoutEliminationInput = {
-    where: TournamentPhaseWhereUniqueInput
-    create: XOR<TournamentPhaseCreateWithoutEliminationInput, TournamentPhaseUncheckedCreateWithoutEliminationInput>
-  }
-
-  export type MatchCreateWithoutEliminationInput = {
-    round?: number | null
-    serialNumber?: number | null
-    winnerElo?: number | null
-    loserElo?: number | null
-    eloWon?: number | null
-    eloLost?: number | null
-    isOver?: boolean
-    matchType: $Enums.MatchType
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    tournamentPhase: TournamentPhaseCreateNestedOneWithoutMatchesInput
-    group?: TournamentGroupCreateNestedOneWithoutMatchesInput
-    participant1?: ParticipantCreateNestedOneWithoutMatchesAsP1Input
-    participant2?: ParticipantCreateNestedOneWithoutMatchesAsP2Input
-    winner?: ParticipantCreateNestedOneWithoutMatchesWonInput
-    loser?: ParticipantCreateNestedOneWithoutMatchesLostInput
-    nextMatch?: MatchCreateNestedOneWithoutPrevMatchesInput
-    prevMatches?: MatchCreateNestedManyWithoutNextMatchInput
-  }
-
-  export type MatchUncheckedCreateWithoutEliminationInput = {
-    id?: number
-    tournamentPhaseId: number
-    tournamentGroupId?: number | null
-    participant1Id?: number | null
-    participant2Id?: number | null
-    winnerId?: number | null
-    loserId?: number | null
-    nextMatchId?: number | null
-    round?: number | null
-    serialNumber?: number | null
-    winnerElo?: number | null
-    loserElo?: number | null
-    eloWon?: number | null
-    eloLost?: number | null
-    isOver?: boolean
-    matchType: $Enums.MatchType
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    prevMatches?: MatchUncheckedCreateNestedManyWithoutNextMatchInput
-  }
-
-  export type MatchCreateOrConnectWithoutEliminationInput = {
-    where: MatchWhereUniqueInput
-    create: XOR<MatchCreateWithoutEliminationInput, MatchUncheckedCreateWithoutEliminationInput>
-  }
-
-  export type MatchCreateManyEliminationInputEnvelope = {
-    data: MatchCreateManyEliminationInput | MatchCreateManyEliminationInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type TournamentPhaseUpsertWithoutEliminationInput = {
-    update: XOR<TournamentPhaseUpdateWithoutEliminationInput, TournamentPhaseUncheckedUpdateWithoutEliminationInput>
-    create: XOR<TournamentPhaseCreateWithoutEliminationInput, TournamentPhaseUncheckedCreateWithoutEliminationInput>
-    where?: TournamentPhaseWhereInput
-  }
-
-  export type TournamentPhaseUpdateToOneWithWhereWithoutEliminationInput = {
-    where?: TournamentPhaseWhereInput
-    data: XOR<TournamentPhaseUpdateWithoutEliminationInput, TournamentPhaseUncheckedUpdateWithoutEliminationInput>
-  }
-
-  export type TournamentPhaseUpdateWithoutEliminationInput = {
-    phaseType?: EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
-    order?: IntFieldUpdateOperationsInput | number
-    isCompleted?: BoolFieldUpdateOperationsInput | boolean
-    groups?: TournamentGroupUpdateManyWithoutTournamentPhaseNestedInput
-    matches?: MatchUpdateManyWithoutTournamentPhaseNestedInput
-    tournament?: TournamentUpdateOneRequiredWithoutPhasesNestedInput
-  }
-
-  export type TournamentPhaseUncheckedUpdateWithoutEliminationInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    tournamentId?: IntFieldUpdateOperationsInput | number
-    phaseType?: EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
-    order?: IntFieldUpdateOperationsInput | number
-    isCompleted?: BoolFieldUpdateOperationsInput | boolean
-    groups?: TournamentGroupUncheckedUpdateManyWithoutTournamentPhaseNestedInput
-    matches?: MatchUncheckedUpdateManyWithoutTournamentPhaseNestedInput
-  }
-
-  export type MatchUpsertWithWhereUniqueWithoutEliminationInput = {
-    where: MatchWhereUniqueInput
-    update: XOR<MatchUpdateWithoutEliminationInput, MatchUncheckedUpdateWithoutEliminationInput>
-    create: XOR<MatchCreateWithoutEliminationInput, MatchUncheckedCreateWithoutEliminationInput>
-  }
-
-  export type MatchUpdateWithWhereUniqueWithoutEliminationInput = {
-    where: MatchWhereUniqueInput
-    data: XOR<MatchUpdateWithoutEliminationInput, MatchUncheckedUpdateWithoutEliminationInput>
-  }
-
-  export type MatchUpdateManyWithWhereWithoutEliminationInput = {
-    where: MatchScalarWhereInput
-    data: XOR<MatchUpdateManyMutationInput, MatchUncheckedUpdateManyWithoutEliminationInput>
-  }
-
-  export type MatchScalarWhereInput = {
-    AND?: MatchScalarWhereInput | MatchScalarWhereInput[]
-    OR?: MatchScalarWhereInput[]
-    NOT?: MatchScalarWhereInput | MatchScalarWhereInput[]
-    id?: IntFilter<"Match"> | number
-    tournamentPhaseId?: IntFilter<"Match"> | number
-    eliminationId?: IntNullableFilter<"Match"> | number | null
-    tournamentGroupId?: IntNullableFilter<"Match"> | number | null
-    participant1Id?: IntNullableFilter<"Match"> | number | null
-    participant2Id?: IntNullableFilter<"Match"> | number | null
-    winnerId?: IntNullableFilter<"Match"> | number | null
-    loserId?: IntNullableFilter<"Match"> | number | null
-    nextMatchId?: IntNullableFilter<"Match"> | number | null
-    round?: IntNullableFilter<"Match"> | number | null
-    serialNumber?: IntNullableFilter<"Match"> | number | null
-    winnerElo?: IntNullableFilter<"Match"> | number | null
-    loserElo?: IntNullableFilter<"Match"> | number | null
-    eloWon?: IntNullableFilter<"Match"> | number | null
-    eloLost?: IntNullableFilter<"Match"> | number | null
-    isOver?: BoolFilter<"Match"> | boolean
-    matchType?: EnumMatchTypeFilter<"Match"> | $Enums.MatchType
-    createdAt?: DateTimeFilter<"Match"> | Date | string
-    updatedAt?: DateTimeFilter<"Match"> | Date | string
-  }
-
   export type TournamentPhaseCreateWithoutMatchesInput = {
     phaseType: $Enums.PhaseType
     order: number
     isCompleted?: boolean
-    elimination?: EliminationCreateNestedOneWithoutTournamentPhaseInput
+    knockout?: TournamentKnockoutCreateNestedOneWithoutTournamentPhaseInput
     groups?: TournamentGroupCreateNestedManyWithoutTournamentPhaseInput
+    doubleElimination?: TournamentDoubleEliminationCreateNestedOneWithoutTournamentPhaseInput
     tournament: TournamentCreateNestedOneWithoutPhasesInput
   }
 
@@ -16875,8 +19966,9 @@ export namespace Prisma {
     phaseType: $Enums.PhaseType
     order: number
     isCompleted?: boolean
-    elimination?: EliminationUncheckedCreateNestedOneWithoutTournamentPhaseInput
+    knockout?: TournamentKnockoutUncheckedCreateNestedOneWithoutTournamentPhaseInput
     groups?: TournamentGroupUncheckedCreateNestedManyWithoutTournamentPhaseInput
+    doubleElimination?: TournamentDoubleEliminationUncheckedCreateNestedOneWithoutTournamentPhaseInput
   }
 
   export type TournamentPhaseCreateOrConnectWithoutMatchesInput = {
@@ -16884,34 +19976,31 @@ export namespace Prisma {
     create: XOR<TournamentPhaseCreateWithoutMatchesInput, TournamentPhaseUncheckedCreateWithoutMatchesInput>
   }
 
-  export type EliminationCreateWithoutMatchesInput = {
-    type?: $Enums.EliminationType
+  export type TournamentKnockoutCreateWithoutMatchesInput = {
     currentRound?: number
     isOver?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    tournamentPhase: TournamentPhaseCreateNestedOneWithoutEliminationInput
+    tournamentPhase: TournamentPhaseCreateNestedOneWithoutKnockoutInput
   }
 
-  export type EliminationUncheckedCreateWithoutMatchesInput = {
+  export type TournamentKnockoutUncheckedCreateWithoutMatchesInput = {
     id?: number
     tournamentPhaseId: number
-    type?: $Enums.EliminationType
     currentRound?: number
     isOver?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type EliminationCreateOrConnectWithoutMatchesInput = {
-    where: EliminationWhereUniqueInput
-    create: XOR<EliminationCreateWithoutMatchesInput, EliminationUncheckedCreateWithoutMatchesInput>
+  export type TournamentKnockoutCreateOrConnectWithoutMatchesInput = {
+    where: TournamentKnockoutWhereUniqueInput
+    create: XOR<TournamentKnockoutCreateWithoutMatchesInput, TournamentKnockoutUncheckedCreateWithoutMatchesInput>
   }
 
   export type TournamentGroupCreateWithoutMatchesInput = {
     name: string
     groupNumber: number
-    isGroupMatchesEnded?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     tournamentPhase: TournamentPhaseCreateNestedOneWithoutGroupsInput
@@ -16923,7 +20012,6 @@ export namespace Prisma {
     name: string
     tournamentPhaseId: number
     groupNumber: number
-    isGroupMatchesEnded?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     participantGroups?: ParticipantGroupUncheckedCreateNestedManyWithoutGroupInput
@@ -16932,6 +20020,30 @@ export namespace Prisma {
   export type TournamentGroupCreateOrConnectWithoutMatchesInput = {
     where: TournamentGroupWhereUniqueInput
     create: XOR<TournamentGroupCreateWithoutMatchesInput, TournamentGroupUncheckedCreateWithoutMatchesInput>
+  }
+
+  export type TournamentDoubleEliminationCreateWithoutMatchesInput = {
+    roundNumber?: number
+    isActive: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tournamentPhase: TournamentPhaseCreateNestedOneWithoutDoubleEliminationInput
+    participantDoubleEliminations?: ParticipantDoubleEliminationCreateNestedManyWithoutEliminationInput
+  }
+
+  export type TournamentDoubleEliminationUncheckedCreateWithoutMatchesInput = {
+    id?: number
+    tournamentPhaseId: number
+    roundNumber?: number
+    isActive: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    participantDoubleEliminations?: ParticipantDoubleEliminationUncheckedCreateNestedManyWithoutEliminationInput
+  }
+
+  export type TournamentDoubleEliminationCreateOrConnectWithoutMatchesInput = {
+    where: TournamentDoubleEliminationWhereUniqueInput
+    create: XOR<TournamentDoubleEliminationCreateWithoutMatchesInput, TournamentDoubleEliminationUncheckedCreateWithoutMatchesInput>
   }
 
   export type ParticipantCreateWithoutMatchesAsP1Input = {
@@ -16943,6 +20055,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     tournaments?: ParticipantTournamentCreateNestedManyWithoutParticipantInput
+    doubleEliminations?: ParticipantDoubleEliminationCreateNestedManyWithoutParticipantInput
     groups?: ParticipantGroupCreateNestedManyWithoutParticipantInput
     matchesAsP2?: MatchCreateNestedManyWithoutParticipant2Input
     matchesWon?: MatchCreateNestedManyWithoutWinnerInput
@@ -16960,6 +20073,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     tournaments?: ParticipantTournamentUncheckedCreateNestedManyWithoutParticipantInput
+    doubleEliminations?: ParticipantDoubleEliminationUncheckedCreateNestedManyWithoutParticipantInput
     groups?: ParticipantGroupUncheckedCreateNestedManyWithoutParticipantInput
     matchesAsP2?: MatchUncheckedCreateNestedManyWithoutParticipant2Input
     matchesWon?: MatchUncheckedCreateNestedManyWithoutWinnerInput
@@ -16981,6 +20095,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     tournaments?: ParticipantTournamentCreateNestedManyWithoutParticipantInput
+    doubleEliminations?: ParticipantDoubleEliminationCreateNestedManyWithoutParticipantInput
     groups?: ParticipantGroupCreateNestedManyWithoutParticipantInput
     matchesAsP1?: MatchCreateNestedManyWithoutParticipant1Input
     matchesWon?: MatchCreateNestedManyWithoutWinnerInput
@@ -16998,6 +20113,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     tournaments?: ParticipantTournamentUncheckedCreateNestedManyWithoutParticipantInput
+    doubleEliminations?: ParticipantDoubleEliminationUncheckedCreateNestedManyWithoutParticipantInput
     groups?: ParticipantGroupUncheckedCreateNestedManyWithoutParticipantInput
     matchesAsP1?: MatchUncheckedCreateNestedManyWithoutParticipant1Input
     matchesWon?: MatchUncheckedCreateNestedManyWithoutWinnerInput
@@ -17019,6 +20135,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     tournaments?: ParticipantTournamentCreateNestedManyWithoutParticipantInput
+    doubleEliminations?: ParticipantDoubleEliminationCreateNestedManyWithoutParticipantInput
     groups?: ParticipantGroupCreateNestedManyWithoutParticipantInput
     matchesAsP1?: MatchCreateNestedManyWithoutParticipant1Input
     matchesAsP2?: MatchCreateNestedManyWithoutParticipant2Input
@@ -17036,6 +20153,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     tournaments?: ParticipantTournamentUncheckedCreateNestedManyWithoutParticipantInput
+    doubleEliminations?: ParticipantDoubleEliminationUncheckedCreateNestedManyWithoutParticipantInput
     groups?: ParticipantGroupUncheckedCreateNestedManyWithoutParticipantInput
     matchesAsP1?: MatchUncheckedCreateNestedManyWithoutParticipant1Input
     matchesAsP2?: MatchUncheckedCreateNestedManyWithoutParticipant2Input
@@ -17057,6 +20175,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     tournaments?: ParticipantTournamentCreateNestedManyWithoutParticipantInput
+    doubleEliminations?: ParticipantDoubleEliminationCreateNestedManyWithoutParticipantInput
     groups?: ParticipantGroupCreateNestedManyWithoutParticipantInput
     matchesAsP1?: MatchCreateNestedManyWithoutParticipant1Input
     matchesAsP2?: MatchCreateNestedManyWithoutParticipant2Input
@@ -17074,6 +20193,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     tournaments?: ParticipantTournamentUncheckedCreateNestedManyWithoutParticipantInput
+    doubleEliminations?: ParticipantDoubleEliminationUncheckedCreateNestedManyWithoutParticipantInput
     groups?: ParticipantGroupUncheckedCreateNestedManyWithoutParticipantInput
     matchesAsP1?: MatchUncheckedCreateNestedManyWithoutParticipant1Input
     matchesAsP2?: MatchUncheckedCreateNestedManyWithoutParticipant2Input
@@ -17087,7 +20207,7 @@ export namespace Prisma {
   }
 
   export type MatchCreateWithoutPrevMatchesInput = {
-    round?: number | null
+    doubleEliminationRound?: number | null
     serialNumber?: number | null
     winnerElo?: number | null
     loserElo?: number | null
@@ -17098,8 +20218,9 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     tournamentPhase: TournamentPhaseCreateNestedOneWithoutMatchesInput
-    elimination?: EliminationCreateNestedOneWithoutMatchesInput
+    knockout?: TournamentKnockoutCreateNestedOneWithoutMatchesInput
     group?: TournamentGroupCreateNestedOneWithoutMatchesInput
+    doubleElimination?: TournamentDoubleEliminationCreateNestedOneWithoutMatchesInput
     participant1?: ParticipantCreateNestedOneWithoutMatchesAsP1Input
     participant2?: ParticipantCreateNestedOneWithoutMatchesAsP2Input
     winner?: ParticipantCreateNestedOneWithoutMatchesWonInput
@@ -17110,14 +20231,15 @@ export namespace Prisma {
   export type MatchUncheckedCreateWithoutPrevMatchesInput = {
     id?: number
     tournamentPhaseId: number
-    eliminationId?: number | null
+    knockoutId?: number | null
     tournamentGroupId?: number | null
+    tournamentDoubleEliminationId?: number | null
+    doubleEliminationRound?: number | null
     participant1Id?: number | null
     participant2Id?: number | null
     winnerId?: number | null
     loserId?: number | null
     nextMatchId?: number | null
-    round?: number | null
     serialNumber?: number | null
     winnerElo?: number | null
     loserElo?: number | null
@@ -17135,7 +20257,7 @@ export namespace Prisma {
   }
 
   export type MatchCreateWithoutNextMatchInput = {
-    round?: number | null
+    doubleEliminationRound?: number | null
     serialNumber?: number | null
     winnerElo?: number | null
     loserElo?: number | null
@@ -17146,8 +20268,9 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     tournamentPhase: TournamentPhaseCreateNestedOneWithoutMatchesInput
-    elimination?: EliminationCreateNestedOneWithoutMatchesInput
+    knockout?: TournamentKnockoutCreateNestedOneWithoutMatchesInput
     group?: TournamentGroupCreateNestedOneWithoutMatchesInput
+    doubleElimination?: TournamentDoubleEliminationCreateNestedOneWithoutMatchesInput
     participant1?: ParticipantCreateNestedOneWithoutMatchesAsP1Input
     participant2?: ParticipantCreateNestedOneWithoutMatchesAsP2Input
     winner?: ParticipantCreateNestedOneWithoutMatchesWonInput
@@ -17158,13 +20281,14 @@ export namespace Prisma {
   export type MatchUncheckedCreateWithoutNextMatchInput = {
     id?: number
     tournamentPhaseId: number
-    eliminationId?: number | null
+    knockoutId?: number | null
     tournamentGroupId?: number | null
+    tournamentDoubleEliminationId?: number | null
+    doubleEliminationRound?: number | null
     participant1Id?: number | null
     participant2Id?: number | null
     winnerId?: number | null
     loserId?: number | null
-    round?: number | null
     serialNumber?: number | null
     winnerElo?: number | null
     loserElo?: number | null
@@ -17202,8 +20326,9 @@ export namespace Prisma {
     phaseType?: EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
     order?: IntFieldUpdateOperationsInput | number
     isCompleted?: BoolFieldUpdateOperationsInput | boolean
-    elimination?: EliminationUpdateOneWithoutTournamentPhaseNestedInput
+    knockout?: TournamentKnockoutUpdateOneWithoutTournamentPhaseNestedInput
     groups?: TournamentGroupUpdateManyWithoutTournamentPhaseNestedInput
+    doubleElimination?: TournamentDoubleEliminationUpdateOneWithoutTournamentPhaseNestedInput
     tournament?: TournamentUpdateOneRequiredWithoutPhasesNestedInput
   }
 
@@ -17213,34 +20338,33 @@ export namespace Prisma {
     phaseType?: EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
     order?: IntFieldUpdateOperationsInput | number
     isCompleted?: BoolFieldUpdateOperationsInput | boolean
-    elimination?: EliminationUncheckedUpdateOneWithoutTournamentPhaseNestedInput
+    knockout?: TournamentKnockoutUncheckedUpdateOneWithoutTournamentPhaseNestedInput
     groups?: TournamentGroupUncheckedUpdateManyWithoutTournamentPhaseNestedInput
+    doubleElimination?: TournamentDoubleEliminationUncheckedUpdateOneWithoutTournamentPhaseNestedInput
   }
 
-  export type EliminationUpsertWithoutMatchesInput = {
-    update: XOR<EliminationUpdateWithoutMatchesInput, EliminationUncheckedUpdateWithoutMatchesInput>
-    create: XOR<EliminationCreateWithoutMatchesInput, EliminationUncheckedCreateWithoutMatchesInput>
-    where?: EliminationWhereInput
+  export type TournamentKnockoutUpsertWithoutMatchesInput = {
+    update: XOR<TournamentKnockoutUpdateWithoutMatchesInput, TournamentKnockoutUncheckedUpdateWithoutMatchesInput>
+    create: XOR<TournamentKnockoutCreateWithoutMatchesInput, TournamentKnockoutUncheckedCreateWithoutMatchesInput>
+    where?: TournamentKnockoutWhereInput
   }
 
-  export type EliminationUpdateToOneWithWhereWithoutMatchesInput = {
-    where?: EliminationWhereInput
-    data: XOR<EliminationUpdateWithoutMatchesInput, EliminationUncheckedUpdateWithoutMatchesInput>
+  export type TournamentKnockoutUpdateToOneWithWhereWithoutMatchesInput = {
+    where?: TournamentKnockoutWhereInput
+    data: XOR<TournamentKnockoutUpdateWithoutMatchesInput, TournamentKnockoutUncheckedUpdateWithoutMatchesInput>
   }
 
-  export type EliminationUpdateWithoutMatchesInput = {
-    type?: EnumEliminationTypeFieldUpdateOperationsInput | $Enums.EliminationType
+  export type TournamentKnockoutUpdateWithoutMatchesInput = {
     currentRound?: IntFieldUpdateOperationsInput | number
     isOver?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    tournamentPhase?: TournamentPhaseUpdateOneRequiredWithoutEliminationNestedInput
+    tournamentPhase?: TournamentPhaseUpdateOneRequiredWithoutKnockoutNestedInput
   }
 
-  export type EliminationUncheckedUpdateWithoutMatchesInput = {
+  export type TournamentKnockoutUncheckedUpdateWithoutMatchesInput = {
     id?: IntFieldUpdateOperationsInput | number
     tournamentPhaseId?: IntFieldUpdateOperationsInput | number
-    type?: EnumEliminationTypeFieldUpdateOperationsInput | $Enums.EliminationType
     currentRound?: IntFieldUpdateOperationsInput | number
     isOver?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17261,7 +20385,6 @@ export namespace Prisma {
   export type TournamentGroupUpdateWithoutMatchesInput = {
     name?: StringFieldUpdateOperationsInput | string
     groupNumber?: IntFieldUpdateOperationsInput | number
-    isGroupMatchesEnded?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tournamentPhase?: TournamentPhaseUpdateOneRequiredWithoutGroupsNestedInput
@@ -17273,10 +20396,39 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     tournamentPhaseId?: IntFieldUpdateOperationsInput | number
     groupNumber?: IntFieldUpdateOperationsInput | number
-    isGroupMatchesEnded?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     participantGroups?: ParticipantGroupUncheckedUpdateManyWithoutGroupNestedInput
+  }
+
+  export type TournamentDoubleEliminationUpsertWithoutMatchesInput = {
+    update: XOR<TournamentDoubleEliminationUpdateWithoutMatchesInput, TournamentDoubleEliminationUncheckedUpdateWithoutMatchesInput>
+    create: XOR<TournamentDoubleEliminationCreateWithoutMatchesInput, TournamentDoubleEliminationUncheckedCreateWithoutMatchesInput>
+    where?: TournamentDoubleEliminationWhereInput
+  }
+
+  export type TournamentDoubleEliminationUpdateToOneWithWhereWithoutMatchesInput = {
+    where?: TournamentDoubleEliminationWhereInput
+    data: XOR<TournamentDoubleEliminationUpdateWithoutMatchesInput, TournamentDoubleEliminationUncheckedUpdateWithoutMatchesInput>
+  }
+
+  export type TournamentDoubleEliminationUpdateWithoutMatchesInput = {
+    roundNumber?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tournamentPhase?: TournamentPhaseUpdateOneRequiredWithoutDoubleEliminationNestedInput
+    participantDoubleEliminations?: ParticipantDoubleEliminationUpdateManyWithoutEliminationNestedInput
+  }
+
+  export type TournamentDoubleEliminationUncheckedUpdateWithoutMatchesInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    tournamentPhaseId?: IntFieldUpdateOperationsInput | number
+    roundNumber?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    participantDoubleEliminations?: ParticipantDoubleEliminationUncheckedUpdateManyWithoutEliminationNestedInput
   }
 
   export type ParticipantUpsertWithoutMatchesAsP1Input = {
@@ -17299,6 +20451,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tournaments?: ParticipantTournamentUpdateManyWithoutParticipantNestedInput
+    doubleEliminations?: ParticipantDoubleEliminationUpdateManyWithoutParticipantNestedInput
     groups?: ParticipantGroupUpdateManyWithoutParticipantNestedInput
     matchesAsP2?: MatchUpdateManyWithoutParticipant2NestedInput
     matchesWon?: MatchUpdateManyWithoutWinnerNestedInput
@@ -17316,6 +20469,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tournaments?: ParticipantTournamentUncheckedUpdateManyWithoutParticipantNestedInput
+    doubleEliminations?: ParticipantDoubleEliminationUncheckedUpdateManyWithoutParticipantNestedInput
     groups?: ParticipantGroupUncheckedUpdateManyWithoutParticipantNestedInput
     matchesAsP2?: MatchUncheckedUpdateManyWithoutParticipant2NestedInput
     matchesWon?: MatchUncheckedUpdateManyWithoutWinnerNestedInput
@@ -17343,6 +20497,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tournaments?: ParticipantTournamentUpdateManyWithoutParticipantNestedInput
+    doubleEliminations?: ParticipantDoubleEliminationUpdateManyWithoutParticipantNestedInput
     groups?: ParticipantGroupUpdateManyWithoutParticipantNestedInput
     matchesAsP1?: MatchUpdateManyWithoutParticipant1NestedInput
     matchesWon?: MatchUpdateManyWithoutWinnerNestedInput
@@ -17360,6 +20515,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tournaments?: ParticipantTournamentUncheckedUpdateManyWithoutParticipantNestedInput
+    doubleEliminations?: ParticipantDoubleEliminationUncheckedUpdateManyWithoutParticipantNestedInput
     groups?: ParticipantGroupUncheckedUpdateManyWithoutParticipantNestedInput
     matchesAsP1?: MatchUncheckedUpdateManyWithoutParticipant1NestedInput
     matchesWon?: MatchUncheckedUpdateManyWithoutWinnerNestedInput
@@ -17387,6 +20543,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tournaments?: ParticipantTournamentUpdateManyWithoutParticipantNestedInput
+    doubleEliminations?: ParticipantDoubleEliminationUpdateManyWithoutParticipantNestedInput
     groups?: ParticipantGroupUpdateManyWithoutParticipantNestedInput
     matchesAsP1?: MatchUpdateManyWithoutParticipant1NestedInput
     matchesAsP2?: MatchUpdateManyWithoutParticipant2NestedInput
@@ -17404,6 +20561,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tournaments?: ParticipantTournamentUncheckedUpdateManyWithoutParticipantNestedInput
+    doubleEliminations?: ParticipantDoubleEliminationUncheckedUpdateManyWithoutParticipantNestedInput
     groups?: ParticipantGroupUncheckedUpdateManyWithoutParticipantNestedInput
     matchesAsP1?: MatchUncheckedUpdateManyWithoutParticipant1NestedInput
     matchesAsP2?: MatchUncheckedUpdateManyWithoutParticipant2NestedInput
@@ -17431,6 +20589,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tournaments?: ParticipantTournamentUpdateManyWithoutParticipantNestedInput
+    doubleEliminations?: ParticipantDoubleEliminationUpdateManyWithoutParticipantNestedInput
     groups?: ParticipantGroupUpdateManyWithoutParticipantNestedInput
     matchesAsP1?: MatchUpdateManyWithoutParticipant1NestedInput
     matchesAsP2?: MatchUpdateManyWithoutParticipant2NestedInput
@@ -17448,6 +20607,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tournaments?: ParticipantTournamentUncheckedUpdateManyWithoutParticipantNestedInput
+    doubleEliminations?: ParticipantDoubleEliminationUncheckedUpdateManyWithoutParticipantNestedInput
     groups?: ParticipantGroupUncheckedUpdateManyWithoutParticipantNestedInput
     matchesAsP1?: MatchUncheckedUpdateManyWithoutParticipant1NestedInput
     matchesAsP2?: MatchUncheckedUpdateManyWithoutParticipant2NestedInput
@@ -17467,7 +20627,7 @@ export namespace Prisma {
   }
 
   export type MatchUpdateWithoutPrevMatchesInput = {
-    round?: NullableIntFieldUpdateOperationsInput | number | null
+    doubleEliminationRound?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
     winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
     loserElo?: NullableIntFieldUpdateOperationsInput | number | null
@@ -17478,8 +20638,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tournamentPhase?: TournamentPhaseUpdateOneRequiredWithoutMatchesNestedInput
-    elimination?: EliminationUpdateOneWithoutMatchesNestedInput
+    knockout?: TournamentKnockoutUpdateOneWithoutMatchesNestedInput
     group?: TournamentGroupUpdateOneWithoutMatchesNestedInput
+    doubleElimination?: TournamentDoubleEliminationUpdateOneWithoutMatchesNestedInput
     participant1?: ParticipantUpdateOneWithoutMatchesAsP1NestedInput
     participant2?: ParticipantUpdateOneWithoutMatchesAsP2NestedInput
     winner?: ParticipantUpdateOneWithoutMatchesWonNestedInput
@@ -17490,14 +20651,15 @@ export namespace Prisma {
   export type MatchUncheckedUpdateWithoutPrevMatchesInput = {
     id?: IntFieldUpdateOperationsInput | number
     tournamentPhaseId?: IntFieldUpdateOperationsInput | number
-    eliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    knockoutId?: NullableIntFieldUpdateOperationsInput | number | null
     tournamentGroupId?: NullableIntFieldUpdateOperationsInput | number | null
+    tournamentDoubleEliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    doubleEliminationRound?: NullableIntFieldUpdateOperationsInput | number | null
     participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
     participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
     winnerId?: NullableIntFieldUpdateOperationsInput | number | null
     loserId?: NullableIntFieldUpdateOperationsInput | number | null
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
-    round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
     winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
     loserElo?: NullableIntFieldUpdateOperationsInput | number | null
@@ -17523,6 +20685,32 @@ export namespace Prisma {
   export type MatchUpdateManyWithWhereWithoutNextMatchInput = {
     where: MatchScalarWhereInput
     data: XOR<MatchUpdateManyMutationInput, MatchUncheckedUpdateManyWithoutNextMatchInput>
+  }
+
+  export type MatchScalarWhereInput = {
+    AND?: MatchScalarWhereInput | MatchScalarWhereInput[]
+    OR?: MatchScalarWhereInput[]
+    NOT?: MatchScalarWhereInput | MatchScalarWhereInput[]
+    id?: IntFilter<"Match"> | number
+    tournamentPhaseId?: IntFilter<"Match"> | number
+    knockoutId?: IntNullableFilter<"Match"> | number | null
+    tournamentGroupId?: IntNullableFilter<"Match"> | number | null
+    tournamentDoubleEliminationId?: IntNullableFilter<"Match"> | number | null
+    doubleEliminationRound?: IntNullableFilter<"Match"> | number | null
+    participant1Id?: IntNullableFilter<"Match"> | number | null
+    participant2Id?: IntNullableFilter<"Match"> | number | null
+    winnerId?: IntNullableFilter<"Match"> | number | null
+    loserId?: IntNullableFilter<"Match"> | number | null
+    nextMatchId?: IntNullableFilter<"Match"> | number | null
+    serialNumber?: IntNullableFilter<"Match"> | number | null
+    winnerElo?: IntNullableFilter<"Match"> | number | null
+    loserElo?: IntNullableFilter<"Match"> | number | null
+    eloWon?: IntNullableFilter<"Match"> | number | null
+    eloLost?: IntNullableFilter<"Match"> | number | null
+    isOver?: BoolFilter<"Match"> | boolean
+    matchType?: EnumMatchTypeFilter<"Match"> | $Enums.MatchType
+    createdAt?: DateTimeFilter<"Match"> | Date | string
+    updatedAt?: DateTimeFilter<"Match"> | Date | string
   }
 
   export type ParticipantTournamentCreateWithoutParticipantInput = {
@@ -17552,10 +20740,38 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ParticipantDoubleEliminationCreateWithoutParticipantInput = {
+    wins?: number
+    losses?: number
+    doubleEliminationBracket?: $Enums.DoubleEliminationBracket
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    elimination: TournamentDoubleEliminationCreateNestedOneWithoutParticipantDoubleEliminationsInput
+  }
+
+  export type ParticipantDoubleEliminationUncheckedCreateWithoutParticipantInput = {
+    id?: number
+    tournamentDoubleEliminationId: number
+    wins?: number
+    losses?: number
+    doubleEliminationBracket?: $Enums.DoubleEliminationBracket
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ParticipantDoubleEliminationCreateOrConnectWithoutParticipantInput = {
+    where: ParticipantDoubleEliminationWhereUniqueInput
+    create: XOR<ParticipantDoubleEliminationCreateWithoutParticipantInput, ParticipantDoubleEliminationUncheckedCreateWithoutParticipantInput>
+  }
+
+  export type ParticipantDoubleEliminationCreateManyParticipantInputEnvelope = {
+    data: ParticipantDoubleEliminationCreateManyParticipantInput | ParticipantDoubleEliminationCreateManyParticipantInput[]
+    skipDuplicates?: boolean
+  }
+
   export type ParticipantGroupCreateWithoutParticipantInput = {
     wins?: number
     losses?: number
-    points?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     group: TournamentGroupCreateNestedOneWithoutParticipantGroupsInput
@@ -17566,7 +20782,6 @@ export namespace Prisma {
     tournamentGroupId: number
     wins?: number
     losses?: number
-    points?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -17582,7 +20797,7 @@ export namespace Prisma {
   }
 
   export type MatchCreateWithoutParticipant1Input = {
-    round?: number | null
+    doubleEliminationRound?: number | null
     serialNumber?: number | null
     winnerElo?: number | null
     loserElo?: number | null
@@ -17593,8 +20808,9 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     tournamentPhase: TournamentPhaseCreateNestedOneWithoutMatchesInput
-    elimination?: EliminationCreateNestedOneWithoutMatchesInput
+    knockout?: TournamentKnockoutCreateNestedOneWithoutMatchesInput
     group?: TournamentGroupCreateNestedOneWithoutMatchesInput
+    doubleElimination?: TournamentDoubleEliminationCreateNestedOneWithoutMatchesInput
     participant2?: ParticipantCreateNestedOneWithoutMatchesAsP2Input
     winner?: ParticipantCreateNestedOneWithoutMatchesWonInput
     loser?: ParticipantCreateNestedOneWithoutMatchesLostInput
@@ -17605,13 +20821,14 @@ export namespace Prisma {
   export type MatchUncheckedCreateWithoutParticipant1Input = {
     id?: number
     tournamentPhaseId: number
-    eliminationId?: number | null
+    knockoutId?: number | null
     tournamentGroupId?: number | null
+    tournamentDoubleEliminationId?: number | null
+    doubleEliminationRound?: number | null
     participant2Id?: number | null
     winnerId?: number | null
     loserId?: number | null
     nextMatchId?: number | null
-    round?: number | null
     serialNumber?: number | null
     winnerElo?: number | null
     loserElo?: number | null
@@ -17635,7 +20852,7 @@ export namespace Prisma {
   }
 
   export type MatchCreateWithoutParticipant2Input = {
-    round?: number | null
+    doubleEliminationRound?: number | null
     serialNumber?: number | null
     winnerElo?: number | null
     loserElo?: number | null
@@ -17646,8 +20863,9 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     tournamentPhase: TournamentPhaseCreateNestedOneWithoutMatchesInput
-    elimination?: EliminationCreateNestedOneWithoutMatchesInput
+    knockout?: TournamentKnockoutCreateNestedOneWithoutMatchesInput
     group?: TournamentGroupCreateNestedOneWithoutMatchesInput
+    doubleElimination?: TournamentDoubleEliminationCreateNestedOneWithoutMatchesInput
     participant1?: ParticipantCreateNestedOneWithoutMatchesAsP1Input
     winner?: ParticipantCreateNestedOneWithoutMatchesWonInput
     loser?: ParticipantCreateNestedOneWithoutMatchesLostInput
@@ -17658,13 +20876,14 @@ export namespace Prisma {
   export type MatchUncheckedCreateWithoutParticipant2Input = {
     id?: number
     tournamentPhaseId: number
-    eliminationId?: number | null
+    knockoutId?: number | null
     tournamentGroupId?: number | null
+    tournamentDoubleEliminationId?: number | null
+    doubleEliminationRound?: number | null
     participant1Id?: number | null
     winnerId?: number | null
     loserId?: number | null
     nextMatchId?: number | null
-    round?: number | null
     serialNumber?: number | null
     winnerElo?: number | null
     loserElo?: number | null
@@ -17688,7 +20907,7 @@ export namespace Prisma {
   }
 
   export type MatchCreateWithoutWinnerInput = {
-    round?: number | null
+    doubleEliminationRound?: number | null
     serialNumber?: number | null
     winnerElo?: number | null
     loserElo?: number | null
@@ -17699,8 +20918,9 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     tournamentPhase: TournamentPhaseCreateNestedOneWithoutMatchesInput
-    elimination?: EliminationCreateNestedOneWithoutMatchesInput
+    knockout?: TournamentKnockoutCreateNestedOneWithoutMatchesInput
     group?: TournamentGroupCreateNestedOneWithoutMatchesInput
+    doubleElimination?: TournamentDoubleEliminationCreateNestedOneWithoutMatchesInput
     participant1?: ParticipantCreateNestedOneWithoutMatchesAsP1Input
     participant2?: ParticipantCreateNestedOneWithoutMatchesAsP2Input
     loser?: ParticipantCreateNestedOneWithoutMatchesLostInput
@@ -17711,13 +20931,14 @@ export namespace Prisma {
   export type MatchUncheckedCreateWithoutWinnerInput = {
     id?: number
     tournamentPhaseId: number
-    eliminationId?: number | null
+    knockoutId?: number | null
     tournamentGroupId?: number | null
+    tournamentDoubleEliminationId?: number | null
+    doubleEliminationRound?: number | null
     participant1Id?: number | null
     participant2Id?: number | null
     loserId?: number | null
     nextMatchId?: number | null
-    round?: number | null
     serialNumber?: number | null
     winnerElo?: number | null
     loserElo?: number | null
@@ -17741,7 +20962,7 @@ export namespace Prisma {
   }
 
   export type MatchCreateWithoutLoserInput = {
-    round?: number | null
+    doubleEliminationRound?: number | null
     serialNumber?: number | null
     winnerElo?: number | null
     loserElo?: number | null
@@ -17752,8 +20973,9 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     tournamentPhase: TournamentPhaseCreateNestedOneWithoutMatchesInput
-    elimination?: EliminationCreateNestedOneWithoutMatchesInput
+    knockout?: TournamentKnockoutCreateNestedOneWithoutMatchesInput
     group?: TournamentGroupCreateNestedOneWithoutMatchesInput
+    doubleElimination?: TournamentDoubleEliminationCreateNestedOneWithoutMatchesInput
     participant1?: ParticipantCreateNestedOneWithoutMatchesAsP1Input
     participant2?: ParticipantCreateNestedOneWithoutMatchesAsP2Input
     winner?: ParticipantCreateNestedOneWithoutMatchesWonInput
@@ -17764,13 +20986,14 @@ export namespace Prisma {
   export type MatchUncheckedCreateWithoutLoserInput = {
     id?: number
     tournamentPhaseId: number
-    eliminationId?: number | null
+    knockoutId?: number | null
     tournamentGroupId?: number | null
+    tournamentDoubleEliminationId?: number | null
+    doubleEliminationRound?: number | null
     participant1Id?: number | null
     participant2Id?: number | null
     winnerId?: number | null
     nextMatchId?: number | null
-    round?: number | null
     serialNumber?: number | null
     winnerElo?: number | null
     loserElo?: number | null
@@ -17847,6 +21070,36 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"ParticipantTournament"> | Date | string
   }
 
+  export type ParticipantDoubleEliminationUpsertWithWhereUniqueWithoutParticipantInput = {
+    where: ParticipantDoubleEliminationWhereUniqueInput
+    update: XOR<ParticipantDoubleEliminationUpdateWithoutParticipantInput, ParticipantDoubleEliminationUncheckedUpdateWithoutParticipantInput>
+    create: XOR<ParticipantDoubleEliminationCreateWithoutParticipantInput, ParticipantDoubleEliminationUncheckedCreateWithoutParticipantInput>
+  }
+
+  export type ParticipantDoubleEliminationUpdateWithWhereUniqueWithoutParticipantInput = {
+    where: ParticipantDoubleEliminationWhereUniqueInput
+    data: XOR<ParticipantDoubleEliminationUpdateWithoutParticipantInput, ParticipantDoubleEliminationUncheckedUpdateWithoutParticipantInput>
+  }
+
+  export type ParticipantDoubleEliminationUpdateManyWithWhereWithoutParticipantInput = {
+    where: ParticipantDoubleEliminationScalarWhereInput
+    data: XOR<ParticipantDoubleEliminationUpdateManyMutationInput, ParticipantDoubleEliminationUncheckedUpdateManyWithoutParticipantInput>
+  }
+
+  export type ParticipantDoubleEliminationScalarWhereInput = {
+    AND?: ParticipantDoubleEliminationScalarWhereInput | ParticipantDoubleEliminationScalarWhereInput[]
+    OR?: ParticipantDoubleEliminationScalarWhereInput[]
+    NOT?: ParticipantDoubleEliminationScalarWhereInput | ParticipantDoubleEliminationScalarWhereInput[]
+    id?: IntFilter<"ParticipantDoubleElimination"> | number
+    tournamentDoubleEliminationId?: IntFilter<"ParticipantDoubleElimination"> | number
+    participantId?: IntFilter<"ParticipantDoubleElimination"> | number
+    wins?: IntFilter<"ParticipantDoubleElimination"> | number
+    losses?: IntFilter<"ParticipantDoubleElimination"> | number
+    doubleEliminationBracket?: EnumDoubleEliminationBracketFilter<"ParticipantDoubleElimination"> | $Enums.DoubleEliminationBracket
+    createdAt?: DateTimeFilter<"ParticipantDoubleElimination"> | Date | string
+    updatedAt?: DateTimeFilter<"ParticipantDoubleElimination"> | Date | string
+  }
+
   export type ParticipantGroupUpsertWithWhereUniqueWithoutParticipantInput = {
     where: ParticipantGroupWhereUniqueInput
     update: XOR<ParticipantGroupUpdateWithoutParticipantInput, ParticipantGroupUncheckedUpdateWithoutParticipantInput>
@@ -17872,7 +21125,6 @@ export namespace Prisma {
     participantId?: IntFilter<"ParticipantGroup"> | number
     wins?: IntFilter<"ParticipantGroup"> | number
     losses?: IntFilter<"ParticipantGroup"> | number
-    points?: IntFilter<"ParticipantGroup"> | number
     createdAt?: DateTimeFilter<"ParticipantGroup"> | Date | string
     updatedAt?: DateTimeFilter<"ParticipantGroup"> | Date | string
   }
@@ -17969,10 +21221,149 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"TournamentWinner"> | Date | string
   }
 
+  export type TournamentDoubleEliminationCreateWithoutParticipantDoubleEliminationsInput = {
+    roundNumber?: number
+    isActive: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tournamentPhase: TournamentPhaseCreateNestedOneWithoutDoubleEliminationInput
+    matches?: MatchCreateNestedManyWithoutDoubleEliminationInput
+  }
+
+  export type TournamentDoubleEliminationUncheckedCreateWithoutParticipantDoubleEliminationsInput = {
+    id?: number
+    tournamentPhaseId: number
+    roundNumber?: number
+    isActive: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    matches?: MatchUncheckedCreateNestedManyWithoutDoubleEliminationInput
+  }
+
+  export type TournamentDoubleEliminationCreateOrConnectWithoutParticipantDoubleEliminationsInput = {
+    where: TournamentDoubleEliminationWhereUniqueInput
+    create: XOR<TournamentDoubleEliminationCreateWithoutParticipantDoubleEliminationsInput, TournamentDoubleEliminationUncheckedCreateWithoutParticipantDoubleEliminationsInput>
+  }
+
+  export type ParticipantCreateWithoutDoubleEliminationsInput = {
+    name: string
+    type: $Enums.ParticipantType
+    elo?: number
+    wins?: number
+    losses?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tournaments?: ParticipantTournamentCreateNestedManyWithoutParticipantInput
+    groups?: ParticipantGroupCreateNestedManyWithoutParticipantInput
+    matchesAsP1?: MatchCreateNestedManyWithoutParticipant1Input
+    matchesAsP2?: MatchCreateNestedManyWithoutParticipant2Input
+    matchesWon?: MatchCreateNestedManyWithoutWinnerInput
+    matchesLost?: MatchCreateNestedManyWithoutLoserInput
+    podiums?: TournamentWinnerCreateNestedManyWithoutParticipantInput
+  }
+
+  export type ParticipantUncheckedCreateWithoutDoubleEliminationsInput = {
+    id?: number
+    name: string
+    type: $Enums.ParticipantType
+    elo?: number
+    wins?: number
+    losses?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tournaments?: ParticipantTournamentUncheckedCreateNestedManyWithoutParticipantInput
+    groups?: ParticipantGroupUncheckedCreateNestedManyWithoutParticipantInput
+    matchesAsP1?: MatchUncheckedCreateNestedManyWithoutParticipant1Input
+    matchesAsP2?: MatchUncheckedCreateNestedManyWithoutParticipant2Input
+    matchesWon?: MatchUncheckedCreateNestedManyWithoutWinnerInput
+    matchesLost?: MatchUncheckedCreateNestedManyWithoutLoserInput
+    podiums?: TournamentWinnerUncheckedCreateNestedManyWithoutParticipantInput
+  }
+
+  export type ParticipantCreateOrConnectWithoutDoubleEliminationsInput = {
+    where: ParticipantWhereUniqueInput
+    create: XOR<ParticipantCreateWithoutDoubleEliminationsInput, ParticipantUncheckedCreateWithoutDoubleEliminationsInput>
+  }
+
+  export type TournamentDoubleEliminationUpsertWithoutParticipantDoubleEliminationsInput = {
+    update: XOR<TournamentDoubleEliminationUpdateWithoutParticipantDoubleEliminationsInput, TournamentDoubleEliminationUncheckedUpdateWithoutParticipantDoubleEliminationsInput>
+    create: XOR<TournamentDoubleEliminationCreateWithoutParticipantDoubleEliminationsInput, TournamentDoubleEliminationUncheckedCreateWithoutParticipantDoubleEliminationsInput>
+    where?: TournamentDoubleEliminationWhereInput
+  }
+
+  export type TournamentDoubleEliminationUpdateToOneWithWhereWithoutParticipantDoubleEliminationsInput = {
+    where?: TournamentDoubleEliminationWhereInput
+    data: XOR<TournamentDoubleEliminationUpdateWithoutParticipantDoubleEliminationsInput, TournamentDoubleEliminationUncheckedUpdateWithoutParticipantDoubleEliminationsInput>
+  }
+
+  export type TournamentDoubleEliminationUpdateWithoutParticipantDoubleEliminationsInput = {
+    roundNumber?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tournamentPhase?: TournamentPhaseUpdateOneRequiredWithoutDoubleEliminationNestedInput
+    matches?: MatchUpdateManyWithoutDoubleEliminationNestedInput
+  }
+
+  export type TournamentDoubleEliminationUncheckedUpdateWithoutParticipantDoubleEliminationsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    tournamentPhaseId?: IntFieldUpdateOperationsInput | number
+    roundNumber?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    matches?: MatchUncheckedUpdateManyWithoutDoubleEliminationNestedInput
+  }
+
+  export type ParticipantUpsertWithoutDoubleEliminationsInput = {
+    update: XOR<ParticipantUpdateWithoutDoubleEliminationsInput, ParticipantUncheckedUpdateWithoutDoubleEliminationsInput>
+    create: XOR<ParticipantCreateWithoutDoubleEliminationsInput, ParticipantUncheckedCreateWithoutDoubleEliminationsInput>
+    where?: ParticipantWhereInput
+  }
+
+  export type ParticipantUpdateToOneWithWhereWithoutDoubleEliminationsInput = {
+    where?: ParticipantWhereInput
+    data: XOR<ParticipantUpdateWithoutDoubleEliminationsInput, ParticipantUncheckedUpdateWithoutDoubleEliminationsInput>
+  }
+
+  export type ParticipantUpdateWithoutDoubleEliminationsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    type?: EnumParticipantTypeFieldUpdateOperationsInput | $Enums.ParticipantType
+    elo?: IntFieldUpdateOperationsInput | number
+    wins?: IntFieldUpdateOperationsInput | number
+    losses?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tournaments?: ParticipantTournamentUpdateManyWithoutParticipantNestedInput
+    groups?: ParticipantGroupUpdateManyWithoutParticipantNestedInput
+    matchesAsP1?: MatchUpdateManyWithoutParticipant1NestedInput
+    matchesAsP2?: MatchUpdateManyWithoutParticipant2NestedInput
+    matchesWon?: MatchUpdateManyWithoutWinnerNestedInput
+    matchesLost?: MatchUpdateManyWithoutLoserNestedInput
+    podiums?: TournamentWinnerUpdateManyWithoutParticipantNestedInput
+  }
+
+  export type ParticipantUncheckedUpdateWithoutDoubleEliminationsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    type?: EnumParticipantTypeFieldUpdateOperationsInput | $Enums.ParticipantType
+    elo?: IntFieldUpdateOperationsInput | number
+    wins?: IntFieldUpdateOperationsInput | number
+    losses?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tournaments?: ParticipantTournamentUncheckedUpdateManyWithoutParticipantNestedInput
+    groups?: ParticipantGroupUncheckedUpdateManyWithoutParticipantNestedInput
+    matchesAsP1?: MatchUncheckedUpdateManyWithoutParticipant1NestedInput
+    matchesAsP2?: MatchUncheckedUpdateManyWithoutParticipant2NestedInput
+    matchesWon?: MatchUncheckedUpdateManyWithoutWinnerNestedInput
+    matchesLost?: MatchUncheckedUpdateManyWithoutLoserNestedInput
+    podiums?: TournamentWinnerUncheckedUpdateManyWithoutParticipantNestedInput
+  }
+
   export type TournamentGroupCreateWithoutParticipantGroupsInput = {
     name: string
     groupNumber: number
-    isGroupMatchesEnded?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     tournamentPhase: TournamentPhaseCreateNestedOneWithoutGroupsInput
@@ -17984,7 +21375,6 @@ export namespace Prisma {
     name: string
     tournamentPhaseId: number
     groupNumber: number
-    isGroupMatchesEnded?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     matches?: MatchUncheckedCreateNestedManyWithoutGroupInput
@@ -18004,6 +21394,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     tournaments?: ParticipantTournamentCreateNestedManyWithoutParticipantInput
+    doubleEliminations?: ParticipantDoubleEliminationCreateNestedManyWithoutParticipantInput
     matchesAsP1?: MatchCreateNestedManyWithoutParticipant1Input
     matchesAsP2?: MatchCreateNestedManyWithoutParticipant2Input
     matchesWon?: MatchCreateNestedManyWithoutWinnerInput
@@ -18021,6 +21412,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     tournaments?: ParticipantTournamentUncheckedCreateNestedManyWithoutParticipantInput
+    doubleEliminations?: ParticipantDoubleEliminationUncheckedCreateNestedManyWithoutParticipantInput
     matchesAsP1?: MatchUncheckedCreateNestedManyWithoutParticipant1Input
     matchesAsP2?: MatchUncheckedCreateNestedManyWithoutParticipant2Input
     matchesWon?: MatchUncheckedCreateNestedManyWithoutWinnerInput
@@ -18047,7 +21439,6 @@ export namespace Prisma {
   export type TournamentGroupUpdateWithoutParticipantGroupsInput = {
     name?: StringFieldUpdateOperationsInput | string
     groupNumber?: IntFieldUpdateOperationsInput | number
-    isGroupMatchesEnded?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tournamentPhase?: TournamentPhaseUpdateOneRequiredWithoutGroupsNestedInput
@@ -18059,7 +21450,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     tournamentPhaseId?: IntFieldUpdateOperationsInput | number
     groupNumber?: IntFieldUpdateOperationsInput | number
-    isGroupMatchesEnded?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     matches?: MatchUncheckedUpdateManyWithoutGroupNestedInput
@@ -18085,6 +21475,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tournaments?: ParticipantTournamentUpdateManyWithoutParticipantNestedInput
+    doubleEliminations?: ParticipantDoubleEliminationUpdateManyWithoutParticipantNestedInput
     matchesAsP1?: MatchUpdateManyWithoutParticipant1NestedInput
     matchesAsP2?: MatchUpdateManyWithoutParticipant2NestedInput
     matchesWon?: MatchUpdateManyWithoutWinnerNestedInput
@@ -18102,6 +21493,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tournaments?: ParticipantTournamentUncheckedUpdateManyWithoutParticipantNestedInput
+    doubleEliminations?: ParticipantDoubleEliminationUncheckedUpdateManyWithoutParticipantNestedInput
     matchesAsP1?: MatchUncheckedUpdateManyWithoutParticipant1NestedInput
     matchesAsP2?: MatchUncheckedUpdateManyWithoutParticipant2NestedInput
     matchesWon?: MatchUncheckedUpdateManyWithoutWinnerNestedInput
@@ -18143,6 +21535,7 @@ export namespace Prisma {
     losses?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    doubleEliminations?: ParticipantDoubleEliminationCreateNestedManyWithoutParticipantInput
     groups?: ParticipantGroupCreateNestedManyWithoutParticipantInput
     matchesAsP1?: MatchCreateNestedManyWithoutParticipant1Input
     matchesAsP2?: MatchCreateNestedManyWithoutParticipant2Input
@@ -18160,6 +21553,7 @@ export namespace Prisma {
     losses?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    doubleEliminations?: ParticipantDoubleEliminationUncheckedCreateNestedManyWithoutParticipantInput
     groups?: ParticipantGroupUncheckedCreateNestedManyWithoutParticipantInput
     matchesAsP1?: MatchUncheckedCreateNestedManyWithoutParticipant1Input
     matchesAsP2?: MatchUncheckedCreateNestedManyWithoutParticipant2Input
@@ -18224,6 +21618,7 @@ export namespace Prisma {
     losses?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    doubleEliminations?: ParticipantDoubleEliminationUpdateManyWithoutParticipantNestedInput
     groups?: ParticipantGroupUpdateManyWithoutParticipantNestedInput
     matchesAsP1?: MatchUpdateManyWithoutParticipant1NestedInput
     matchesAsP2?: MatchUpdateManyWithoutParticipant2NestedInput
@@ -18241,6 +21636,7 @@ export namespace Prisma {
     losses?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    doubleEliminations?: ParticipantDoubleEliminationUncheckedUpdateManyWithoutParticipantNestedInput
     groups?: ParticipantGroupUncheckedUpdateManyWithoutParticipantNestedInput
     matchesAsP1?: MatchUncheckedUpdateManyWithoutParticipant1NestedInput
     matchesAsP2?: MatchUncheckedUpdateManyWithoutParticipant2NestedInput
@@ -18253,8 +21649,9 @@ export namespace Prisma {
     phaseType: $Enums.PhaseType
     order: number
     isCompleted?: boolean
-    elimination?: EliminationCreateNestedOneWithoutTournamentPhaseInput
+    knockout?: TournamentKnockoutCreateNestedOneWithoutTournamentPhaseInput
     groups?: TournamentGroupCreateNestedManyWithoutTournamentPhaseInput
+    doubleElimination?: TournamentDoubleEliminationCreateNestedOneWithoutTournamentPhaseInput
     matches?: MatchCreateNestedManyWithoutTournamentPhaseInput
   }
 
@@ -18263,8 +21660,9 @@ export namespace Prisma {
     phaseType: $Enums.PhaseType
     order: number
     isCompleted?: boolean
-    elimination?: EliminationUncheckedCreateNestedOneWithoutTournamentPhaseInput
+    knockout?: TournamentKnockoutUncheckedCreateNestedOneWithoutTournamentPhaseInput
     groups?: TournamentGroupUncheckedCreateNestedManyWithoutTournamentPhaseInput
+    doubleElimination?: TournamentDoubleEliminationUncheckedCreateNestedOneWithoutTournamentPhaseInput
     matches?: MatchUncheckedCreateNestedManyWithoutTournamentPhaseInput
   }
 
@@ -18389,11 +21787,186 @@ export namespace Prisma {
     data: XOR<TournamentWinnerUpdateManyMutationInput, TournamentWinnerUncheckedUpdateManyWithoutTournamentInput>
   }
 
+  export type TournamentPhaseCreateWithoutDoubleEliminationInput = {
+    phaseType: $Enums.PhaseType
+    order: number
+    isCompleted?: boolean
+    knockout?: TournamentKnockoutCreateNestedOneWithoutTournamentPhaseInput
+    groups?: TournamentGroupCreateNestedManyWithoutTournamentPhaseInput
+    matches?: MatchCreateNestedManyWithoutTournamentPhaseInput
+    tournament: TournamentCreateNestedOneWithoutPhasesInput
+  }
+
+  export type TournamentPhaseUncheckedCreateWithoutDoubleEliminationInput = {
+    id?: number
+    tournamentId: number
+    phaseType: $Enums.PhaseType
+    order: number
+    isCompleted?: boolean
+    knockout?: TournamentKnockoutUncheckedCreateNestedOneWithoutTournamentPhaseInput
+    groups?: TournamentGroupUncheckedCreateNestedManyWithoutTournamentPhaseInput
+    matches?: MatchUncheckedCreateNestedManyWithoutTournamentPhaseInput
+  }
+
+  export type TournamentPhaseCreateOrConnectWithoutDoubleEliminationInput = {
+    where: TournamentPhaseWhereUniqueInput
+    create: XOR<TournamentPhaseCreateWithoutDoubleEliminationInput, TournamentPhaseUncheckedCreateWithoutDoubleEliminationInput>
+  }
+
+  export type ParticipantDoubleEliminationCreateWithoutEliminationInput = {
+    wins?: number
+    losses?: number
+    doubleEliminationBracket?: $Enums.DoubleEliminationBracket
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    participant: ParticipantCreateNestedOneWithoutDoubleEliminationsInput
+  }
+
+  export type ParticipantDoubleEliminationUncheckedCreateWithoutEliminationInput = {
+    id?: number
+    participantId: number
+    wins?: number
+    losses?: number
+    doubleEliminationBracket?: $Enums.DoubleEliminationBracket
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ParticipantDoubleEliminationCreateOrConnectWithoutEliminationInput = {
+    where: ParticipantDoubleEliminationWhereUniqueInput
+    create: XOR<ParticipantDoubleEliminationCreateWithoutEliminationInput, ParticipantDoubleEliminationUncheckedCreateWithoutEliminationInput>
+  }
+
+  export type ParticipantDoubleEliminationCreateManyEliminationInputEnvelope = {
+    data: ParticipantDoubleEliminationCreateManyEliminationInput | ParticipantDoubleEliminationCreateManyEliminationInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MatchCreateWithoutDoubleEliminationInput = {
+    doubleEliminationRound?: number | null
+    serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
+    isOver?: boolean
+    matchType: $Enums.MatchType
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tournamentPhase: TournamentPhaseCreateNestedOneWithoutMatchesInput
+    knockout?: TournamentKnockoutCreateNestedOneWithoutMatchesInput
+    group?: TournamentGroupCreateNestedOneWithoutMatchesInput
+    participant1?: ParticipantCreateNestedOneWithoutMatchesAsP1Input
+    participant2?: ParticipantCreateNestedOneWithoutMatchesAsP2Input
+    winner?: ParticipantCreateNestedOneWithoutMatchesWonInput
+    loser?: ParticipantCreateNestedOneWithoutMatchesLostInput
+    nextMatch?: MatchCreateNestedOneWithoutPrevMatchesInput
+    prevMatches?: MatchCreateNestedManyWithoutNextMatchInput
+  }
+
+  export type MatchUncheckedCreateWithoutDoubleEliminationInput = {
+    id?: number
+    tournamentPhaseId: number
+    knockoutId?: number | null
+    tournamentGroupId?: number | null
+    doubleEliminationRound?: number | null
+    participant1Id?: number | null
+    participant2Id?: number | null
+    winnerId?: number | null
+    loserId?: number | null
+    nextMatchId?: number | null
+    serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
+    isOver?: boolean
+    matchType: $Enums.MatchType
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    prevMatches?: MatchUncheckedCreateNestedManyWithoutNextMatchInput
+  }
+
+  export type MatchCreateOrConnectWithoutDoubleEliminationInput = {
+    where: MatchWhereUniqueInput
+    create: XOR<MatchCreateWithoutDoubleEliminationInput, MatchUncheckedCreateWithoutDoubleEliminationInput>
+  }
+
+  export type MatchCreateManyDoubleEliminationInputEnvelope = {
+    data: MatchCreateManyDoubleEliminationInput | MatchCreateManyDoubleEliminationInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TournamentPhaseUpsertWithoutDoubleEliminationInput = {
+    update: XOR<TournamentPhaseUpdateWithoutDoubleEliminationInput, TournamentPhaseUncheckedUpdateWithoutDoubleEliminationInput>
+    create: XOR<TournamentPhaseCreateWithoutDoubleEliminationInput, TournamentPhaseUncheckedCreateWithoutDoubleEliminationInput>
+    where?: TournamentPhaseWhereInput
+  }
+
+  export type TournamentPhaseUpdateToOneWithWhereWithoutDoubleEliminationInput = {
+    where?: TournamentPhaseWhereInput
+    data: XOR<TournamentPhaseUpdateWithoutDoubleEliminationInput, TournamentPhaseUncheckedUpdateWithoutDoubleEliminationInput>
+  }
+
+  export type TournamentPhaseUpdateWithoutDoubleEliminationInput = {
+    phaseType?: EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
+    order?: IntFieldUpdateOperationsInput | number
+    isCompleted?: BoolFieldUpdateOperationsInput | boolean
+    knockout?: TournamentKnockoutUpdateOneWithoutTournamentPhaseNestedInput
+    groups?: TournamentGroupUpdateManyWithoutTournamentPhaseNestedInput
+    matches?: MatchUpdateManyWithoutTournamentPhaseNestedInput
+    tournament?: TournamentUpdateOneRequiredWithoutPhasesNestedInput
+  }
+
+  export type TournamentPhaseUncheckedUpdateWithoutDoubleEliminationInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    tournamentId?: IntFieldUpdateOperationsInput | number
+    phaseType?: EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
+    order?: IntFieldUpdateOperationsInput | number
+    isCompleted?: BoolFieldUpdateOperationsInput | boolean
+    knockout?: TournamentKnockoutUncheckedUpdateOneWithoutTournamentPhaseNestedInput
+    groups?: TournamentGroupUncheckedUpdateManyWithoutTournamentPhaseNestedInput
+    matches?: MatchUncheckedUpdateManyWithoutTournamentPhaseNestedInput
+  }
+
+  export type ParticipantDoubleEliminationUpsertWithWhereUniqueWithoutEliminationInput = {
+    where: ParticipantDoubleEliminationWhereUniqueInput
+    update: XOR<ParticipantDoubleEliminationUpdateWithoutEliminationInput, ParticipantDoubleEliminationUncheckedUpdateWithoutEliminationInput>
+    create: XOR<ParticipantDoubleEliminationCreateWithoutEliminationInput, ParticipantDoubleEliminationUncheckedCreateWithoutEliminationInput>
+  }
+
+  export type ParticipantDoubleEliminationUpdateWithWhereUniqueWithoutEliminationInput = {
+    where: ParticipantDoubleEliminationWhereUniqueInput
+    data: XOR<ParticipantDoubleEliminationUpdateWithoutEliminationInput, ParticipantDoubleEliminationUncheckedUpdateWithoutEliminationInput>
+  }
+
+  export type ParticipantDoubleEliminationUpdateManyWithWhereWithoutEliminationInput = {
+    where: ParticipantDoubleEliminationScalarWhereInput
+    data: XOR<ParticipantDoubleEliminationUpdateManyMutationInput, ParticipantDoubleEliminationUncheckedUpdateManyWithoutEliminationInput>
+  }
+
+  export type MatchUpsertWithWhereUniqueWithoutDoubleEliminationInput = {
+    where: MatchWhereUniqueInput
+    update: XOR<MatchUpdateWithoutDoubleEliminationInput, MatchUncheckedUpdateWithoutDoubleEliminationInput>
+    create: XOR<MatchCreateWithoutDoubleEliminationInput, MatchUncheckedCreateWithoutDoubleEliminationInput>
+  }
+
+  export type MatchUpdateWithWhereUniqueWithoutDoubleEliminationInput = {
+    where: MatchWhereUniqueInput
+    data: XOR<MatchUpdateWithoutDoubleEliminationInput, MatchUncheckedUpdateWithoutDoubleEliminationInput>
+  }
+
+  export type MatchUpdateManyWithWhereWithoutDoubleEliminationInput = {
+    where: MatchScalarWhereInput
+    data: XOR<MatchUpdateManyMutationInput, MatchUncheckedUpdateManyWithoutDoubleEliminationInput>
+  }
+
   export type TournamentPhaseCreateWithoutGroupsInput = {
     phaseType: $Enums.PhaseType
     order: number
     isCompleted?: boolean
-    elimination?: EliminationCreateNestedOneWithoutTournamentPhaseInput
+    knockout?: TournamentKnockoutCreateNestedOneWithoutTournamentPhaseInput
+    doubleElimination?: TournamentDoubleEliminationCreateNestedOneWithoutTournamentPhaseInput
     matches?: MatchCreateNestedManyWithoutTournamentPhaseInput
     tournament: TournamentCreateNestedOneWithoutPhasesInput
   }
@@ -18404,7 +21977,8 @@ export namespace Prisma {
     phaseType: $Enums.PhaseType
     order: number
     isCompleted?: boolean
-    elimination?: EliminationUncheckedCreateNestedOneWithoutTournamentPhaseInput
+    knockout?: TournamentKnockoutUncheckedCreateNestedOneWithoutTournamentPhaseInput
+    doubleElimination?: TournamentDoubleEliminationUncheckedCreateNestedOneWithoutTournamentPhaseInput
     matches?: MatchUncheckedCreateNestedManyWithoutTournamentPhaseInput
   }
 
@@ -18416,7 +21990,6 @@ export namespace Prisma {
   export type ParticipantGroupCreateWithoutGroupInput = {
     wins?: number
     losses?: number
-    points?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     participant: ParticipantCreateNestedOneWithoutGroupsInput
@@ -18427,7 +22000,6 @@ export namespace Prisma {
     participantId: number
     wins?: number
     losses?: number
-    points?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -18443,7 +22015,7 @@ export namespace Prisma {
   }
 
   export type MatchCreateWithoutGroupInput = {
-    round?: number | null
+    doubleEliminationRound?: number | null
     serialNumber?: number | null
     winnerElo?: number | null
     loserElo?: number | null
@@ -18454,7 +22026,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     tournamentPhase: TournamentPhaseCreateNestedOneWithoutMatchesInput
-    elimination?: EliminationCreateNestedOneWithoutMatchesInput
+    knockout?: TournamentKnockoutCreateNestedOneWithoutMatchesInput
+    doubleElimination?: TournamentDoubleEliminationCreateNestedOneWithoutMatchesInput
     participant1?: ParticipantCreateNestedOneWithoutMatchesAsP1Input
     participant2?: ParticipantCreateNestedOneWithoutMatchesAsP2Input
     winner?: ParticipantCreateNestedOneWithoutMatchesWonInput
@@ -18466,13 +22039,14 @@ export namespace Prisma {
   export type MatchUncheckedCreateWithoutGroupInput = {
     id?: number
     tournamentPhaseId: number
-    eliminationId?: number | null
+    knockoutId?: number | null
+    tournamentDoubleEliminationId?: number | null
+    doubleEliminationRound?: number | null
     participant1Id?: number | null
     participant2Id?: number | null
     winnerId?: number | null
     loserId?: number | null
     nextMatchId?: number | null
-    round?: number | null
     serialNumber?: number | null
     winnerElo?: number | null
     loserElo?: number | null
@@ -18510,7 +22084,8 @@ export namespace Prisma {
     phaseType?: EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
     order?: IntFieldUpdateOperationsInput | number
     isCompleted?: BoolFieldUpdateOperationsInput | boolean
-    elimination?: EliminationUpdateOneWithoutTournamentPhaseNestedInput
+    knockout?: TournamentKnockoutUpdateOneWithoutTournamentPhaseNestedInput
+    doubleElimination?: TournamentDoubleEliminationUpdateOneWithoutTournamentPhaseNestedInput
     matches?: MatchUpdateManyWithoutTournamentPhaseNestedInput
     tournament?: TournamentUpdateOneRequiredWithoutPhasesNestedInput
   }
@@ -18521,7 +22096,8 @@ export namespace Prisma {
     phaseType?: EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
     order?: IntFieldUpdateOperationsInput | number
     isCompleted?: BoolFieldUpdateOperationsInput | boolean
-    elimination?: EliminationUncheckedUpdateOneWithoutTournamentPhaseNestedInput
+    knockout?: TournamentKnockoutUncheckedUpdateOneWithoutTournamentPhaseNestedInput
+    doubleElimination?: TournamentDoubleEliminationUncheckedUpdateOneWithoutTournamentPhaseNestedInput
     matches?: MatchUncheckedUpdateManyWithoutTournamentPhaseNestedInput
   }
 
@@ -18557,34 +22133,160 @@ export namespace Prisma {
     data: XOR<MatchUpdateManyMutationInput, MatchUncheckedUpdateManyWithoutGroupInput>
   }
 
-  export type EliminationCreateWithoutTournamentPhaseInput = {
-    type?: $Enums.EliminationType
-    currentRound?: number
-    isOver?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    matches?: MatchCreateNestedManyWithoutEliminationInput
+  export type TournamentPhaseCreateWithoutKnockoutInput = {
+    phaseType: $Enums.PhaseType
+    order: number
+    isCompleted?: boolean
+    groups?: TournamentGroupCreateNestedManyWithoutTournamentPhaseInput
+    doubleElimination?: TournamentDoubleEliminationCreateNestedOneWithoutTournamentPhaseInput
+    matches?: MatchCreateNestedManyWithoutTournamentPhaseInput
+    tournament: TournamentCreateNestedOneWithoutPhasesInput
   }
 
-  export type EliminationUncheckedCreateWithoutTournamentPhaseInput = {
+  export type TournamentPhaseUncheckedCreateWithoutKnockoutInput = {
     id?: number
-    type?: $Enums.EliminationType
+    tournamentId: number
+    phaseType: $Enums.PhaseType
+    order: number
+    isCompleted?: boolean
+    groups?: TournamentGroupUncheckedCreateNestedManyWithoutTournamentPhaseInput
+    doubleElimination?: TournamentDoubleEliminationUncheckedCreateNestedOneWithoutTournamentPhaseInput
+    matches?: MatchUncheckedCreateNestedManyWithoutTournamentPhaseInput
+  }
+
+  export type TournamentPhaseCreateOrConnectWithoutKnockoutInput = {
+    where: TournamentPhaseWhereUniqueInput
+    create: XOR<TournamentPhaseCreateWithoutKnockoutInput, TournamentPhaseUncheckedCreateWithoutKnockoutInput>
+  }
+
+  export type MatchCreateWithoutKnockoutInput = {
+    doubleEliminationRound?: number | null
+    serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
+    isOver?: boolean
+    matchType: $Enums.MatchType
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tournamentPhase: TournamentPhaseCreateNestedOneWithoutMatchesInput
+    group?: TournamentGroupCreateNestedOneWithoutMatchesInput
+    doubleElimination?: TournamentDoubleEliminationCreateNestedOneWithoutMatchesInput
+    participant1?: ParticipantCreateNestedOneWithoutMatchesAsP1Input
+    participant2?: ParticipantCreateNestedOneWithoutMatchesAsP2Input
+    winner?: ParticipantCreateNestedOneWithoutMatchesWonInput
+    loser?: ParticipantCreateNestedOneWithoutMatchesLostInput
+    nextMatch?: MatchCreateNestedOneWithoutPrevMatchesInput
+    prevMatches?: MatchCreateNestedManyWithoutNextMatchInput
+  }
+
+  export type MatchUncheckedCreateWithoutKnockoutInput = {
+    id?: number
+    tournamentPhaseId: number
+    tournamentGroupId?: number | null
+    tournamentDoubleEliminationId?: number | null
+    doubleEliminationRound?: number | null
+    participant1Id?: number | null
+    participant2Id?: number | null
+    winnerId?: number | null
+    loserId?: number | null
+    nextMatchId?: number | null
+    serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
+    isOver?: boolean
+    matchType: $Enums.MatchType
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    prevMatches?: MatchUncheckedCreateNestedManyWithoutNextMatchInput
+  }
+
+  export type MatchCreateOrConnectWithoutKnockoutInput = {
+    where: MatchWhereUniqueInput
+    create: XOR<MatchCreateWithoutKnockoutInput, MatchUncheckedCreateWithoutKnockoutInput>
+  }
+
+  export type MatchCreateManyKnockoutInputEnvelope = {
+    data: MatchCreateManyKnockoutInput | MatchCreateManyKnockoutInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TournamentPhaseUpsertWithoutKnockoutInput = {
+    update: XOR<TournamentPhaseUpdateWithoutKnockoutInput, TournamentPhaseUncheckedUpdateWithoutKnockoutInput>
+    create: XOR<TournamentPhaseCreateWithoutKnockoutInput, TournamentPhaseUncheckedCreateWithoutKnockoutInput>
+    where?: TournamentPhaseWhereInput
+  }
+
+  export type TournamentPhaseUpdateToOneWithWhereWithoutKnockoutInput = {
+    where?: TournamentPhaseWhereInput
+    data: XOR<TournamentPhaseUpdateWithoutKnockoutInput, TournamentPhaseUncheckedUpdateWithoutKnockoutInput>
+  }
+
+  export type TournamentPhaseUpdateWithoutKnockoutInput = {
+    phaseType?: EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
+    order?: IntFieldUpdateOperationsInput | number
+    isCompleted?: BoolFieldUpdateOperationsInput | boolean
+    groups?: TournamentGroupUpdateManyWithoutTournamentPhaseNestedInput
+    doubleElimination?: TournamentDoubleEliminationUpdateOneWithoutTournamentPhaseNestedInput
+    matches?: MatchUpdateManyWithoutTournamentPhaseNestedInput
+    tournament?: TournamentUpdateOneRequiredWithoutPhasesNestedInput
+  }
+
+  export type TournamentPhaseUncheckedUpdateWithoutKnockoutInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    tournamentId?: IntFieldUpdateOperationsInput | number
+    phaseType?: EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
+    order?: IntFieldUpdateOperationsInput | number
+    isCompleted?: BoolFieldUpdateOperationsInput | boolean
+    groups?: TournamentGroupUncheckedUpdateManyWithoutTournamentPhaseNestedInput
+    doubleElimination?: TournamentDoubleEliminationUncheckedUpdateOneWithoutTournamentPhaseNestedInput
+    matches?: MatchUncheckedUpdateManyWithoutTournamentPhaseNestedInput
+  }
+
+  export type MatchUpsertWithWhereUniqueWithoutKnockoutInput = {
+    where: MatchWhereUniqueInput
+    update: XOR<MatchUpdateWithoutKnockoutInput, MatchUncheckedUpdateWithoutKnockoutInput>
+    create: XOR<MatchCreateWithoutKnockoutInput, MatchUncheckedCreateWithoutKnockoutInput>
+  }
+
+  export type MatchUpdateWithWhereUniqueWithoutKnockoutInput = {
+    where: MatchWhereUniqueInput
+    data: XOR<MatchUpdateWithoutKnockoutInput, MatchUncheckedUpdateWithoutKnockoutInput>
+  }
+
+  export type MatchUpdateManyWithWhereWithoutKnockoutInput = {
+    where: MatchScalarWhereInput
+    data: XOR<MatchUpdateManyMutationInput, MatchUncheckedUpdateManyWithoutKnockoutInput>
+  }
+
+  export type TournamentKnockoutCreateWithoutTournamentPhaseInput = {
     currentRound?: number
     isOver?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    matches?: MatchUncheckedCreateNestedManyWithoutEliminationInput
+    matches?: MatchCreateNestedManyWithoutKnockoutInput
   }
 
-  export type EliminationCreateOrConnectWithoutTournamentPhaseInput = {
-    where: EliminationWhereUniqueInput
-    create: XOR<EliminationCreateWithoutTournamentPhaseInput, EliminationUncheckedCreateWithoutTournamentPhaseInput>
+  export type TournamentKnockoutUncheckedCreateWithoutTournamentPhaseInput = {
+    id?: number
+    currentRound?: number
+    isOver?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    matches?: MatchUncheckedCreateNestedManyWithoutKnockoutInput
+  }
+
+  export type TournamentKnockoutCreateOrConnectWithoutTournamentPhaseInput = {
+    where: TournamentKnockoutWhereUniqueInput
+    create: XOR<TournamentKnockoutCreateWithoutTournamentPhaseInput, TournamentKnockoutUncheckedCreateWithoutTournamentPhaseInput>
   }
 
   export type TournamentGroupCreateWithoutTournamentPhaseInput = {
     name: string
     groupNumber: number
-    isGroupMatchesEnded?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     participantGroups?: ParticipantGroupCreateNestedManyWithoutGroupInput
@@ -18595,7 +22297,6 @@ export namespace Prisma {
     id?: number
     name: string
     groupNumber: number
-    isGroupMatchesEnded?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     participantGroups?: ParticipantGroupUncheckedCreateNestedManyWithoutGroupInput
@@ -18612,8 +22313,32 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type TournamentDoubleEliminationCreateWithoutTournamentPhaseInput = {
+    roundNumber?: number
+    isActive: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    participantDoubleEliminations?: ParticipantDoubleEliminationCreateNestedManyWithoutEliminationInput
+    matches?: MatchCreateNestedManyWithoutDoubleEliminationInput
+  }
+
+  export type TournamentDoubleEliminationUncheckedCreateWithoutTournamentPhaseInput = {
+    id?: number
+    roundNumber?: number
+    isActive: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    participantDoubleEliminations?: ParticipantDoubleEliminationUncheckedCreateNestedManyWithoutEliminationInput
+    matches?: MatchUncheckedCreateNestedManyWithoutDoubleEliminationInput
+  }
+
+  export type TournamentDoubleEliminationCreateOrConnectWithoutTournamentPhaseInput = {
+    where: TournamentDoubleEliminationWhereUniqueInput
+    create: XOR<TournamentDoubleEliminationCreateWithoutTournamentPhaseInput, TournamentDoubleEliminationUncheckedCreateWithoutTournamentPhaseInput>
+  }
+
   export type MatchCreateWithoutTournamentPhaseInput = {
-    round?: number | null
+    doubleEliminationRound?: number | null
     serialNumber?: number | null
     winnerElo?: number | null
     loserElo?: number | null
@@ -18623,8 +22348,9 @@ export namespace Prisma {
     matchType: $Enums.MatchType
     createdAt?: Date | string
     updatedAt?: Date | string
-    elimination?: EliminationCreateNestedOneWithoutMatchesInput
+    knockout?: TournamentKnockoutCreateNestedOneWithoutMatchesInput
     group?: TournamentGroupCreateNestedOneWithoutMatchesInput
+    doubleElimination?: TournamentDoubleEliminationCreateNestedOneWithoutMatchesInput
     participant1?: ParticipantCreateNestedOneWithoutMatchesAsP1Input
     participant2?: ParticipantCreateNestedOneWithoutMatchesAsP2Input
     winner?: ParticipantCreateNestedOneWithoutMatchesWonInput
@@ -18635,14 +22361,15 @@ export namespace Prisma {
 
   export type MatchUncheckedCreateWithoutTournamentPhaseInput = {
     id?: number
-    eliminationId?: number | null
+    knockoutId?: number | null
     tournamentGroupId?: number | null
+    tournamentDoubleEliminationId?: number | null
+    doubleEliminationRound?: number | null
     participant1Id?: number | null
     participant2Id?: number | null
     winnerId?: number | null
     loserId?: number | null
     nextMatchId?: number | null
-    round?: number | null
     serialNumber?: number | null
     winnerElo?: number | null
     loserElo?: number | null
@@ -18691,34 +22418,32 @@ export namespace Prisma {
     create: XOR<TournamentCreateWithoutPhasesInput, TournamentUncheckedCreateWithoutPhasesInput>
   }
 
-  export type EliminationUpsertWithoutTournamentPhaseInput = {
-    update: XOR<EliminationUpdateWithoutTournamentPhaseInput, EliminationUncheckedUpdateWithoutTournamentPhaseInput>
-    create: XOR<EliminationCreateWithoutTournamentPhaseInput, EliminationUncheckedCreateWithoutTournamentPhaseInput>
-    where?: EliminationWhereInput
+  export type TournamentKnockoutUpsertWithoutTournamentPhaseInput = {
+    update: XOR<TournamentKnockoutUpdateWithoutTournamentPhaseInput, TournamentKnockoutUncheckedUpdateWithoutTournamentPhaseInput>
+    create: XOR<TournamentKnockoutCreateWithoutTournamentPhaseInput, TournamentKnockoutUncheckedCreateWithoutTournamentPhaseInput>
+    where?: TournamentKnockoutWhereInput
   }
 
-  export type EliminationUpdateToOneWithWhereWithoutTournamentPhaseInput = {
-    where?: EliminationWhereInput
-    data: XOR<EliminationUpdateWithoutTournamentPhaseInput, EliminationUncheckedUpdateWithoutTournamentPhaseInput>
+  export type TournamentKnockoutUpdateToOneWithWhereWithoutTournamentPhaseInput = {
+    where?: TournamentKnockoutWhereInput
+    data: XOR<TournamentKnockoutUpdateWithoutTournamentPhaseInput, TournamentKnockoutUncheckedUpdateWithoutTournamentPhaseInput>
   }
 
-  export type EliminationUpdateWithoutTournamentPhaseInput = {
-    type?: EnumEliminationTypeFieldUpdateOperationsInput | $Enums.EliminationType
+  export type TournamentKnockoutUpdateWithoutTournamentPhaseInput = {
     currentRound?: IntFieldUpdateOperationsInput | number
     isOver?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    matches?: MatchUpdateManyWithoutEliminationNestedInput
+    matches?: MatchUpdateManyWithoutKnockoutNestedInput
   }
 
-  export type EliminationUncheckedUpdateWithoutTournamentPhaseInput = {
+  export type TournamentKnockoutUncheckedUpdateWithoutTournamentPhaseInput = {
     id?: IntFieldUpdateOperationsInput | number
-    type?: EnumEliminationTypeFieldUpdateOperationsInput | $Enums.EliminationType
     currentRound?: IntFieldUpdateOperationsInput | number
     isOver?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    matches?: MatchUncheckedUpdateManyWithoutEliminationNestedInput
+    matches?: MatchUncheckedUpdateManyWithoutKnockoutNestedInput
   }
 
   export type TournamentGroupUpsertWithWhereUniqueWithoutTournamentPhaseInput = {
@@ -18745,9 +22470,38 @@ export namespace Prisma {
     name?: StringFilter<"TournamentGroup"> | string
     tournamentPhaseId?: IntFilter<"TournamentGroup"> | number
     groupNumber?: IntFilter<"TournamentGroup"> | number
-    isGroupMatchesEnded?: BoolFilter<"TournamentGroup"> | boolean
     createdAt?: DateTimeFilter<"TournamentGroup"> | Date | string
     updatedAt?: DateTimeFilter<"TournamentGroup"> | Date | string
+  }
+
+  export type TournamentDoubleEliminationUpsertWithoutTournamentPhaseInput = {
+    update: XOR<TournamentDoubleEliminationUpdateWithoutTournamentPhaseInput, TournamentDoubleEliminationUncheckedUpdateWithoutTournamentPhaseInput>
+    create: XOR<TournamentDoubleEliminationCreateWithoutTournamentPhaseInput, TournamentDoubleEliminationUncheckedCreateWithoutTournamentPhaseInput>
+    where?: TournamentDoubleEliminationWhereInput
+  }
+
+  export type TournamentDoubleEliminationUpdateToOneWithWhereWithoutTournamentPhaseInput = {
+    where?: TournamentDoubleEliminationWhereInput
+    data: XOR<TournamentDoubleEliminationUpdateWithoutTournamentPhaseInput, TournamentDoubleEliminationUncheckedUpdateWithoutTournamentPhaseInput>
+  }
+
+  export type TournamentDoubleEliminationUpdateWithoutTournamentPhaseInput = {
+    roundNumber?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    participantDoubleEliminations?: ParticipantDoubleEliminationUpdateManyWithoutEliminationNestedInput
+    matches?: MatchUpdateManyWithoutDoubleEliminationNestedInput
+  }
+
+  export type TournamentDoubleEliminationUncheckedUpdateWithoutTournamentPhaseInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    roundNumber?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    participantDoubleEliminations?: ParticipantDoubleEliminationUncheckedUpdateManyWithoutEliminationNestedInput
+    matches?: MatchUncheckedUpdateManyWithoutDoubleEliminationNestedInput
   }
 
   export type MatchUpsertWithWhereUniqueWithoutTournamentPhaseInput = {
@@ -18833,6 +22587,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     tournaments?: ParticipantTournamentCreateNestedManyWithoutParticipantInput
+    doubleEliminations?: ParticipantDoubleEliminationCreateNestedManyWithoutParticipantInput
     groups?: ParticipantGroupCreateNestedManyWithoutParticipantInput
     matchesAsP1?: MatchCreateNestedManyWithoutParticipant1Input
     matchesAsP2?: MatchCreateNestedManyWithoutParticipant2Input
@@ -18850,6 +22605,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     tournaments?: ParticipantTournamentUncheckedCreateNestedManyWithoutParticipantInput
+    doubleEliminations?: ParticipantDoubleEliminationUncheckedCreateNestedManyWithoutParticipantInput
     groups?: ParticipantGroupUncheckedCreateNestedManyWithoutParticipantInput
     matchesAsP1?: MatchUncheckedCreateNestedManyWithoutParticipant1Input
     matchesAsP2?: MatchUncheckedCreateNestedManyWithoutParticipant2Input
@@ -18914,6 +22670,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tournaments?: ParticipantTournamentUpdateManyWithoutParticipantNestedInput
+    doubleEliminations?: ParticipantDoubleEliminationUpdateManyWithoutParticipantNestedInput
     groups?: ParticipantGroupUpdateManyWithoutParticipantNestedInput
     matchesAsP1?: MatchUpdateManyWithoutParticipant1NestedInput
     matchesAsP2?: MatchUpdateManyWithoutParticipant2NestedInput
@@ -18931,6 +22688,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tournaments?: ParticipantTournamentUncheckedUpdateManyWithoutParticipantNestedInput
+    doubleEliminations?: ParticipantDoubleEliminationUncheckedUpdateManyWithoutParticipantNestedInput
     groups?: ParticipantGroupUncheckedUpdateManyWithoutParticipantNestedInput
     matchesAsP1?: MatchUncheckedUpdateManyWithoutParticipant1NestedInput
     matchesAsP2?: MatchUncheckedUpdateManyWithoutParticipant2NestedInput
@@ -18938,101 +22696,17 @@ export namespace Prisma {
     matchesLost?: MatchUncheckedUpdateManyWithoutLoserNestedInput
   }
 
-  export type MatchCreateManyEliminationInput = {
-    id?: number
-    tournamentPhaseId: number
-    tournamentGroupId?: number | null
-    participant1Id?: number | null
-    participant2Id?: number | null
-    winnerId?: number | null
-    loserId?: number | null
-    nextMatchId?: number | null
-    round?: number | null
-    serialNumber?: number | null
-    winnerElo?: number | null
-    loserElo?: number | null
-    eloWon?: number | null
-    eloLost?: number | null
-    isOver?: boolean
-    matchType: $Enums.MatchType
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type MatchUpdateWithoutEliminationInput = {
-    round?: NullableIntFieldUpdateOperationsInput | number | null
-    serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
-    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
-    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
-    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
-    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
-    isOver?: BoolFieldUpdateOperationsInput | boolean
-    matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    tournamentPhase?: TournamentPhaseUpdateOneRequiredWithoutMatchesNestedInput
-    group?: TournamentGroupUpdateOneWithoutMatchesNestedInput
-    participant1?: ParticipantUpdateOneWithoutMatchesAsP1NestedInput
-    participant2?: ParticipantUpdateOneWithoutMatchesAsP2NestedInput
-    winner?: ParticipantUpdateOneWithoutMatchesWonNestedInput
-    loser?: ParticipantUpdateOneWithoutMatchesLostNestedInput
-    nextMatch?: MatchUpdateOneWithoutPrevMatchesNestedInput
-    prevMatches?: MatchUpdateManyWithoutNextMatchNestedInput
-  }
-
-  export type MatchUncheckedUpdateWithoutEliminationInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    tournamentPhaseId?: IntFieldUpdateOperationsInput | number
-    tournamentGroupId?: NullableIntFieldUpdateOperationsInput | number | null
-    participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
-    participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
-    winnerId?: NullableIntFieldUpdateOperationsInput | number | null
-    loserId?: NullableIntFieldUpdateOperationsInput | number | null
-    nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
-    round?: NullableIntFieldUpdateOperationsInput | number | null
-    serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
-    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
-    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
-    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
-    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
-    isOver?: BoolFieldUpdateOperationsInput | boolean
-    matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    prevMatches?: MatchUncheckedUpdateManyWithoutNextMatchNestedInput
-  }
-
-  export type MatchUncheckedUpdateManyWithoutEliminationInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    tournamentPhaseId?: IntFieldUpdateOperationsInput | number
-    tournamentGroupId?: NullableIntFieldUpdateOperationsInput | number | null
-    participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
-    participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
-    winnerId?: NullableIntFieldUpdateOperationsInput | number | null
-    loserId?: NullableIntFieldUpdateOperationsInput | number | null
-    nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
-    round?: NullableIntFieldUpdateOperationsInput | number | null
-    serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
-    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
-    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
-    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
-    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
-    isOver?: BoolFieldUpdateOperationsInput | boolean
-    matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type MatchCreateManyNextMatchInput = {
     id?: number
     tournamentPhaseId: number
-    eliminationId?: number | null
+    knockoutId?: number | null
     tournamentGroupId?: number | null
+    tournamentDoubleEliminationId?: number | null
+    doubleEliminationRound?: number | null
     participant1Id?: number | null
     participant2Id?: number | null
     winnerId?: number | null
     loserId?: number | null
-    round?: number | null
     serialNumber?: number | null
     winnerElo?: number | null
     loserElo?: number | null
@@ -19045,7 +22719,7 @@ export namespace Prisma {
   }
 
   export type MatchUpdateWithoutNextMatchInput = {
-    round?: NullableIntFieldUpdateOperationsInput | number | null
+    doubleEliminationRound?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
     winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
     loserElo?: NullableIntFieldUpdateOperationsInput | number | null
@@ -19056,8 +22730,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tournamentPhase?: TournamentPhaseUpdateOneRequiredWithoutMatchesNestedInput
-    elimination?: EliminationUpdateOneWithoutMatchesNestedInput
+    knockout?: TournamentKnockoutUpdateOneWithoutMatchesNestedInput
     group?: TournamentGroupUpdateOneWithoutMatchesNestedInput
+    doubleElimination?: TournamentDoubleEliminationUpdateOneWithoutMatchesNestedInput
     participant1?: ParticipantUpdateOneWithoutMatchesAsP1NestedInput
     participant2?: ParticipantUpdateOneWithoutMatchesAsP2NestedInput
     winner?: ParticipantUpdateOneWithoutMatchesWonNestedInput
@@ -19068,13 +22743,14 @@ export namespace Prisma {
   export type MatchUncheckedUpdateWithoutNextMatchInput = {
     id?: IntFieldUpdateOperationsInput | number
     tournamentPhaseId?: IntFieldUpdateOperationsInput | number
-    eliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    knockoutId?: NullableIntFieldUpdateOperationsInput | number | null
     tournamentGroupId?: NullableIntFieldUpdateOperationsInput | number | null
+    tournamentDoubleEliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    doubleEliminationRound?: NullableIntFieldUpdateOperationsInput | number | null
     participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
     participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
     winnerId?: NullableIntFieldUpdateOperationsInput | number | null
     loserId?: NullableIntFieldUpdateOperationsInput | number | null
-    round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
     winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
     loserElo?: NullableIntFieldUpdateOperationsInput | number | null
@@ -19090,13 +22766,14 @@ export namespace Prisma {
   export type MatchUncheckedUpdateManyWithoutNextMatchInput = {
     id?: IntFieldUpdateOperationsInput | number
     tournamentPhaseId?: IntFieldUpdateOperationsInput | number
-    eliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    knockoutId?: NullableIntFieldUpdateOperationsInput | number | null
     tournamentGroupId?: NullableIntFieldUpdateOperationsInput | number | null
+    tournamentDoubleEliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    doubleEliminationRound?: NullableIntFieldUpdateOperationsInput | number | null
     participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
     participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
     winnerId?: NullableIntFieldUpdateOperationsInput | number | null
     loserId?: NullableIntFieldUpdateOperationsInput | number | null
-    round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
     winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
     loserElo?: NullableIntFieldUpdateOperationsInput | number | null
@@ -19117,12 +22794,21 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type ParticipantDoubleEliminationCreateManyParticipantInput = {
+    id?: number
+    tournamentDoubleEliminationId: number
+    wins?: number
+    losses?: number
+    doubleEliminationBracket?: $Enums.DoubleEliminationBracket
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type ParticipantGroupCreateManyParticipantInput = {
     id?: number
     tournamentGroupId: number
     wins?: number
     losses?: number
-    points?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -19130,13 +22816,14 @@ export namespace Prisma {
   export type MatchCreateManyParticipant1Input = {
     id?: number
     tournamentPhaseId: number
-    eliminationId?: number | null
+    knockoutId?: number | null
     tournamentGroupId?: number | null
+    tournamentDoubleEliminationId?: number | null
+    doubleEliminationRound?: number | null
     participant2Id?: number | null
     winnerId?: number | null
     loserId?: number | null
     nextMatchId?: number | null
-    round?: number | null
     serialNumber?: number | null
     winnerElo?: number | null
     loserElo?: number | null
@@ -19151,13 +22838,14 @@ export namespace Prisma {
   export type MatchCreateManyParticipant2Input = {
     id?: number
     tournamentPhaseId: number
-    eliminationId?: number | null
+    knockoutId?: number | null
     tournamentGroupId?: number | null
+    tournamentDoubleEliminationId?: number | null
+    doubleEliminationRound?: number | null
     participant1Id?: number | null
     winnerId?: number | null
     loserId?: number | null
     nextMatchId?: number | null
-    round?: number | null
     serialNumber?: number | null
     winnerElo?: number | null
     loserElo?: number | null
@@ -19172,13 +22860,14 @@ export namespace Prisma {
   export type MatchCreateManyWinnerInput = {
     id?: number
     tournamentPhaseId: number
-    eliminationId?: number | null
+    knockoutId?: number | null
     tournamentGroupId?: number | null
+    tournamentDoubleEliminationId?: number | null
+    doubleEliminationRound?: number | null
     participant1Id?: number | null
     participant2Id?: number | null
     loserId?: number | null
     nextMatchId?: number | null
-    round?: number | null
     serialNumber?: number | null
     winnerElo?: number | null
     loserElo?: number | null
@@ -19193,13 +22882,14 @@ export namespace Prisma {
   export type MatchCreateManyLoserInput = {
     id?: number
     tournamentPhaseId: number
-    eliminationId?: number | null
+    knockoutId?: number | null
     tournamentGroupId?: number | null
+    tournamentDoubleEliminationId?: number | null
+    doubleEliminationRound?: number | null
     participant1Id?: number | null
     participant2Id?: number | null
     winnerId?: number | null
     nextMatchId?: number | null
-    round?: number | null
     serialNumber?: number | null
     winnerElo?: number | null
     loserElo?: number | null
@@ -19245,10 +22935,38 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ParticipantDoubleEliminationUpdateWithoutParticipantInput = {
+    wins?: IntFieldUpdateOperationsInput | number
+    losses?: IntFieldUpdateOperationsInput | number
+    doubleEliminationBracket?: EnumDoubleEliminationBracketFieldUpdateOperationsInput | $Enums.DoubleEliminationBracket
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    elimination?: TournamentDoubleEliminationUpdateOneRequiredWithoutParticipantDoubleEliminationsNestedInput
+  }
+
+  export type ParticipantDoubleEliminationUncheckedUpdateWithoutParticipantInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    tournamentDoubleEliminationId?: IntFieldUpdateOperationsInput | number
+    wins?: IntFieldUpdateOperationsInput | number
+    losses?: IntFieldUpdateOperationsInput | number
+    doubleEliminationBracket?: EnumDoubleEliminationBracketFieldUpdateOperationsInput | $Enums.DoubleEliminationBracket
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ParticipantDoubleEliminationUncheckedUpdateManyWithoutParticipantInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    tournamentDoubleEliminationId?: IntFieldUpdateOperationsInput | number
+    wins?: IntFieldUpdateOperationsInput | number
+    losses?: IntFieldUpdateOperationsInput | number
+    doubleEliminationBracket?: EnumDoubleEliminationBracketFieldUpdateOperationsInput | $Enums.DoubleEliminationBracket
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ParticipantGroupUpdateWithoutParticipantInput = {
     wins?: IntFieldUpdateOperationsInput | number
     losses?: IntFieldUpdateOperationsInput | number
-    points?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     group?: TournamentGroupUpdateOneRequiredWithoutParticipantGroupsNestedInput
@@ -19259,7 +22977,6 @@ export namespace Prisma {
     tournamentGroupId?: IntFieldUpdateOperationsInput | number
     wins?: IntFieldUpdateOperationsInput | number
     losses?: IntFieldUpdateOperationsInput | number
-    points?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -19269,13 +22986,12 @@ export namespace Prisma {
     tournamentGroupId?: IntFieldUpdateOperationsInput | number
     wins?: IntFieldUpdateOperationsInput | number
     losses?: IntFieldUpdateOperationsInput | number
-    points?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type MatchUpdateWithoutParticipant1Input = {
-    round?: NullableIntFieldUpdateOperationsInput | number | null
+    doubleEliminationRound?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
     winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
     loserElo?: NullableIntFieldUpdateOperationsInput | number | null
@@ -19286,8 +23002,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tournamentPhase?: TournamentPhaseUpdateOneRequiredWithoutMatchesNestedInput
-    elimination?: EliminationUpdateOneWithoutMatchesNestedInput
+    knockout?: TournamentKnockoutUpdateOneWithoutMatchesNestedInput
     group?: TournamentGroupUpdateOneWithoutMatchesNestedInput
+    doubleElimination?: TournamentDoubleEliminationUpdateOneWithoutMatchesNestedInput
     participant2?: ParticipantUpdateOneWithoutMatchesAsP2NestedInput
     winner?: ParticipantUpdateOneWithoutMatchesWonNestedInput
     loser?: ParticipantUpdateOneWithoutMatchesLostNestedInput
@@ -19298,13 +23015,14 @@ export namespace Prisma {
   export type MatchUncheckedUpdateWithoutParticipant1Input = {
     id?: IntFieldUpdateOperationsInput | number
     tournamentPhaseId?: IntFieldUpdateOperationsInput | number
-    eliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    knockoutId?: NullableIntFieldUpdateOperationsInput | number | null
     tournamentGroupId?: NullableIntFieldUpdateOperationsInput | number | null
+    tournamentDoubleEliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    doubleEliminationRound?: NullableIntFieldUpdateOperationsInput | number | null
     participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
     winnerId?: NullableIntFieldUpdateOperationsInput | number | null
     loserId?: NullableIntFieldUpdateOperationsInput | number | null
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
-    round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
     winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
     loserElo?: NullableIntFieldUpdateOperationsInput | number | null
@@ -19320,13 +23038,14 @@ export namespace Prisma {
   export type MatchUncheckedUpdateManyWithoutParticipant1Input = {
     id?: IntFieldUpdateOperationsInput | number
     tournamentPhaseId?: IntFieldUpdateOperationsInput | number
-    eliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    knockoutId?: NullableIntFieldUpdateOperationsInput | number | null
     tournamentGroupId?: NullableIntFieldUpdateOperationsInput | number | null
+    tournamentDoubleEliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    doubleEliminationRound?: NullableIntFieldUpdateOperationsInput | number | null
     participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
     winnerId?: NullableIntFieldUpdateOperationsInput | number | null
     loserId?: NullableIntFieldUpdateOperationsInput | number | null
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
-    round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
     winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
     loserElo?: NullableIntFieldUpdateOperationsInput | number | null
@@ -19339,7 +23058,7 @@ export namespace Prisma {
   }
 
   export type MatchUpdateWithoutParticipant2Input = {
-    round?: NullableIntFieldUpdateOperationsInput | number | null
+    doubleEliminationRound?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
     winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
     loserElo?: NullableIntFieldUpdateOperationsInput | number | null
@@ -19350,8 +23069,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tournamentPhase?: TournamentPhaseUpdateOneRequiredWithoutMatchesNestedInput
-    elimination?: EliminationUpdateOneWithoutMatchesNestedInput
+    knockout?: TournamentKnockoutUpdateOneWithoutMatchesNestedInput
     group?: TournamentGroupUpdateOneWithoutMatchesNestedInput
+    doubleElimination?: TournamentDoubleEliminationUpdateOneWithoutMatchesNestedInput
     participant1?: ParticipantUpdateOneWithoutMatchesAsP1NestedInput
     winner?: ParticipantUpdateOneWithoutMatchesWonNestedInput
     loser?: ParticipantUpdateOneWithoutMatchesLostNestedInput
@@ -19362,13 +23082,14 @@ export namespace Prisma {
   export type MatchUncheckedUpdateWithoutParticipant2Input = {
     id?: IntFieldUpdateOperationsInput | number
     tournamentPhaseId?: IntFieldUpdateOperationsInput | number
-    eliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    knockoutId?: NullableIntFieldUpdateOperationsInput | number | null
     tournamentGroupId?: NullableIntFieldUpdateOperationsInput | number | null
+    tournamentDoubleEliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    doubleEliminationRound?: NullableIntFieldUpdateOperationsInput | number | null
     participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
     winnerId?: NullableIntFieldUpdateOperationsInput | number | null
     loserId?: NullableIntFieldUpdateOperationsInput | number | null
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
-    round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
     winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
     loserElo?: NullableIntFieldUpdateOperationsInput | number | null
@@ -19384,13 +23105,14 @@ export namespace Prisma {
   export type MatchUncheckedUpdateManyWithoutParticipant2Input = {
     id?: IntFieldUpdateOperationsInput | number
     tournamentPhaseId?: IntFieldUpdateOperationsInput | number
-    eliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    knockoutId?: NullableIntFieldUpdateOperationsInput | number | null
     tournamentGroupId?: NullableIntFieldUpdateOperationsInput | number | null
+    tournamentDoubleEliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    doubleEliminationRound?: NullableIntFieldUpdateOperationsInput | number | null
     participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
     winnerId?: NullableIntFieldUpdateOperationsInput | number | null
     loserId?: NullableIntFieldUpdateOperationsInput | number | null
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
-    round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
     winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
     loserElo?: NullableIntFieldUpdateOperationsInput | number | null
@@ -19403,7 +23125,7 @@ export namespace Prisma {
   }
 
   export type MatchUpdateWithoutWinnerInput = {
-    round?: NullableIntFieldUpdateOperationsInput | number | null
+    doubleEliminationRound?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
     winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
     loserElo?: NullableIntFieldUpdateOperationsInput | number | null
@@ -19414,8 +23136,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tournamentPhase?: TournamentPhaseUpdateOneRequiredWithoutMatchesNestedInput
-    elimination?: EliminationUpdateOneWithoutMatchesNestedInput
+    knockout?: TournamentKnockoutUpdateOneWithoutMatchesNestedInput
     group?: TournamentGroupUpdateOneWithoutMatchesNestedInput
+    doubleElimination?: TournamentDoubleEliminationUpdateOneWithoutMatchesNestedInput
     participant1?: ParticipantUpdateOneWithoutMatchesAsP1NestedInput
     participant2?: ParticipantUpdateOneWithoutMatchesAsP2NestedInput
     loser?: ParticipantUpdateOneWithoutMatchesLostNestedInput
@@ -19426,13 +23149,14 @@ export namespace Prisma {
   export type MatchUncheckedUpdateWithoutWinnerInput = {
     id?: IntFieldUpdateOperationsInput | number
     tournamentPhaseId?: IntFieldUpdateOperationsInput | number
-    eliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    knockoutId?: NullableIntFieldUpdateOperationsInput | number | null
     tournamentGroupId?: NullableIntFieldUpdateOperationsInput | number | null
+    tournamentDoubleEliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    doubleEliminationRound?: NullableIntFieldUpdateOperationsInput | number | null
     participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
     participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
     loserId?: NullableIntFieldUpdateOperationsInput | number | null
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
-    round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
     winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
     loserElo?: NullableIntFieldUpdateOperationsInput | number | null
@@ -19448,13 +23172,14 @@ export namespace Prisma {
   export type MatchUncheckedUpdateManyWithoutWinnerInput = {
     id?: IntFieldUpdateOperationsInput | number
     tournamentPhaseId?: IntFieldUpdateOperationsInput | number
-    eliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    knockoutId?: NullableIntFieldUpdateOperationsInput | number | null
     tournamentGroupId?: NullableIntFieldUpdateOperationsInput | number | null
+    tournamentDoubleEliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    doubleEliminationRound?: NullableIntFieldUpdateOperationsInput | number | null
     participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
     participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
     loserId?: NullableIntFieldUpdateOperationsInput | number | null
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
-    round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
     winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
     loserElo?: NullableIntFieldUpdateOperationsInput | number | null
@@ -19467,7 +23192,7 @@ export namespace Prisma {
   }
 
   export type MatchUpdateWithoutLoserInput = {
-    round?: NullableIntFieldUpdateOperationsInput | number | null
+    doubleEliminationRound?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
     winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
     loserElo?: NullableIntFieldUpdateOperationsInput | number | null
@@ -19478,8 +23203,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tournamentPhase?: TournamentPhaseUpdateOneRequiredWithoutMatchesNestedInput
-    elimination?: EliminationUpdateOneWithoutMatchesNestedInput
+    knockout?: TournamentKnockoutUpdateOneWithoutMatchesNestedInput
     group?: TournamentGroupUpdateOneWithoutMatchesNestedInput
+    doubleElimination?: TournamentDoubleEliminationUpdateOneWithoutMatchesNestedInput
     participant1?: ParticipantUpdateOneWithoutMatchesAsP1NestedInput
     participant2?: ParticipantUpdateOneWithoutMatchesAsP2NestedInput
     winner?: ParticipantUpdateOneWithoutMatchesWonNestedInput
@@ -19490,13 +23216,14 @@ export namespace Prisma {
   export type MatchUncheckedUpdateWithoutLoserInput = {
     id?: IntFieldUpdateOperationsInput | number
     tournamentPhaseId?: IntFieldUpdateOperationsInput | number
-    eliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    knockoutId?: NullableIntFieldUpdateOperationsInput | number | null
     tournamentGroupId?: NullableIntFieldUpdateOperationsInput | number | null
+    tournamentDoubleEliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    doubleEliminationRound?: NullableIntFieldUpdateOperationsInput | number | null
     participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
     participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
     winnerId?: NullableIntFieldUpdateOperationsInput | number | null
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
-    round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
     winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
     loserElo?: NullableIntFieldUpdateOperationsInput | number | null
@@ -19512,13 +23239,14 @@ export namespace Prisma {
   export type MatchUncheckedUpdateManyWithoutLoserInput = {
     id?: IntFieldUpdateOperationsInput | number
     tournamentPhaseId?: IntFieldUpdateOperationsInput | number
-    eliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    knockoutId?: NullableIntFieldUpdateOperationsInput | number | null
     tournamentGroupId?: NullableIntFieldUpdateOperationsInput | number | null
+    tournamentDoubleEliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    doubleEliminationRound?: NullableIntFieldUpdateOperationsInput | number | null
     participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
     participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
     winnerId?: NullableIntFieldUpdateOperationsInput | number | null
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
-    round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
     winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
     loserElo?: NullableIntFieldUpdateOperationsInput | number | null
@@ -19581,8 +23309,9 @@ export namespace Prisma {
     phaseType?: EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
     order?: IntFieldUpdateOperationsInput | number
     isCompleted?: BoolFieldUpdateOperationsInput | boolean
-    elimination?: EliminationUpdateOneWithoutTournamentPhaseNestedInput
+    knockout?: TournamentKnockoutUpdateOneWithoutTournamentPhaseNestedInput
     groups?: TournamentGroupUpdateManyWithoutTournamentPhaseNestedInput
+    doubleElimination?: TournamentDoubleEliminationUpdateOneWithoutTournamentPhaseNestedInput
     matches?: MatchUpdateManyWithoutTournamentPhaseNestedInput
   }
 
@@ -19591,8 +23320,9 @@ export namespace Prisma {
     phaseType?: EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
     order?: IntFieldUpdateOperationsInput | number
     isCompleted?: BoolFieldUpdateOperationsInput | boolean
-    elimination?: EliminationUncheckedUpdateOneWithoutTournamentPhaseNestedInput
+    knockout?: TournamentKnockoutUncheckedUpdateOneWithoutTournamentPhaseNestedInput
     groups?: TournamentGroupUncheckedUpdateManyWithoutTournamentPhaseNestedInput
+    doubleElimination?: TournamentDoubleEliminationUncheckedUpdateOneWithoutTournamentPhaseNestedInput
     matches?: MatchUncheckedUpdateManyWithoutTournamentPhaseNestedInput
   }
 
@@ -19652,12 +23382,139 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ParticipantDoubleEliminationCreateManyEliminationInput = {
+    id?: number
+    participantId: number
+    wins?: number
+    losses?: number
+    doubleEliminationBracket?: $Enums.DoubleEliminationBracket
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MatchCreateManyDoubleEliminationInput = {
+    id?: number
+    tournamentPhaseId: number
+    knockoutId?: number | null
+    tournamentGroupId?: number | null
+    doubleEliminationRound?: number | null
+    participant1Id?: number | null
+    participant2Id?: number | null
+    winnerId?: number | null
+    loserId?: number | null
+    nextMatchId?: number | null
+    serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
+    isOver?: boolean
+    matchType: $Enums.MatchType
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ParticipantDoubleEliminationUpdateWithoutEliminationInput = {
+    wins?: IntFieldUpdateOperationsInput | number
+    losses?: IntFieldUpdateOperationsInput | number
+    doubleEliminationBracket?: EnumDoubleEliminationBracketFieldUpdateOperationsInput | $Enums.DoubleEliminationBracket
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    participant?: ParticipantUpdateOneRequiredWithoutDoubleEliminationsNestedInput
+  }
+
+  export type ParticipantDoubleEliminationUncheckedUpdateWithoutEliminationInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    participantId?: IntFieldUpdateOperationsInput | number
+    wins?: IntFieldUpdateOperationsInput | number
+    losses?: IntFieldUpdateOperationsInput | number
+    doubleEliminationBracket?: EnumDoubleEliminationBracketFieldUpdateOperationsInput | $Enums.DoubleEliminationBracket
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ParticipantDoubleEliminationUncheckedUpdateManyWithoutEliminationInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    participantId?: IntFieldUpdateOperationsInput | number
+    wins?: IntFieldUpdateOperationsInput | number
+    losses?: IntFieldUpdateOperationsInput | number
+    doubleEliminationBracket?: EnumDoubleEliminationBracketFieldUpdateOperationsInput | $Enums.DoubleEliminationBracket
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MatchUpdateWithoutDoubleEliminationInput = {
+    doubleEliminationRound?: NullableIntFieldUpdateOperationsInput | number | null
+    serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
+    isOver?: BoolFieldUpdateOperationsInput | boolean
+    matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tournamentPhase?: TournamentPhaseUpdateOneRequiredWithoutMatchesNestedInput
+    knockout?: TournamentKnockoutUpdateOneWithoutMatchesNestedInput
+    group?: TournamentGroupUpdateOneWithoutMatchesNestedInput
+    participant1?: ParticipantUpdateOneWithoutMatchesAsP1NestedInput
+    participant2?: ParticipantUpdateOneWithoutMatchesAsP2NestedInput
+    winner?: ParticipantUpdateOneWithoutMatchesWonNestedInput
+    loser?: ParticipantUpdateOneWithoutMatchesLostNestedInput
+    nextMatch?: MatchUpdateOneWithoutPrevMatchesNestedInput
+    prevMatches?: MatchUpdateManyWithoutNextMatchNestedInput
+  }
+
+  export type MatchUncheckedUpdateWithoutDoubleEliminationInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    tournamentPhaseId?: IntFieldUpdateOperationsInput | number
+    knockoutId?: NullableIntFieldUpdateOperationsInput | number | null
+    tournamentGroupId?: NullableIntFieldUpdateOperationsInput | number | null
+    doubleEliminationRound?: NullableIntFieldUpdateOperationsInput | number | null
+    participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
+    participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerId?: NullableIntFieldUpdateOperationsInput | number | null
+    loserId?: NullableIntFieldUpdateOperationsInput | number | null
+    nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
+    serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
+    isOver?: BoolFieldUpdateOperationsInput | boolean
+    matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    prevMatches?: MatchUncheckedUpdateManyWithoutNextMatchNestedInput
+  }
+
+  export type MatchUncheckedUpdateManyWithoutDoubleEliminationInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    tournamentPhaseId?: IntFieldUpdateOperationsInput | number
+    knockoutId?: NullableIntFieldUpdateOperationsInput | number | null
+    tournamentGroupId?: NullableIntFieldUpdateOperationsInput | number | null
+    doubleEliminationRound?: NullableIntFieldUpdateOperationsInput | number | null
+    participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
+    participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerId?: NullableIntFieldUpdateOperationsInput | number | null
+    loserId?: NullableIntFieldUpdateOperationsInput | number | null
+    nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
+    serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
+    isOver?: BoolFieldUpdateOperationsInput | boolean
+    matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ParticipantGroupCreateManyGroupInput = {
     id?: number
     participantId: number
     wins?: number
     losses?: number
-    points?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -19665,13 +23522,14 @@ export namespace Prisma {
   export type MatchCreateManyGroupInput = {
     id?: number
     tournamentPhaseId: number
-    eliminationId?: number | null
+    knockoutId?: number | null
+    tournamentDoubleEliminationId?: number | null
+    doubleEliminationRound?: number | null
     participant1Id?: number | null
     participant2Id?: number | null
     winnerId?: number | null
     loserId?: number | null
     nextMatchId?: number | null
-    round?: number | null
     serialNumber?: number | null
     winnerElo?: number | null
     loserElo?: number | null
@@ -19686,7 +23544,6 @@ export namespace Prisma {
   export type ParticipantGroupUpdateWithoutGroupInput = {
     wins?: IntFieldUpdateOperationsInput | number
     losses?: IntFieldUpdateOperationsInput | number
-    points?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     participant?: ParticipantUpdateOneRequiredWithoutGroupsNestedInput
@@ -19697,7 +23554,6 @@ export namespace Prisma {
     participantId?: IntFieldUpdateOperationsInput | number
     wins?: IntFieldUpdateOperationsInput | number
     losses?: IntFieldUpdateOperationsInput | number
-    points?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -19707,13 +23563,12 @@ export namespace Prisma {
     participantId?: IntFieldUpdateOperationsInput | number
     wins?: IntFieldUpdateOperationsInput | number
     losses?: IntFieldUpdateOperationsInput | number
-    points?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type MatchUpdateWithoutGroupInput = {
-    round?: NullableIntFieldUpdateOperationsInput | number | null
+    doubleEliminationRound?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
     winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
     loserElo?: NullableIntFieldUpdateOperationsInput | number | null
@@ -19724,7 +23579,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tournamentPhase?: TournamentPhaseUpdateOneRequiredWithoutMatchesNestedInput
-    elimination?: EliminationUpdateOneWithoutMatchesNestedInput
+    knockout?: TournamentKnockoutUpdateOneWithoutMatchesNestedInput
+    doubleElimination?: TournamentDoubleEliminationUpdateOneWithoutMatchesNestedInput
     participant1?: ParticipantUpdateOneWithoutMatchesAsP1NestedInput
     participant2?: ParticipantUpdateOneWithoutMatchesAsP2NestedInput
     winner?: ParticipantUpdateOneWithoutMatchesWonNestedInput
@@ -19736,13 +23592,14 @@ export namespace Prisma {
   export type MatchUncheckedUpdateWithoutGroupInput = {
     id?: IntFieldUpdateOperationsInput | number
     tournamentPhaseId?: IntFieldUpdateOperationsInput | number
-    eliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    knockoutId?: NullableIntFieldUpdateOperationsInput | number | null
+    tournamentDoubleEliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    doubleEliminationRound?: NullableIntFieldUpdateOperationsInput | number | null
     participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
     participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
     winnerId?: NullableIntFieldUpdateOperationsInput | number | null
     loserId?: NullableIntFieldUpdateOperationsInput | number | null
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
-    round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
     winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
     loserElo?: NullableIntFieldUpdateOperationsInput | number | null
@@ -19758,13 +23615,103 @@ export namespace Prisma {
   export type MatchUncheckedUpdateManyWithoutGroupInput = {
     id?: IntFieldUpdateOperationsInput | number
     tournamentPhaseId?: IntFieldUpdateOperationsInput | number
-    eliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    knockoutId?: NullableIntFieldUpdateOperationsInput | number | null
+    tournamentDoubleEliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    doubleEliminationRound?: NullableIntFieldUpdateOperationsInput | number | null
     participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
     participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
     winnerId?: NullableIntFieldUpdateOperationsInput | number | null
     loserId?: NullableIntFieldUpdateOperationsInput | number | null
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
-    round?: NullableIntFieldUpdateOperationsInput | number | null
+    serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
+    isOver?: BoolFieldUpdateOperationsInput | boolean
+    matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MatchCreateManyKnockoutInput = {
+    id?: number
+    tournamentPhaseId: number
+    tournamentGroupId?: number | null
+    tournamentDoubleEliminationId?: number | null
+    doubleEliminationRound?: number | null
+    participant1Id?: number | null
+    participant2Id?: number | null
+    winnerId?: number | null
+    loserId?: number | null
+    nextMatchId?: number | null
+    serialNumber?: number | null
+    winnerElo?: number | null
+    loserElo?: number | null
+    eloWon?: number | null
+    eloLost?: number | null
+    isOver?: boolean
+    matchType: $Enums.MatchType
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MatchUpdateWithoutKnockoutInput = {
+    doubleEliminationRound?: NullableIntFieldUpdateOperationsInput | number | null
+    serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
+    isOver?: BoolFieldUpdateOperationsInput | boolean
+    matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tournamentPhase?: TournamentPhaseUpdateOneRequiredWithoutMatchesNestedInput
+    group?: TournamentGroupUpdateOneWithoutMatchesNestedInput
+    doubleElimination?: TournamentDoubleEliminationUpdateOneWithoutMatchesNestedInput
+    participant1?: ParticipantUpdateOneWithoutMatchesAsP1NestedInput
+    participant2?: ParticipantUpdateOneWithoutMatchesAsP2NestedInput
+    winner?: ParticipantUpdateOneWithoutMatchesWonNestedInput
+    loser?: ParticipantUpdateOneWithoutMatchesLostNestedInput
+    nextMatch?: MatchUpdateOneWithoutPrevMatchesNestedInput
+    prevMatches?: MatchUpdateManyWithoutNextMatchNestedInput
+  }
+
+  export type MatchUncheckedUpdateWithoutKnockoutInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    tournamentPhaseId?: IntFieldUpdateOperationsInput | number
+    tournamentGroupId?: NullableIntFieldUpdateOperationsInput | number | null
+    tournamentDoubleEliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    doubleEliminationRound?: NullableIntFieldUpdateOperationsInput | number | null
+    participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
+    participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerId?: NullableIntFieldUpdateOperationsInput | number | null
+    loserId?: NullableIntFieldUpdateOperationsInput | number | null
+    nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
+    serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
+    loserElo?: NullableIntFieldUpdateOperationsInput | number | null
+    eloWon?: NullableIntFieldUpdateOperationsInput | number | null
+    eloLost?: NullableIntFieldUpdateOperationsInput | number | null
+    isOver?: BoolFieldUpdateOperationsInput | boolean
+    matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    prevMatches?: MatchUncheckedUpdateManyWithoutNextMatchNestedInput
+  }
+
+  export type MatchUncheckedUpdateManyWithoutKnockoutInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    tournamentPhaseId?: IntFieldUpdateOperationsInput | number
+    tournamentGroupId?: NullableIntFieldUpdateOperationsInput | number | null
+    tournamentDoubleEliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    doubleEliminationRound?: NullableIntFieldUpdateOperationsInput | number | null
+    participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
+    participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerId?: NullableIntFieldUpdateOperationsInput | number | null
+    loserId?: NullableIntFieldUpdateOperationsInput | number | null
+    nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
     winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
     loserElo?: NullableIntFieldUpdateOperationsInput | number | null
@@ -19780,21 +23727,21 @@ export namespace Prisma {
     id?: number
     name: string
     groupNumber: number
-    isGroupMatchesEnded?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type MatchCreateManyTournamentPhaseInput = {
     id?: number
-    eliminationId?: number | null
+    knockoutId?: number | null
     tournamentGroupId?: number | null
+    tournamentDoubleEliminationId?: number | null
+    doubleEliminationRound?: number | null
     participant1Id?: number | null
     participant2Id?: number | null
     winnerId?: number | null
     loserId?: number | null
     nextMatchId?: number | null
-    round?: number | null
     serialNumber?: number | null
     winnerElo?: number | null
     loserElo?: number | null
@@ -19809,7 +23756,6 @@ export namespace Prisma {
   export type TournamentGroupUpdateWithoutTournamentPhaseInput = {
     name?: StringFieldUpdateOperationsInput | string
     groupNumber?: IntFieldUpdateOperationsInput | number
-    isGroupMatchesEnded?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     participantGroups?: ParticipantGroupUpdateManyWithoutGroupNestedInput
@@ -19820,7 +23766,6 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     groupNumber?: IntFieldUpdateOperationsInput | number
-    isGroupMatchesEnded?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     participantGroups?: ParticipantGroupUncheckedUpdateManyWithoutGroupNestedInput
@@ -19831,13 +23776,12 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     groupNumber?: IntFieldUpdateOperationsInput | number
-    isGroupMatchesEnded?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type MatchUpdateWithoutTournamentPhaseInput = {
-    round?: NullableIntFieldUpdateOperationsInput | number | null
+    doubleEliminationRound?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
     winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
     loserElo?: NullableIntFieldUpdateOperationsInput | number | null
@@ -19847,8 +23791,9 @@ export namespace Prisma {
     matchType?: EnumMatchTypeFieldUpdateOperationsInput | $Enums.MatchType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    elimination?: EliminationUpdateOneWithoutMatchesNestedInput
+    knockout?: TournamentKnockoutUpdateOneWithoutMatchesNestedInput
     group?: TournamentGroupUpdateOneWithoutMatchesNestedInput
+    doubleElimination?: TournamentDoubleEliminationUpdateOneWithoutMatchesNestedInput
     participant1?: ParticipantUpdateOneWithoutMatchesAsP1NestedInput
     participant2?: ParticipantUpdateOneWithoutMatchesAsP2NestedInput
     winner?: ParticipantUpdateOneWithoutMatchesWonNestedInput
@@ -19859,14 +23804,15 @@ export namespace Prisma {
 
   export type MatchUncheckedUpdateWithoutTournamentPhaseInput = {
     id?: IntFieldUpdateOperationsInput | number
-    eliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    knockoutId?: NullableIntFieldUpdateOperationsInput | number | null
     tournamentGroupId?: NullableIntFieldUpdateOperationsInput | number | null
+    tournamentDoubleEliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    doubleEliminationRound?: NullableIntFieldUpdateOperationsInput | number | null
     participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
     participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
     winnerId?: NullableIntFieldUpdateOperationsInput | number | null
     loserId?: NullableIntFieldUpdateOperationsInput | number | null
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
-    round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
     winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
     loserElo?: NullableIntFieldUpdateOperationsInput | number | null
@@ -19881,14 +23827,15 @@ export namespace Prisma {
 
   export type MatchUncheckedUpdateManyWithoutTournamentPhaseInput = {
     id?: IntFieldUpdateOperationsInput | number
-    eliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    knockoutId?: NullableIntFieldUpdateOperationsInput | number | null
     tournamentGroupId?: NullableIntFieldUpdateOperationsInput | number | null
+    tournamentDoubleEliminationId?: NullableIntFieldUpdateOperationsInput | number | null
+    doubleEliminationRound?: NullableIntFieldUpdateOperationsInput | number | null
     participant1Id?: NullableIntFieldUpdateOperationsInput | number | null
     participant2Id?: NullableIntFieldUpdateOperationsInput | number | null
     winnerId?: NullableIntFieldUpdateOperationsInput | number | null
     loserId?: NullableIntFieldUpdateOperationsInput | number | null
     nextMatchId?: NullableIntFieldUpdateOperationsInput | number | null
-    round?: NullableIntFieldUpdateOperationsInput | number | null
     serialNumber?: NullableIntFieldUpdateOperationsInput | number | null
     winnerElo?: NullableIntFieldUpdateOperationsInput | number | null
     loserElo?: NullableIntFieldUpdateOperationsInput | number | null

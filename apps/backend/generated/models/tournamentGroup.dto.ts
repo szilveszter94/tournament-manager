@@ -16,10 +16,6 @@ export class TournamentGroupDto {
   })
   groupNumber: number;
   @ApiProperty({
-    type: 'boolean',
-  })
-  isGroupMatchesEnded: boolean;
-  @ApiProperty({
     type: 'string',
     format: 'date-time',
   })

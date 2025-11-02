@@ -14,12 +14,12 @@ export type CreateGroupMatch = Pick<
 export type CreateDoubleEliminationMatch = Pick<
   Match,
   | 'tournamentPhaseId'
-  | 'eliminationId'
+  | 'tournamentDoubleEliminationId'
   | 'participant1Id'
   | 'participant2Id'
   | 'serialNumber'
   | 'matchType'
-  | 'round'
+  | 'doubleEliminationRound'
 >;
 
 export class UpdateMatchWinnerDto extends PickType(Match, [

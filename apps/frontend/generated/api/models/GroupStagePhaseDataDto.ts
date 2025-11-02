@@ -2,8 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { ParticipantTournamentGroup } from './ParticipantTournamentGroup';
+import type { ParticipantTournamentGroupDto } from './ParticipantTournamentGroupDto';
 export type GroupStagePhaseDataDto = {
-    groups: Array<ParticipantTournamentGroup>;
+    groups: Array<ParticipantTournamentGroupDto>;
 };
 

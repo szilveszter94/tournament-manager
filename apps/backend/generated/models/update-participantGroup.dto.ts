@@ -16,13 +16,6 @@ export class UpdateParticipantGroupDto {
   })
   losses?: number;
   @ApiProperty({
-    type: 'integer',
-    format: 'int32',
-    default: 0,
-    required: false,
-  })
-  points?: number;
-  @ApiProperty({
     type: 'string',
     format: 'date-time',
     default: new Date().toISOString(),
