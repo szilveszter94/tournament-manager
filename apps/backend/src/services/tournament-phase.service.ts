@@ -124,7 +124,6 @@ export class TournamentPhaseService {
           data: {
             tournamentPhaseId: phase.id,
             roundNumber: 1,
-            isActive: true,
           },
         });
 

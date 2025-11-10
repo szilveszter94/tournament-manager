@@ -49,4 +49,5 @@ export { MatchService } from './services/MatchService';
 export { ParticipantService } from './services/ParticipantService';
 export { ParticipantTournamentService } from './services/ParticipantTournamentService';
 export { TournamentService } from './services/TournamentService';
+export { TournamentDoubleEliminationService } from './services/TournamentDoubleEliminationService';
 export { TournamentPhaseService } from './services/TournamentPhaseService';

@@ -3,9 +3,10 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
 import { TournamentModule } from './modules/tournament.module';
 import { ConfigModule } from '@nestjs/config';
 import { ParticipantModule } from './modules/participant.module';
-import { ParticipantTournamentModule } from './modules/participantTournament.module';
-import { TournamentPhaseModule } from './modules/tournamentPhase.module';
+import { ParticipantTournamentModule } from './modules/participant-tournament.module';
+import { TournamentPhaseModule } from './modules/tournament-phase.module';
 import { MatchModule } from './modules/match.module';
+import { TournamentDoubleEliminationModule } from './modules/tournament-double-elimination.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { MatchModule } from './modules/match.module';
     ParticipantModule,
     ParticipantTournamentModule,
     TournamentPhaseModule,
+    TournamentDoubleEliminationModule,
     MatchModule,
   ],
   controllers: [],

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { PrismaService } from '../services/prisma.service';
-import { MatchController } from '../controllers/matchController';
+import { MatchController } from '../controllers/match.controller';
 import { MatchService } from '../services/match.service';
 
 @Module({

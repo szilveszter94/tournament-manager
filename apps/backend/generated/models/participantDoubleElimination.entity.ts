@@ -30,6 +30,11 @@ export class ParticipantDoubleElimination {
   })
   losses: number;
   @ApiProperty({
+    type: 'integer',
+    format: 'int32',
+  })
+  roundNumber: number;
+  @ApiProperty({
     enum: DoubleEliminationBracket,
     enumName: 'DoubleEliminationBracket',
   })

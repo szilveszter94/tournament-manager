@@ -44,6 +44,10 @@ export class TournamentService {
         return this.loader.loadDoubleEliminations(id);
       }
 
+      if (tournament.status === TournamentStatus.Over) {
+        return this.loader.loadTournamentOver(id);
+      }
+
       return this.loader.loadDefault(id);
     } catch (e) {
       this.logger.error(`Database error while finding tournament ${id}`, e);

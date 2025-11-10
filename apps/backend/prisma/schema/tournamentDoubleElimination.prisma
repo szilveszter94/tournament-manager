@@ -2,7 +2,6 @@ model TournamentDoubleElimination {
   id                Int      @id @default(autoincrement())
   tournamentPhaseId Int      @unique
   roundNumber       Int      @default(1)
-  isActive          Boolean
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 

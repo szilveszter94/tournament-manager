@@ -17,6 +17,13 @@ export class CreateParticipantDoubleEliminationDto {
   })
   losses?: number;
   @ApiProperty({
+    type: 'integer',
+    format: 'int32',
+    default: 1,
+    required: false,
+  })
+  roundNumber?: number;
+  @ApiProperty({
     enum: DoubleEliminationBracket,
     enumName: 'DoubleEliminationBracket',
     default: 'Winner',

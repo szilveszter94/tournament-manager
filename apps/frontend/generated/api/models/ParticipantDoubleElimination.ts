@@ -11,6 +11,7 @@ export type ParticipantDoubleElimination = {
     participantId: number;
     wins: number;
     losses: number;
+    roundNumber: number;
     doubleEliminationBracket: DoubleEliminationBracket;
     createdAt: string;
     updatedAt: string;

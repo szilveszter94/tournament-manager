@@ -848,6 +848,68 @@
         ]
       }
     },
+    "/tournamentDoubleElimination/{tournamentId}/update": {
+      "post": {
+        "operationId": "TournamentDoubleEliminationController_updateDoubleElimination",
+        "parameters": [
+          {
+            "name": "tournamentId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Update double elimination phase in a tournament",
+        "tags": [
+          "tournamentDoubleElimination"
+        ]
+      }
+    },
+    "/tournamentDoubleElimination/{tournamentId}/finalize": {
+      "post": {
+        "operationId": "TournamentDoubleEliminationController_finalizeDoubleElimination",
+        "parameters": [
+          {
+            "name": "tournamentId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Finalize double elimination phase in a tournament",
+        "tags": [
+          "tournamentDoubleElimination"
+        ]
+      }
+    },
     "/participantTournament/{matchId}/{tournamentId}": {
       "post": {
         "operationId": "MatchController_update",
@@ -1024,9 +1086,6 @@
             "type": "integer",
             "format": "int32"
           },
-          "isActive": {
-            "type": "boolean"
-          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -1055,7 +1114,6 @@
           "id",
           "tournamentPhaseId",
           "roundNumber",
-          "isActive",
           "createdAt",
           "updatedAt"
         ]
@@ -1080,6 +1138,10 @@
             "format": "int32"
           },
           "losses": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "roundNumber": {
             "type": "integer",
             "format": "int32"
           },
@@ -1111,6 +1173,7 @@
           "participantId",
           "wins",
           "losses",
+          "roundNumber",
           "doubleEliminationBracket",
           "createdAt",
           "updatedAt"
@@ -1802,7 +1865,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-11-02T16:13:38.408Z"
+            "default": "2025-11-10T21:35:04.283Z"
           }
         },
         "required": [
@@ -1834,7 +1897,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-11-02T16:13:38.396Z"
+            "default": "2025-11-10T21:35:04.272Z"
           }
         }
       },
@@ -1923,7 +1986,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-11-02T16:13:38.820Z"
+            "default": "2025-11-10T21:35:04.659Z"
           }
         },
         "required": [
@@ -1962,7 +2025,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "default": "2025-11-02T16:13:38.826Z"
+            "default": "2025-11-10T21:35:04.665Z"
           }
         }
       },

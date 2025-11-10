@@ -68,7 +68,7 @@ export async function updateGroupStageMatch(
   const winnerId = Number(formData.get("winnerId"));
   const loserId = Number(formData.get("loserId"));
   console.log("iniside form submit", winnerId, loserId, matchId, tournamentId);
-  
+
   try {
     if (winnerId <= 0 || loserId <= 0) {
       return {
@@ -92,7 +92,14 @@ export async function updateGroupStageMatch(
       };
     }
 
-    await apiClient.match.matchControllerUpdate(matchId.toString(), tournamentId.toString(), entity);
+    const result = await apiClient.match.matchControllerUpdate(matchId.toString(), tournamentId.toString(), entity);
+    if (!result.ok) {
+      return {
+        message: `${result.error ?? "Failed to update match. Unexpected server error."}`,
+        errors: {},
+        success: false,
+      };
+    }
   } catch (err) {
     return {
       message: `${err}`,
@@ -157,6 +164,82 @@ export async function generateGroupStages(
   };
 }
 
+export async function updateDoubleEliminations(tournamentId: number): Promise<State> {
+  try {
+    if (tournamentId <= 0) {
+      return {
+        message: "Tournament Id is invalid",
+        errors: {},
+        success: false,
+      };
+    }
+    
+    const result =
+      await apiClient.tournamentDoubleElimination.tournamentDoubleEliminationControllerUpdateDoubleElimination(
+        tournamentId.toString()
+      );
+
+    if (!result.ok) {
+      return {
+        message: `${result.error}`,
+        errors: {},
+        success: false,
+      };
+    }
+  } catch {
+    return {
+      message: "Failed to update double eliminations",
+      errors: {},
+      success: false,
+    };
+  }
+
+  revalidatePath(`/tournament/${tournamentId}`);
+  return {
+    message: "Double Eliminations updated successfully",
+    errors: {},
+    success: false,
+  };
+}
+
+export async function finalizeDoubleEliminations(tournamentId: number): Promise<State> {
+  try {
+    if (tournamentId <= 0) {
+      return {
+        message: "Tournament Id is invalid",
+        errors: {},
+        success: false,
+      };
+    }
+
+    const result =
+      await apiClient.tournamentDoubleElimination.tournamentDoubleEliminationControllerFinalizeDoubleElimination(
+        tournamentId.toString()
+      );
+
+    if (!result.ok) {
+      return {
+        message: `${result.error}`,
+        errors: {},
+        success: false,
+      };
+    }
+  } catch {
+    return {
+      message: "Failed to finalize double eliminations",
+      errors: {},
+      success: false,
+    };
+  }
+
+  revalidatePath(`/tournament/${tournamentId}`);
+  return {
+    message: "Double Eliminations updated successfully",
+    errors: {},
+    success: false,
+  };
+}
+
 export async function generateDoubleEliminations(data: ParticipantGroup[], tournamentId: number): Promise<State> {
   try {
     if (data.length <= 3) {
@@ -190,7 +273,7 @@ export async function generateDoubleEliminations(data: ParticipantGroup[], tourn
     }
   } catch {
     return {
-      message: "Failed to generate groups",
+      message: "Failed to generate double eliminations",
       errors: {},
       success: false,
     };
@@ -198,7 +281,7 @@ export async function generateDoubleEliminations(data: ParticipantGroup[], tourn
 
   revalidatePath(`/tournament/${tournamentId}`);
   return {
-    message: "Group stages generated successfully",
+    message: "Double Eliminations generated successfully",
     errors: {},
     success: false,
   };

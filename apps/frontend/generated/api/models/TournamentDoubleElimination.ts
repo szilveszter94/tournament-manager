@@ -9,7 +9,6 @@ export type TournamentDoubleElimination = {
     id: number;
     tournamentPhaseId: number;
     roundNumber: number;
-    isActive: boolean;
     createdAt: string;
     updatedAt: string;
     tournamentPhase?: TournamentPhase;

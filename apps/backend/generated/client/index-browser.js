@@ -160,6 +160,7 @@ exports.Prisma.ParticipantDoubleEliminationScalarFieldEnum = {
   participantId: 'participantId',
   wins: 'wins',
   losses: 'losses',
+  roundNumber: 'roundNumber',
   doubleEliminationBracket: 'doubleEliminationBracket',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -198,7 +199,6 @@ exports.Prisma.TournamentDoubleEliminationScalarFieldEnum = {
   id: 'id',
   tournamentPhaseId: 'tournamentPhaseId',
   roundNumber: 'roundNumber',
-  isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };

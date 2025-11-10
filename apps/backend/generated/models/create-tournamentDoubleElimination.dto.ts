@@ -9,10 +9,6 @@ export class CreateTournamentDoubleEliminationDto {
   })
   roundNumber?: number;
   @ApiProperty({
-    type: 'boolean',
-  })
-  isActive: boolean;
-  @ApiProperty({
     type: 'string',
     format: 'date-time',
     default: new Date().toISOString(),

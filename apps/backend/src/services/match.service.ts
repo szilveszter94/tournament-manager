@@ -1,11 +1,12 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 import { BaseResponse } from '../../custom-models/api/base-response';
 import { UpdateMatchWinnerDto } from '../../custom-models/api/match';
-import { Prisma } from '../../generated/client';
+import { DoubleEliminationBracket, Prisma } from '../../generated/client';
 import { Match } from '../../generated/models/match.entity';
 import { Participant } from '../../generated/models/participant.entity';
 import { handleEloChange } from '../utils/service.helper';
+import { MatchOutcome } from 'src/utils/service.types';
 
 @Injectable()
 export class MatchService {
@@ -19,90 +20,34 @@ export class MatchService {
     entity: UpdateMatchWinnerDto,
   ): Promise<BaseResponse> {
     try {
-      if (!entity.winnerId || !entity.loserId) {
-        this.logger.warn(
-          `Match winner or loser was not provided with match id ${matchId}`,
-        );
-        return {
-          ok: false,
-          error: `Match winner or loser was not provided with match id ${matchId}`,
-        };
-      }
-
-      const match = await this.prisma.match.findUnique({
-        where: { id: matchId },
-      });
-
-      if (!match) {
-        this.logger.warn(`Match with id ${matchId} not found`);
-        return { ok: false, error: `Match with id ${matchId} not found` };
-      }
-
-      if (!match.participant1Id || !match.participant2Id) {
-        this.logger.warn("The match doesn't have participants");
-        return { ok: false, error: "The match doesn't have participants" };
-      }
-
-      const validIds = [match.participant1Id, match.participant2Id];
-
-      if (
-        !validIds.includes(entity.winnerId) ||
-        !validIds.includes(entity.loserId)
-      ) {
-        this.logger.warn(
-          'The match winner and loser is not provided correctly',
-        );
-        return {
-          ok: false,
-          error: 'The match winner and loser is not provided correctly',
-        };
-      }
-
-      if (match.isOver && match.winnerId && match.loserId) {
-        if (
-          match.winnerId !== entity.loserId ||
-          match.loserId !== entity.winnerId
-        ) {
-          return {
-            ok: false,
-            error: `Cannot update the match with id ${matchId}. Participants are not valid`,
-          };
-        }
-        if (
-          match.winnerId === entity.winnerId &&
-          match.loserId === entity.loserId
-        ) {
-          return { ok: true };
-        }
-      }
+      const match = await this.validateMatchData(matchId, entity);
+      const earlyResponse = this.handleAlreadyFinishedMatch(match, entity);
+      if (earlyResponse) return earlyResponse;
 
       const [winner, loser] = await Promise.all([
-        this.prisma.participant.findUnique({ where: { id: entity.winnerId } }),
-        this.prisma.participant.findUnique({ where: { id: entity.loserId } }),
+        this.prisma.participant.findUnique({
+          where: { id: entity.winnerId ?? undefined },
+        }),
+        this.prisma.participant.findUnique({
+          where: { id: entity.loserId ?? undefined },
+        }),
       ]);
 
       if (!winner || !loser) {
-        throw new Error(`One or both participants not found`);
+        throw new BadRequestException(`One or both participants not found`);
       }
 
       const isUpdate = Boolean(match.isOver && match.winnerId && match.loserId);
-      const { winnerStats, loserStats } = this.getStatChange(isUpdate);
-
-      const isEloUpdate = Boolean(
-        isUpdate &&
-          match.eloWon &&
-          match.eloLost &&
-          match.winnerElo &&
-          match.loserElo,
-      );
-      const { winnerElo, loserElo } = this.getParticipantElos(
-        match,
-        isEloUpdate,
-        winner,
-        loser,
-      );
-      const { winnerEloChange, loserEloChange, eloWon, eloLost } =
-        handleEloChange(winner, loser, match, isEloUpdate);
+      const {
+        winnerStats,
+        loserStats,
+        winnerElo,
+        loserElo,
+        winnerEloChange,
+        loserEloChange,
+        eloWon,
+        eloLost,
+      } = this.calculateMatchOutcome(match, winner, loser, isUpdate);
 
       await this.prisma.$transaction(async (tx) => {
         await Promise.all([
@@ -113,6 +58,7 @@ export class MatchService {
             winnerStats,
             winnerEloChange,
             match,
+            true,
           ),
           this.updateParticipantStats(
             tx,
@@ -121,6 +67,7 @@ export class MatchService {
             loserStats,
             -loserEloChange,
             match,
+            false,
           ),
           tx.match.update({
             where: { id: matchId },
@@ -141,6 +88,10 @@ export class MatchService {
         `Database error while updating match ${matchId}`,
         e.stack,
       );
+      if (e instanceof BadRequestException) {
+        const message = e.message ?? 'Bad request';
+        return { ok: false, error: message };
+      }
       return {
         ok: false,
         error: 'An unexpected error occurred during match update',
@@ -155,6 +106,7 @@ export class MatchService {
     stats: { wins: number; losses: number },
     eloChange: number,
     match: Match,
+    isWinner: boolean,
   ) {
     // 1️⃣ Update participant stats
     if (participantId) {
@@ -166,48 +118,27 @@ export class MatchService {
       ]);
 
       if (!participant || !participantTournament) {
-        throw new Error(
-          `Participant with id ${participantId} not found in tournament`,
+        throw new BadRequestException(
+          `Participant ${participantId} not found or not part of tournament ${tournamentId}`,
         );
       }
 
-      const updates: Promise<any>[] = [
-        tx.participant.update({
-          where: { id: participant.id },
-          data: {
-            wins: { increment: stats.wins },
-            losses: { increment: stats.losses },
-            updatedAt: new Date(),
-            elo: { increment: eloChange },
-          },
-        }),
-        tx.participantTournament.update({
-          where: { id: participantTournament.id },
-          data: {
-            wins: { increment: stats.wins },
-            losses: { increment: stats.losses },
-            updatedAt: new Date(),
-          },
-        }),
-      ];
-
-      if (match.tournamentGroupId && participant.id) {
-        updates.push(
-          tx.participantGroup.update({
-            where: {
-              tournamentGroupId_participantId: {
-                tournamentGroupId: match.tournamentGroupId,
-                participantId: participant.id,
-              },
-            },
-            data: {
-              wins: { increment: stats.wins },
-              losses: { increment: stats.losses },
-              updatedAt: new Date(),
-            },
-          }),
-        );
-      }
+      const updates: Promise<unknown>[] = this.getParticipantUpdates(
+        tx,
+        participant,
+        participantTournament.id,
+        stats,
+        eloChange,
+      );
+      this.updateGroupStageParticipant(tx, match, participant, stats, updates);
+      await this.updateDoubleEliminationParticipant(
+        tx,
+        match,
+        participant,
+        isWinner,
+        stats,
+        updates,
+      );
 
       await Promise.all(updates);
     }
@@ -240,5 +171,236 @@ export class MatchService {
     const loserElo = Number(isEloUpdate ? match.winnerElo : loser.elo);
 
     return { winnerElo, loserElo };
+  }
+
+  private getParticipantUpdates(
+    tx: Prisma.TransactionClient,
+    participant: Participant,
+    participantTournamentId: number,
+    stats: { wins: number; losses: number },
+    eloChange: number,
+  ) {
+    return [
+      tx.participant.update({
+        where: { id: participant.id },
+        data: {
+          wins: { increment: stats.wins },
+          losses: { increment: stats.losses },
+          updatedAt: new Date(),
+          elo: { increment: eloChange },
+        },
+      }),
+      tx.participantTournament.update({
+        where: { id: participantTournamentId },
+        data: {
+          wins: { increment: stats.wins },
+          losses: { increment: stats.losses },
+          updatedAt: new Date(),
+        },
+      }),
+    ];
+  }
+
+  private updateGroupStageParticipant(
+    tx: Prisma.TransactionClient,
+    match: Match,
+    participant: Participant,
+    stats: { wins: number; losses: number },
+    updates: Promise<unknown>[],
+  ) {
+    if (!match.tournamentGroupId || !participant.id) {
+      return;
+    }
+
+    updates.push(
+      tx.participantGroup.update({
+        where: {
+          tournamentGroupId_participantId: {
+            tournamentGroupId: match.tournamentGroupId,
+            participantId: participant.id,
+          },
+        },
+        data: {
+          wins: { increment: stats.wins },
+          losses: { increment: stats.losses },
+          updatedAt: new Date(),
+        },
+      }),
+    );
+  }
+
+  private async updateDoubleEliminationParticipant(
+    tx: Prisma.TransactionClient,
+    match: Match,
+    participant: Participant,
+    isWinner: boolean,
+    stats: { wins: number; losses: number },
+    updates: Promise<unknown>[],
+  ) {
+    if (!match.tournamentDoubleEliminationId || !participant.id) {
+      return;
+    }
+
+    const tournamentDoubleElimination =
+      await tx.tournamentDoubleElimination.findUnique({
+        where: {
+          id: match.tournamentDoubleEliminationId,
+        },
+      });
+
+    const participantDoubleElim =
+      await tx.participantDoubleElimination.findUnique({
+        where: {
+          tournamentDoubleEliminationId_participantId: {
+            tournamentDoubleEliminationId: match.tournamentDoubleEliminationId,
+            participantId: participant.id,
+          },
+        },
+      });
+
+    if (!participantDoubleElim || !tournamentDoubleElimination) {
+      throw new BadRequestException('Double elimination data not found');
+    }
+
+    const roundNumber = tournamentDoubleElimination.roundNumber;
+    const newBracketType = this.getDoubleEliminationBracketType(
+      match,
+      isWinner,
+      participantDoubleElim.doubleEliminationBracket,
+    );
+
+    updates.push(
+      tx.participantDoubleElimination.update({
+        where: {
+          tournamentDoubleEliminationId_participantId: {
+            tournamentDoubleEliminationId: match.tournamentDoubleEliminationId,
+            participantId: participant.id,
+          },
+        },
+        data: {
+          wins: { increment: stats.wins },
+          losses: { increment: stats.losses },
+          updatedAt: new Date(),
+          doubleEliminationBracket: newBracketType,
+          roundNumber: roundNumber,
+        },
+      }),
+    );
+  }
+
+  private getDoubleEliminationBracketType(
+    match: Match,
+    isWinner: boolean,
+    bracketType: DoubleEliminationBracket,
+  ): DoubleEliminationBracket {
+    if (!match.isOver && isWinner) return bracketType;
+
+    // Match is over and participant won
+    if (isWinner) {
+      return bracketType === DoubleEliminationBracket.Eliminated
+        ? DoubleEliminationBracket.Loser
+        : DoubleEliminationBracket.Winner;
+    }
+
+    // Participant lost (whether match is over or not)
+    return bracketType === DoubleEliminationBracket.Winner
+      ? DoubleEliminationBracket.Loser
+      : DoubleEliminationBracket.Eliminated;
+  }
+
+  private handleAlreadyFinishedMatch(
+    match: Match,
+    entity: UpdateMatchWinnerDto,
+  ): BaseResponse | null {
+    if (!match.isOver || !match.winnerId || !match.loserId) return null;
+
+    if (
+      match.winnerId !== entity.loserId ||
+      match.loserId !== entity.winnerId
+    ) {
+      return {
+        ok: false,
+        error: `Cannot update match ${match.id}. Invalid participants.`,
+      };
+    }
+
+    if (
+      match.winnerId === entity.winnerId &&
+      match.loserId === entity.loserId
+    ) {
+      return { ok: true };
+    }
+
+    return null;
+  }
+
+  private calculateMatchOutcome(
+    match: Match,
+    winner: Participant,
+    loser: Participant,
+    isUpdate: boolean,
+  ): MatchOutcome {
+    const { winnerStats, loserStats } = this.getStatChange(isUpdate);
+    const isEloUpdate = Boolean(
+      isUpdate &&
+        match.eloWon &&
+        match.eloLost &&
+        match.winnerElo &&
+        match.loserElo,
+    );
+    const { winnerElo, loserElo } = this.getParticipantElos(
+      match,
+      isEloUpdate,
+      winner,
+      loser,
+    );
+    const { winnerEloChange, loserEloChange, eloWon, eloLost } =
+      handleEloChange(winner, loser, match, isEloUpdate);
+
+    return {
+      winnerStats,
+      loserStats,
+      winnerElo,
+      loserElo,
+      winnerEloChange,
+      loserEloChange,
+      eloWon,
+      eloLost,
+    };
+  }
+
+  private async validateMatchData(
+    matchId: number,
+    entity: UpdateMatchWinnerDto,
+  ) {
+    if (!entity.winnerId || !entity.loserId) {
+      throw new BadRequestException(
+        `Winner or loser ID missing for match ${matchId}`,
+      );
+    }
+
+    const match = await this.prisma.match.findUnique({
+      where: { id: matchId },
+    });
+    if (!match)
+      throw new BadRequestException(`Match with id ${matchId} not found`);
+
+    if (!match.participant1Id || !match.participant2Id) {
+      throw new BadRequestException(
+        `Match ${matchId} does not have participants`,
+      );
+    }
+
+    const validIds = [match.participant1Id, match.participant2Id];
+    if (
+      !validIds.includes(entity.winnerId) ||
+      !validIds.includes(entity.loserId)
+    ) {
+      throw new BadRequestException(
+        `Invalid winner/loser for match ${matchId}`,
+      );
+    }
+
+    return match;
   }
 }

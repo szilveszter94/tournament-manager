@@ -5,6 +5,7 @@ import { TournamentStatus } from "@/generated/api";
 import TournamentGroups from "@/app/ui/tournament/groupStages/tournament-groups";
 import GroupStagesCreateNextPhase from "@/app/ui/tournament/groupStages/create-next-phase/group-stages-create-next-phase";
 import DoubleEliminations from "@/app/ui/tournament/doubleEliminations/double-eliminations";
+import TournamentOver from "@/app/ui/tournament/tournament-over/tournament-over";
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
@@ -25,6 +26,9 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
 
     case TournamentStatus.DOUBLE_ELIMINATION:
       return <DoubleEliminations tournament={tournament} />;
+
+    case TournamentStatus.OVER:
+      return <TournamentOver tournament={tournament} />;
 
     default:
       return <CreateGroupStages tournament={tournament} />;

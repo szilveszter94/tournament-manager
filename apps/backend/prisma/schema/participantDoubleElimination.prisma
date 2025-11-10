@@ -1,16 +1,17 @@
 model ParticipantDoubleElimination {
-  id                Int      @id @default(autoincrement())
+  id                            Int                      @id @default(autoincrement())
   tournamentDoubleEliminationId Int
-  participantId     Int
-  wins              Int      @default(0)
-  losses            Int      @default(0)
-  doubleEliminationBracket DoubleEliminationBracket @default(Winner)
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  participantId                 Int
+  wins                          Int                      @default(0)
+  losses                        Int                      @default(0)
+  roundNumber                   Int                      @default(1)
+  doubleEliminationBracket      DoubleEliminationBracket @default(Winner)
+  createdAt                     DateTime                 @default(now())
+  updatedAt                     DateTime                 @updatedAt
 
   // Relations
-  elimination       TournamentDoubleElimination @relation(fields: [tournamentDoubleEliminationId], references: [id], onDelete: Cascade)
-  participant Participant     @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  elimination TournamentDoubleElimination @relation(fields: [tournamentDoubleEliminationId], references: [id], onDelete: Cascade)
+  participant Participant                 @relation(fields: [participantId], references: [id], onDelete: Cascade)
 
   @@unique([tournamentDoubleEliminationId, participantId])
   @@index([participantId])

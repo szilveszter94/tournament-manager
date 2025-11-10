@@ -5135,6 +5135,7 @@ export namespace Prisma {
     participantId: number | null
     wins: number | null
     losses: number | null
+    roundNumber: number | null
   }
 
   export type ParticipantDoubleEliminationSumAggregateOutputType = {
@@ -5143,6 +5144,7 @@ export namespace Prisma {
     participantId: number | null
     wins: number | null
     losses: number | null
+    roundNumber: number | null
   }
 
   export type ParticipantDoubleEliminationMinAggregateOutputType = {
@@ -5151,6 +5153,7 @@ export namespace Prisma {
     participantId: number | null
     wins: number | null
     losses: number | null
+    roundNumber: number | null
     doubleEliminationBracket: $Enums.DoubleEliminationBracket | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -5162,6 +5165,7 @@ export namespace Prisma {
     participantId: number | null
     wins: number | null
     losses: number | null
+    roundNumber: number | null
     doubleEliminationBracket: $Enums.DoubleEliminationBracket | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -5173,6 +5177,7 @@ export namespace Prisma {
     participantId: number
     wins: number
     losses: number
+    roundNumber: number
     doubleEliminationBracket: number
     createdAt: number
     updatedAt: number
@@ -5186,6 +5191,7 @@ export namespace Prisma {
     participantId?: true
     wins?: true
     losses?: true
+    roundNumber?: true
   }
 
   export type ParticipantDoubleEliminationSumAggregateInputType = {
@@ -5194,6 +5200,7 @@ export namespace Prisma {
     participantId?: true
     wins?: true
     losses?: true
+    roundNumber?: true
   }
 
   export type ParticipantDoubleEliminationMinAggregateInputType = {
@@ -5202,6 +5209,7 @@ export namespace Prisma {
     participantId?: true
     wins?: true
     losses?: true
+    roundNumber?: true
     doubleEliminationBracket?: true
     createdAt?: true
     updatedAt?: true
@@ -5213,6 +5221,7 @@ export namespace Prisma {
     participantId?: true
     wins?: true
     losses?: true
+    roundNumber?: true
     doubleEliminationBracket?: true
     createdAt?: true
     updatedAt?: true
@@ -5224,6 +5233,7 @@ export namespace Prisma {
     participantId?: true
     wins?: true
     losses?: true
+    roundNumber?: true
     doubleEliminationBracket?: true
     createdAt?: true
     updatedAt?: true
@@ -5322,6 +5332,7 @@ export namespace Prisma {
     participantId: number
     wins: number
     losses: number
+    roundNumber: number
     doubleEliminationBracket: $Enums.DoubleEliminationBracket
     createdAt: Date
     updatedAt: Date
@@ -5352,6 +5363,7 @@ export namespace Prisma {
     participantId?: boolean
     wins?: boolean
     losses?: boolean
+    roundNumber?: boolean
     doubleEliminationBracket?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -5365,6 +5377,7 @@ export namespace Prisma {
     participantId?: boolean
     wins?: boolean
     losses?: boolean
+    roundNumber?: boolean
     doubleEliminationBracket?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -5378,6 +5391,7 @@ export namespace Prisma {
     participantId?: boolean
     wins?: boolean
     losses?: boolean
+    roundNumber?: boolean
     doubleEliminationBracket?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -5391,12 +5405,13 @@ export namespace Prisma {
     participantId?: boolean
     wins?: boolean
     losses?: boolean
+    roundNumber?: boolean
     doubleEliminationBracket?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ParticipantDoubleEliminationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tournamentDoubleEliminationId" | "participantId" | "wins" | "losses" | "doubleEliminationBracket" | "createdAt" | "updatedAt", ExtArgs["result"]["participantDoubleElimination"]>
+  export type ParticipantDoubleEliminationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tournamentDoubleEliminationId" | "participantId" | "wins" | "losses" | "roundNumber" | "doubleEliminationBracket" | "createdAt" | "updatedAt", ExtArgs["result"]["participantDoubleElimination"]>
   export type ParticipantDoubleEliminationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     elimination?: boolean | TournamentDoubleEliminationDefaultArgs<ExtArgs>
     participant?: boolean | ParticipantDefaultArgs<ExtArgs>
@@ -5422,6 +5437,7 @@ export namespace Prisma {
       participantId: number
       wins: number
       losses: number
+      roundNumber: number
       doubleEliminationBracket: $Enums.DoubleEliminationBracket
       createdAt: Date
       updatedAt: Date
@@ -5855,6 +5871,7 @@ export namespace Prisma {
     readonly participantId: FieldRef<"ParticipantDoubleElimination", 'Int'>
     readonly wins: FieldRef<"ParticipantDoubleElimination", 'Int'>
     readonly losses: FieldRef<"ParticipantDoubleElimination", 'Int'>
+    readonly roundNumber: FieldRef<"ParticipantDoubleElimination", 'Int'>
     readonly doubleEliminationBracket: FieldRef<"ParticipantDoubleElimination", 'DoubleEliminationBracket'>
     readonly createdAt: FieldRef<"ParticipantDoubleElimination", 'DateTime'>
     readonly updatedAt: FieldRef<"ParticipantDoubleElimination", 'DateTime'>
@@ -9757,7 +9774,6 @@ export namespace Prisma {
     id: number | null
     tournamentPhaseId: number | null
     roundNumber: number | null
-    isActive: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -9766,7 +9782,6 @@ export namespace Prisma {
     id: number | null
     tournamentPhaseId: number | null
     roundNumber: number | null
-    isActive: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -9775,7 +9790,6 @@ export namespace Prisma {
     id: number
     tournamentPhaseId: number
     roundNumber: number
-    isActive: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -9798,7 +9812,6 @@ export namespace Prisma {
     id?: true
     tournamentPhaseId?: true
     roundNumber?: true
-    isActive?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -9807,7 +9820,6 @@ export namespace Prisma {
     id?: true
     tournamentPhaseId?: true
     roundNumber?: true
-    isActive?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -9816,7 +9828,6 @@ export namespace Prisma {
     id?: true
     tournamentPhaseId?: true
     roundNumber?: true
-    isActive?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -9912,7 +9923,6 @@ export namespace Prisma {
     id: number
     tournamentPhaseId: number
     roundNumber: number
-    isActive: boolean
     createdAt: Date
     updatedAt: Date
     _count: TournamentDoubleEliminationCountAggregateOutputType | null
@@ -9940,7 +9950,6 @@ export namespace Prisma {
     id?: boolean
     tournamentPhaseId?: boolean
     roundNumber?: boolean
-    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
@@ -9953,7 +9962,6 @@ export namespace Prisma {
     id?: boolean
     tournamentPhaseId?: boolean
     roundNumber?: boolean
-    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
@@ -9963,7 +9971,6 @@ export namespace Prisma {
     id?: boolean
     tournamentPhaseId?: boolean
     roundNumber?: boolean
-    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
@@ -9973,12 +9980,11 @@ export namespace Prisma {
     id?: boolean
     tournamentPhaseId?: boolean
     roundNumber?: boolean
-    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type TournamentDoubleEliminationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tournamentPhaseId" | "roundNumber" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["tournamentDoubleElimination"]>
+  export type TournamentDoubleEliminationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tournamentPhaseId" | "roundNumber" | "createdAt" | "updatedAt", ExtArgs["result"]["tournamentDoubleElimination"]>
   export type TournamentDoubleEliminationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tournamentPhase?: boolean | TournamentPhaseDefaultArgs<ExtArgs>
     participantDoubleEliminations?: boolean | TournamentDoubleElimination$participantDoubleEliminationsArgs<ExtArgs>
@@ -10003,7 +10009,6 @@ export namespace Prisma {
       id: number
       tournamentPhaseId: number
       roundNumber: number
-      isActive: boolean
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["tournamentDoubleElimination"]>
@@ -10435,7 +10440,6 @@ export namespace Prisma {
     readonly id: FieldRef<"TournamentDoubleElimination", 'Int'>
     readonly tournamentPhaseId: FieldRef<"TournamentDoubleElimination", 'Int'>
     readonly roundNumber: FieldRef<"TournamentDoubleElimination", 'Int'>
-    readonly isActive: FieldRef<"TournamentDoubleElimination", 'Boolean'>
     readonly createdAt: FieldRef<"TournamentDoubleElimination", 'DateTime'>
     readonly updatedAt: FieldRef<"TournamentDoubleElimination", 'DateTime'>
   }
@@ -15603,6 +15607,7 @@ export namespace Prisma {
     participantId: 'participantId',
     wins: 'wins',
     losses: 'losses',
+    roundNumber: 'roundNumber',
     doubleEliminationBracket: 'doubleEliminationBracket',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -15653,7 +15658,6 @@ export namespace Prisma {
     id: 'id',
     tournamentPhaseId: 'tournamentPhaseId',
     roundNumber: 'roundNumber',
-    isActive: 'isActive',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -16135,6 +16139,7 @@ export namespace Prisma {
     participantId?: IntFilter<"ParticipantDoubleElimination"> | number
     wins?: IntFilter<"ParticipantDoubleElimination"> | number
     losses?: IntFilter<"ParticipantDoubleElimination"> | number
+    roundNumber?: IntFilter<"ParticipantDoubleElimination"> | number
     doubleEliminationBracket?: EnumDoubleEliminationBracketFilter<"ParticipantDoubleElimination"> | $Enums.DoubleEliminationBracket
     createdAt?: DateTimeFilter<"ParticipantDoubleElimination"> | Date | string
     updatedAt?: DateTimeFilter<"ParticipantDoubleElimination"> | Date | string
@@ -16148,6 +16153,7 @@ export namespace Prisma {
     participantId?: SortOrder
     wins?: SortOrder
     losses?: SortOrder
+    roundNumber?: SortOrder
     doubleEliminationBracket?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -16165,6 +16171,7 @@ export namespace Prisma {
     participantId?: IntFilter<"ParticipantDoubleElimination"> | number
     wins?: IntFilter<"ParticipantDoubleElimination"> | number
     losses?: IntFilter<"ParticipantDoubleElimination"> | number
+    roundNumber?: IntFilter<"ParticipantDoubleElimination"> | number
     doubleEliminationBracket?: EnumDoubleEliminationBracketFilter<"ParticipantDoubleElimination"> | $Enums.DoubleEliminationBracket
     createdAt?: DateTimeFilter<"ParticipantDoubleElimination"> | Date | string
     updatedAt?: DateTimeFilter<"ParticipantDoubleElimination"> | Date | string
@@ -16178,6 +16185,7 @@ export namespace Prisma {
     participantId?: SortOrder
     wins?: SortOrder
     losses?: SortOrder
+    roundNumber?: SortOrder
     doubleEliminationBracket?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -16197,6 +16205,7 @@ export namespace Prisma {
     participantId?: IntWithAggregatesFilter<"ParticipantDoubleElimination"> | number
     wins?: IntWithAggregatesFilter<"ParticipantDoubleElimination"> | number
     losses?: IntWithAggregatesFilter<"ParticipantDoubleElimination"> | number
+    roundNumber?: IntWithAggregatesFilter<"ParticipantDoubleElimination"> | number
     doubleEliminationBracket?: EnumDoubleEliminationBracketWithAggregatesFilter<"ParticipantDoubleElimination"> | $Enums.DoubleEliminationBracket
     createdAt?: DateTimeWithAggregatesFilter<"ParticipantDoubleElimination"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ParticipantDoubleElimination"> | Date | string
@@ -16419,7 +16428,6 @@ export namespace Prisma {
     id?: IntFilter<"TournamentDoubleElimination"> | number
     tournamentPhaseId?: IntFilter<"TournamentDoubleElimination"> | number
     roundNumber?: IntFilter<"TournamentDoubleElimination"> | number
-    isActive?: BoolFilter<"TournamentDoubleElimination"> | boolean
     createdAt?: DateTimeFilter<"TournamentDoubleElimination"> | Date | string
     updatedAt?: DateTimeFilter<"TournamentDoubleElimination"> | Date | string
     tournamentPhase?: XOR<TournamentPhaseScalarRelationFilter, TournamentPhaseWhereInput>
@@ -16431,7 +16439,6 @@ export namespace Prisma {
     id?: SortOrder
     tournamentPhaseId?: SortOrder
     roundNumber?: SortOrder
-    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     tournamentPhase?: TournamentPhaseOrderByWithRelationInput
@@ -16447,7 +16454,6 @@ export namespace Prisma {
     OR?: TournamentDoubleEliminationWhereInput[]
     NOT?: TournamentDoubleEliminationWhereInput | TournamentDoubleEliminationWhereInput[]
     roundNumber?: IntFilter<"TournamentDoubleElimination"> | number
-    isActive?: BoolFilter<"TournamentDoubleElimination"> | boolean
     createdAt?: DateTimeFilter<"TournamentDoubleElimination"> | Date | string
     updatedAt?: DateTimeFilter<"TournamentDoubleElimination"> | Date | string
     tournamentPhase?: XOR<TournamentPhaseScalarRelationFilter, TournamentPhaseWhereInput>
@@ -16459,7 +16465,6 @@ export namespace Prisma {
     id?: SortOrder
     tournamentPhaseId?: SortOrder
     roundNumber?: SortOrder
-    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: TournamentDoubleEliminationCountOrderByAggregateInput
@@ -16476,7 +16481,6 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"TournamentDoubleElimination"> | number
     tournamentPhaseId?: IntWithAggregatesFilter<"TournamentDoubleElimination"> | number
     roundNumber?: IntWithAggregatesFilter<"TournamentDoubleElimination"> | number
-    isActive?: BoolWithAggregatesFilter<"TournamentDoubleElimination"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"TournamentDoubleElimination"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"TournamentDoubleElimination"> | Date | string
   }
@@ -17012,6 +17016,7 @@ export namespace Prisma {
   export type ParticipantDoubleEliminationCreateInput = {
     wins?: number
     losses?: number
+    roundNumber?: number
     doubleEliminationBracket?: $Enums.DoubleEliminationBracket
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17025,6 +17030,7 @@ export namespace Prisma {
     participantId: number
     wins?: number
     losses?: number
+    roundNumber?: number
     doubleEliminationBracket?: $Enums.DoubleEliminationBracket
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17033,6 +17039,7 @@ export namespace Prisma {
   export type ParticipantDoubleEliminationUpdateInput = {
     wins?: IntFieldUpdateOperationsInput | number
     losses?: IntFieldUpdateOperationsInput | number
+    roundNumber?: IntFieldUpdateOperationsInput | number
     doubleEliminationBracket?: EnumDoubleEliminationBracketFieldUpdateOperationsInput | $Enums.DoubleEliminationBracket
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17046,6 +17053,7 @@ export namespace Prisma {
     participantId?: IntFieldUpdateOperationsInput | number
     wins?: IntFieldUpdateOperationsInput | number
     losses?: IntFieldUpdateOperationsInput | number
+    roundNumber?: IntFieldUpdateOperationsInput | number
     doubleEliminationBracket?: EnumDoubleEliminationBracketFieldUpdateOperationsInput | $Enums.DoubleEliminationBracket
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17057,6 +17065,7 @@ export namespace Prisma {
     participantId: number
     wins?: number
     losses?: number
+    roundNumber?: number
     doubleEliminationBracket?: $Enums.DoubleEliminationBracket
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17065,6 +17074,7 @@ export namespace Prisma {
   export type ParticipantDoubleEliminationUpdateManyMutationInput = {
     wins?: IntFieldUpdateOperationsInput | number
     losses?: IntFieldUpdateOperationsInput | number
+    roundNumber?: IntFieldUpdateOperationsInput | number
     doubleEliminationBracket?: EnumDoubleEliminationBracketFieldUpdateOperationsInput | $Enums.DoubleEliminationBracket
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17076,6 +17086,7 @@ export namespace Prisma {
     participantId?: IntFieldUpdateOperationsInput | number
     wins?: IntFieldUpdateOperationsInput | number
     losses?: IntFieldUpdateOperationsInput | number
+    roundNumber?: IntFieldUpdateOperationsInput | number
     doubleEliminationBracket?: EnumDoubleEliminationBracketFieldUpdateOperationsInput | $Enums.DoubleEliminationBracket
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17285,7 +17296,6 @@ export namespace Prisma {
 
   export type TournamentDoubleEliminationCreateInput = {
     roundNumber?: number
-    isActive: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     tournamentPhase: TournamentPhaseCreateNestedOneWithoutDoubleEliminationInput
@@ -17297,7 +17307,6 @@ export namespace Prisma {
     id?: number
     tournamentPhaseId: number
     roundNumber?: number
-    isActive: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     participantDoubleEliminations?: ParticipantDoubleEliminationUncheckedCreateNestedManyWithoutEliminationInput
@@ -17306,7 +17315,6 @@ export namespace Prisma {
 
   export type TournamentDoubleEliminationUpdateInput = {
     roundNumber?: IntFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tournamentPhase?: TournamentPhaseUpdateOneRequiredWithoutDoubleEliminationNestedInput
@@ -17318,7 +17326,6 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     tournamentPhaseId?: IntFieldUpdateOperationsInput | number
     roundNumber?: IntFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     participantDoubleEliminations?: ParticipantDoubleEliminationUncheckedUpdateManyWithoutEliminationNestedInput
@@ -17329,14 +17336,12 @@ export namespace Prisma {
     id?: number
     tournamentPhaseId: number
     roundNumber?: number
-    isActive: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type TournamentDoubleEliminationUpdateManyMutationInput = {
     roundNumber?: IntFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -17345,7 +17350,6 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     tournamentPhaseId?: IntFieldUpdateOperationsInput | number
     roundNumber?: IntFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -18037,6 +18041,7 @@ export namespace Prisma {
     participantId?: SortOrder
     wins?: SortOrder
     losses?: SortOrder
+    roundNumber?: SortOrder
     doubleEliminationBracket?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -18048,6 +18053,7 @@ export namespace Prisma {
     participantId?: SortOrder
     wins?: SortOrder
     losses?: SortOrder
+    roundNumber?: SortOrder
   }
 
   export type ParticipantDoubleEliminationMaxOrderByAggregateInput = {
@@ -18056,6 +18062,7 @@ export namespace Prisma {
     participantId?: SortOrder
     wins?: SortOrder
     losses?: SortOrder
+    roundNumber?: SortOrder
     doubleEliminationBracket?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -18067,6 +18074,7 @@ export namespace Prisma {
     participantId?: SortOrder
     wins?: SortOrder
     losses?: SortOrder
+    roundNumber?: SortOrder
     doubleEliminationBracket?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -18078,6 +18086,7 @@ export namespace Prisma {
     participantId?: SortOrder
     wins?: SortOrder
     losses?: SortOrder
+    roundNumber?: SortOrder
   }
 
   export type EnumDoubleEliminationBracketWithAggregatesFilter<$PrismaModel = never> = {
@@ -18273,7 +18282,6 @@ export namespace Prisma {
     id?: SortOrder
     tournamentPhaseId?: SortOrder
     roundNumber?: SortOrder
-    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -18288,7 +18296,6 @@ export namespace Prisma {
     id?: SortOrder
     tournamentPhaseId?: SortOrder
     roundNumber?: SortOrder
-    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -18297,7 +18304,6 @@ export namespace Prisma {
     id?: SortOrder
     tournamentPhaseId?: SortOrder
     roundNumber?: SortOrder
-    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -20024,7 +20030,6 @@ export namespace Prisma {
 
   export type TournamentDoubleEliminationCreateWithoutMatchesInput = {
     roundNumber?: number
-    isActive: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     tournamentPhase: TournamentPhaseCreateNestedOneWithoutDoubleEliminationInput
@@ -20035,7 +20040,6 @@ export namespace Prisma {
     id?: number
     tournamentPhaseId: number
     roundNumber?: number
-    isActive: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     participantDoubleEliminations?: ParticipantDoubleEliminationUncheckedCreateNestedManyWithoutEliminationInput
@@ -20414,7 +20418,6 @@ export namespace Prisma {
 
   export type TournamentDoubleEliminationUpdateWithoutMatchesInput = {
     roundNumber?: IntFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tournamentPhase?: TournamentPhaseUpdateOneRequiredWithoutDoubleEliminationNestedInput
@@ -20425,7 +20428,6 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     tournamentPhaseId?: IntFieldUpdateOperationsInput | number
     roundNumber?: IntFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     participantDoubleEliminations?: ParticipantDoubleEliminationUncheckedUpdateManyWithoutEliminationNestedInput
@@ -20743,6 +20745,7 @@ export namespace Prisma {
   export type ParticipantDoubleEliminationCreateWithoutParticipantInput = {
     wins?: number
     losses?: number
+    roundNumber?: number
     doubleEliminationBracket?: $Enums.DoubleEliminationBracket
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -20754,6 +20757,7 @@ export namespace Prisma {
     tournamentDoubleEliminationId: number
     wins?: number
     losses?: number
+    roundNumber?: number
     doubleEliminationBracket?: $Enums.DoubleEliminationBracket
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -21095,6 +21099,7 @@ export namespace Prisma {
     participantId?: IntFilter<"ParticipantDoubleElimination"> | number
     wins?: IntFilter<"ParticipantDoubleElimination"> | number
     losses?: IntFilter<"ParticipantDoubleElimination"> | number
+    roundNumber?: IntFilter<"ParticipantDoubleElimination"> | number
     doubleEliminationBracket?: EnumDoubleEliminationBracketFilter<"ParticipantDoubleElimination"> | $Enums.DoubleEliminationBracket
     createdAt?: DateTimeFilter<"ParticipantDoubleElimination"> | Date | string
     updatedAt?: DateTimeFilter<"ParticipantDoubleElimination"> | Date | string
@@ -21223,7 +21228,6 @@ export namespace Prisma {
 
   export type TournamentDoubleEliminationCreateWithoutParticipantDoubleEliminationsInput = {
     roundNumber?: number
-    isActive: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     tournamentPhase: TournamentPhaseCreateNestedOneWithoutDoubleEliminationInput
@@ -21234,7 +21238,6 @@ export namespace Prisma {
     id?: number
     tournamentPhaseId: number
     roundNumber?: number
-    isActive: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     matches?: MatchUncheckedCreateNestedManyWithoutDoubleEliminationInput
@@ -21298,7 +21301,6 @@ export namespace Prisma {
 
   export type TournamentDoubleEliminationUpdateWithoutParticipantDoubleEliminationsInput = {
     roundNumber?: IntFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tournamentPhase?: TournamentPhaseUpdateOneRequiredWithoutDoubleEliminationNestedInput
@@ -21309,7 +21311,6 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     tournamentPhaseId?: IntFieldUpdateOperationsInput | number
     roundNumber?: IntFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     matches?: MatchUncheckedUpdateManyWithoutDoubleEliminationNestedInput
@@ -21816,6 +21817,7 @@ export namespace Prisma {
   export type ParticipantDoubleEliminationCreateWithoutEliminationInput = {
     wins?: number
     losses?: number
+    roundNumber?: number
     doubleEliminationBracket?: $Enums.DoubleEliminationBracket
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -21827,6 +21829,7 @@ export namespace Prisma {
     participantId: number
     wins?: number
     losses?: number
+    roundNumber?: number
     doubleEliminationBracket?: $Enums.DoubleEliminationBracket
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -22315,7 +22318,6 @@ export namespace Prisma {
 
   export type TournamentDoubleEliminationCreateWithoutTournamentPhaseInput = {
     roundNumber?: number
-    isActive: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     participantDoubleEliminations?: ParticipantDoubleEliminationCreateNestedManyWithoutEliminationInput
@@ -22325,7 +22327,6 @@ export namespace Prisma {
   export type TournamentDoubleEliminationUncheckedCreateWithoutTournamentPhaseInput = {
     id?: number
     roundNumber?: number
-    isActive: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     participantDoubleEliminations?: ParticipantDoubleEliminationUncheckedCreateNestedManyWithoutEliminationInput
@@ -22487,7 +22488,6 @@ export namespace Prisma {
 
   export type TournamentDoubleEliminationUpdateWithoutTournamentPhaseInput = {
     roundNumber?: IntFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     participantDoubleEliminations?: ParticipantDoubleEliminationUpdateManyWithoutEliminationNestedInput
@@ -22497,7 +22497,6 @@ export namespace Prisma {
   export type TournamentDoubleEliminationUncheckedUpdateWithoutTournamentPhaseInput = {
     id?: IntFieldUpdateOperationsInput | number
     roundNumber?: IntFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     participantDoubleEliminations?: ParticipantDoubleEliminationUncheckedUpdateManyWithoutEliminationNestedInput
@@ -22799,6 +22798,7 @@ export namespace Prisma {
     tournamentDoubleEliminationId: number
     wins?: number
     losses?: number
+    roundNumber?: number
     doubleEliminationBracket?: $Enums.DoubleEliminationBracket
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -22938,6 +22938,7 @@ export namespace Prisma {
   export type ParticipantDoubleEliminationUpdateWithoutParticipantInput = {
     wins?: IntFieldUpdateOperationsInput | number
     losses?: IntFieldUpdateOperationsInput | number
+    roundNumber?: IntFieldUpdateOperationsInput | number
     doubleEliminationBracket?: EnumDoubleEliminationBracketFieldUpdateOperationsInput | $Enums.DoubleEliminationBracket
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22949,6 +22950,7 @@ export namespace Prisma {
     tournamentDoubleEliminationId?: IntFieldUpdateOperationsInput | number
     wins?: IntFieldUpdateOperationsInput | number
     losses?: IntFieldUpdateOperationsInput | number
+    roundNumber?: IntFieldUpdateOperationsInput | number
     doubleEliminationBracket?: EnumDoubleEliminationBracketFieldUpdateOperationsInput | $Enums.DoubleEliminationBracket
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22959,6 +22961,7 @@ export namespace Prisma {
     tournamentDoubleEliminationId?: IntFieldUpdateOperationsInput | number
     wins?: IntFieldUpdateOperationsInput | number
     losses?: IntFieldUpdateOperationsInput | number
+    roundNumber?: IntFieldUpdateOperationsInput | number
     doubleEliminationBracket?: EnumDoubleEliminationBracketFieldUpdateOperationsInput | $Enums.DoubleEliminationBracket
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23387,6 +23390,7 @@ export namespace Prisma {
     participantId: number
     wins?: number
     losses?: number
+    roundNumber?: number
     doubleEliminationBracket?: $Enums.DoubleEliminationBracket
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23417,6 +23421,7 @@ export namespace Prisma {
   export type ParticipantDoubleEliminationUpdateWithoutEliminationInput = {
     wins?: IntFieldUpdateOperationsInput | number
     losses?: IntFieldUpdateOperationsInput | number
+    roundNumber?: IntFieldUpdateOperationsInput | number
     doubleEliminationBracket?: EnumDoubleEliminationBracketFieldUpdateOperationsInput | $Enums.DoubleEliminationBracket
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23428,6 +23433,7 @@ export namespace Prisma {
     participantId?: IntFieldUpdateOperationsInput | number
     wins?: IntFieldUpdateOperationsInput | number
     losses?: IntFieldUpdateOperationsInput | number
+    roundNumber?: IntFieldUpdateOperationsInput | number
     doubleEliminationBracket?: EnumDoubleEliminationBracketFieldUpdateOperationsInput | $Enums.DoubleEliminationBracket
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23438,6 +23444,7 @@ export namespace Prisma {
     participantId?: IntFieldUpdateOperationsInput | number
     wins?: IntFieldUpdateOperationsInput | number
     losses?: IntFieldUpdateOperationsInput | number
+    roundNumber?: IntFieldUpdateOperationsInput | number
     doubleEliminationBracket?: EnumDoubleEliminationBracketFieldUpdateOperationsInput | $Enums.DoubleEliminationBracket
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

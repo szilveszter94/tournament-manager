@@ -60,6 +60,7 @@ CREATE TABLE "public"."ParticipantDoubleElimination" (
     "participantId" INTEGER NOT NULL,
     "wins" INTEGER NOT NULL DEFAULT 0,
     "losses" INTEGER NOT NULL DEFAULT 0,
+    "roundNumber" INTEGER NOT NULL DEFAULT 1,
     "doubleEliminationBracket" "public"."DoubleEliminationBracket" NOT NULL DEFAULT 'Winner',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -110,7 +111,6 @@ CREATE TABLE "public"."TournamentDoubleElimination" (
     "id" SERIAL NOT NULL,
     "tournamentPhaseId" INTEGER NOT NULL,
     "roundNumber" INTEGER NOT NULL DEFAULT 1,
-    "isActive" BOOLEAN NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 

@@ -49,6 +49,8 @@ export const generateDoubleEliminationMatches = (
   pahseId: number,
   participantIds: number[],
   elimination: TournamentDoubleElimination,
+  eliminationRound: number = 1,
+  serialNumber: number = 1,
 ): CreateDoubleEliminationMatch[] => {
   let byePlayerId: number | undefined = undefined;
   if (participantIds.length % 2 !== 0) {
@@ -61,6 +63,8 @@ export const generateDoubleEliminationMatches = (
     filteredParticipantsIds,
     pahseId,
     elimination,
+    eliminationRound,
+    serialNumber,
   );
 };
 
@@ -173,22 +177,23 @@ const createDoubleEliminationMatches = (
   participantIds: number[],
   phaseId: number,
   elimination: TournamentDoubleElimination,
+  eliminationRound: number,
+  serialNumber: number,
 ): CreateDoubleEliminationMatch[] => {
   const matches: CreateDoubleEliminationMatch[] = [];
   const shuffledIds = shuffle(participantIds);
-  let matchSerial = 0;
 
   for (let index = 0; index < shuffledIds.length; index += 2) {
     matches.push({
-      serialNumber: matchSerial,
+      serialNumber,
       tournamentPhaseId: phaseId,
       tournamentDoubleEliminationId: elimination.id,
       participant1Id: shuffledIds[index],
       participant2Id: shuffledIds[index + 1],
       matchType: MatchType.DoubleElimination,
-      doubleEliminationRound: 1,
+      doubleEliminationRound: eliminationRound,
     } as CreateDoubleEliminationMatch);
-    matchSerial++;
+    serialNumber++;
   }
 
   return matches;

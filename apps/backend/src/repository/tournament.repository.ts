@@ -28,9 +28,24 @@ export class TournamentRepository {
             matches: {
               include: { participant1: true, participant2: true },
             },
-            doubleElimination: true,
+            doubleElimination: {
+              include: {
+                participantDoubleEliminations: {
+                  include: { participant: true },
+                },
+              },
+            },
           },
         },
+      },
+    });
+  }
+
+  async findTournamentOver(id: number) {
+    return this.prisma.tournament.findUnique({
+      where: { id },
+      include: {
+        winners: { include: { participant: true } },
       },
     });
   }
