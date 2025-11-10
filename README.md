@@ -10,6 +10,28 @@ Run the following command:
 npx create-turbo@latest
 ```
 
+Set environment variables:
+
+Frontend
+```js
+NEXT_PUBLIC_API_URL='your api url'
+```
+
+Backend
+```js
+DATABASE_URL="postgres db url"
+PORT="port number"
+CLIENT_URL="your client url"
+```
+
+Create the postgres sql database, e.g with executing the docker-compose.yaml script
+Run the following commands for create the :
+```sh
+npm run migrate-db // create the database
+npm run generate-client // generate the models
+npm run seed-db // optional for test data
+```
+
 ## What's inside?
 
 This Turborepo includes the following packages/apps:
