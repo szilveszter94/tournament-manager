@@ -2,6 +2,9 @@ import { Roboto_Mono, Roboto } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import Navbar from "@/app/ui/components/navbar/navbar";
+import StoreProvider from "./providers/store-provider";
+import Snackbar from "./ui/components/snackbar/snackbar";
+import { ModalProvider } from "./providers/modal-provider";
 
 const roboto = Roboto({
   variable: "--font-roboto",
@@ -21,14 +24,14 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${roboto.variable} ${robotoMono.variable} antialiased`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          themes={["light", "dark", "dark-purple"]}
-          enableSystem
-        >
-          <Navbar />
-          {children}
+        <ThemeProvider attribute="class" defaultTheme="system" themes={["light", "dark", "dark-purple"]} enableSystem>
+          <StoreProvider>
+            <ModalProvider>
+              <Navbar />
+              {children}
+              <Snackbar />
+            </ModalProvider>
+          </StoreProvider>
         </ThemeProvider>
       </body>
     </html>

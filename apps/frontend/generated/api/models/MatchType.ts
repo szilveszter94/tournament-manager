@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export enum MatchType {
+    DOUBLE_ELIMINATION = 'DoubleElimination',
     GROUP = 'Group',
     KNOCKOUT = 'Knockout',
     BRONZE = 'Bronze',

@@ -5,8 +5,9 @@ model TournamentPhase {
   order        Int
   isCompleted  Boolean   @default(false)
 
-  elimination Elimination?
+  knockout TournamentKnockout?
   groups      TournamentGroup[]
+  doubleElimination TournamentDoubleElimination?
   matches     Match[]
 
   tournament Tournament @relation(fields: [tournamentId], references: [id])

@@ -1,4 +1,4 @@
-import { ParticipantsResponse } from "@/generated/api";
+import { ParticipantsResponse, ParticipantType } from "@/generated/api";
 import { apiClient } from "@/lib/client";
 import { ParticipantQueryParams } from "@/lib/custom-models/participant";
 
@@ -24,6 +24,23 @@ export async function fetchParticipants(
         p.itemsPerPage,
         p.currentPage,
         p.query
+      );
+    return response;
+  } catch (err) {
+    console.error(err);
+    throw new Error("Server not responding");
+  }
+}
+
+export async function fetchAutocompleteParticipants(
+  query: string,
+  type: ParticipantType
+): Promise<ParticipantsResponse> {
+  try {
+    const response =
+      await apiClient.participant.participantControllerGetAutocompleteParticipant(
+        type,
+        query
       );
     return response;
   } catch (err) {

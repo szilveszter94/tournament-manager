@@ -1,0 +1,14 @@
+model TournamentKnockout {
+  id                Int             @id @default(autoincrement())
+  tournamentPhaseId Int             @unique
+  currentRound      Int             @default(1)
+  isOver            Boolean         @default(false)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  // Relations
+  tournamentPhase TournamentPhase @relation(fields: [tournamentPhaseId], references: [id], onDelete: Cascade)
+  matches         Match[]
+
+  @@index(currentRound)
+}

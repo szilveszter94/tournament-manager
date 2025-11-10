@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 import { UpdateTournamentDto } from '../../generated/models/update-tournament.dto';
 import { CreateTournamentDto } from '../../generated/models/create-tournament.dto';
-import { Prisma } from '../../generated/client';
+import { Prisma, TournamentStatus } from '../../generated/client';
 import { handleDateRange } from '../utils/helper';
 import {
   TournamentResponse,
@@ -10,33 +10,47 @@ import {
 } from '../../custom-models/api/tournament';
 import { BaseResponse } from '../../custom-models/api/base-response';
 import { FindTournamentQueryDto } from '../../custom-models/api/tournament';
+import { validateTournamentNameLength } from '../utils/service.helper';
+import { TournamentRepository } from '../repository/tournament.repository';
+import { TournamentLoader } from '../loader/tournament.loader';
 
 @Injectable()
 export class TournamentService {
   private readonly logger = new Logger(TournamentService.name);
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly repository: TournamentRepository,
+    private readonly loader: TournamentLoader,
+  ) {}
 
   async find(id: number): Promise<TournamentResponse> {
     try {
-      const tournament = await this.prisma.tournament.findUnique({
-        where: { id },
-        include: {
-          phases: true,
-        },
-      });
+      const tournament = await this.repository.findBasic(id);
 
       if (!tournament) {
         this.logger.warn(`Tournament with ID ${id} not found`);
-        return { ok: false, error: `Tournament with ID ${id} not found` };
+        return { ok: false, error: `Tournament ${id} not found` };
       }
 
-      return { ok: true, data: tournament };
+      if (
+        tournament.status === TournamentStatus.GroupStage ||
+        tournament.status === TournamentStatus.GroupStageCompleted
+      ) {
+        return this.loader.loadGroupStages(id);
+      }
+
+      if (tournament.status === TournamentStatus.DoubleElimination) {
+        return this.loader.loadDoubleEliminations(id);
+      }
+
+      if (tournament.status === TournamentStatus.Over) {
+        return this.loader.loadTournamentOver(id);
+      }
+
+      return this.loader.loadDefault(id);
     } catch (e) {
-      this.logger.error(
-        `Database error while finding tournament with ID ${id}`,
-        e.stack,
-      );
+      this.logger.error(`Database error while finding tournament ${id}`, e);
       return { ok: false, error: 'Database error. Failed to get tournament' };
     }
   }
@@ -103,6 +117,13 @@ export class TournamentService {
 
   async create(entity: CreateTournamentDto): Promise<TournamentResponse> {
     try {
+      if (!validateTournamentNameLength(entity.name)) {
+        return {
+          ok: false,
+          error: 'Tournament name must be at least 5 characters.',
+        };
+      }
+
       const tournament = await this.prisma.tournament.create({
         data: {
           name: entity.name,
@@ -125,6 +146,13 @@ export class TournamentService {
     entity: UpdateTournamentDto,
   ): Promise<TournamentResponse> {
     try {
+      if (!validateTournamentNameLength(entity.name)) {
+        return {
+          ok: false,
+          error: 'Tournament name must be at least 5 characters.',
+        };
+      }
+
       const tournament = await this.prisma.tournament.update({
         where: { id },
         data: {

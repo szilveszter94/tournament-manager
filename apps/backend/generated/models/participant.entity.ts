@@ -1,6 +1,7 @@
 import { ParticipantType } from '../client';
 import { ApiProperty } from '@nestjs/swagger';
 import { ParticipantTournament } from './participantTournament.entity';
+import { ParticipantDoubleElimination } from './participantDoubleElimination.entity';
 import { ParticipantGroup } from './participantGroup.entity';
 import { Match } from './match.entity';
 import { TournamentWinner } from './tournamentWinner.entity';
@@ -52,6 +53,12 @@ export class Participant {
   })
   tournaments?: ParticipantTournament[];
   @ApiProperty({
+    type: () => ParticipantDoubleElimination,
+    isArray: true,
+    required: false,
+  })
+  doubleEliminations?: ParticipantDoubleElimination[];
+  @ApiProperty({
     type: () => ParticipantGroup,
     isArray: true,
     required: false,
@@ -75,6 +82,12 @@ export class Participant {
     required: false,
   })
   matchesWon?: Match[];
+  @ApiProperty({
+    type: () => Match,
+    isArray: true,
+    required: false,
+  })
+  matchesLost?: Match[];
   @ApiProperty({
     type: () => TournamentWinner,
     isArray: true,

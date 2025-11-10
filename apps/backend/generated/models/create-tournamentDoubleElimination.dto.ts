@@ -1,0 +1,18 @@
+import { ApiProperty } from '@nestjs/swagger';
+
+export class CreateTournamentDoubleEliminationDto {
+  @ApiProperty({
+    type: 'integer',
+    format: 'int32',
+    default: 1,
+    required: false,
+  })
+  roundNumber?: number;
+  @ApiProperty({
+    type: 'string',
+    format: 'date-time',
+    default: new Date().toISOString(),
+    required: false,
+  })
+  createdAt?: Date;
+}

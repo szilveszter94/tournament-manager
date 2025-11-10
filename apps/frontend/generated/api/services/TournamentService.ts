@@ -18,7 +18,7 @@ export class TournamentService {
      * @throws ApiError
      */
     public tournamentControllerFindOne(
-        id: number,
+        id: string,
     ): CancelablePromise<TournamentResponse> {
         return this.httpRequest.request({
             method: 'GET',
@@ -36,7 +36,7 @@ export class TournamentService {
      * @throws ApiError
      */
     public tournamentControllerUpdate(
-        id: number,
+        id: string,
         requestBody: UpdateTournamentDto,
     ): CancelablePromise<TournamentResponse> {
         return this.httpRequest.request({
@@ -56,7 +56,7 @@ export class TournamentService {
      * @throws ApiError
      */
     public tournamentControllerDeleteParticipant(
-        id: number,
+        id: string,
     ): CancelablePromise<BaseResponse> {
         return this.httpRequest.request({
             method: 'DELETE',
@@ -90,7 +90,7 @@ export class TournamentService {
         sortOrder?: 'asc' | 'desc',
         sortBy?: 'name' | 'createdAt' | 'updatedAt' | 'status' | 'type',
         type?: Array<'Individual' | 'Team'>,
-        status?: Array<'Setup' | 'Started' | 'Over'>,
+        status?: Array<'RegisterPlayers' | 'GroupStage' | 'GroupStageCompleted' | 'SingleElimination' | 'SingleEliminationCompleted' | 'DoubleElimination' | 'DoubleEliminationCompleted' | 'RoundRobin' | 'RoundRobinCompleted' | 'Swiss' | 'SwissCompleted' | 'Over'>,
         itemsPerPage?: number,
         currentPage?: number,
         query?: string,

@@ -6,16 +6,28 @@ html.dark-purple {
   --tertiary: #26253d;
   --icon: #5147ea;
   --disabled: #515152;
+  --disabled-dark: #3a3a3d;
+  --gray-primary: #7d7f81;
+  --gray-secondary: #c9ccce;
 
   --on-background: #0c0c0c;
   --on-foreground: #d4a7ff;
   --on-primary: #7972fd;
   --on-secondary: #343466;
+  --on-tertiary: #2c2b36;
 
   --primary-text-color: #ffffff;
   --secondary-text-color: #111111;
   --subtitle-text-color: #acacac;
-  
+
   --primary-border-color: #364153;
   --secondary-border-color: #d1d5dc;
+
+  --green-primary: #00a63e;
+  --red-primary: #fb2c36;
+  --yellow-primary: #e0dd12;
+  --blue-primary: #0d6a8f;
+
+  --green-secondary: #027a2e;
+  --red-secondary: #b1151d;
 }

@@ -7,14 +7,14 @@ export class TournamentGroupDto {
   })
   id: number;
   @ApiProperty({
+    type: 'string',
+  })
+  name: string;
+  @ApiProperty({
     type: 'integer',
     format: 'int32',
   })
   groupNumber: number;
-  @ApiProperty({
-    type: 'boolean',
-  })
-  isGroupMatchesEnded: boolean;
   @ApiProperty({
     type: 'string',
     format: 'date-time',

@@ -8,7 +8,7 @@ export class UpdateMatchDto {
     required: false,
     nullable: true,
   })
-  round?: number | null;
+  doubleEliminationRound?: number | null;
   @ApiProperty({
     type: 'integer',
     format: 'int32',
@@ -16,6 +16,34 @@ export class UpdateMatchDto {
     nullable: true,
   })
   serialNumber?: number | null;
+  @ApiProperty({
+    type: 'integer',
+    format: 'int32',
+    required: false,
+    nullable: true,
+  })
+  winnerElo?: number | null;
+  @ApiProperty({
+    type: 'integer',
+    format: 'int32',
+    required: false,
+    nullable: true,
+  })
+  loserElo?: number | null;
+  @ApiProperty({
+    type: 'integer',
+    format: 'int32',
+    required: false,
+    nullable: true,
+  })
+  eloWon?: number | null;
+  @ApiProperty({
+    type: 'integer',
+    format: 'int32',
+    required: false,
+    nullable: true,
+  })
+  eloLost?: number | null;
   @ApiProperty({
     type: 'boolean',
     default: false,

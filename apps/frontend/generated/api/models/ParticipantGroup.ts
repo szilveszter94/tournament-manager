@@ -10,7 +10,6 @@ export type ParticipantGroup = {
     participantId: number;
     wins: number;
     losses: number;
-    points: number;
     createdAt: string;
     updatedAt: string;
     group?: TournamentGroup;

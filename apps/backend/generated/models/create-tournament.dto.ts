@@ -9,7 +9,7 @@ export class CreateTournamentDto {
   @ApiProperty({
     enum: TournamentStatus,
     enumName: 'TournamentStatus',
-    default: 'Setup',
+    default: 'RegisterPlayers',
     required: false,
   })
   status?: TournamentStatus;

@@ -5,6 +5,12 @@ import { PaginationData } from './pagination';
 import { ParticipantType } from '../../generated/client';
 import { TournamentSortBy } from '../../custom-models/shared/tournament';
 import { SortOrder } from '../../custom-models/shared/common';
+import { ParticipantDoubleElimination } from '../../generated/models/participantDoubleElimination.entity';
+
+export class AutocompleteParticipantQueryDto {
+  query: string;
+  type: ParticipantType;
+}
 
 export class FindParticipantQueryDto {
   query?: string;
@@ -36,3 +42,25 @@ export class ParticipantsResponse extends BaseResponse {
   @ApiProperty({ type: () => PaginationData, required: false })
   pagination?: PaginationData;
 }
+
+export class AutocompleteParticipantDto {
+  @ApiProperty({
+    type: 'string',
+  })
+  name: string;
+  @ApiProperty({
+    enum: ParticipantType,
+    enumName: 'ParticipantType',
+  })
+  type: ParticipantType;
+  @ApiProperty({
+    type: 'integer',
+    required: false,
+  })
+  participantId?: number;
+}
+
+export type CreateDoubleEliminationParticipant = Pick<
+  ParticipantDoubleElimination,
+  'participantId' | 'tournamentDoubleEliminationId' | 'doubleEliminationBracket'
+>;

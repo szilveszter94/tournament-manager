@@ -7,9 +7,9 @@ import type { ParticipantGroup } from './ParticipantGroup';
 import type { TournamentPhase } from './TournamentPhase';
 export type TournamentGroup = {
     id: number;
+    name: string;
     tournamentPhaseId: number;
     groupNumber: number;
-    isGroupMatchesEnded: boolean;
     createdAt: string;
     updatedAt: string;
     tournamentPhase?: TournamentPhase;

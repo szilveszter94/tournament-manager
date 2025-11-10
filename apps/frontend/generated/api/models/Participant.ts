@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { Match } from './Match';
+import type { ParticipantDoubleElimination } from './ParticipantDoubleElimination';
 import type { ParticipantGroup } from './ParticipantGroup';
 import type { ParticipantTournament } from './ParticipantTournament';
 import type { ParticipantType } from './ParticipantType';
@@ -17,10 +18,12 @@ export type Participant = {
     createdAt: string;
     updatedAt: string;
     tournaments?: Array<ParticipantTournament>;
+    doubleEliminations?: Array<ParticipantDoubleElimination>;
     groups?: Array<ParticipantGroup>;
     matchesAsP1?: Array<Match>;
     matchesAsP2?: Array<Match>;
     matchesWon?: Array<Match>;
+    matchesLost?: Array<Match>;
     podiums?: Array<TournamentWinner>;
 };
 

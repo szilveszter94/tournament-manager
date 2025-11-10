@@ -39,7 +39,7 @@ export class TournamentController {
   @Get(':id')
   @ApiOperation({ summary: 'Get a tournament by Id' })
   @ApiOkResponse({ type: TournamentResponse, isArray: false })
-  findOne(@Param('id') id: number): Promise<TournamentResponse> {
+  findOne(@Param('id') id: string): Promise<TournamentResponse> {
     return this.tournamentService.find(+id);
   }
 
@@ -124,7 +124,7 @@ export class TournamentController {
   @ApiOkResponse({ type: TournamentResponse, isArray: false })
   @ApiBody({ type: UpdateTournamentDto })
   update(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Body() tournament: UpdateTournamentDto,
   ): Promise<TournamentResponse> {
     return this.tournamentService.update(+id, tournament);
@@ -134,7 +134,7 @@ export class TournamentController {
   @Delete(':id')
   @ApiOperation({ summary: 'Remove a tournament from the database' })
   @ApiOkResponse({ type: BaseResponse })
-  deleteParticipant(@Param('id') id: number): Promise<BaseResponse> {
-    return this.tournamentService.delete(id);
+  deleteParticipant(@Param('id') id: string): Promise<BaseResponse> {
+    return this.tournamentService.delete(+id);
   }
 }

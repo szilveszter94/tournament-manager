@@ -17,11 +17,6 @@ export class ParticipantGroupDto {
   })
   losses: number;
   @ApiProperty({
-    type: 'integer',
-    format: 'int32',
-  })
-  points: number;
-  @ApiProperty({
     type: 'string',
     format: 'date-time',
   })

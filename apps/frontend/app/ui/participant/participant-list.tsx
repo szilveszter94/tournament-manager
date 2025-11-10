@@ -8,11 +8,7 @@ export default async function ParticipantList(params: ParticipantQueryParams) {
 
   return (
     <div className="overflow-x-auto">
-      <Table
-        columns={participantColumns}
-        data={response.data}
-        paginationData={response.pagination}
-      />
+      <Table columns={participantColumns} data={response.data} paginationData={response.pagination} />
     </div>
   );
 }

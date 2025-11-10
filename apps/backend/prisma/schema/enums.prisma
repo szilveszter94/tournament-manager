@@ -1,9 +1,11 @@
-enum EliminationType {
-  Knockout
-  Double
+enum DoubleEliminationBracket {
+  Winner
+  Loser
+  Eliminated
 }
 
 enum MatchType {
+  DoubleElimination
   Group
   Knockout
   Bronze
@@ -25,7 +27,16 @@ enum ParticipantType {
 }
 
 enum TournamentStatus {
-  Setup
-  Started
+  RegisterPlayers
+  GroupStage
+  GroupStageCompleted
+  SingleElimination
+  SingleEliminationCompleted
+  DoubleElimination
+  DoubleEliminationCompleted
+  RoundRobin
+  RoundRobinCompleted
+  Swiss
+  SwissCompleted
   Over
 }

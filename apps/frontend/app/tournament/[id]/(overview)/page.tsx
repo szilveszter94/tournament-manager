@@ -1,28 +1,36 @@
-import TournamentDetail from "@/app/ui/tournament/tournament-detail";
-import {
-  fetchTournamentById,
-  fetchTournamentParticipantsByTournamentId,
-} from "../../api";
+import CreateGroupStages from "@/app/ui/tournament/create-group-stages/create-group-stages";
+import { fetchTournamentById } from "../../api";
 import { notFound } from "next/navigation";
-import TournamentParticipantsList from "@/app/ui/tournament/tournament-participants";
+import { TournamentStatus } from "@/generated/api";
+import TournamentGroups from "@/app/ui/tournament/groupStages/tournament-groups";
+import GroupStagesCreateNextPhase from "@/app/ui/tournament/groupStages/create-next-phase/group-stages-create-next-phase";
+import DoubleEliminations from "@/app/ui/tournament/doubleEliminations/double-eliminations";
+import TournamentOver from "@/app/ui/tournament/tournament-over/tournament-over";
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
-  const id = Number(params.id);
-  const response = await fetchTournamentById(id);
-  const participantsResponse =
-    await fetchTournamentParticipantsByTournamentId(id);
+  const tournamentId = Number(params.id);
+  const response = await fetchTournamentById(tournamentId);
+  const tournament = response.data;
 
-  if (!response.data || !participantsResponse.data) {
+  if (!tournament) {
     notFound();
   }
 
-  return (
-    <main className="p-8 max-w-3xl mx-auto">
-      <div className="flex gap-3">
-        <TournamentParticipantsList participants={participantsResponse.data} />
-        <TournamentDetail tournament={response.data} />
-      </div>
-    </main>
-  );
+  switch (tournament.status) {
+    case TournamentStatus.GROUP_STAGE:
+      return <TournamentGroups tournament={tournament} />;
+
+    case TournamentStatus.GROUP_STAGE_COMPLETED:
+      return <GroupStagesCreateNextPhase tournament={tournament} />;
+
+    case TournamentStatus.DOUBLE_ELIMINATION:
+      return <DoubleEliminations tournament={tournament} />;
+
+    case TournamentStatus.OVER:
+      return <TournamentOver tournament={tournament} />;
+
+    default:
+      return <CreateGroupStages tournament={tournament} />;
+  }
 }

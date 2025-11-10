@@ -1,5 +1,5 @@
-import { ParticipantSkeleton } from "@/app/ui/participant/skeleton";
+import { ParticipantListSkeleton } from "@/app/ui/components/skeletons/participant-list-skeleton";
 
 export default function Loading() {
-  return <ParticipantSkeleton />;
+  return <ParticipantListSkeleton />;
 }

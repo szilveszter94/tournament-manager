@@ -1,19 +1,9 @@
-import TournamentList from "@/app/ui/tournament/tournament-list";
+import TournamentList from "@/app/ui/tournament/tournamentList/tournament-list";
 import { TournamentSearchParams } from "@/lib/custom-models/tournament";
-import {
-  DEFAULT_CURRENT_PAGE,
-  DEFAULT_ITEMS_PER_PAGE,
-} from "@/lib/global-constants";
-import {
-  parseTournamentSortBy,
-  parseSortOrder,
-  parseTournamentStatus,
-  parseParticipantType,
-} from "@/lib/utils";
+import { DEFAULT_CURRENT_PAGE, DEFAULT_ITEMS_PER_PAGE } from "@/lib/global-constants";
+import { parseTournamentSortBy, parseSortOrder, parseTournamentStatus, parseParticipantType } from "@/lib/utils";
 
-export default async function Page(props: {
-  searchParams?: Promise<TournamentSearchParams>;
-}) {
+export default async function Page(props: { searchParams?: Promise<TournamentSearchParams> }) {
   const searchParams = await props.searchParams;
   const query = searchParams?.query || "";
   const currentPage = Number(searchParams?.page) || DEFAULT_CURRENT_PAGE;
@@ -21,8 +11,7 @@ export default async function Page(props: {
   const sortBy = parseTournamentSortBy(searchParams?.sortBy);
   const statusList = parseTournamentStatus(searchParams?.status);
   const typeList = parseParticipantType(searchParams?.type);
-  const itemsPerPage =
-    Number(searchParams?.itemsPerPage) || DEFAULT_ITEMS_PER_PAGE;
+  const itemsPerPage = Number(searchParams?.itemsPerPage) || DEFAULT_ITEMS_PER_PAGE;
   const createdFrom = searchParams?.createdFrom ?? "";
   const createdTo = searchParams?.createdTo ?? "";
   const updatedFrom = searchParams?.updatedFrom ?? "";

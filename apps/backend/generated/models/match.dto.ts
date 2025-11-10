@@ -12,13 +12,37 @@ export class MatchDto {
     format: 'int32',
     nullable: true,
   })
-  round: number | null;
+  doubleEliminationRound: number | null;
   @ApiProperty({
     type: 'integer',
     format: 'int32',
     nullable: true,
   })
   serialNumber: number | null;
+  @ApiProperty({
+    type: 'integer',
+    format: 'int32',
+    nullable: true,
+  })
+  winnerElo: number | null;
+  @ApiProperty({
+    type: 'integer',
+    format: 'int32',
+    nullable: true,
+  })
+  loserElo: number | null;
+  @ApiProperty({
+    type: 'integer',
+    format: 'int32',
+    nullable: true,
+  })
+  eloWon: number | null;
+  @ApiProperty({
+    type: 'integer',
+    format: 'int32',
+    nullable: true,
+  })
+  eloLost: number | null;
   @ApiProperty({
     type: 'boolean',
   })

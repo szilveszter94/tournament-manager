@@ -1,8 +1,8 @@
 model TournamentGroup {
   id                  Int      @id @default(autoincrement())
+  name                String
   tournamentPhaseId   Int
   groupNumber         Int
-  isGroupMatchesEnded Boolean  @default(false)
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
 

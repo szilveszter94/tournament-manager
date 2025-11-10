@@ -1,4 +1,4 @@
-import CreateTournamentForm from "@/app/ui/tournament/create-form";
+import CreateTournamentForm from "@/app/ui/tournament/create-tournament/create-tournament-form";
 
 export default function Page() {
   return (

@@ -1,3 +1,9 @@
+import { TournamentStatus } from '../../generated/client';
+
+export const minTournamentNameLength = 5;
+export const minParticipantNameLength = 5;
+export const minParticipantAutocompleteLength = 3;
+
 export const sortOrderValues = ['asc', 'desc'] as const;
 export type SortOrder = (typeof sortOrderValues)[number];
 
@@ -24,4 +30,19 @@ export const createdDateFilterValues: RangeFilter = {
 export const updatedDateFilterValues: RangeFilter = {
   min: 'updatedFrom',
   max: 'updatedTo',
+};
+
+export const userFriendlyStats: Record<TournamentStatus, string> = {
+  RegisterPlayers: 'Register Players',
+  GroupStage: 'Group Stages',
+  GroupStageCompleted: 'Group Stages Completed',
+  SingleElimination: 'Knockout',
+  SingleEliminationCompleted: 'Knockout Completed',
+  DoubleElimination: 'Double Elimination',
+  DoubleEliminationCompleted: 'Double Elimination Completed',
+  RoundRobin: 'Round Robin',
+  RoundRobinCompleted: 'Round  Robin Completed',
+  Swiss: 'Swiss',
+  SwissCompleted: 'Swiss Completed',
+  Over: 'Over',
 };
