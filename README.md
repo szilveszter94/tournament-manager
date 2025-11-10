@@ -26,7 +26,7 @@ CLIENT_URL="your client url"
 
 Create the postgres sql database, e.g with executing the docker-compose.yaml script
 Run the following commands for create the :
-```sh
+```js
 npm run migrate-db // create the database
 npm run generate-client // generate the models
 npm run seed-db // optional for test data
